@@ -79,8 +79,17 @@
                 @csrf
 
                 <div class="form-floating mb-3">
-                    <input type="text" name="nama_bidang" class="form-control" id="nama_bidang"
-                        placeholder="Nama Bidang" required>
+                    <select name="bidang" class="form-select" id="bidang" required>
+                        <option value="" disabled selected>Pilih Bidang</option>
+                        <option value="sekretariat">Sekretariat</option>
+                        <option value="kesenian">Bidang Kesenian</option>
+                        <option value="cagar_budaya">Bidang Cagar Budaya dan Permuseuman</option>
+                        <option value="dokumentasi">Bidang Sejarah dan Dokumentasi</option>
+                        <option value="tenaga_warisan">Bidang Tenaga dan Warisan Budaya</option>
+                        <option value="uptd_museum">UPTD Museum Bali</option>
+                        <option value="uptd_monumen">UPTD Monumen Perjuangan Rakyat Bali</option>
+                        <option value="upt_taman_budaya">UPT Taman Budaya</option>
+                    </select>
                     <label for="nama_bidang">Nama Bidang</label>
                 </div>
 
@@ -98,7 +107,7 @@
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-custom btn-lg px-4">
-                        <i class="bi bi-upload me-2"></i>Upload ke Drive
+                        <i class="bi bi-upload me-2"></i>UPLOAD
                     </button>
                 </div>
             </form>
