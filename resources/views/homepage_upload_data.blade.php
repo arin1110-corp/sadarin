@@ -69,12 +69,12 @@
             <h1>SADAR<span class="in">IN</span></h1>
             <div style="font-size: 20px; color: #666;">
                 Sistem Data dan Arsip Internal<br>
-                <strong>BAGIAN UMUM DAN KEPEGAWAIAN</strong>
+                <strong>UPLOAD DATA</strong>
             </div>
         </div>
 
         <div class="form-upload">
-            <h4 class="mb-4"><i class="bi bi-cloud-upload"></i> Upload Laporan ke Google Drive</h4>
+            <h4 class="mb-4"><i class="bi bi-cloud-upload"></i> UPLOAD DATA</h4>
             <form method="POST" action="{{ route('data.upload') }}" enctype="multipart/form-data">
                 @csrf
 
