@@ -28,4 +28,5 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-ppep', [KodeController::class, 'datappep'])->name('data.ppep');
     Route::get('/data-keuangan', [KodeController::class, 'datakeuangan'])->name('data.keuangan');
     Route::get('/data-umpeg', [KodeController::class, 'dataumpeg'])->name('data.umpeg');
+    Route::get('/data-upload', [KodeController::class, 'dataupload'])->name('data.upload');
 });

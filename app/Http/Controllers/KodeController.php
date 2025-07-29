@@ -51,6 +51,10 @@ class KodeController extends Controller
     {
         return view('homepage_data_umpeg');
     }
+    public function dataupload()
+    {
+        return view('homepage_upload_data');
+    }
     public function datasekretariat()
     {
         return view('homepage_sekretariat');

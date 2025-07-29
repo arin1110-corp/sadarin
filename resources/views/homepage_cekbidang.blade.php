@@ -24,7 +24,7 @@
             <a href="#" class="menu-box">UPTD Museum Bali</a>
             <a href="#" class="menu-box">UPTD Monumen Perjuangan Rakyat Bali</a>
             <a href="#" class="menu-box">UPT Taman Budaya</a>
-            <a href="#" class="menu-box">
+            <a href="{{ route('data.upload') }}" class="menu-box">
                 <div class="bi bi-cloud-upload">&nbspUPLOAD DATA</div>
             </a>
         </div>
