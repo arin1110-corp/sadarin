@@ -94,7 +94,23 @@
                 </div>
             </div>
         </div>
-
+        <!-- Menu 2 -->
+        <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
+            <div>
+                <h5 class="text-lg font-semibold">Dokumen Pelaksanaan Pergeseran Anggaran</h5>
+                <p class="text-sm text-gray-600">
+                    Berisi dokumen Dokumen Pelaksanaan Pergeseran Anggaran (DPPPA) pada Dinas Kebudayaan Provinsi Bali.
+                </p>
+            </div>
+            <div class="flex gap-2">
+                <a href="#"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                    2024</a>
+                <a href="data-dppa2025"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                    2025</a>
+            </div>
+        </div>
         <!-- Menu 1 -->
         <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
             <div>

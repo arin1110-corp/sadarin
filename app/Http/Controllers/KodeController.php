@@ -10,7 +10,18 @@ class KodeController extends Controller
 
     public function form()
     {
-        return view('homepage_awal');
+        return view('homepage_cekbidang');
+    }
+    public function cekAkses()
+    {
+        if (session('kode_akses_valid')) {
+            return redirect()->route('daftar.bagian');
+        }
+        return redirect()->route('homepage');
+    }
+    public function datadppa2025()
+    {
+        return view('homepage_dppa2025');
     }
 
     public function cek(Request $request)
