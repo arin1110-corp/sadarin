@@ -23,6 +23,10 @@ class KodeController extends Controller
     {
         return view('homepage_dppa2025');
     }
+    public function datarak2025()
+    {
+        return view('homepage_rak2025');
+    }
 
     public function cek(Request $request)
     {

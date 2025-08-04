@@ -23,6 +23,8 @@ Route::get('/data-ppep', [KodeController::class, 'datappep'])->name('data.ppep')
 Route::get('/data-keuangan', [KodeController::class, 'datakeuangan'])->name('data.keuangan');
 Route::get('/data-umpeg', [KodeController::class, 'dataumpeg'])->name('data.umpeg');
 Route::get('/data-dppa2025', [KodeController::class, 'datadppa2025'])->name('data.dppa2025');
+Route::get('/data-rak2025', [KodeController::class, 'datarak2025'])->name('data.rak2025');
+
 
 // Halaman daftar bagian – hanya bisa diakses setelah sukses input kode akses
 Route::middleware('akses.kontrol')->group(function () {
