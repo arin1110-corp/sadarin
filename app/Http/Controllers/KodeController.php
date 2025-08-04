@@ -12,12 +12,21 @@ class KodeController extends Controller
     {
         return view('homepage_cekbidang');
     }
-    public function cekAkses()
+    public function akses_kode()
     {
+        return view('homepage_awal');
+    }
+    public function umpanbalik()
+    {
+        return view('homepage_umpeg_umpanbalik');
+    }
+    public function cekAkses(Request $request)
+    {
+        $target = $request->target;
         if (session('kode_akses_valid')) {
-            return redirect()->route('daftar.bagian');
+            return redirect()->route($target);
         }
-        return redirect()->route('homepage');
+        return redirect()->route('akses.kode')->withErrors(['kode_akses' => 'Kode Salah.']);
     }
     public function datadppa2025()
     {

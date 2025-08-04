@@ -19,11 +19,11 @@
             <a href="{{ route('data.sekretariat') }}" class="menu-box">Sekretariat</a>
             <a href="#" class="menu-box">Bidang Kesenian</a>
             <a href="#" class="menu-box">Bidang Cagar Budaya dan Permuseuman</a>
-            <a href="#" class="menu-box">Bidang Sejarah dan Dokumentasi</a>
-            <a href="#" class="menu-box">Bidang Tenaga dan Warisan Budaya</a>
+            <a href="#" class="menu-box">Bidang Sejarah dan Dokumentasi Kebudayaan</a>
+            <a href="#" class="menu-box">Bidang Tradisi dan Warisan Budaya</a>
             <a href="#" class="menu-box">UPTD Museum Bali</a>
             <a href="#" class="menu-box">UPTD Monumen Perjuangan Rakyat Bali</a>
-            <a href="#" class="menu-box">UPT Taman Budaya</a>
+            <a href="#" class="menu-box">UPTD Taman Budaya</a>
             <a href="{{ route('data.upload') }}" class="menu-box">
                 <div class="bi bi-cloud-upload">&nbspUPLOAD DATA</div>
             </a>

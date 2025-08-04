@@ -101,11 +101,11 @@
             <h5>Perjanjian Kinerja Pegawai</h5>
             <p>Berisi dokumen Perjanjian Kinerja Pegawai (PK) pada Dinas Kebudayaan Provinsi
                 Bali.</p>
-            <a href="https://drive.google.com/file/d/1PAcIwsWXYGrxUOjZWVYD11w641_TAwrn/preview"
+            <a href="#"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
                 target="_blank">
                 2024</a>
-            <a href="https://drive.google.com/file/d/1ni0-IlRc7Jripy9-nUzLdcAZKyci4ygL/preview"
+            <a href="#"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
                 target="_blank">
                 2025</a>
@@ -115,17 +115,26 @@
         <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
             <h5>Rencana Aksi Pegawai</h5>
             <p>Berisi Rencana Aksi Pegawai pada Dinas Kebudayaan Provinsi Bali.</p>
-            <a href="https://drive.google.com/file/d/1a-K6JuSvp2KMz7X6D-FpB36Ak0EoL5Yq/preview"
+            <a href="#"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
                 target="_blank">
                 2024-2026</a>
+        </div>
+
+        <!-- Menu 3 -->
+        <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
+            <h5>Dokumen Umpan Balik Pegawai</h5>
+            <p>Berisi Dokumen Umpan Balik Pegawai Dinas Kebudayaan Provinsi Bali.</p>
+            <a href="{{route('umpan.balik', ['target' => 'umpan.balik'])}}"
+                class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                2025</a>
         </div>
 
         <!-- Menu 4 -->
         <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
             <h5>Laporan Survey Kepuasan Masyarakat</h5>
             <p>Berisi Laporan Survey Kepuasan Masyarakat (SKM) pada Dinas Kebudayaan Provinsi Bali.</p>
-            <a href="https://drive.google.com/file/d/1FV8Q511tHsNR1gdE9-7tWF41iairS38c/preview"
+            <a href="#"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
                 target="_blank">
                 2024-2026</a>
@@ -135,11 +144,11 @@
         <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
             <h5>Laporan Surat Pertanggung Jawaban Fungsional</h5>
             <p>Berisi Laporan Surat Pertanggung Jawaban (SPJ) Fungsional pada Dinas Kebudayaan Provinsi Bali.</p>
-            <a href="https://drive.google.com/file/d/1Dl3ddFH-qndrEk2AsARsjigQuCt_TxU2/preview"
+            <a href="#"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
                 target="_blank">
                 2024</a>
-            <a href="https://drive.google.com/file/d/1Dl3ddFH-qndrEk2AsARsjigQuCt_TxU2/preview"
+            <a href="#"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
                 target="_blank">
                 2025</a>

@@ -17,7 +17,7 @@ class AksesKontrol
     public function handle(Request $request, Closure $next)
     {
         if (!session()->has('kode_akses_valid')) {
-            return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Silakan masukkan kode akses terlebih dahulu.']);
+            return redirect()->route('akses.kode')->withErrors(['kode_akses' => 'Silakan masukkan kode akses terlebih dahulu.']);
         }
 
         return $next($request);
