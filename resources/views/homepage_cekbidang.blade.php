@@ -12,7 +12,7 @@
 
             <h5 class="mb-4"><img src="{{asset('assets/image/pemprov.png')}}" width="150"></h5>
             <h1>SADAR<span class="in">IN</span> <br></h1>
-            <div style="font-size: 30px; color:#666;">Sistem Data dan Arsip Internal Dinas Kebudayaan</div>
+            <div style="font-size: 30px; color:#666;">Sistem Aplikasi Data dan Arsip Internal Dinas Kebudayaan</div>
         </div>
 
         <div class="grid-menu">

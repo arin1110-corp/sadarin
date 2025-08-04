@@ -82,6 +82,20 @@
             animation: fadeUp 0.6s ease forwards;
         }
 
+        .menu-row-judul {
+            background-color: #919191ff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            width: 100%;
+            color: #fff;
+            max-width: 700px;
+            transition: 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.6s ease forwards;
+        }
+
         .menu-row:hover {
             background-color: #fef4f4;
             transform: translateY(-4px);
@@ -152,11 +166,21 @@
                 Dinas Kebudayaan Provinsi Bali
             </p>
             <p class="display-7 fw-bold text-secondary">
-                Data Rencana Anggaran Kas Tahun 2025
+                Data Rekaman Umpan Balik Pegawai 2025
             </p>
-
             <div class="container mt-5" style="text-align: left;">
                 <div class="d-flex flex-column gap-4 align-items-center">
+                    <!-- MENU 1 -->
+                    <div class="menu-row-judul animate-fade delay-0 text-decoration-none text-dark">
+                        <div class="d-flex align-items-center">
+
+                            <!-- KANAN: Deskripsi -->
+                            <div class="menu-right ps-3">
+                                <p class="text-muted mb-0 big">PEGAWAI NEGERI SIPIL (PNS)</p>
+                            </div>
+
+                        </div>
+                    </div>
                     <!-- MENU 1 -->
                     <a href="https://drive.google.com/file/d/1r5V9HCX7gBZVNiQK3ue3v-0I-aEslpTr/preview"
                         class="menu-row animate-fade delay-0 text-decoration-none text-dark">
@@ -164,9 +188,60 @@
 
                             <!-- KANAN: Deskripsi -->
                             <div class="menu-right ps-3">
-                                <p class="text-muted mb-0 big">2.22.02.1.02.0001 - Pelindungan, Pengembangan,
-                                    Pemanfaatan
-                                    Objek Pemajuan Tradisi Budaya</p>
+                                <p class="text-muted mb-0 big">Triwulan I</p>
+                            </div>
+
+                        </div>
+                    </a>
+                    <!-- MENU 2 -->
+                    <a href="https://drive.google.com/drive/folders/16nSlJAc5WcjmzfrhYDcq-UzTxN32hg6J"
+                        class="menu-row animate-fade delay-0 text-decoration-none text-dark" target="_blank">
+                        <div class="d-flex align-items-center">
+                            <!-- KANAN: Deskripsi -->
+                            <div class="menu-right ps-3">
+                                <p class="text-muted mb-0 big">Triwulan II</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- MENU 3 -->
+                    <a href="https://drive.google.com/file/d/16VZ_9vurX0e-xCk2HCPVPiaLJ-4JdnZA/preview"
+                        class="menu-row animate-fade delay-0 text-decoration-none text-dark">
+                        <div class="d-flex align-items-center">
+                            <!-- KANAN: Deskripsi -->
+                            <div class="menu-right ps-3">
+                                <p class="text-muted mb-0 big">Triwulan III</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- MENU 4 -->
+                    <a href="https://drive.google.com/file/d/16VZ_9vurX0e-xCk2HCPVPiaLJ-4JdnZA/preview"
+                        class="menu-row animate-fade delay-0 text-decoration-none text-dark">
+                        <div class="d-flex align-items-center">
+                            <!-- KANAN: Deskripsi -->
+                            <div class="menu-right ps-3">
+                                <p class="text-muted mb-0 big">Triwulan IV</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- MENU 1 -->
+                    <div class="menu-row-judul animate-fade delay-0 text-decoration-none text-dark">
+                        <div class="d-flex align-items-center">
+
+                            <!-- KANAN: Deskripsi -->
+                            <div class="menu-right ps-3">
+                                <p class="text-muted mb-0 big">PEGAWAI PEMERINTAH DENGAN PERJANJIAN KERJA (PPPK)</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- MENU 1 -->
+                    <a href="https://drive.google.com/file/d/1r5V9HCX7gBZVNiQK3ue3v-0I-aEslpTr/preview"
+                        class="menu-row animate-fade delay-0 text-decoration-none text-dark">
+                        <div class="d-flex align-items-center">
+
+                            <!-- KANAN: Deskripsi -->
+                            <div class="menu-right ps-3">
+                                <p class="text-muted mb-0 big">Triwulan I</p>
                             </div>
 
                         </div>
@@ -177,18 +252,38 @@
                         <div class="d-flex align-items-center">
                             <!-- KANAN: Deskripsi -->
                             <div class="menu-right ps-3">
-                                <p class="text-muted mb-0 big">2.22.02.1.02.0002 - Pembinaan Sumber Daya Manusia,
-                                    Lembaga,
-                                    dan Pranata Kebudayaan</p>
+                                <p class="text-muted mb-0 big">Triwulan II</p>
                             </div>
-
+                        </div>
+                    </a>
+                    <!-- MENU 3 -->
+                    <a href="https://drive.google.com/file/d/16VZ_9vurX0e-xCk2HCPVPiaLJ-4JdnZA/preview"
+                        class="menu-row animate-fade delay-0 text-decoration-none text-dark">
+                        <div class="d-flex align-items-center">
+                            <!-- KANAN: Deskripsi -->
+                            <div class="menu-right ps-3">
+                                <p class="text-muted mb-0 big">Triwulan III</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- MENU 4 -->
+                    <a href="https://drive.google.com/file/d/16VZ_9vurX0e-xCk2HCPVPiaLJ-4JdnZA/preview"
+                        class="menu-row animate-fade delay-0 text-decoration-none text-dark">
+                        <div class="d-flex align-items-center">
+                            <!-- KANAN: Deskripsi -->
+                            <div class="menu-right ps-3">
+                                <p class="text-muted mb-0 big">Triwulan IV</p>
+                            </div>
                         </div>
                     </a>
                 </div>
             </div>
-
         </div>
+
     </div>
+    </div>
+
+
 
     <footer class="text-center py-4 px-3 bg-light small text-muted">
         &copy; {{ date('Y') }} Dinas Kebudayaan Provinsi Bali — <strong>SAPLARIN</strong>. All rights reserved.

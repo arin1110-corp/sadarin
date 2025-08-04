@@ -87,7 +87,7 @@
                 </h5>
                 <h1>SADAR<span class="in">IN</span></h1>
                 <div style="font-size: 24px; color: #666;">
-                    Sistem Data dan Arsip Internal Dinas Kebudayaan Provinsi Bali
+                    Sistem Aplikasi Data dan Arsip Internal Dinas Kebudayaan Provinsi Bali
                 </div>
                 <div style="font-size: 24px; color: #666;">
                     BAGIAN UMUM DAN KEPEGAWAIAN
@@ -125,7 +125,7 @@
         <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
             <h5>Dokumen Umpan Balik Pegawai</h5>
             <p>Berisi Dokumen Umpan Balik Pegawai Dinas Kebudayaan Provinsi Bali.</p>
-            <a href="{{route('umpan.balik', ['target' => 'umpan.balik'])}}"
+            <a href="{{route('umpan.balik')}}"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
                 2025</a>
         </div>

@@ -148,10 +148,7 @@
                 SADAR<span class="in">IN</span>
             </h1>
             <p class="display-7 fw-bold text-secondary">
-                Sistem Data dan Arsip Internal
-            </p>
-            <p class="display-7 fw-bold text-secondary">
-                Dinas Kebudayaan Provinsi Bali
+                Sistem Aplikasi Data dan Arsip Internal Dinas Kebudayaan Provinsi Bali
             </p>
             <p class="display-7 fw-bold text-secondary">
                 Data Pelaksanaan Pergeseran Anggaran Tahun 2025

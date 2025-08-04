@@ -10,7 +10,7 @@ class KodeController extends Controller
 
     public function form()
     {
-        return view('homepage_cekbidang');
+        return view('homepage_awal');
     }
     public function akses_kode()
     {
@@ -24,7 +24,7 @@ class KodeController extends Controller
     {
         $target = $request->target;
         if (session('kode_akses_valid')) {
-            return redirect()->route($target);
+            return redirect()->route('daftar.bagian');
         }
         return redirect()->route('akses.kode')->withErrors(['kode_akses' => 'Kode Salah.']);
     }

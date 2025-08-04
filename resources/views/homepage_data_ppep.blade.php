@@ -87,7 +87,7 @@
                 </h5>
                 <h1>SADAR<span class="in">IN</span></h1>
                 <div style="font-size: 24px; color: #666;">
-                    Sistem Data dan Arsip Internal Dinas Kebudayaan Provinsi Bali
+                    Sistem Aplikasi Data dan Arsip Internal Dinas Kebudayaan Provinsi Bali
                 </div>
                 <div style="font-size: 24px; color: #666;">
                     BAGIAN PENYUSUNAN PROGRAM EVALUASI DAN PELAPORAN (PPEP)
