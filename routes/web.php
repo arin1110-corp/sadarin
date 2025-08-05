@@ -27,6 +27,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/pk-bidang', [KodeController::class, 'pkbidang'])->name('pk.bidang');
     Route::get('/data-upload', [KodeController::class, 'dataupload'])->name('data.upload');
     Route::get('/umpan-balik', [KodeController::class, 'umpanbalik'])->name('umpan.balik');
+    Route::get('/evaluasi-kinerja', [KodeController::class, 'evaluasikinerja'])->name('evaluasi.kinerja');
     Route::get('/cek-bidang', [KodeController::class, 'cekbidang'])->name('cek.bidang');
     Route::get('/data-sekretariat', [KodeController::class, 'datasekretariat'])->name('data.sekretariat');
     Route::get('/data-ppep', [KodeController::class, 'datappep'])->name('data.ppep');
@@ -34,4 +35,6 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-umpeg', [KodeController::class, 'dataumpeg'])->name('data.umpeg');
     Route::get('/data-dppa2025', [KodeController::class, 'datadppa2025'])->name('data.dppa2025');
     Route::get('/data-rak2025', [KodeController::class, 'datarak2025'])->name('data.rak2025');
+    Route::get('/bendahara-penerima', [KodeController::class, 'bendaharaPenerima'])->name('bendahara.penerima');
+    Route::get('/bendahara-pengeluaran', [KodeController::class, 'bendaharaPengeluaran'])->name('bendahara .pengeluaran');
 });

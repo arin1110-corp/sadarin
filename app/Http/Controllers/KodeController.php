@@ -20,6 +20,10 @@ class KodeController extends Controller
     {
         return view('homepage_umpeg_umpanbalik');
     }
+    public function evaluasikinerja()
+    {
+        return view('homepage_umpeg_evkin');
+    }
     public function cekAkses(Request $request)
     {
         $target = $request->target;

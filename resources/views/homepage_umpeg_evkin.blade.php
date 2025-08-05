@@ -194,7 +194,7 @@
                         </div>
                     </a>
                     <!-- MENU 2 -->
-                    <a href="https://drive.google.com/drive/folders/1JqF7x_bro1r1B-Sy76xesqEiCU1W2ApG"
+                    <a href="https://drive.google.com/drive/folders/1QNeg-Cb2kMGKehxAQ7Jpuima4_kssDg9"
                         class="menu-row animate-fade delay-0 text-decoration-none text-dark" target="_blank">
                         <div class="d-flex align-items-center">
                             <!-- KANAN: Deskripsi -->
@@ -244,7 +244,7 @@
                         </div>
                     </a>
                     <!-- MENU 2 -->
-                    <a href="https://drive.google.com/drive/folders/105htvYSvUq1mrM3cF8Ei9vSWX9TkAltr" target="_blank"
+                    <a href="https://drive.google.com/drive/folders/1DQBoHJ9vyA1gh8YUsSm1J88-MuNMCSa1" target="_blank"
                         class="menu-row animate-fade delay-0 text-decoration-none text-dark">
                         <div class="d-flex align-items-center">
                             <!-- KANAN: Deskripsi -->

@@ -9,71 +9,71 @@
 
     <link rel="icon" href="{{ asset('assets/image/pemprov.png') }}" type="image/x-icon">
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f5f5f5;
-        }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f5f5f5;
+    }
 
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-        }
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #ffffff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+    }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+    .section-title {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-        .list-item {
-            background-color: #fefefe;
-            border-left: 5px solid orangered;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
+    .list-item {
+        background-color: #fefefe;
+        border-left: 5px solid orangered;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
-        .list-item h5 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 600;
-        }
+    .list-item h5 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+    }
 
-        .list-item p {
-            color: #555;
-            margin-top: 5px;
-            margin-bottom: 15px;
-        }
+    .list-item p {
+        color: #555;
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
 
-        .list-item a {
-            background-color: orangered;
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.2s ease;
-        }
+    .list-item a {
+        background-color: orangered;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
 
-        .title .in {
-            color: orangered;
-        }
+    .title .in {
+        color: orangered;
+    }
 
-        .list-item a:hover {
-            background-color: #ff7d4aff;
-        }
+    .list-item a:hover {
+        background-color: #ff7d4aff;
+    }
 
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 14px;
-            color: #777;
-        }
+    footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 14px;
+        color: #777;
+    }
     </style>
 </head>
 
@@ -97,17 +97,46 @@
         <!-- Menu 2 -->
         <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
             <div>
+                <h5 class="text-lg font-semibold">Dokumen Pelaksanaan Anggaran</h5>
+                <p class="text-sm text-gray-600">
+                    Berisi dokumen Dokumen Pelakasanaan Anggaran (DPA) pada Dinas Kebudayaan Provinsi Bali.
+                </p>
+            </div>
+            <div class="flex gap-2">
+                <a href="https://drive.google.com/drive/folders/1tkqf82s2qhXUD0sghnm8RW1gOXUSg12U"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
+                    2023</a>
+                <a href="https://drive.google.com/drive/folders/1GhdI-8lXdGhcbU39pI3WyWbUCbi-2Xt3"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
+                    2024</a>
+                <a href="https://drive.google.com/drive/folders/1RZWhWa2dybQq-LSbVLpwhlzN5xPivWKz"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
+                    2025</a>
+            </div>
+        </div>
+        <!-- Menu 2 -->
+        <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
+            <div>
                 <h5 class="text-lg font-semibold">Rencana Anggaran Kas</h5>
                 <p class="text-sm text-gray-600">
                     Berisi dokumen Rencana Anggaran Kas (RAK) pada Dinas Kebudayaan Provinsi Bali.
                 </p>
             </div>
             <div class="flex gap-2">
-                <a href="#"
-                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                <a href="https://drive.google.com/drive/folders/17yJW5-KzhXZfNmP_CM6oFYYenq8mzqD0"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
+                    2023</a>
+                <a href="https://drive.google.com/drive/folders/1xvLd4y7iJ06zeJwWktLL3CsolfNXI3v5"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
                     2024</a>
-                <a href="data-rak2025"
-                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                <a href="https://drive.google.com/drive/folders/1tfPKg6MIK0yueHfcqqAJ81m2l7O-aB_G"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
                     2025</a>
             </div>
         </div>
@@ -120,11 +149,40 @@
                 </p>
             </div>
             <div class="flex gap-2">
-                <a href="#"
-                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                <a href="https://drive.google.com/drive/folders/1c6n6GSa_UoleO0iGKkHOv0nCuL76ybCw"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
+                    2023</a>
+                <a href="https://drive.google.com/drive/folders/1VZYWGDn-Ntd7VIIYbfbzj9FC-y8wFLod"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
                     2024</a>
-                <a href="data-dppa2025"
-                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                <a href="https://drive.google.com/drive/folders/1dyOvJBEI1NRMu2XbivrODRAzNL83UrVg"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
+                    2025</a>
+            </div>
+        </div>
+        <!-- Menu 2 -->
+        <div class="list-item flex justify-between items-center p-4 mb-4 border rounded shadow bg-white">
+            <div>
+                <h5 class="text-lg font-semibold">Rencana Kerja Anggaran</h5>
+                <p class="text-sm text-gray-600">
+                    Berisi dokumen Rencana Kerja Anggaran (RKA) pada Dinas Kebudayaan Provinsi Bali.
+                </p>
+            </div>
+            <div class="flex gap-2">
+                <a href="https://drive.google.com/drive/folders/1ZMvmiD6DWy3WQrCMuNR33yM_DJq6G_j5"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
+                    2023</a>
+                <a href="https://drive.google.com/drive/folders/1EcI3dRTwb-7Oi33ZKi2bN0XW5APAuJ60"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
+                    2024</a>
+                <a href="https://drive.google.com/drive/folders/1LRdDVZ_NSyC_iGoP4Mv9hyKp6MnfmRP0"
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
                     2025</a>
             </div>
         </div>
@@ -138,10 +196,12 @@
             </div>
             <div class="flex gap-2">
                 <a href="#"
-                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
                     2024</a>
                 <a href="#"
-                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">
+                    class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                    target="_blank">
                     2025</a>
             </div>
         </div>
