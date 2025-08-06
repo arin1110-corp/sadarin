@@ -36,5 +36,5 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-dppa2025', [KodeController::class, 'datadppa2025'])->name('data.dppa2025');
     Route::get('/data-rak2025', [KodeController::class, 'datarak2025'])->name('data.rak2025');
     Route::get('/bendahara-penerima', [KodeController::class, 'bendaharaPenerima'])->name('bendahara.penerima');
-    Route::get('/bendahara-pengeluaran', [KodeController::class, 'bendaharaPengeluaran'])->name('bendahara .pengeluaran');
+    Route::get('/bendahara-pengeluaran', [KodeController::class, 'bendaharaPengeluaran'])->name('bendahara.pengeluaran');
 });
