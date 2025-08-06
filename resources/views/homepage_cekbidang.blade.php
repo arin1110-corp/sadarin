@@ -24,7 +24,8 @@
             <a href="#" class="menu-box">UPTD Museum Bali</a>
             <a href="#" class="menu-box">UPTD Monumen Perjuangan Rakyat Bali</a>
             <a href="#" class="menu-box">UPTD Taman Budaya</a>
-            <a href="{{ route('data.upload') }}" class="menu-box">
+            <a href="https://drive.google.com/open?id=1o_3gTGKUyaWOKNvxzZ80KB7hqXSRoMTQ&usp=drive_fs" target="_blank"
+                class="menu-box">
                 <div class="bi bi-cloud-upload">&nbspUPLOAD DATA</div>
             </a>
         </div>
