@@ -9,71 +9,71 @@
 
     <link rel="icon" href="{{ asset('assets/image/pemprov.png') }}" type="image/x-icon">
     <style>
-    body {
-        font-family: 'Segoe UI', sans-serif;
-        background-color: #f5f5f5;
-    }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f5f5;
+        }
 
-    .container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 20px;
-        background: #ffffff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        border-radius: 15px;
-    }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
 
-    .section-title {
-        text-align: center;
-        margin-bottom: 30px;
-    }
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-    .list-item {
-        background-color: #fefefe;
-        border-left: 5px solid orangered;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
+        .list-item {
+            background-color: #fefefe;
+            border-left: 5px solid orangered;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
 
-    .list-item h5 {
-        margin: 0;
-        font-size: 20px;
-        font-weight: 600;
-    }
+        .list-item h5 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
 
-    .list-item p {
-        color: #555;
-        margin-top: 5px;
-        margin-bottom: 15px;
-    }
+        .list-item p {
+            color: #555;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
 
-    .list-item a {
-        background-color: orangered;
-        border: none;
-        color: white;
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background-color 0.2s ease;
-    }
+        .list-item a {
+            background-color: orangered;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
 
-    .title .in {
-        color: orangered;
-    }
+        .title .in {
+            color: orangered;
+        }
 
-    .list-item a:hover {
-        background-color: #ff7d4aff;
-    }
+        .list-item a:hover {
+            background-color: #ff7d4aff;
+        }
 
-    footer {
-        text-align: center;
-        margin-top: 40px;
-        font-size: 14px;
-        color: #777;
-    }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #777;
+        }
     </style>
 </head>
 

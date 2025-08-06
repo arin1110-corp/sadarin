@@ -101,11 +101,11 @@
             <h5>Perjanjian Kinerja Pegawai</h5>
             <p>Berisi dokumen Perjanjian Kinerja Pegawai (PK) pada Dinas Kebudayaan Provinsi
                 Bali.</p>
-            <a href="#"
+            <a href="https://drive.google.com/drive/folders/1mzRlfZw98GjcT8mTV__RDL68M2wLgT6P"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
                 target="_blank">
                 2024</a>
-            <a href="#"
+            <a href="https://drive.google.com/drive/folders/1mp5yom5Xygd-k6ioBPVQMCI45UBbeA6C"
                 class="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
                 target="_blank">
                 2025</a>
