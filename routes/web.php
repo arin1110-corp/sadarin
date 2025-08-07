@@ -37,4 +37,5 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-rak2025', [KodeController::class, 'datarak2025'])->name('data.rak2025');
     Route::get('/bendahara-penerima', [KodeController::class, 'bendaharaPenerima'])->name('bendahara.penerima');
     Route::get('/bendahara-pengeluaran', [KodeController::class, 'bendaharaPengeluaran'])->name('bendahara.pengeluaran');
+    Route::get('/data-pegawaipns', [KodeController::class, 'datapegawaipns'])->name('data.pegawaiPNS');
 });

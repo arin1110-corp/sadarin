@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ModelUser;
+use Google\Service\Bigquery\Model;
 
 class KodeController extends Controller
 {
@@ -15,6 +17,53 @@ class KodeController extends Controller
     public function akses_kode()
     {
         return view('homepage_awal');
+    }
+    public function dataPegawaiPNS()
+    {
+        $users = ModelUser::with('bidang')
+            ->where('user_status', 1)
+            ->get();
+
+        $rekapBidang = $users->groupBy('user_bidang')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->bidang)->bidang_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+        $users = ModelUser::with('golongan')
+            ->where('user_status', 1)
+            ->get();
+
+        $rekapGolongan = $users->groupBy('user_golongan')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->golongan)->golongan_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+        $users = ModelUser::with('jabatan')
+            ->where('user_status', 1)
+            ->get();
+
+        $rekapJabatan = $users->groupBy('user_jabatan')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->jabatan)->jabatan_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+        $jumlahLaki = ModelUser::where('user_jk', 'L')->where('user_status', 1)->count();
+        $jumlahPerempuan = ModelUser::where('user_jk', 'P')->where('user_status', 1)->count();
+
+        $dataPegawai = ModelUser::where('user_status', 1)->get();
+        $totalPegawai = ModelUser::where('user_status', 1)->count();
+        return view('homepage_data_pegawai_pns', compact(
+            'dataPegawai',
+            'totalPegawai',
+            'rekapBidang',
+            'rekapGolongan',
+            'rekapJabatan',
+            'jumlahLaki',
+            'jumlahPerempuan'
+        ));
     }
     public function umpanbalik()
     {
