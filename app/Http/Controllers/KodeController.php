@@ -73,6 +73,10 @@ class KodeController extends Controller
     {
         return view('homepage_umpeg_evkin');
     }
+    public function bendaharaPengeluaran()
+    {
+        return view('homepage_keu_bendpengeluaran');
+    }
     public function cekAkses(Request $request)
     {
         $target = $request->target;
