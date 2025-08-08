@@ -41,4 +41,8 @@ class ModelUser extends Model
     {
         return $this->belongsTo(ModelEselon::class, 'user_eselon', 'eselon_id');
     }
+    public function jenisKerja()
+    {
+        return $this->belongsTo(ModelJenisKerja::class, 'user_jeniskerja', 'jeniskerja_id');
+    }
 }

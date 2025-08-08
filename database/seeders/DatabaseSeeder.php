@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             EselonSeeder::class,
             GolonganSeeder::class,
             JabatanSeeder::class,
+            JenisKerjaSeeder::class,
             // Tambah seeder lain di sini
         ]);
     }

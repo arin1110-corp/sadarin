@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('user_bidang', 100);
             $table->string('user_jmltanggungan', 100);
             $table->integer('user_status');
+            $table->string('user_jeniskerja', 100);
         });
     }
 
