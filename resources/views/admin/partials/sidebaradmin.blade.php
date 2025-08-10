@@ -5,7 +5,7 @@
     <h4>Admin</h4>
     <ul class="nav flex-column">
         <li class="nav-item mb-2">
-            <a class="nav-link" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a class="nav-link" href="{{route('dashboard')}}"><i class="bi bi-speedometer2"></i> Dashboard</a>
         </li>
         <li class="nav-item mb-2">
             <a class="nav-link" href="{{route('admin.bidang')}}"><i class="bi bi-card-text"></i> Bidang</a>

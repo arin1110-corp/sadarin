@@ -211,6 +211,9 @@ class KodeController extends Controller
         $datapnspegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
         $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
         $totalPegawai = ModelUser::where('user_status', 1)->count();
+
+        $dataPns = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->get();
+        $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
         return view('admin.dashboard', compact(
             'dataPegawai',
             'totalPegawai',
@@ -220,7 +223,9 @@ class KodeController extends Controller
             'jumlahLaki',
             'jumlahPerempuan',
             'datapnspegawai',
-            'datapppkpegawai'
+            'datapppkpegawai',
+            'dataPns',
+            'dataPppk'
         ));
     }
     public function adminBidang()
