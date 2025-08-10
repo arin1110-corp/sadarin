@@ -13,13 +13,19 @@
             <h5 class="mb-4"><img src="{{asset('assets/image/pemprov.png')}}" width="150"></h5>
             <h1>SADAR<span class="in">IN</span> <br></h1>
             <div style="font-size: 30px; color:#666;">Sistem Aplikasi Data dan Arsip Internal Dinas Kebudayaan</div>
+            <div style="font-size: 30px; color:#666;">Data Pada {{ @$bidangnama }}</div>
+
+
         </div>
 
         <div class="grid-menu">
-            <a href="{{ route('data.ppep') }}" class="menu-box">Bagian Penyusunan Program Evaluasi dan Pelaporan
-                (PPEP)</a>
-            <a href="{{ route('data.keuangan') }}" class="menu-box">Bagian Keuangan</a>
-            <a href="{{ route('data.umpeg') }}" class="menu-box">Bagian Umum dan Kepegawaian</a>
+            @if($subbag && $subbag->count() > 0)
+            @foreach ($subbag as $s)
+            <a href="{{ route($s->subbag_link) }}" class="menu-box">
+                {{ $s->subbag_nama }}
+            </a>
+            @endforeach
+            @endif
         </div>
 
         <footer class="text-center mt-4 py-3">

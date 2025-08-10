@@ -71,7 +71,15 @@ class JabatanSeeder extends Seeder
             'Pustakawan Ahli Madya',
             'Sekretaris',
             'Teknisi Panggung',
-            'Verifikator Keuangan'
+            'Verifikator Keuangan',
+            'Penata Layanan Operasional',
+            'Pengadministrasi Perkantoran',
+            'Operator Layanan Operasional',
+            'Pengelola Umum Operasional',
+            'Arsiparis Ahli Muda',
+            'Arsiparis Ahli Pertama',
+            'Arsiparis Terampil',
+            'Arsiparis Mahir',
         ];
         foreach (array_unique($jabatans) as $jabatan) {
             ModelJabatan::create([

@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sadarin_bidang', function (Blueprint $table) {
-            $table->increments('bidang_id');
-            $table->string('bidang_nama', 100);
-            $table->string('bidang_link', 255);
-            $table->string('bidang_instansi', 100);
-            $table->integer('bidang_status');
+        //
+        Schema::create('sadarin_subbag', function (Blueprint $table) {
+            $table->increments('subbag_id');
+            $table->string('subbag_nama', 100);
+            $table->string('subbag_bidang', 100);
+            $table->string('subbag_link', 100);
+            $table->integer('subbag_status');
         });
     }
 

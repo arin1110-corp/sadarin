@@ -16,18 +16,14 @@
         </div>
 
         <div class="grid-menu">
-            <a href="{{ route('data.sekretariat') }}" class="menu-box">Sekretariat</a>
-            <a href="#" class="menu-box">Bidang Kesenian</a>
-            <a href="#" class="menu-box">Bidang Cagar Budaya dan Permuseuman</a>
-            <a href="#" class="menu-box">Bidang Sejarah dan Dokumentasi Kebudayaan</a>
-            <a href="#" class="menu-box">Bidang Tradisi dan Warisan Budaya</a>
-            <a href="#" class="menu-box">UPTD Museum Bali</a>
-            <a href="#" class="menu-box">UPTD Monumen Perjuangan Rakyat Bali</a>
-            <a href="#" class="menu-box">UPTD Taman Budaya</a>
-            <a href="https://drive.google.com/open?id=1o_3gTGKUyaWOKNvxzZ80KB7hqXSRoMTQ&usp=drive_fs" target="_blank"
-                class="menu-box">
-                <div class="bi bi-cloud-upload">&nbspUPLOAD DATA</div>
+            @if($bidang && $bidang->count() > 0)
+            @foreach ($bidang as $b)
+            <a href="{{ route($b->bidang_link) }}" class="menu-box">
+                {{ $b->bidang_nama }}
             </a>
+            @endforeach
+            @endif
+
         </div>
 
         <footer class="text-center mt-4 py-3">

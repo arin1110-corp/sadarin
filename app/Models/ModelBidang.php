@@ -15,6 +15,7 @@ class ModelBidang extends Model
     protected $fillable = [
         'bidang_id',
         'bidang_nama',
+        'bidang_link',
         'bidang_instansi',
         'bidang_status',
     ];

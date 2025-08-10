@@ -70,7 +70,8 @@
 
         <div class="form-access mt-5">
             <p class="mb-4" style="font-size: 16px; color: #555;">
-                Masukkan <strong>kode akses</strong> untuk masuk ke dalam sistem data dan arsip internal:
+                Masukkan <strong>kode akses</strong> atau <strong>NIP</strong> untuk masuk ke dalam sistem data dan
+                arsip internal:
             </p>
             <form method="POST" action="{{ route('akses.cek') }}">
                 @csrf
@@ -89,7 +90,7 @@
         </div>
 
         <div class="mt-5">
-            <a href="#" class="btn btn-outline-secondary me-2">Beranda</a>
+            <a href="#" class="btn btn-outline-secondary me-2">ADMIN SECTION</a>
             <a href="#" class="btn btn-outline-primary">Panduan Pengguna</a>
         </div>
 
