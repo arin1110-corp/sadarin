@@ -48,7 +48,6 @@ class KodeController extends Controller
         $subbagNama = ModelSubbag::where('subbag_id', 1)->value('subbag_nama');
         $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
             ->where('navigasisekre_subbag', 1)
-            ->orderBy('navigasisekre_urutan', 'asc')
             ->get();
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
@@ -57,7 +56,6 @@ class KodeController extends Controller
         $subbagNama = ModelSubbag::where('subbag_id', 3)->value('subbag_nama');
         $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
             ->where('navigasisekre_subbag', 3)
-            ->orderBy('navigasisekre_urutan', 'asc')
             ->get();
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
@@ -66,7 +64,6 @@ class KodeController extends Controller
         $subbagNama = ModelSubbag::where('subbag_id', 2)->value('subbag_nama');
         $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
             ->where('navigasisekre_subbag', 2)
-            ->orderBy('navigasisekre_urutan', 'asc')
             ->get();
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
@@ -78,7 +75,7 @@ class KodeController extends Controller
     public function dataPegawaiPNS()
     {
         $users = ModelUser::with('bidang')
-            ->where('user_status', 1)
+            ->where('user_status', 1)->where('user_jeniskerja', 1)
             ->get();
 
         $rekapBidang = $users->groupBy('user_bidang')->map(function ($group) {
@@ -88,7 +85,7 @@ class KodeController extends Controller
             ];
         });
         $users = ModelUser::with('golongan')
-            ->where('user_status', 1)
+            ->where('user_status', 1)->where('user_jeniskerja', 1)
             ->get();
 
         $rekapGolongan = $users->groupBy('user_golongan')->map(function ($group) {
@@ -98,7 +95,7 @@ class KodeController extends Controller
             ];
         });
         $users = ModelUser::with('jabatan')
-            ->where('user_status', 1)
+            ->where('user_status', 1)->where('user_jeniskerja', 1)
             ->get();
 
         $rekapJabatan = $users->groupBy('user_jabatan')->map(function ($group) {
@@ -107,11 +104,46 @@ class KodeController extends Controller
                 'jumlah' => $group->count(),
             ];
         });
-        $jumlahLaki = ModelUser::where('user_jk', 'L')->where('user_status', 1)->count();
-        $jumlahPerempuan = ModelUser::where('user_jk', 'P')->where('user_status', 1)->count();
 
-        $dataPegawai = ModelUser::where('user_status', 1)->get();
-        $totalPegawai = ModelUser::where('user_status', 1)->count();
+        $order = [
+            'Kepala Dinas' => 1,
+            'Kepala Bidang' => 2,
+            'Kepala UPT' => 3
+        ];
+
+        $rekapJabatan = $rekapJabatan->sortBy(function ($item) use ($order) {
+            $nama = $item['nama'];
+
+            // Jika ada di daftar order khusus
+            if (isset($order[$nama])) {
+                return $order[$nama];
+            }
+
+            // Jika diawali "Kepala" tapi tidak ada di daftar, kasih prioritas setelah 3
+            if (stripos($nama, 'Kepala') === 0) {
+                return 4;
+            }
+
+            // Selain itu, urutan terakhir
+            return 5;
+        });
+
+        $jumlahLaki = ModelUser::where('user_jk', 'L')->where('user_jeniskerja', 1)->where('user_status', 1)->count();
+        $jumlahPerempuan = ModelUser::where('user_jk', 'P')->where('user_jeniskerja', 1)->where('user_status', 1)->count();
+
+        $dataPegawai = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->where('user_status', 1)
+            ->where('user_jeniskerja', 1)
+            ->orderByRaw(" CASE 
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Dinas' THEN 1
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Bidang' THEN 2
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPT' THEN 3
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
+                        ELSE 5 END ")
+            ->orderBy('sadarin_user.user_nama', 'asc')
+            ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama')
+            ->get();
+        $totalPegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
         return view('homepage_data_pegawai_pns', compact(
             'dataPegawai',
             'totalPegawai',
@@ -120,6 +152,103 @@ class KodeController extends Controller
             'rekapJabatan',
             'jumlahLaki',
             'jumlahPerempuan'
+        ));
+    }
+    public function dataPegawaiPPPK()
+    {
+        $users = ModelUser::with('bidang')
+            ->where('user_status', 1)->where('user_jeniskerja', 2)
+            ->get();
+
+        $rekapBidang = $users->groupBy('user_bidang')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->bidang)->bidang_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+        $users = ModelUser::with('golongan')
+            ->where('user_status', 1)->where('user_jeniskerja', 2)
+            ->get();
+
+        $rekapGolongan = $users->groupBy('user_golongan')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->golongan)->golongan_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+        $users = ModelUser::with('jabatan')
+            ->where('user_status', 1)->where('user_jeniskerja', 2)
+            ->get();
+
+        $rekapJabatan = $users->groupBy('user_jabatan')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->jabatan)->jabatan_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+
+        $order = [
+            'Kepala Dinas' => 1,
+            'Kepala Bidang' => 2,
+            'Kepala UPT' => 3
+        ];
+
+        $rekapJabatan = $rekapJabatan->sortBy(function ($item) use ($order) {
+            $nama = $item['nama'];
+
+            // Jika ada di daftar order khusus
+            if (isset($order[$nama])) {
+                return $order[$nama];
+            }
+
+            // Jika diawali "Kepala" tapi tidak ada di daftar, kasih prioritas setelah 3
+            if (stripos($nama, 'Kepala') === 0) {
+                return 4;
+            }
+
+            // Selain itu, urutan terakhir
+            return 5;
+        });
+
+        $jumlahLaki = ModelUser::where('user_jk', 'L')->where('user_jeniskerja', 2)->where('user_status', 1)->count();
+        $jumlahPerempuan = ModelUser::where('user_jk', 'P')->where('user_jeniskerja', 2)->where('user_status', 1)->count();
+        $dataPegawai = ModelUser::where('user_status', 1)
+            ->where('user_jeniskerja', 2)
+            ->get();
+        $totalPegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
+        return view('homepage_data_pegawai_pns', compact(
+            'dataPegawai',
+            'totalPegawai',
+            'rekapBidang',
+            'rekapGolongan',
+            'rekapJabatan',
+            'jumlahLaki',
+            'jumlahPerempuan'
+        ));
+    }
+    public function dataPegawaiRincian()
+    {
+        $dataPegawai = ModelUser::where('user_status', 1)->get();
+        $dataPns = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->where('user_status', 1)
+            ->where('user_jeniskerja', 1)
+            ->orderByRaw(" CASE 
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Dinas' THEN 1
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Bidang' THEN 2
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPT' THEN 3
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
+                        ELSE 5 END ")
+            ->orderBy('sadarin_user.user_nama', 'asc')
+            ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama')
+            ->get();
+
+        $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
+        return view('homepage_rincian_pegawai', compact(
+            'dataPegawai',
+            'dataPns',
+            'dataPppk'
         ));
     }
     public function umpanbalik()
@@ -282,11 +411,54 @@ class KodeController extends Controller
     {
         $navigasisekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
             ->with('subbag')->where('navigasisekre_status', 1)->get();
-        return view('admin.navigasiindex', compact('navigasisekretariat'));
+        $subbags = ModelSubBag::where('subbag_status', 1)->get();
+        return view('admin.navigasiindex', compact('navigasisekretariat', 'subbags'));
+    }
+    public function navigasiSimpan()
+    {
+        $request = request();
+        $request->validate([
+            'navigasisekre_nama' => 'required|string|max:255',
+            'navigasisekre_deskripsi' => 'nullable|string|max:255',
+            'navigasisekre_subbag' => 'required|string',
+            'navigasisekre_status' => 'required|integer',
+            'navigasisekre_level' => 'required|integer',
+
+        ]);
+
+        ModelNavigasiSekretariat::create([
+            'navigasisekre_nama' => $request->navigasisekre_nama,
+            'navigasisekre_subbag' => $request->navigasisekre_subbag,
+            'navigasisekre_deskripsi' => $request->navigasisekre_deskripsi,
+            'navigasisekre_status' => $request->navigasisekre_status,
+            'navigasisekre_level' => $request->navigasisekre_level
+        ]);
+
+        return redirect()->route('admin.navigasi')->with('success', 'Navigasi berhasil ditambahkan.');
     }
     public function adminSubNavigasi()
     {
+        $navs = ModelNavigasiSekretariat::where('navigasisekre_status', 1)->get();
         $subnavigasisekretariat = ModelSubNavigasiSekretariat::with('navigasisekretariat')->where('subnavigasisekre_status', 1)->get();
-        return view('admin.subnavigasiindex', compact('subnavigasisekretariat'));
+        return view('admin.subnavigasiindex', compact('subnavigasisekretariat', 'navs'));
+    }
+    public function subnavigasiSimpan()
+    {
+        $request = request();
+        $request->validate([
+            'subnavigasisekre_nama' => 'required',
+            'subnavigasisekre_navigasisekre' => 'required|string',
+            'subnavigasisekre_status' => 'required|integer',
+            'subnavigasisekre_link' => 'required|string',
+        ]);
+
+        ModelSubNavigasiSekretariat::create([
+            'subnavigasisekre_nama' => $request->subnavigasisekre_nama,
+            'subnavigasisekre_navigasisekre' => $request->subnavigasisekre_navigasisekre,
+            'subnavigasisekre_status' => $request->subnavigasisekre_status,
+            'subnavigasisekre_link' => $request->subnavigasisekre_link,
+        ]);
+
+        return redirect()->route('admin.subnavigasi')->with('success', 'Sub Navigasi berhasil ditambahkan.');
     }
 }

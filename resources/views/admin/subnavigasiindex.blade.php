@@ -93,7 +93,50 @@
         </div>
     </div>
 
-
+    {{-- Modal Tambah --}}
+    <div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="modalTambahLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{{ route('subnavigasi.simpan') }}" method="POST">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTambahLabel">Tambah Data Sub Navigasi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Nama Sub Navigasi</label>
+                            <input type="text" class="form-control" name="subnavigasisekre_nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Sub Navigasi Link</label>
+                            <input type="text" class="form-control" name="subnavigasisekre_link" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Navigasi</label>
+                            <select class="form-select" name="subnavigasisekre_navigasisekre" required>
+                                @foreach ($navs as $a)
+                                <option value="{{ $a->navigasisekre_id }}">{{ $a->navigasisekre_nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <div class="mb-3">
+                                <label>Status</label>
+                                <select class="form-select" name="subnavigasisekre_status" required>
+                                    <option value="1">Aktif</option>
+                                    <option value="0">Tidak Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
 
     {{-- Modal Edit --}}
     <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">

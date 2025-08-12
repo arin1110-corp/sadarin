@@ -14,7 +14,6 @@ class ModelSubNavigasiSekretariat extends Model
     protected $fillable = [
         'subnavigasisekre_id',
         'subnavigasisekre_nama',
-        'subnavigasisekre_urutan',
         'subnavigasisekre_navigasisekre',
         'subnavigasisekre_link',
         'subnavigasisekre_status'

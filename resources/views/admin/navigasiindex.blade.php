@@ -52,7 +52,7 @@
                                     <th>#</th>
                                     <th>Nama Navigasi</th>
                                     <th>Nama Sub Bagian</th>
-                                    <th>Nama Bidang</th>
+                                    <th>Level Navigasi</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -96,7 +96,55 @@
         </div>
     </div>
 
-
+    {{-- Modal Tambah --}}
+    <div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="modalTambahLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{{ route('navigasi.simpan') }}" method="POST">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTambahLabel">Tambah Data Navigasi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Nama Navigasi</label>
+                            <input type="text" class="form-control" name="navigasisekre_nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Deskripsi Navigasi</label>
+                            <input type="text" class="form-control" name="navigasisekre_deskripsi" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Sub Bagian</label>
+                            <select class="form-select" name="navigasisekre_subbag" required>
+                                @foreach ($subbags as $a)
+                                <option value="{{ $a->subbag_id }}">{{ $a->subbag_nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Level Navigasi</label>
+                            <select class="form-select" name="navigasisekre_level" required>
+                                <option value="1">Public</option>
+                                <option value="2">Internal</option>
+                            </select>
+                            <div class="mb-3">
+                                <label>Status</label>
+                                <select class="form-select" name="navigasisekre_status" required>
+                                    <option value="1">Aktif</option>
+                                    <option value="0">Tidak Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
 
     {{-- Modal Edit --}}
     <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">

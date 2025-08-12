@@ -166,7 +166,7 @@
                 Dinas Kebudayaan Provinsi Bali
             </p>
             <p class="display-7 fw-bold text-secondary">
-                Data Rekaman Umpan Balik Pegawai 2025
+                Data Evaluasi Kinerja Pegawai 2025
             </p>
             <div class="container mt-5" style="text-align: left;">
                 <div class="d-flex flex-column gap-4 align-items-center">
@@ -281,7 +281,7 @@
 
 
     <footer class="text-center py-4 px-3 bg-light small text-muted">
-        &copy; {{ date('Y') }} Dinas Kebudayaan Provinsi Bali — <strong>SAPLARIN</strong>. All rights reserved.
+        &copy; {{ date('Y') }} Dinas Kebudayaan Provinsi Bali — <strong>SADARIN</strong>. All rights reserved.
         <span class="text-danger">|</span>
         <span class="text-dark">Crafted by <strong>ARIN</strong></span>
         <span class="text-muted">with Pranata Komputer Ahli Pertama <i class="bi bi-heart-fill text-danger"></i></span>

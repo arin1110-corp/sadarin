@@ -30,7 +30,7 @@ class SubNavigasiSekre extends Seeder
             [
                 'subnavigasisekre_nama' => 'PNS',
                 'subnavigasisekre_urutan' => 2,
-                'subnavigasisekre_navigasisekre' => 4,
+                'subnavigasisekre_navigasisekre' => 3,
                 'subnavigasisekre_link' => 'data-pegawaipns',
                 'subnavigasisekre_status' => 1,
             ],

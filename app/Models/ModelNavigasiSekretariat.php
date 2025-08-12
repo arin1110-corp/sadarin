@@ -15,7 +15,7 @@ class ModelNavigasiSekretariat extends Model
         'navigasisekre_id',
         'navigasisekre_nama',
         'navigasisekre_deskripsi',
-        'navigasisekre_urutan',
+        'navigasisekre_level',
         'navigasisekre_subbag',
         'navigasisekre_status'
     ];

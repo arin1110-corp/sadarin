@@ -2,338 +2,176 @@
 <html lang="en">
 
 <head>
-    <title>SADARIN - Sistem Data dan Arsip Internal</title>
+    <title>SADARIN - Dashboard</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Sistem Data dan Arsip Internal - SADARIN">
-    <meta name="keywords"
-        content="SADARIN, Sistem Data dan Arsip Internal, Data, Arsip, Sistem Informasi, Pengelolaan Data, Dinas Kebudayaan">
-    <meta name="author" content="SADARIN Team">
-    <link rel="icon" href="{{ asset('assets/image/pemprov.png') }}" type="image/x-icon">
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <link rel="icon" href="{{ asset('assets/image/pemprov.png') }}" type="image/x-icon">
     <style>
-        html,
         body {
-            height: 100%;
+            background-color: #f4f6f9;
+            font-family: 'Poppins', sans-serif;
         }
 
-        body {
-            background: #f4f6f9;
-            display: flex;
-            flex-direction: column;
-            font-family: poppins, sans-serif;
+        .in {
+            color: #ff6600;
+            /* Warna oranye */
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        footer {
-            padding: 2rem 1rem;
-            background-color: #f8f9fa;
-            font-size: 0.875rem;
-        }
-
-        /* ========= LOGIN PAGE ========= */
-        .login-card {
-            max-width: 400px;
-            margin: auto;
-            margin-top: 100px;
-            background: white;
+        .card-custom {
+            background-color: #f18943ff;
+            /* Orange gelap */
+            color: white;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            box-shadow: 0 4px 15px rgba(252, 57, 57, 0.15);
+            transition: transform 0.2s ease-in-out;
         }
 
-        .login-card h4 {
-            font-weight: 700;
+        .card-custom:hover {
+            transform: translateY(-5px);
         }
 
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #dc3545;
+        .card-custom-bidang {
+            background-color: #50064cff;
+            /* Orange gelap */
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(252, 57, 57, 0.15);
+            transition: transform 0.2s ease-in-out;
         }
 
-        .btn-danger {
-            background-color: #dc3545;
-            border: none;
+        .card-custom:hover {
+            transform: translateY(-5px);
         }
 
-        .btn-danger:hover {
-            background-color: #b02a37;
+        .card-custom-jabatan {
+            background-color: #0b2064ff;
+            /* Orange gelap */
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(252, 57, 57, 0.15);
+            transition: transform 0.2s ease-in-out;
         }
 
-        /* ========= HOMEPAGE MENU: ROW STYLE ========= */
-        .menu-row {
-            background-color: #fff;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-            width: 100%;
-            max-width: 700px;
-            transition: 0.3s;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.6s ease forwards;
+        .card-custom-jabatan:hover {
+            transform: translateY(-5px);
         }
 
-        .menu-row-judul {
-            background-color: #919191ff;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-            width: 100%;
-            color: #fff;
-            max-width: 700px;
-            transition: 0.3s;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.6s ease forwards;
+        .card-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
         }
 
-        .menu-row:hover {
-            background-color: #fef4f4;
-            transform: translateY(-4px);
-        }
-
-        .icon-top {
-            font-size: 40px;
-            color: #c0392b;
-        }
-
-        .divider-vert {
-            width: 2px;
-            height: 60px;
-            background-color: #ddd;
-            margin: 0 15px;
-        }
-
-        .menu-left {
-            min-width: 100px;
-        }
-
-        .menu-right {
-            flex: 1;
-        }
-
-        /* ========= ANIMASI ========= */
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .delay-0 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-1 {
-            animation-delay: 0.5s;
-        }
-
-        .delay-2 {
-            animation-delay: 0.8s;
-        }
-
-        .container {
-            flex: 1;
-        }
-
-        .title .in {
-            color: orangered;
+        .card-body p {
+            margin: 0;
         }
     </style>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body>
 
-    <!-- Fullscreen Tengah -->
-    <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-        <div class="container text-center">
+    <div class="container py-5">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <img src="{{ asset('assets/image/pemprov.png') }}" height="80" alt="">
+            <h1 class="fw-bold text-secondary mt-2">SADAR<span class="in">IN</span></h1>
+            <p class="text-muted">Sistem Aplikasi Data dan Arsip Internal - Dinas Kebudayaan Provinsi Bali</p>
+        </div>
 
-            <h4 class="mb-3"><img src="{{asset('assets/image/pemprov.png')}}"></h4>
-            <h1 class="display-1 fw-bold text-secondary title">
-                SADAR<span class="in">IN</span>
-            </h1>
-            <p class="display-7 fw-bold text-secondary">
-                Sistem Aplikasi Data dan Arsip Internal
-                Dinas Kebudayaan Provinsi Bali
-            </p>
-            <p class="display-7 fw-bold text-secondary">
-                Data Pegawai Negeri Sipil
-            </p>
-            <div class="container mt-5" style="text-align: left;">
-                <div class="d-flex flex-column gap-4 align-items-center">
-
-
-                    <div class="menu-row-judul animate-fade delay-0">
-                        <div class="d-flex align-items-center">
-                            <div class="menu-left">
-                                <i class="bi bi-person-fill icon-top"></i>
-                            </div>
-                            <div class="menu-right">
-                                <h5 class="text-white mb-0">Daftar PNS</h5>
-                                <p class="text-white mb-0">Total Pegawai: {{ $dataPegawai->count() }} Orang</p>
-                            </div>
-                            <div class="divider-vert"></div>
-                            <div class="menu-right">
-                                <p class=" text-white mb-0">Total Pegawai</p>
-                            </div>
+        <!-- Statistik Cards -->
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card card-custom p-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-people-fill card-icon me-3"></i>
+                        <div>
+                            <h5>Total Pegawai</h5>
+                            <p>{{ $totalPegawai }} Orang</p>
                         </div>
                     </div>
-                    <div class="menu-row-judul animate-fade delay-0">
-                        <div class="d-flex align-items-center">
-                            <div class="menu-left">
-                                <i class="bi bi-person-fill icon-top"></i>
-                            </div>
-                            <div class="menu-right">
-                                <h5 class="text-white mb-0">Daftar PNS</h5>
-                                <p class="text-white mb-0">Laki - Laki: {{ $jumlahLaki }} Orang</p>
-                                <p class="text-white mb-0">Perempuan: {{ $jumlahPerempuan }} Orang</p>
-
-                            </div>
-                            <div class="divider-vert"></div>
-                            <div class="menu-right">
-                                <p class=" text-white mb-0"> Per Jenis Kelamin</p>
-                            </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-custom p-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-gender-male card-icon me-3"></i>
+                        <div>
+                            <h5>Laki-laki</h5>
+                            <p>{{ $jumlahLaki }} Orang</p>
                         </div>
                     </div>
-                    <div class="menu-row-judul animate-fade delay-0">
-                        <div class="d-flex align-items-center">
-
-                            <div class="menu-right">
-                                <center>
-                                    <h5 class="text-white mb-0">Daftar Pegawai Berdasarkan Bidang</h5>
-
-                                </center>
-                            </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-custom p-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-gender-female card-icon me-3"></i>
+                        <div>
+                            <h5>Perempuan</h5>
+                            <p>{{ $jumlahPerempuan }} Orang</p>
                         </div>
                     </div>
-
-                    @foreach($rekapBidang as $data)
-                    <div class="menu-row-judul animate-fade delay-0">
-                        <div class="d-flex align-items-center">
-                            <div class="menu-left">
-                                <i class="bi bi-person-fill icon-top"></i>
-                            </div>
-                            <div class="menu-right">
-                                <p class="text-white mb-0">{{ $data['nama'] }} </p>
-
-
-                            </div>
-                            <div class="divider-vert"></div>
-                            <div class="menu-right">
-                                <p class=" text-white mb-0"> {{ $data['jumlah'] }} Orang</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-
-                    <div class="menu-row-judul animate-fade delay-0">
-                        <div class="d-flex align-items-center">
-
-                            <div class="menu-right">
-                                <center>
-                                    <h5 class="text-white mb-0">Daftar Pegawai Berdasarkan Golongan</h5>
-
-                                </center>
-                            </div>
-                        </div>
-                    </div>
-
-                    @foreach($rekapGolongan as $data)
-                    <div class="menu-row-judul animate-fade delay-0">
-                        <div class="d-flex align-items-center">
-                            <div class="menu-left">
-                                <i class="bi bi-person-fill icon-top"></i>
-                            </div>
-                            <div class="menu-right">
-                                <p class="text-white mb-0">{{ $data['nama'] }} </p>
-
-
-                            </div>
-                            <div class="divider-vert"></div>
-                            <div class="menu-right">
-                                <p class=" text-white mb-0"> {{ $data['jumlah'] }} Orang</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                    <div class="menu-row-judul animate-fade delay-0">
-                        <div class="d-flex align-items-center">
-
-                            <div class="menu-right">
-                                <center>
-                                    <h5 class="text-white mb-0">Daftar Pegawai Berdasarkan Jabatan</h5>
-
-                                </center>
-                            </div>
-                        </div>
-                    </div>
-
-                    @foreach($rekapJabatan as $data)
-                    <div class="menu-row-judul animate-fade delay-0">
-                        <div class="d-flex align-items-center">
-                            <div class="menu-left">
-                                <i class="bi bi-person-fill icon-top"></i>
-                            </div>
-                            <div class="menu-right">
-                                <p class="text-white mb-0">{{ $data['nama'] }} </p>
-
-
-                            </div>
-                            <div class="divider-vert"></div>
-                            <div class="menu-right">
-                                <p class=" text-white mb-0"> {{ $data['jumlah'] }} Orang</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                    <?php
-
-                    foreach ($dataPegawai as $pegawai) {
-                    ?>
-                        <a href="https://drive.google.com/file/d/1r5V9HCX7gBZVNiQK3ue3v-0I-aEslpTr/preview"
-                            class="menu-row animate-fade delay-0 text-decoration-none text-dark" target="_blank">
-                            <div class="d-flex align-items-center">
-
-                                <!-- KANAN: Deskripsi -->
-                                <div class="menu-right ps-3">
-                                    <p class="text-muted mb-0 big">NIP. {{ $pegawai->user_nip }}</p>
-                                    <p class="text-muted mb-0 big">{{ $pegawai->user_nama }}</p>
-                                </div>
-
-                            </div>
-                        </a>
-                    <?php
-                    }
-                    ?>
-                    <!-- MENU 1 -->
-
                 </div>
             </div>
         </div>
 
+        <!-- Rekap Bidang -->
+        <div class="mt-5">
+            <h4 class="mb-3 text-secondary">Rekap Pegawai per Bidang</h4>
+            <div class="row g-4">
+                @foreach($rekapBidang as $data)
+                <div class="col-md-4">
+                    <div class="card card-custom-bidang p-3">
+                        <h6>{{ $data['nama'] }}</h6>
+                        <p>{{ $data['jumlah'] }} Orang</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        <!-- Rekap Jabatan -->
+        <div class="mt-5">
+            <h4 class="mb-3 text-secondary">Rekap Pegawai per Jabatan</h4>
+            <div class="row g-4">
+                @foreach($rekapJabatan as $data)
+                <div class="col-md-4">
+                    <div class="card card-custom-jabatan p-3">
+                        <h6>{{ $data['nama'] }}</h6>
+                        <p>{{ $data['jumlah'] }} Orang</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+
+        <!-- Script DataTables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#table-seluruh, #table-pns, #table-pppk').DataTable({
+                    pageLength: 5,
+                    lengthMenu: [5, 10, 25, 50],
+                    language: {
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data",
+                        info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                        paginate: {
+                            previous: "Sebelumnya",
+                            next: "Berikutnya"
+                        }
+                    }
+                });
+            });
+        </script>
+
     </div>
-    </div>
 
-
-
-    <footer class="text-center py-4 px-3 bg-light small text-muted">
-        &copy; {{ date('Y') }} Dinas Kebudayaan Provinsi Bali — <strong>SADARIN</strong>. All rights reserved.
-        <span class="text-danger">|</span>
-        <span class="text-dark">Crafted by <strong>ARIN</strong></span>
-        <span class="text-muted">with Pranata Komputer Ahli Pertama <i class="bi bi-heart-fill text-danger"></i></span>
-    </footer>
-    <!-- Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
