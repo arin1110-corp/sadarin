@@ -123,9 +123,9 @@
                                     <td>{{ $p->user_nip }}</td>
                                     <td>{{ $p->user_nik }}</td>
                                     <td>{{ $p->user_nama }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->translatedFormat('j F Y') }}</td>
                                     <td>{{ optional($p->jabatan)->jabatan_nama }}</td>
-                                    <td>{{ $p->user_golongan }}</td>
+                                    <td>{{ $p->golongan_nama }} / ({{ $p->golongan_pangkat }})</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -153,9 +153,9 @@
                                     <td>{{ $p->user_nip }}</td>
                                     <td>{{ $p->user_nik }}</td>
                                     <td>{{ $p->user_nama }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->translatedFormat('j F Y') }}</td>
                                     <td>{{ optional($p->jabatan)->jabatan_nama }}</td>
-                                    <td>{{ $p->user_golongan }}</td>
+                                    <td>{{ $p->golongan_nama }} / ({{ $p->golongan_pangkat }})</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -183,9 +183,9 @@
                                     <td>{{ $p->user_nip }}</td>
                                     <td>{{ $p->user_nik }}</td>
                                     <td>{{ $p->user_nama }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->translatedFormat('j F Y') }}</td>
                                     <td>{{ optional($p->jabatan)->jabatan_nama }}</td>
-                                    <td>{{ $p->user_golongan }}</td>
+                                    <td>{{ $p->golongan_nama }} / ({{ $p->golongan_pangkat }})</td>
                                 </tr>
                                 @endforeach
                             </tbody>

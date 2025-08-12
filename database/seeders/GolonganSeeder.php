@@ -212,5 +212,12 @@ class GolonganSeeder extends Seeder
                 'golongan_status' => 1,
             ]
         );
+        ModelGolongan::create(
+            [
+                'golongan_nama' => 'Belum Ada Golongan',
+                'golongan_pangkat' => '111',
+                'golongan_status' => 1,
+            ]
+        );
     }
 }

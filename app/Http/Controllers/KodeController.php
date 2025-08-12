@@ -10,6 +10,7 @@ use App\Models\ModelNavigasiSekretariat;
 use App\Models\ModelSubNavigasiSekretariat;
 use Google\Service\Bigquery\Model;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class KodeController extends Controller
 {
@@ -228,7 +229,25 @@ class KodeController extends Controller
     }
     public function dataPegawaiRincian()
     {
-        $dataPegawai = ModelUser::where('user_status', 1)->get();
+        // Mengambil data pegawai semua
+        $dataPegawai = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->where('sadarin_user.user_status', 1)
+            ->orderByRaw("
+        CASE
+            WHEN LOWER(TRIM(sadarin_jabatan.jabatan_nama)) = 'Kepala Dinas' THEN 1
+            WHEN LOWER(TRIM(sadarin_jabatan.jabatan_nama)) = 'kepala uptd' THEN 2
+            WHEN LOWER(TRIM(sadarin_jabatan.jabatan_nama)) = 'kepala upt' THEN 3
+            WHEN LOWER(TRIM(sadarin_jabatan.jabatan_nama)) LIKE 'kepala%' THEN 4
+            ELSE 5
+        END
+    ")
+            ->orderBy('sadarin_user.user_nama', 'asc')
+            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama')
+            ->get();
+
+        // Mengambil data PNS
         $dataPns = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
@@ -241,7 +260,7 @@ class KodeController extends Controller
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
                         ELSE 5 END ")
             ->orderBy('sadarin_user.user_nama', 'asc')
-            ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama')
+            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama')
             ->get();
 
         $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();

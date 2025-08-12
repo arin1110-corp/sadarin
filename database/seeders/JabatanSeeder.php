@@ -80,6 +80,7 @@ class JabatanSeeder extends Seeder
             'Arsiparis Ahli Pertama',
             'Arsiparis Terampil',
             'Arsiparis Mahir',
+            'PPPK',
         ];
         foreach (array_unique($jabatans) as $jabatan) {
             ModelJabatan::create([
