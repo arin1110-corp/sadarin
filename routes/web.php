@@ -16,6 +16,7 @@ use App\Http\Controllers\KodeController;
 */
 
 Route::get('/', [KodeController::class, 'form'])->name('akses.form');
+Route::get('/halaman-utama', [KodeController::class, 'form'])->name('halaman.utama');
 Route::post('/cek-kode', [KodeController::class, 'cek'])->name('akses.cek');
 Route::get('/akses-kode', [KodeController::class, 'akses_kode'])->name('akses.kode');
 // Rute untuk halaman utama
@@ -48,6 +49,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/daftar-bagian', [KodeController::class, 'daftarBagian'])->name('daftar.bagian');
     // Tambahkan rute lain yang memerlukan akses di sini
     Route::get('/pk-bidang', [KodeController::class, 'pkbidang'])->name('pk.bidang');
+    Route::get('/detail-pegawai', [KodeController::class, 'detailpegawai'])->name('detail.pegawai');
     Route::get('/data-upload', [KodeController::class, 'dataupload'])->name('data.upload');
     Route::get('/umpan-balik', [KodeController::class, 'umpanbalik'])->name('umpan.balik');
     Route::get('/evaluasi-kinerja', [KodeController::class, 'evaluasikinerja'])->name('evaluasi.kinerja');

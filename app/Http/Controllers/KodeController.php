@@ -30,7 +30,8 @@ class KodeController extends Controller
         if (in_array($request->kode_akses, $this->kodeValid)) {
             session([
                 'kode_akses_valid' => true,
-                'akses_full' => true
+                'akses_full' => true,
+                'user_info' => null // akses penuh, tidak butuh data user
             ]);
 
             $bidang = ModelBidang::where('bidang_status', 1)->get();
@@ -38,18 +39,39 @@ class KodeController extends Controller
         }
 
         // Kalau kode akses adalah NIP
-        $user = ModelUser::where('user_nip', $request->kode_akses)->first();
+        $user = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->where('user_nip', $request->kode_akses)
+            ->select('sadarin_user.user_nip', 'sadarin_user.user_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama')
+            ->first();
+
         if ($user) {
             session([
                 'kode_akses_valid' => true,
-                'akses_full' => false
+                'akses_full' => false,
+                'user_info' => $user
             ]);
 
             $bidang = ModelBidang::where('bidang_status', 1)->get();
-            return view('homepage_cekbidang', compact('bidang'));
+            return view('homepage_cekbidang', compact('bidang', 'user'));
         }
 
         return back()->withErrors(['kode_akses' => 'Kode akses salah.'])->withInput();
+    }
+    public function detailpegawai()
+    {
+        $pegawai = session('user_info')->user_nip;
+        $user = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->join('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
+            ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->where('user_nip', $pegawai)
+            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*')
+            ->first();
+        if (!$pegawai) {
+            return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
+        }
+        return view('homepage_detailpegawai', compact('user'));
     }
     public function datasekretariat()
     {

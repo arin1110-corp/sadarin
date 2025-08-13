@@ -16,6 +16,12 @@
         </div>
 
         <div class="grid-menu">
+            @if(isset($user))
+            <a href="/detail-pegawai" class="menu-box-nama nama-menucek">
+                {{ $user->user_nip }}<br>{{ $user->user_nama }}<br>{{ $user->jabatan_nama }}
+            </a>
+            @endif
+
             @if($bidang && $bidang->count() > 0)
             @foreach ($bidang as $b)
             <a href="{{ route($b->bidang_link) }}" class="menu-box">
