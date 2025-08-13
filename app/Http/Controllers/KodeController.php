@@ -28,7 +28,22 @@ class KodeController extends Controller
         ]);
 
         if (in_array($request->kode_akses, $this->kodeValid)) {
-            session(['kode_akses_valid' => true]);
+            session([
+                'kode_akses_valid' => true,
+                'akses_full' => true
+            ]);
+
+            $bidang = ModelBidang::where('bidang_status', 1)->get();
+            return view('homepage_cekbidang', compact('bidang'));
+        }
+
+        // Kalau kode akses adalah NIP
+        $user = ModelUser::where('user_nip', $request->kode_akses)->first();
+        if ($user) {
+            session([
+                'kode_akses_valid' => true,
+                'akses_full' => false
+            ]);
 
             $bidang = ModelBidang::where('bidang_status', 1)->get();
             return view('homepage_cekbidang', compact('bidang'));
@@ -46,10 +61,22 @@ class KodeController extends Controller
     }
     public function dataumpeg()
     {
-        $subbagNama = ModelSubbag::where('subbag_id', 1)->value('subbag_nama');
-        $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
-            ->where('navigasisekre_subbag', 1)
-            ->get();
+        $subbagId = 1;
+        $subbagNama = ModelSubbag::where('subbag_id', $subbagId)->value('subbag_nama');
+
+        // Cek apakah user punya akses penuh atau tidak
+        $aksesFull = session('akses_full', false);
+
+        $datasekretariatQuery = ModelNavigasiSekretariat::with(['subnavigasisekretariat'])
+            ->where('navigasisekre_subbag', $subbagId);
+
+        // Kalau akses bukan penuh (login pakai NIP) → filter level = 1
+        if (!$aksesFull) {
+            $datasekretariatQuery->where('navigasisekre_level', 1);
+        }
+
+        $datasekretariat = $datasekretariatQuery->get();
+
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
     public function datappep()
@@ -235,39 +262,28 @@ class KodeController extends Controller
             ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->where('sadarin_user.user_status', 1)
             ->orderByRaw("
+                    CASE
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Dinas' THEN 1
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPTD' THEN 2
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPTD' THEN 3
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Bidang' THEN 4
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 5
+                        ELSE 5
+                    END
+                ")
+            ->orderByRaw("
         CASE
-            WHEN LOWER(TRIM(sadarin_jabatan.jabatan_nama)) = 'Kepala Dinas' THEN 1
-            WHEN LOWER(TRIM(sadarin_jabatan.jabatan_nama)) = 'kepala uptd' THEN 2
-            WHEN LOWER(TRIM(sadarin_jabatan.jabatan_nama)) = 'kepala upt' THEN 3
-            WHEN LOWER(TRIM(sadarin_jabatan.jabatan_nama)) LIKE 'kepala%' THEN 4
-            ELSE 5
+            WHEN sadarin_user.user_jeniskerja = 1 THEN 1
+            WHEN sadarin_user.user_jeniskerja = 2 THEN 2
+            ELSE 3
         END
     ")
             ->orderBy('sadarin_user.user_nama', 'asc')
-            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama')
+            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama')
             ->get();
 
-        // Mengambil data PNS
-        $dataPns = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-            ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
-            ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
-            ->where('user_status', 1)
-            ->where('user_jeniskerja', 1)
-            ->orderByRaw(" CASE 
-                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Dinas' THEN 1
-                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Bidang' THEN 2
-                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPT' THEN 3
-                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
-                        ELSE 5 END ")
-            ->orderBy('sadarin_user.user_nama', 'asc')
-            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama')
-            ->get();
-
-        $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
         return view('homepage_rincian_pegawai', compact(
-            'dataPegawai',
-            'dataPns',
-            'dataPppk'
+            'dataPegawai'
         ));
     }
     public function umpanbalik()

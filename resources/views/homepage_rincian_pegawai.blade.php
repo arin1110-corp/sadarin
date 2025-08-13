@@ -110,10 +110,10 @@
                             <thead class="table-warning text-center">
                                 <tr>
                                     <th>NIP</th>
-                                    <th>NIK</th>
                                     <th>Nama</th>
                                     <th>Tanggal Lahir</th>
                                     <th>Jabatan</th>
+                                    <th>Bidang</th>
                                     <th>Golongan</th>
                                 </tr>
                             </thead>
@@ -121,10 +121,10 @@
                                 @foreach($dataPegawai as $p)
                                 <tr>
                                     <td>{{ $p->user_nip }}</td>
-                                    <td>{{ $p->user_nik }}</td>
                                     <td>{{ $p->user_nama }}</td>
                                     <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->translatedFormat('j F Y') }}</td>
-                                    <td>{{ optional($p->jabatan)->jabatan_nama }}</td>
+                                    <td>{{ $p->jabatan_nama }}</td>
+                                    <td>{{ $p->bidang_nama }}</td>
                                     <td>{{ $p->golongan_nama }} / ({{ $p->golongan_pangkat }})</td>
                                 </tr>
                                 @endforeach
@@ -140,21 +140,21 @@
                             <thead class="table-warning text-center">
                                 <tr>
                                     <th>NIP</th>
-                                    <th>NIK</th>
                                     <th>Nama</th>
                                     <th>Tanggal Lahir</th>
                                     <th>Jabatan</th>
+                                    <th>Bidang</th>
                                     <th>Golongan</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($dataPns as $p)
+                                @foreach($dataPegawai->where('user_jeniskerja', 1) as $p)
                                 <tr>
                                     <td>{{ $p->user_nip }}</td>
-                                    <td>{{ $p->user_nik }}</td>
                                     <td>{{ $p->user_nama }}</td>
                                     <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->translatedFormat('j F Y') }}</td>
-                                    <td>{{ optional($p->jabatan)->jabatan_nama }}</td>
+                                    <td>{{ $p->jabatan->jabatan_nama }}</td>
+                                    <td>{{ $p->bidang->bidang_nama }}</td>
                                     <td>{{ $p->golongan_nama }} / ({{ $p->golongan_pangkat }})</td>
                                 </tr>
                                 @endforeach
@@ -170,10 +170,10 @@
                             <thead class="table-warning text-center">
                                 <tr>
                                     <th>NIP</th>
-                                    <th>NIK</th>
                                     <th>Nama</th>
                                     <th>Tanggal Lahir</th>
                                     <th>Jabatan</th>
+                                    <th>Bidang</th>
                                     <th>Golongan</th>
                                 </tr>
                             </thead>
@@ -181,10 +181,10 @@
                                 @foreach($dataPegawai->where('user_jeniskerja', 2) as $p)
                                 <tr>
                                     <td>{{ $p->user_nip }}</td>
-                                    <td>{{ $p->user_nik }}</td>
                                     <td>{{ $p->user_nama }}</td>
                                     <td>{{ \Carbon\Carbon::parse($p->user_tgllahir)->translatedFormat('j F Y') }}</td>
-                                    <td>{{ optional($p->jabatan)->jabatan_nama }}</td>
+                                    <td>{{ $p->jabatan_nama }}</td>
+                                    <td>{{ $p->bidang_nama }}</td>
                                     <td>{{ $p->golongan_nama }} / ({{ $p->golongan_pangkat }})</td>
                                 </tr>
                                 @endforeach
@@ -203,8 +203,8 @@
         <script>
             $(document).ready(function() {
                 $('#table-seluruh, #table-pns, #table-pppk').DataTable({
-                    pageLength: 5,
-                    lengthMenu: [5, 10, 25, 50],
+                    pageLength: 30,
+                    lengthMenu: [30, 45, 50, 100],
                     language: {
                         search: "Cari:",
                         lengthMenu: "Tampilkan _MENU_ data",
@@ -213,7 +213,8 @@
                             previous: "Sebelumnya",
                             next: "Berikutnya"
                         }
-                    }
+                    },
+                    ordering: false
                 });
             });
         </script>
