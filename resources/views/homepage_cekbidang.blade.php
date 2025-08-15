@@ -29,6 +29,10 @@
             </a>
             @endforeach
             @endif
+            <a href="https://drive.google.com/drive/folders/1o_3gTGKUyaWOKNvxzZ80KB7hqXSRoMTQ" class="menu-box"
+                target="_blank">
+                UPLOAD DATA
+            </a>
 
         </div>
 

@@ -81,6 +81,62 @@ class KodeController extends Controller
         $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
         return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
     }
+    public function datakesenian()
+    {
+        $bidang = 2;
+        // Mengambil data bidang dengan status aktif
+        $bidangnama = ModelBidang::where('bidang_id', $bidang)->value('bidang_nama');
+        $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
+        return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
+    }
+    public function datacagarbudaya()
+    {
+        $bidang = 3;
+        // Mengambil data bidang dengan status aktif
+        $bidangnama = ModelBidang::where('bidang_id', $bidang)->value('bidang_nama');
+        $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
+        return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
+    }
+    public function datatradisi()
+    {
+        $bidang = 4;
+        // Mengambil data bidang dengan status aktif
+        $bidangnama = ModelBidang::where('bidang_id', $bidang)->value('bidang_nama');
+        $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
+        return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
+    }
+    public function datasejarah()
+    {
+        $bidang = 5;
+        // Mengambil data bidang dengan status aktif
+        $bidangnama = ModelBidang::where('bidang_id', $bidang)->value('bidang_nama');
+        $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
+        return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
+    }
+    public function datamuseum()
+    {
+        $bidang = 6;
+        // Mengambil data bidang dengan status aktif
+        $bidangnama = ModelBidang::where('bidang_id', $bidang)->value('bidang_nama');
+        $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
+        return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
+    }
+    public function datatamanbudaya()
+    {
+        $bidang = 7;
+        // Mengambil data bidang dengan status aktif
+        $bidangnama = ModelBidang::where('bidang_id', $bidang)->value('bidang_nama');
+        $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
+        return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
+    }
+    public function datamonumen()
+    {
+        $bidang = 8;
+        // Mengambil data bidang dengan status aktif
+        $bidangnama = ModelBidang::where('bidang_id', $bidang)->value('bidang_nama');
+        $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
+        return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
+    }
     public function dataumpeg()
     {
         $subbagId = 1;
