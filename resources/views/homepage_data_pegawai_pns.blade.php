@@ -41,7 +41,7 @@
             transition: transform 0.2s ease-in-out;
         }
 
-        .card-custom:hover {
+        .card-custom-bidang:hover {
             transform: translateY(-5px);
         }
 
@@ -55,6 +55,19 @@
         }
 
         .card-custom-jabatan:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-custom-golongan {
+            background-color: #75050aff;
+            /* Orange gelap */
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(252, 57, 57, 0.15);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card-custom-golongan:hover {
             transform: translateY(-5px);
         }
 
@@ -137,6 +150,20 @@
                 @foreach($rekapJabatan as $data)
                 <div class="col-md-4">
                     <div class="card card-custom-jabatan p-3">
+                        <h6>{{ $data['nama'] }}</h6>
+                        <p>{{ $data['jumlah'] }} Orang</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        <!-- Rekap Jabatan -->
+        <div class="mt-5">
+            <h4 class="mb-3 text-secondary">Rekap Pegawai per Jabatan</h4>
+            <div class="row g-4">
+                @foreach($rekapGolongan as $data)
+                <div class="col-md-4">
+                    <div class="card card-custom-golongan p-3">
                         <h6>{{ $data['nama'] }}</h6>
                         <p>{{ $data['jumlah'] }} Orang</p>
                     </div>
