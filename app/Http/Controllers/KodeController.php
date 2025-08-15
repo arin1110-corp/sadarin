@@ -137,6 +137,7 @@ class KodeController extends Controller
         $subbag = ModelSubBag::with('bidang')->where('subbag_status', 1)->where('subbag_bidang', $bidang)->get();
         return view('homepage_sekretariat', compact('subbag', 'bidangnama'));
     }
+
     public function dataumpeg()
     {
         $subbagId = 1;
@@ -171,6 +172,26 @@ class KodeController extends Controller
         $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
             ->where('navigasisekre_subbag', 2)
             ->get();
+        return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
+    }
+    public function datasenirupa()
+    {
+        $subbagId = 4;
+        $subbagNama = ModelSubbag::where('subbag_id', $subbagId)->value('subbag_nama');
+
+        // Cek apakah user punya akses penuh atau tidak
+        $aksesFull = session('akses_full', false);
+
+        $datasekretariatQuery = ModelNavigasiSekretariat::with(['subnavigasisekretariat'])
+            ->where('navigasisekre_subbag', $subbagId);
+
+        // Kalau akses bukan penuh (login pakai NIP) → filter level = 1
+        if (!$aksesFull) {
+            $datasekretariatQuery->where('navigasisekre_level', 1);
+        }
+
+        $datasekretariat = $datasekretariatQuery->get();
+
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
 

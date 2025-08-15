@@ -69,6 +69,9 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-umpeg', [KodeController::class, 'dataumpeg'])->name('data.umpeg');
 
 
+    Route::get('/data-senirupa', [KodeController::class, 'datasenirupa'])->name('data.senirupa');
+
+
     Route::get('/data-dppa2025', [KodeController::class, 'datadppa2025'])->name('data.dppa2025');
     Route::get('/data-rak2025', [KodeController::class, 'datarak2025'])->name('data.rak2025');
     Route::get('/bendahara-penerima', [KodeController::class, 'bendaharaPenerima'])->name('bendahara.penerima');
