@@ -491,9 +491,13 @@ class KodeController extends Controller
             'dataPppk'
         ));
     }
+
+
+
+    // Bidang Management
     public function adminBidang()
     {
-        $bidangs = ModelBidang::where('bidang_status', 1)->get();
+        $bidangs = ModelBidang::get();
         return view('admin.bidangindex', compact('bidangs'));
     }
     public function bidangSimpan()
@@ -514,6 +518,34 @@ class KodeController extends Controller
 
         return redirect()->route('admin.bidang')->with('success', 'Bidang berhasil ditambahkan.');
     }
+    public function bidangUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'bidang_nama' => 'required|string|max:255',
+            'bidang_link' => 'required|string|max:255',
+            'bidang_status' => 'required|integer',
+        ]);
+
+        $bidang = ModelBidang::findOrFail($id);
+        $bidang->update([
+            'bidang_nama' => $request->bidang_nama,
+            'bidang_link' => $request->bidang_link,
+            'bidang_status' => $request->bidang_status,
+        ]);
+
+        return redirect()->route('admin.bidang')->with('success', 'Bidang berhasil diperbarui.');
+    }
+
+    public function bidangHapus($id)
+    {
+        $bidang = ModelBidang::findOrFail($id);
+        $bidang->delete();
+        return redirect()->route('admin.bidang')->with('success', 'Bidang berhasil dihapus.');
+    }
+    //// Akhir Bidang Management
+
+
+    //// Sub Bagian Management
     public function adminSubBag()
     {
         $bidangs = ModelBidang::where('bidang_status', 1)->get();
@@ -541,6 +573,36 @@ class KodeController extends Controller
 
         return redirect()->route('admin.subbag')->with('success', 'Sub Bagian berhasil ditambahkan.');
     }
+    public function subbagUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'subbag_nama' => 'required|string|max:255',
+            'subbag_bidang' => 'required|string',
+            'subbag_status' => 'required|integer',
+            'subbag_link' => 'required',
+        ]);
+
+        $subbag = ModelSubBag::findOrFail($id);
+        $subbag->update([
+            'subbag_nama' => $request->subbag_nama,
+            'subbag_bidang' => $request->subbag_bidang,
+            'subbag_status' => $request->subbag_status,
+            'subbag_link' => $request->subbag_link,
+        ]);
+
+        return redirect()->route('admin.subbag')->with('success', 'Sub Bagian berhasil diperbarui.');
+    }
+    public function subbagHapus($id)
+    {
+        $subbag = ModelSubBag::findOrFail($id);
+        $subbag->delete();
+        return redirect()->route('admin.subbag')->with('success', 'Sub Bagian berhasil dihapus.');
+    }
+    //// Akhir Sub Bagian Management
+
+
+
+    /// Navigasi Management
     public function adminNavigasi()
     {
         $navigasisekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
@@ -570,6 +632,38 @@ class KodeController extends Controller
 
         return redirect()->route('admin.navigasi')->with('success', 'Navigasi berhasil ditambahkan.');
     }
+    public function navigasiUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'navigasisekre_nama' => 'required|string|max:255',
+            'navigasisekre_deskripsi' => 'nullable|string|max:255',
+            'navigasisekre_subbag' => 'required|string',
+            'navigasisekre_status' => 'required|integer',
+            'navigasisekre_level' => 'required|integer',
+        ]);
+
+        $navigasi = ModelNavigasiSekretariat::findOrFail($id);
+        $navigasi->update([
+            'navigasisekre_nama' => $request->navigasisekre_nama,
+            'navigasisekre_deskripsi' => $request->navigasisekre_deskripsi,
+            'navigasisekre_subbag' => $request->navigasisekre_subbag,
+            'navigasisekre_status' => $request->navigasisekre_status,
+            'navigasisekre_level' => $request->navigasisekre_level
+        ]);
+
+        return redirect()->route('admin.navigasi')->with('success', 'Navigasi berhasil diperbarui.');
+    }
+    public function navigasiHapus($id)
+    {
+        $navigasi = ModelNavigasiSekretariat::findOrFail($id);
+        $navigasi->delete();
+        return redirect()->route('admin.navigasi')->with('success', 'Navigasi berhasil dihapus.');
+    }
+    //// Akhir Navigasi Management
+
+
+
+    /// Sub Navigasi Management
     public function adminSubNavigasi()
     {
         $navs = ModelNavigasiSekretariat::where('navigasisekre_status', 1)->get();
@@ -595,4 +689,30 @@ class KodeController extends Controller
 
         return redirect()->route('admin.subnavigasi')->with('success', 'Sub Navigasi berhasil ditambahkan.');
     }
+    public function subnavigasiUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'subnavigasisekre_nama' => 'required',
+            'subnavigasisekre_navigasisekre' => 'required|string',
+            'subnavigasisekre_status' => 'required|integer',
+            'subnavigasisekre_link' => 'required|string',
+        ]);
+
+        $subnavigasi = ModelSubNavigasiSekretariat::findOrFail($id);
+        $subnavigasi->update([
+            'subnavigasisekre_nama' => $request->subnavigasisekre_nama,
+            'subnavigasisekre_navigasisekre' => $request->subnavigasisekre_navigasisekre,
+            'subnavigasisekre_status' => $request->subnavigasisekre_status,
+            'subnavigasisekre_link' => $request->subnavigasisekre_link,
+        ]);
+
+        return redirect()->route('admin.subnavigasi')->with('success', 'Sub Navigasi berhasil diperbarui.');
+    }
+    public function subnavigasiHapus($id)
+    {
+        $subnavigasi = ModelSubNavigasiSekretariat::findOrFail($id);
+        $subnavigasi->delete();
+        return redirect()->route('admin.subnavigasi')->with('success', 'Sub Navigasi berhasil dihapus.');
+    }
+    //// Akhir Sub Navigasi Management
 }

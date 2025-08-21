@@ -74,12 +74,18 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->id }}"
-                                            data-nama="{{ $b->bidang_nama }}" data-status="{{ $b->bidang_status }}">
+                                        <button class="btn btn-sm btn-warning btnEdit"
+                                            data-id="{{ $b->navigasisekre_id }}"
+                                            data-nama="{{ $b->navigasisekre_nama }}"
+                                            data-status="{{ $b->navigasisekre_status }}"
+                                            data-subbag="{{ $b->navigasisekre_subbag }}"
+                                            data-level="{{ $b->navigasisekre_level }}"
+                                            data-deskripsi="{{ $b->navigasisekre_deskripsi }}">
                                             Edit
                                         </button>
-                                        <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->id }}"
-                                            data-nama="{{ $b->bidang_nama }}">
+                                        <button class="btn btn-sm btn-danger btnHapus"
+                                            data-id="{{ $b->navigasisekre_id }}"
+                                            data-nama="{{ $b->navigasisekre_nama }}">
                                             Hapus
                                         </button>
                                     </td>
@@ -129,19 +135,20 @@
                                 <option value="1">Public</option>
                                 <option value="2">Internal</option>
                             </select>
-                            <div class="mb-3">
-                                <label>Status</label>
-                                <select class="form-select" name="navigasisekre_status" required>
-                                    <option value="1">Aktif</option>
-                                    <option value="0">Tidak Aktif</option>
-                                </select>
-                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        <div class="mb-3">
+                            <label>Status</label>
+                            <select class="form-select" name="navigasisekre_status" required>
+                                <option value="1">Aktif</option>
+                                <option value="0">Tidak Aktif</option>
+                            </select>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -154,17 +161,38 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditLabel">Edit Data Bidang</h5>
+                        <h5 class="modal-title" id="modalEditLabel">Edit Data Navigasi</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label>Nama Bidang</label>
-                            <input type="text" class="form-control" name="bidang_nama" id="edit_nama" required>
+                            <label>Nama Navigasi</label>
+                            <input type="text" class="form-control" name="navigasisekre_nama" id="edit_nama" required>
                         </div>
                         <div class="mb-3">
+                            <label>Deskripsi Navigasi</label>
+                            <input type="text" class="form-control" name="navigasisekre_deskripsi" id="edit_deskripsi"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Sub Bagian</label>
+                            <select class="form-select" name="navigasisekre_subbag" id="edit_subbag" required>
+                                @foreach ($subbags as $a)
+                                <option value="{{ $a->subbag_id }}">{{ $a->subbag_nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Level Navigasi</label>
+                            <select class="form-select" name="navigasisekre_level" id="edit_level" required>
+                                <option value="1">Public</option>
+                                <option value="2">Internal</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label>Status</label>
-                            <select class="form-select" name="bidang_status" id="edit_status" required>
+                            <select class="form-select" name="navigasisekre_status" id="edit_status" required>
                                 <option value="1">Aktif</option>
                                 <option value="0">Tidak Aktif</option>
                             </select>
@@ -202,13 +230,13 @@
         </div>
     </div>
 
-    {{-- Bootstrap JS --}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     {{-- jQuery & DataTables --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    {{-- Bootstrap JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -221,16 +249,28 @@
             });
 
             // Edit Button
-            $('.btnEdit').click(function() {
+            $(document).on('click', '.btnEdit', function() {
+                console.log("Tombol edit diklik ✅"); // debug
                 let id = $(this).data('id');
                 let nama = $(this).data('nama');
                 let status = $(this).data('status');
+                let subbag = $(this).data('subbag');
+                let level = $(this).data('level');
+                let link = $(this).data('link');
+                let deskripsi = $(this).data('deskripsi');
 
                 $('#edit_nama').val(nama);
                 $('#edit_status').val(status);
-                $('#formEdit').attr('action', '/bidang/' + id);
+                $('#edit_subbag').val(subbag);
+                $('#edit_level').val(level);
+                $('#edit_link').val(link);
+                $('#edit_deskripsi').val(deskripsi);
+                $('#formEdit').attr('action', '/navigasi-update/' + id);
 
-                $('#modalEdit').modal('show');
+
+                // ✅ cara bootstrap 5
+                let modalEdit = new bootstrap.Modal(document.getElementById('modalEdit'));
+                modalEdit.show();
             });
 
             // Hapus Button
@@ -239,9 +279,11 @@
                 let nama = $(this).data('nama');
 
                 $('#hapus_nama').text(nama);
-                $('#formHapus').attr('action', '/bidang/' + id);
+                $('#formHapus').attr('action', '/navigasi-hapus/' + id);
 
-                $('#modalHapus').modal('show');
+                // ✅ cara bootstrap 5
+                let modalHapus = new bootstrap.Modal(document.getElementById('modalHapus'));
+                modalHapus.show();
             });
         });
     </script>

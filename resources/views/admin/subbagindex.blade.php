@@ -70,12 +70,13 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->id }}"
-                                            data-nama="{{ $b->bidang_nama }}" data-status="{{ $b->bidang_status }}">
+                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->subbag_id }}"
+                                            data-link="{{ $b->subbag_link }}" data-bidang="{{ $b->subbag_bidang }}"
+                                            data-nama="{{ $b->subbag_nama }}" data-status="{{ $b->subbag_status }}">
                                             Edit
                                         </button>
-                                        <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->id }}"
-                                            data-nama="{{ $b->bidang_nama }}">
+                                        <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->subbag_id }}"
+                                            data-nama="{{ $b->subbag_nama }}">
                                             Hapus
                                         </button>
                                     </td>
@@ -144,17 +145,29 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditLabel">Edit Data Bidang</h5>
+                        <h5 class="modal-title" id="modalEditLabel">Edit Data Sub Bagian</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label>Nama Bidang</label>
-                            <input type="text" class="form-control" name="bidang_nama" id="edit_nama" required>
+                            <label>Nama Sub Bagian</label>
+                            <input type="text" class="form-control" name="subbag_nama" id="edit_nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Link Sub Bagian</label>
+                            <input type="text" class="form-control" name="subbag_link" id="edit_link" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Bidang</label>
+                            <select class="form-select" name="subbag_bidang" id="edit_bidang" required>
+                                @foreach ($bidangs as $bidang)
+                                <option value="{{ $bidang->bidang_id }}">{{ $bidang->bidang_nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label>Status</label>
-                            <select class="form-select" name="bidang_status" id="edit_status" required>
+                            <select class="form-select" name="subbag_status" id="edit_status" required>
                                 <option value="1">Aktif</option>
                                 <option value="0">Tidak Aktif</option>
                             </select>
@@ -201,39 +214,43 @@
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            // Init DataTable
-            $('#tabelBidang').DataTable({
-                responsive: true,
-                language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
-                }
-            });
-
-            // Edit Button
-            $('.btnEdit').click(function() {
-                let id = $(this).data('id');
-                let nama = $(this).data('nama');
-                let status = $(this).data('status');
-
-                $('#edit_nama').val(nama);
-                $('#edit_status').val(status);
-                $('#formEdit').attr('action', '/bidang/' + id);
-
-                $('#modalEdit').modal('show');
-            });
-
-            // Hapus Button
-            $('.btnHapus').click(function() {
-                let id = $(this).data('id');
-                let nama = $(this).data('nama');
-
-                $('#hapus_nama').text(nama);
-                $('#formHapus').attr('action', '/bidang/' + id);
-
-                $('#modalHapus').modal('show');
-            });
+    $(document).ready(function() {
+        // Init DataTable
+        $('#tabelBidang').DataTable({
+            responsive: true,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
+            }
         });
+
+        // Edit Button
+        $('.btnEdit').click(function() {
+            let id = $(this).data('id');
+            let nama = $(this).data('nama');
+            let status = $(this).data('status');
+            let link = $(this).data('link');
+            let bidang = $(this).data('bidang');
+
+            $('#edit_nama').val(nama);
+            $('#edit_status').val(status);
+            $('#edit_link').val(link);
+            $('#edit_bidang').val(bidang);
+            $('#formEdit').attr('action', '/subbag-update/' + id);
+
+            $('#modalEdit').modal('show');
+        });
+
+        // Hapus Button
+        $('.btnHapus').click(function() {
+            let id = $(this).data('id');
+            let nama = $(this).data('nama');
+
+            $('#hapus_nama').text(nama);
+            $('#formHapus').attr('action', '/subbag-hapus/' + id);
+
+            $('#modalHapus').modal('show');
+        });
+    });
     </script>
 
 </body>

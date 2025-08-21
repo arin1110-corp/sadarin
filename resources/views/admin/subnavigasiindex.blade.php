@@ -71,12 +71,17 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->id }}"
-                                            data-nama="{{ $b->bidang_nama }}" data-status="{{ $b->bidang_status }}">
+                                        <button class="btn btn-sm btn-warning btnEdit"
+                                            data-id="{{ $b->subnavigasisekre_id }}"
+                                            data-navigasi="{{ $b->subnavigasisekre_navigasisekre }}"
+                                            data-link="{{ $b->subnavigasisekre_link }}"
+                                            data-nama="{{ $b->subnavigasisekre_nama }}"
+                                            data-status="{{ $b->subnavigasisekre_status }}">
                                             Edit
                                         </button>
-                                        <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->id }}"
-                                            data-nama="{{ $b->bidang_nama }}">
+                                        <button class="btn btn-sm btn-danger btnHapus"
+                                            data-id="{{ $b->subnavigasisekre_id }}"
+                                            data-nama="{{ $b->subnavigasisekre_nama }}">
                                             Hapus
                                         </button>
                                     </td>
@@ -134,6 +139,7 @@
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -146,17 +152,32 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditLabel">Edit Data Bidang</h5>
+                        <h5 class="modal-title" id="modalEditLabel">Edit Data Sub Navigasi</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label>Nama Bidang</label>
-                            <input type="text" class="form-control" name="bidang_nama" id="edit_nama" required>
+                            <label>Nama Sub Navigasi</label>
+                            <input type="text" class="form-control" name="subnavigasisekre_nama" id="edit_nama"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Sub Navigasi Link</label>
+                            <input type="text" class="form-control" name="subnavigasisekre_link" id="edit_link"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Navigasi</label>
+                            <select class="form-select" name="subnavigasisekre_navigasisekre" id="edit_navigasi"
+                                required>
+                                @foreach ($navs as $a)
+                                <option value="{{ $a->navigasisekre_id }}">{{ $a->navigasisekre_nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label>Status</label>
-                            <select class="form-select" name="bidang_status" id="edit_status" required>
+                            <select class="form-select" name="subnavigasisekre_status" id="edit_status" required>
                                 <option value="1">Aktif</option>
                                 <option value="0">Tidak Aktif</option>
                             </select>
@@ -164,7 +185,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-warning">Update</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -216,12 +237,20 @@
             $('.btnEdit').click(function() {
                 let id = $(this).data('id');
                 let nama = $(this).data('nama');
+                let link = $(this).data('link');
+                let navigasi = $(this).data('navigasi');
                 let status = $(this).data('status');
 
+                // isi form modal edit
                 $('#edit_nama').val(nama);
+                $('#edit_link').val(link);
+                $('#edit_navigasi').val(navigasi);
                 $('#edit_status').val(status);
-                $('#formEdit').attr('action', '/bidang/' + id);
 
+                // set action form
+                $('#formEdit').attr('action', '/subnavigasi-update/' + id);
+
+                // tampilkan modal
                 $('#modalEdit').modal('show');
             });
 
@@ -231,7 +260,7 @@
                 let nama = $(this).data('nama');
 
                 $('#hapus_nama').text(nama);
-                $('#formHapus').attr('action', '/bidang/' + id);
+                $('#formHapus').attr('action', '/subnavigasi-hapus/' + id);
 
                 $('#modalHapus').modal('show');
             });

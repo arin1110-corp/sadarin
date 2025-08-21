@@ -70,11 +70,12 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->id }}"
-                                            data-nama="{{ $b->bidang_nama }}" data-status="{{ $b->bidang_status }}">
+                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->bidang_id }}"
+                                            data-nama="{{ $b->bidang_nama }}" data-status="{{ $b->bidang_status }}"
+                                            data-link="{{ $b->bidang_link }}">
                                             Edit
                                         </button>
-                                        <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->id }}"
+                                        <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->bidang_id }}"
                                             data-nama="{{ $b->bidang_nama }}">
                                             Hapus
                                         </button>
@@ -133,16 +134,20 @@
         <div class="modal-dialog">
             <form id="formEdit" method="POST">
                 @csrf
-                @method('PUT')
+                @method('PUT') {{-- ubah jadi PUT --}}
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditLabel">Edit Data Bidang</h5>
+                        <h5 class="modal-title">Edit Data Bidang</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
                             <label>Nama Bidang</label>
                             <input type="text" class="form-control" name="bidang_nama" id="edit_nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Bidang Link</label>
+                            <input type="text" class="form-control" name="bidang_link" id="edit_link" required>
                         </div>
                         <div class="mb-3">
                             <label>Status</label>
@@ -207,12 +212,18 @@
                 let id = $(this).data('id');
                 let nama = $(this).data('nama');
                 let status = $(this).data('status');
+                let link = $(this).data('link');
 
                 $('#edit_nama').val(nama);
                 $('#edit_status').val(status);
-                $('#formEdit').attr('action', '/bidang/' + id);
+                $('#edit_link').val(link);
 
-                $('#modalEdit').modal('show');
+                // arahkan ke route update
+                $('#formEdit').attr('action', '/bidang-update/' + id);
+
+                // ✅ Bootstrap 5 way
+                let modalEdit = new bootstrap.Modal(document.getElementById('modalEdit'));
+                modalEdit.show();
             });
 
             // Hapus Button
@@ -221,9 +232,11 @@
                 let nama = $(this).data('nama');
 
                 $('#hapus_nama').text(nama);
-                $('#formHapus').attr('action', '/bidang/' + id);
+                $('#formHapus').attr('action', '/bidang-hapus/' + id);
 
-                $('#modalHapus').modal('show');
+                // ✅ Bootstrap 5 way
+                let modalHapus = new bootstrap.Modal(document.getElementById('modalHapus'));
+                modalHapus.show();
             });
         });
     </script>

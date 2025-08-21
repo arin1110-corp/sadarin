@@ -29,18 +29,27 @@ Route::get('bidang-data', [KodeController::class, 'bidangdata'])->name('bidang.d
 Route::get('/bidang-tambah', [KodeController::class, 'bidangTambah'])->name('bidang.tambahdata');
 Route::post('/bidang-simpan', [KodeController::class, 'bidangSimpan'])->name('bidang.simpan');
 Route::get('/bidang-edit', [KodeController::class, 'bidangEdit'])->name('bidang.edit');
-Route::post('/bidang-update/{id}', [KodeController::class, 'bidangUpdate'])->name('bidang.update');
-Route::get('/bidang-hapus', [KodeController::class, 'bidangHapus'])->name('bidang.destroy');
+Route::put('/bidang-update/{id}', [KodeController::class, 'bidangUpdate'])->name('bidang.update');
+Route::delete('/bidang-hapus/{id}', [KodeController::class, 'bidangHapus'])->name('bidang.destroy');
 
 
 Route::get('/admin-subbag', [KodeController::class, 'adminSubBag'])->name('admin.subbag');
 Route::post('/subbag-simpan', [KodeController::class, 'subbagSimpan'])->name('subbag.simpan');
+Route::get('/subbag-edit', [KodeController::class, 'subbagEdit'])->name('subbag.edit');
+Route::put('/subbag-update/{id}', [KodeController::class, 'subbagUpdate'])->name('subbag.update');
+Route::delete('/subbag-hapus/{id}', [KodeController::class, 'subbagHapus'])->name('subbag.destroy');
 
 Route::get('/admin-navigasi', [KodeController::class, 'adminNavigasi'])->name('admin.navigasi');
 Route::post('/navigasi-simpan', [KodeController::class, 'navigasiSimpan'])->name('navigasi.simpan');
+Route::get('/navigasi-edit', [KodeController::class, 'navigasiEdit'])->name('navigasi.edit');
+Route::put('/navigasi-update/{id}', [KodeController::class, 'navigasiUpdate'])->name('navigasi.update');
+Route::delete('/navigasi-hapus/{id}', [KodeController::class, 'navigasiHapus'])->name('navigasi.destroy');
 
 Route::get('/admin-subnavigasi', [KodeController::class, 'adminSubNavigasi'])->name('admin.subnavigasi');
 Route::post('/subnavigasi-simpan', [KodeController::class, 'subnavigasiSimpan'])->name('subnavigasi.simpan');
+Route::get('/subnavigasi-edit', [KodeController::class, 'subnavigasiEdit'])->name('subnavigasi.edit');
+Route::put('/subnavigasi-update/{id}', [KodeController::class, 'subnavigasiUpdate'])->name('subnavigasi.update');
+Route::delete('/subnavigasi-hapus/{id}', [KodeController::class, 'subnavigasiHapus'])->name('subnavigasi.destroy');
 
 
 
