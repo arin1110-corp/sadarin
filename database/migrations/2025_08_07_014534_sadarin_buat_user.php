@@ -18,8 +18,15 @@ return new class extends Migration
             $table->string('user_nip', 100);
             $table->string('user_nama', 100);
             $table->string('user_nik', 100);
-            $table->string('user_tgllahir', 100);
+            $table->date('user_tgllahir');
             $table->string('user_jabatan', 100);
+            $table->string('user_npwp', 100)->default('-');
+            $table->string('user_pendidikan', 100)->default('-');
+            $table->string('user_norek', 150)->default('-');
+            $table->date('user_tmt', 100)->default('2025-01-01');
+            $table->date('user_spmt', 100)->default('2025-01-01');
+            $table->string('user_gelardepan', 100)->default('-');
+            $table->string('user_gelarbelakang', 100)->default('-');
             $table->string('user_kelasjabatan', 100);
             $table->string('user_eselon', 100);
             $table->string('user_golongan', 100);
@@ -32,6 +39,7 @@ return new class extends Migration
             $table->string('user_jmltanggungan', 100);
             $table->integer('user_status');
             $table->string('user_jeniskerja', 100);
+            $table->integer('user_timkerja')->default(0);
         });
     }
 
