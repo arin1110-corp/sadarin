@@ -39,7 +39,6 @@ return new class extends Migration
             $table->string('ubahuser_jmltanggungan', 100);
             $table->integer('ubahuser_status');
             $table->string('ubahuser_jeniskerja', 100);
-            $table->integer('ubahuser_timkerja');
         });
     }
 
