@@ -51,6 +51,24 @@ Route::get('/subnavigasi-edit', [KodeController::class, 'subnavigasiEdit'])->nam
 Route::put('/subnavigasi-update/{id}', [KodeController::class, 'subnavigasiUpdate'])->name('subnavigasi.update');
 Route::delete('/subnavigasi-hapus/{id}', [KodeController::class, 'subnavigasiHapus'])->name('subnavigasi.destroy');
 
+Route::get('/admin-struktur', [KodeController::class, 'adminStruktur'])->name('admin.struktur');
+Route::post('/struktur-simpan', [KodeController::class, 'strukturSimpan'])->name('struktur.simpan');
+Route::get('/struktur-edit', [KodeController::class, 'strukturEdit'])->name('struktur.edit');
+Route::put('/struktur-update/{id}', [KodeController::class, 'strukturUpdate'])->name('struktur.update');
+Route::delete('/struktur-hapus/{id}', [KodeController::class, 'strukturHapus'])->name('struktur.destroy');
+
+Route::get('/admin-user', [KodeController::class, 'adminUser'])->name('admin.user');
+Route::post('/user-simpan', [KodeController::class, 'userSimpan'])->name('user.simpan');
+Route::get('/user-edit', [KodeController::class, 'userEdit'])->name('user.edit');
+Route::put('/user-update/{id}', [KodeController::class, 'userUpdate'])->name('user.update');
+Route::delete('/user-hapus/{id}', [KodeController::class, 'userHapus'])->name('user.destroy');
+
+//Kelola Kepegawaian
+Route::get('/kepegawaian-dashboard', [KodeController::class, 'kepegawaianDashboard'])->name('kepegawaian.dashboard');
+Route::get('/data-pakta-integritas', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.integritas');
+Route::get('/data-kepegawaian', [KodeController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
+
+
 
 
 // Halaman daftar bagian – hanya bisa diakses setelah sukses input kode akses

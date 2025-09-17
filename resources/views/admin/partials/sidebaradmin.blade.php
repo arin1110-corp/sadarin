@@ -20,5 +20,12 @@
             <a class="nav-link" href="{{route('admin.subnavigasi')}}"><i class="bi bi-collection-fill"></i> Sub
                 Navigasi</a>
         </li>
+        <li class="nav-item mb-2">
+            <a class="nav-link" href="{{route('admin.struktur')}}"><i class="bi bi-diagram-3"></i> Struktur
+                Pegawai</a>
+        </li>
+        <li class="nav-item mb-2">
+            <a class="nav-link" href="{{route('admin.user')}}"><i class="bi bi-people-fill"></i> User</a>
+        </li>
     </ul>
 </nav>

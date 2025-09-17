@@ -1,0 +1,66 @@
+:root {
+    --orange-dark: #d35400;
+    --orange-light: #e67e22;
+    --bg-light: #fdf6f0;
+}
+
+body {
+    background-color: var(--bg-light);
+}
+
+/* Sidebar */
+/* Sidebar */
+.sidebar {
+    background: linear-gradient(50deg, #42424248, #620275);
+    color: rgb(0, 0, 0);
+    min-height: 100vh;
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.4);
+    animation: slideIn 0.4s ease-out;
+}
+
+.sidebar h4 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #ffffffff;
+    /* aksen orange */
+}
+
+.sidebar h4 in {
+    color: var(--orange-light);
+}
+
+.sidebar .nav-link {
+    color: #ddd;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    color: #ffffffff;
+    /* ikon warna orange */
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(127, 196, 201, 0.15);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    transform: translateX(4px);
+    color: #fff;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

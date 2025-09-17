@@ -8,9 +8,13 @@ use App\Models\ModelBidang;
 use App\Models\ModelSubBag;
 use App\Models\ModelNavigasiSekretariat;
 use App\Models\ModelSubNavigasiSekretariat;
+use App\Models\ModelPakta;
 use Google\Service\Bigquery\Model;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class KodeController extends Controller
 {
@@ -715,4 +719,114 @@ class KodeController extends Controller
         return redirect()->route('admin.subnavigasi')->with('success', 'Sub Navigasi berhasil dihapus.');
     }
     //// Akhir Sub Navigasi Management
+
+    /// User Management
+    public function adminUser()
+    {
+        $users = ModelUser::with('bidang', 'jabatan', 'golongan', 'eselon')->get();
+        $bidangs = ModelBidang::where('bidang_status', 1)->get();
+        $jabatans = DB::table('sadarin_jabatan')->get();
+        $golongans = DB::table('sadarin_golongan')->get();
+        $eselons = DB::table('sadarin_eselon')->get();
+        return view('admin.userindex', compact('users', 'bidangs', 'jabatans', 'golongans', 'eselons'));
+    }
+
+    /// Akhir User Management
+
+
+    /// Dashboard Kepegawaian
+    /// Data Kepegawaian
+    public function kepegawaianDashboard()
+    {
+        $users = ModelUser::with('bidang')
+            ->where('user_status', 1)
+            ->get();
+
+        $rekapBidang = $users->groupBy('user_bidang')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->bidang)->bidang_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+        $users = ModelUser::with('golongan')
+            ->where('user_status', 1)
+            ->get();
+
+        $rekapGolongan = $users->groupBy('user_golongan')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->golongan)->golongan_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+        $users = ModelUser::with('jabatan')
+            ->where('user_status', 1)
+            ->get();
+
+        $rekapJabatan = $users->groupBy('user_jabatan')->map(function ($group) {
+            return [
+                'nama' => optional($group->first()->jabatan)->jabatan_nama,
+                'jumlah' => $group->count(),
+            ];
+        });
+        $jumlahLaki = ModelUser::where('user_jk', 'L')->where('user_status', 1)->count();
+        $jumlahPerempuan = ModelUser::where('user_jk', 'P')->where('user_status', 1)->count();
+
+        $dataPegawai = ModelUser::where('user_status', 1)->get();
+        $datapnspegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
+        $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
+        $totalPegawai = ModelUser::where('user_status', 1)->count();
+
+        $dataPns = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->get();
+        $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
+        return view('kepegawaian.dashboard', compact(
+            'dataPegawai',
+            'totalPegawai',
+            'rekapBidang',
+            'rekapGolongan',
+            'rekapJabatan',
+            'jumlahLaki',
+            'jumlahPerempuan',
+            'datapnspegawai',
+            'datapppkpegawai',
+            'dataPns',
+            'dataPppk'
+        ));
+    }
+    /// Akhir Data Kepegawaian
+
+    /// awal Pakta Integritas
+    public function paktaIntegritas()
+    {
+        // Ambil file di Google Drive
+        $files = Storage::disk('google')->files();
+
+        $fileNips = collect($files)->map(function ($file) {
+            $filename = strtolower(basename($file));
+            $filename = str_replace(' ', '', $filename);
+            $filename = str_replace('.pdf.pdf', '.pdf', $filename);
+            return [
+                'nip' => explode('_', $filename)[0],
+                'name' => $file,
+            ];
+        })->keyBy('nip');
+
+        // Ambil semua user
+        $users = DB::table('sadarin_user')->get();
+
+        // Gabung user + file
+        $result = $users->map(function ($user) use ($fileNips) {
+            $status = $fileNips->has($user->user_nip) ? 'Sudah Ngumpul' : 'Belum Ngumpul';
+            $file = $fileNips->has($user->user_nip) ? $fileNips[$user->user_nip]['name'] : null;
+
+            return [
+                'nip'    => $user->user_nip,
+                'nama'   => $user->user_nama,
+                'jenis'  => $user->user_jeniskerja == 1 ? 'PNS' : 'PPPK',
+                'status' => $status,
+                'file'   => $file,
+            ];
+        });
+
+        return view('pakta.index', compact('result'));
+    }
 }
