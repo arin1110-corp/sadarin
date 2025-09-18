@@ -13,13 +13,23 @@ use Google\Service\Bigquery\Model;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\PegawaiExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\GoogleDriveService;
+use App\Models\ModelPengumpulanBerkas;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class KodeController extends Controller
 {
+
+    protected $drive;
     private $kodeValid = ['A1@B2', 'X9#K7', 'R5$T3', 'Y7@U1', 'Z8%P4', 'K0#L9', 'N3&M6', 'G7*H8', 'W6!Q2', 'D4@Z5'];
 
+
+    public function __construct(GoogleDriveService $drive)
+    {
+        $this->drive = $drive;
+    }
     public function form()
     {
         return view('homepage_awal');
@@ -795,38 +805,142 @@ class KodeController extends Controller
     /// Akhir Data Kepegawaian
 
     /// awal Pakta Integritas
-    public function paktaIntegritas()
+    public function dataPaktaIntegritas($id)
     {
-        // Ambil file di Google Drive
-        $files = Storage::disk('google')->files();
+        // Ambil semua pegawai dengan join tanpa alias
+        $dataPegawai = DB::table('sadarin_user')
+            ->leftJoin('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
+            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->select(
+                'sadarin_user.user_id',
+                'sadarin_user.user_nip',
+                'sadarin_user.user_nama',
+                'sadarin_user.user_jeniskerja',
+                'sadarin_user.user_status',
+                'sadarin_user.user_jabatan',
+                'sadarin_user.user_bidang',
+                'sadarin_pengumpulanberkas.kumpulan_id',
+                'sadarin_pengumpulanberkas.kumpulan_status',
+                'sadarin_pengumpulanberkas.kumpulan_file',
+                'sadarin_bidang.bidang_nama',
+                'sadarin_jabatan.jabatan_nama'
+            )
+            ->where('sadarin_user.user_status', 1)
+            ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $id)
+            ->orderByRaw("
+                    CASE 
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Sekretaris' THEN 1
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Bidang' THEN 2
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala UPTD' THEN 3
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
+                        ELSE 5
+                    END,
+                    sadarin_user.user_jeniskerja ASC,
+                    sadarin_user.user_nama ASC
+                ")
+            ->get();
 
-        $fileNips = collect($files)->map(function ($file) {
-            $filename = strtolower(basename($file));
-            $filename = str_replace(' ', '', $filename);
-            $filename = str_replace('.pdf.pdf', '.pdf', $filename);
-            return [
-                'nip' => explode('_', $filename)[0],
-                'name' => $file,
-            ];
-        })->keyBy('nip');
+        // Filter PNS dan PPPK
+        $dataPns = $dataPegawai->where('user_jeniskerja', '1');
+        $dataPppk = $dataPegawai->where('user_jeniskerja', '2');
 
-        // Ambil semua user
-        $users = DB::table('sadarin_user')->get();
+        // Statistik jumlah yang sudah kumpul
+        $jumlahPnsKumpul = $dataPns->where('kumpulan_status', 1)->count();
+        $jumlahPppkKumpul = $dataPppk->where('kumpulan_status', 1)->count();
 
-        // Gabung user + file
-        $result = $users->map(function ($user) use ($fileNips) {
-            $status = $fileNips->has($user->user_nip) ? 'Sudah Ngumpul' : 'Belum Ngumpul';
-            $file = $fileNips->has($user->user_nip) ? $fileNips[$user->user_nip]['name'] : null;
+        return view('kepegawaian.paktaintegritas', compact(
+            'dataPegawai',
+            'dataPns',
+            'dataPppk',
+            'jumlahPnsKumpul',
+            'jumlahPppkKumpul',
+        ));
+    }
+    /// akhir Pakta Integritas
+    /// lihat pakta
+    public function syncPaktaIntegritas()
+    {
+        // ambil semua pegawai aktif
+        $users = ModelUser::whereIn('user_jeniskerja', ['1', '2'])->get();
 
-            return [
-                'nip'    => $user->user_nip,
-                'nama'   => $user->user_nama,
-                'jenis'  => $user->user_jeniskerja == 1 ? 'PNS' : 'PPPK',
-                'status' => $status,
-                'file'   => $file,
-            ];
-        });
+        foreach ($users as $user) {
+            // tentukan folder berdasarkan jenis kerja
+            if ($user->user_jeniskerja == '1') {
+                $folderId = env('GOOGLE_DRIVE_FOLDER_PNS');
+            } elseif ($user->user_jeniskerja == '2') {
+                $folderId = env('GOOGLE_DRIVE_FOLDER_PPPK');
+            } else {
+                continue;
+            }
 
-        return view('pakta.index', compact('result'));
+            // cek file di Google Drive
+            $fileData = $this->drive->findFileByNip($user->user_nip, $folderId);
+
+            // simpan ke tabel pengumpulan berkas
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => 'Pakta Integritas',
+                ],
+                [
+                    'kumpulan_file'   => $fileData['file_url'],
+                    'kumpulan_status' => $fileData['status'],
+                ]
+            );
+        }
+
+        return response()->json(['message' => 'Sinkronisasi selesai.']);
+    }
+    public function lihatPakta($id)
+    {
+        $berkas = DB::table('sadarin_pengumpulanberkas')
+            ->where('kumpulan_id', $id)
+            ->first();
+
+        if (!$berkas || $berkas->kumpulan_status != 1) {
+            return redirect()->back()->with('error', 'Berkas tidak ditemukan atau belum terkumpul.');
+        }
+
+        // Pastikan file ada
+        $filePath = storage_path('app/' . $berkas->kumpulan_file);
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        }
+
+        // View file via URL publik (harus di symlink storage: php artisan storage:link)
+        $fileUrl = asset('storage/' . $berkas->kumpulan_file);
+
+        return view('kepegawaian.lihat-berkas', compact('berkas', 'fileUrl'));
+    }
+    /// akhir lihat pakta
+    /// export data pakta
+    public function exportPaktaIntegritas()
+    {
+        $dataPegawai = DB::table('sadarin_user')
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
+            ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_file')
+            ->where('sadarin_user.user_status', 1)
+            ->orderByRaw("
+                    CASE 
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Sekretaris' THEN 1
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Bidang' THEN 2
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala UPTD' THEN 3
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
+                        ELSE 5
+                    END,
+                    sadarin_user.user_jeniskerja ASC,
+                    sadarin_user.user_nama ASC
+                ")
+            ->get();
+
+        $dataPns = $dataPegawai->where('user_jeniskerja', '1');
+        $dataPppk = $dataPegawai->where('user_jeniskerja', '2');
+
+        return Excel::download(new PegawaiExport($dataPns, $dataPppk), 'PaktaIntegritasDisbud.xlsx');
     }
 }

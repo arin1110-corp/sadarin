@@ -65,8 +65,10 @@ Route::delete('/user-hapus/{id}', [KodeController::class, 'userHapus'])->name('u
 
 //Kelola Kepegawaian
 Route::get('/kepegawaian-dashboard', [KodeController::class, 'kepegawaianDashboard'])->name('kepegawaian.dashboard');
-Route::get('/data-pakta-integritas', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.integritas');
+Route::get('/data-pakta-integritas/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.integritas');
 Route::get('/data-kepegawaian', [KodeController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
+Route::get('/import-paktaintegritas', [KodeController::class, 'syncPaktaIntegritas'])->name('kepegawaian.import.paktaintegritas');
+Route::get('/export-paktaintegritas', [KodeController::class, 'exportPaktaIntegritas'])->name('kepegawaian.export.paktaintegritas');
 
 
 

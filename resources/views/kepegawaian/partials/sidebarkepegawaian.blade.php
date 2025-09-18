@@ -9,7 +9,8 @@
                 Dashboard</a>
         </li>
         <li class="nav-item mb-2">
-            <a class="nav-link" href="{{route('kepegawaian.pakta.integritas')}}"><i class="bi bi-card-text"></i> Pakta
+            <a class="nav-link" href="{{route('kepegawaian.pakta.integritas',['id' => 'Pakta Integritas'])}}"><i
+                    class="bi bi-card-text"></i> Pakta
                 Integritas</a>
         </li>
     </ul>

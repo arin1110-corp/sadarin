@@ -39,27 +39,36 @@
 
                 {{-- Statistik --}}
                 <div class="row mb-4">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5>Total Pegawai</h5>
-                                <p class="display-6 text-warning">{{ @$totalPegawai }}</p>
+                                <p class="display-6 text-warning">{{ $dataPegawai->count() }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5>PNS</h5>
-                                <p class="display-6 text-success">{{ @$datapnspegawai }}</p>
+                                <h5>PNS Terkumpul</h5>
+                                <p class="display-6 text-success">{{ $jumlahPnsKumpul }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5>PPPK</h5>
-                                <p class="display-6 text-primary">{{ @$datapppkpegawai }}</p>
+                                <h5>PPPK Terkumpul</h5>
+                                <p class="display-6 text-primary">{{ $jumlahPppkKumpul }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5>DOWNLOAD DATA</h5>
+                                <a href="{{ route('kepegawaian.export.paktaintegritas') }}"
+                                    class="btn btn-warning">Export Excel</a>
                             </div>
                         </div>
                     </div>
@@ -90,28 +99,47 @@
                                     <th>#</th>
                                     <th>NIP</th>
                                     <th>Nama</th>
+                                    <th>Jabatan</th>
+                                    <th>Bidang</th>
                                     <th>Status</th>
+                                    <th>Status Kumpul</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($dataPegawai as $no => $user)
+
                                 <tr>
                                     <td>{{ $no + 1 }}</td>
                                     <td>{{ $user->user_nip }}</td>
                                     <td>{{ $user->user_nama }}</td>
+                                    <td>{{ $user->jabatan_nama }}</td>
+                                    <td>{{ $user->bidang_nama }}</td>
                                     <td>
                                         @if($user->user_jeniskerja == '1')
                                         <span class="badge bg-success">PNS</span>
-                                        @elseif ($user->user_jeniskerja == '2')
+                                        @elseif($user->user_jeniskerja == '2')
                                         <span class="badge bg-primary">PPPK</span>
                                         @else
                                         <span class="badge bg-secondary">Tidak Aktif</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning">Edit</button>
-                                        <button class="btn btn-sm btn-danger">Hapus</button>
+                                        @if($user->kumpulan_status == 1)
+                                        <span class="text-success fw-bold">Terkumpul</span>
+                                        @else
+                                        <span class="text-danger fw-bold">Belum</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                            class="btn btn-sm btn-primary">
+                                            Lihat File
+                                        </a>
+                                        @else
+                                        <span class="text-muted">-</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -127,7 +155,9 @@
                                     <th>#</th>
                                     <th>NIP</th>
                                     <th>Nama</th>
-                                    <th>Status</th>
+                                    <th>Jabatan</th>
+                                    <th>Bidang</th>
+                                    <th>Status Kumpul</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -137,16 +167,24 @@
                                     <td>{{ $no + 1 }}</td>
                                     <td>{{ $user->user_nip }}</td>
                                     <td>{{ $user->user_nama }}</td>
+                                    <td>{{ $user->jabatan_nama }}</td>
+                                    <td>{{ $user->bidang_nama }}</td>
                                     <td>
-                                        @if($user->user_status == '1')
-                                        <span class="badge bg-success">Aktif</span>
+                                        @if($user->kumpulan_status == 1)
+                                        <span class="text-success fw-bold">Terkumpul</span>
                                         @else
-                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                        <span class="text-danger fw-bold">Belum</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning">Edit</button>
-                                        <button class="btn btn-sm btn-danger">Hapus</button>
+                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                            class="btn btn-sm btn-primary">
+                                            Lihat File
+                                        </a>
+                                        @else
+                                        <span class="text-muted">-</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -162,32 +200,44 @@
                                     <th>#</th>
                                     <th>NIP</th>
                                     <th>Nama</th>
-                                    <th>Status</th>
+                                    <th>Jabatan</th>
+                                    <th>Bidang</th>
+                                    <th>Status Kumpul</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($dataPppk as $no => $user)
+
                                 <tr>
                                     <td>{{ $no + 1 }}</td>
                                     <td>{{ $user->user_nip }}</td>
                                     <td>{{ $user->user_nama }}</td>
+                                    <td>{{ $user->jabatan_nama }}</td>
+                                    <td>{{ $user->bidang_nama }}</td>
                                     <td>
-                                        @if($user->user_status == '1')
-                                        <span class="badge bg-success">Aktif</span>
+                                        @if($user->kumpulan_status == 1)
+                                        <span class="text-success fw-bold">Terkumpul</span>
                                         @else
-                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                        <span class="text-danger fw-bold">Belum</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning">Edit</button>
-                                        <button class="btn btn-sm btn-danger">Hapus</button>
+                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                            class="btn btn-sm btn-primary">
+                                            Lihat File
+                                        </a>
+                                        @else
+                                        <span class="text-muted">-</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+
                 </div>
 
                 {{-- Footer --}}
