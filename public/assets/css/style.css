@@ -77,7 +77,29 @@ body {
     border-color: #d35400;
     transform: translateY(-3px);
 }
+.menu-box-struktur {
+    background: #c4d80e;
+    border: 2px solid #e6e6e6;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    width: 28%;
+    min-width: 240px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    text-align: center;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
+.menu-box-struktur:hover {
+    background-color: #bcff06;
+    border-color: #d35400;
+    transform: translateY(-3px);
+}
 footer {
     margin-top: 60px;
     text-align: center;

@@ -91,6 +91,8 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-museum', [KodeController::class, 'datamuseum'])->name('data.museum');
     Route::get('/data-taman-budaya', [KodeController::class, 'datatamanbudaya'])->name('data.taman-budaya');
     Route::get('/data-monumen', [KodeController::class, 'datamonumen'])->name('data.monumen');
+    Route::get('/struktur-organisasi', [KodeController::class, 'strukturOrganisasi'])->name('struktur.organisasi');
+    route::get('/lihat-jajaran', [KodeController::class, 'lihatjajaran'])->name('lihat.jajaran');
     // Rute untuk halaman cek Subbag
 
     Route::get('/data-ppep', [KodeController::class, 'datappep'])->name('data.ppep');

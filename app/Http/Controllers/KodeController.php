@@ -87,6 +87,81 @@ class KodeController extends Controller
         }
         return view('homepage_detailpegawai', compact('user'));
     }
+    public function strukturOrganisasi()
+    {
+        $dataPegawai = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->join('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
+            ->where('sadarin_user.user_status', 1)
+            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*')
+            ->get();
+        return view('homepagestrukturorganisasi', compact('dataPegawai'));
+    }
+    public function lihatjajaran(Request $request)
+    {
+        $kategori = $request->kategori ?? null;
+
+        if ($kategori === 'Fungsional') {
+            // Ambil semua pegawai fungsional
+            $pegawaiBidang = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+                ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+                ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+                ->where('jabatan_kategori', 'Fungsional')
+                ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama,sadarin_bidang.*', 'sadarin_golongan.*')
+                ->get();
+
+            $kepalaAtas = null;
+            $kepalaSejajar = null;
+            $staff = $pegawaiBidang; // Semua fungsional dianggap staff
+            $bidangNama = 'Fungsional';
+        } else {
+            $bidangId = $request->id ?? null;
+            if (!$bidangId) {
+                abort(404);
+            }
+
+            // Ambil semua pegawai di bidang
+            $pegawaiBidang = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+                ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+                ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+                ->where('user_bidang', $bidangId)
+                ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.*', 'sadarin_golongan.*')
+                ->get();
+
+            $kepala = $pegawaiBidang->filter(function ($p) {
+                return str_contains($p->jabatan_nama, 'Kepala Bidang')
+                    || str_contains($p->jabatan_nama, 'Sekretaris')
+                    || str_contains($p->jabatan_nama, 'Kepala UPTD')
+                    || str_contains($p->jabatan_nama, 'Kepala')
+                    && !str_contains($p->jabatan_nama, 'Kepala Dinas');
+            });
+
+            $prioritasJabatan = [
+                'Kepala Bidang' => 1,
+                'Sekretaris' => 2,
+                'Kepala UPTD' => 3,
+                'Kepala' => 4,
+            ];
+
+            $kepala = $kepala->sortBy(function ($p) use ($prioritasJabatan) {
+                foreach ($prioritasJabatan as $key => $value) {
+                    if (str_contains($p->jabatan_nama, $key)) return $value;
+                }
+                return 999;
+            });
+
+            $kepalaAtas = $kepala->first();
+            $kepalaSejajar = $kepala->skip(1);
+            $staff = $pegawaiBidang->filter(function ($p) {
+                return !str_contains($p->jabatan_nama, 'Kepala') && !str_contains($p->jabatan_nama, 'Sekretaris');
+            });
+
+            $bidangNama = $kepalaAtas->bidang_nama ?? '-';
+        }
+
+        return view('homepage_lihatjajaran', compact('kepalaAtas', 'kepalaSejajar', 'staff', 'bidangNama'));
+    }
     public function datasekretariat()
     {
         $bidang = 1;
@@ -248,8 +323,9 @@ class KodeController extends Controller
 
         $order = [
             'Kepala Dinas' => 1,
-            'Kepala Bidang' => 2,
-            'Kepala UPT' => 3
+            'Sekretaris' => 2,
+            'Kepala Bidang' => 3,
+            'Kepala UPT' => 4
         ];
 
         $rekapJabatan = $rekapJabatan->sortBy(function ($item) use ($order) {
@@ -377,11 +453,12 @@ class KodeController extends Controller
             ->orderByRaw("
                     CASE
                         WHEN sadarin_jabatan.jabatan_nama = 'Kepala Dinas' THEN 1
-                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPTD' THEN 2
+                        WHEN sadarin_jabatan.jabatan_nama = 'Sekretaris' THEN 2
                         WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPTD' THEN 3
-                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Bidang' THEN 4
-                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 5
-                        ELSE 5
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPTD' THEN 4
+                        WHEN sadarin_jabatan.jabatan_nama = 'Kepala Bidang' THEN 5
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 6
+                        ELSE 7
                     END
                 ")
             ->orderByRaw("

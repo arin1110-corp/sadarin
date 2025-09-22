@@ -21,7 +21,9 @@
                 {{ $user->user_nip }}<br>{{ $user->user_nama }}<br>{{ $user->jabatan_nama }}
             </a>
             @endif
-
+            <a href="{{ route('struktur.organisasi') }}" class="menu-box-struktur" target="_blank">
+                Struktur Organisasi
+            </a>
             @if($bidang && $bidang->count() > 0)
             @foreach ($bidang as $b)
             <a href="{{ route($b->bidang_link) }}" class="menu-box">
