@@ -52,6 +52,33 @@ body {
     transform: translateX(4px);
     color: #fff;
 }
+/* Sidebar tetap stabil */
+.sidebar {
+    background: #212529 !important; /* fix dark background */
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* Navlink normal */
+.sidebar .nav-link {
+    color: #adb5bd !important;
+    transition: all 0.3s ease;
+}
+
+/* Navlink aktif */
+.sidebar .nav-link.active,
+.sidebar .nav-link.bg-secondary {
+    background-color: #495057 !important;
+    color: #fff !important;
+}
+
+/* Hover effect */
+.sidebar .nav-link:hover {
+    background-color: #343a40 !important;
+    color: #fff !important;
+}
 
 @keyframes slideIn {
     from {

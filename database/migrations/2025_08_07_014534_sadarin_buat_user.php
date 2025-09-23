@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('user_tgllahir');
             $table->string('user_jabatan', 100);
             $table->string('user_npwp', 100)->default('-');
+            $table->string('user_bpjs', 100);
             $table->string('user_pendidikan', 100)->default('-');
             $table->string('user_norek', 150)->default('-');
             $table->date('user_tmt', 100)->default('2025-01-01');

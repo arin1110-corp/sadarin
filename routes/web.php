@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KodeController;
-
+use Database\Seeders\EselonSeeder;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +69,15 @@ Route::get('/data-pakta-integritas/{id}', [KodeController::class, 'dataPaktaInte
 Route::get('/data-kepegawaian', [KodeController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
 Route::get('/import-paktaintegritas', [KodeController::class, 'syncPaktaIntegritas'])->name('kepegawaian.import.paktaintegritas');
 Route::get('/export-paktaintegritas', [KodeController::class, 'exportPaktaIntegritas'])->name('kepegawaian.export.paktaintegritas');
-
+Route::get('/import-pegawai', [KodeController::class, 'syncPegawai'])->name('kepegawaian.import.pegawai');
+Route::get('/export-pegawai', [KodeController::class, 'exportPegawai'])->name('kepegawaian.export.pegawai');
+Route::get('/pemuktahiran-data', [KodeController::class, 'pemuktahiranData'])->name('kepegawaian.data.pegawai.pemuktahiran');
+Route::get('/data-eselon', [KodeController::class, 'dataEselon'])->name('kepegawaian.data.eselon');
+Route::get('/data-jabatan', [KodeController::class, 'dataJabatan'])->name('kepegawaian.data.jabatan');
+Route::get('/data-golongan', [KodeController::class, 'dataGolongan'])->name('kepegawaian.data.golongan');
+Route::get('/data-pendidikan', [KodeController::class, 'dataPendidikan'])->name('kepegawaian.data.pendidikan');
+Route::get('/data-bidang', [KodeController::class, 'dataBidang'])->name('kepegawaian.data.bidang');
+Route::get('/data-pegawai', [KodeController::class, 'dataPegawai'])->name('kepegawaian.data.pegawai');
 
 
 
@@ -84,7 +92,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/evaluasi-kinerja', [KodeController::class, 'evaluasikinerja'])->name('evaluasi.kinerja');
     // Rute untuk halaman cek bidang
     Route::get('/data-sekretariat', [KodeController::class, 'datasekretariat'])->name('data.sekretariat');
-    Route::get('data-kesenian', [KodeController::class, 'datakesenian'])->name('data.kesenian');
+    Route::get('/data-kesenian', [KodeController::class, 'datakesenian'])->name('data.kesenian');
     Route::get('/data-cagar-budaya', [KodeController::class, 'datacagarbudaya'])->name('data.cagar-budaya');
     Route::get('/data-tradisi', [KodeController::class, 'datatradisi'])->name('data.tradisi');
     Route::get('/data-sejarah', [KodeController::class, 'datasejarah'])->name('data.sejarah');
@@ -93,6 +101,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-monumen', [KodeController::class, 'datamonumen'])->name('data.monumen');
     Route::get('/struktur-organisasi', [KodeController::class, 'strukturOrganisasi'])->name('struktur.organisasi');
     route::get('/lihat-jajaran', [KodeController::class, 'lihatjajaran'])->name('lihat.jajaran');
+    Route::post('/pegawai-update', [KodeController::class, 'pegawaiUpdate'])->name('pegawai.update');
     // Rute untuk halaman cek Subbag
 
     Route::get('/data-ppep', [KodeController::class, 'datappep'])->name('data.ppep');

@@ -13,10 +13,19 @@ use Google\Service\Bigquery\Model;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 use App\Exports\PegawaiExport;
+use App\Models\ModelEselon;
+use App\Models\ModelJabatan;
+use App\Models\ModelGolongan;
+use App\Models\ModelPendidikan;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Services\GoogleDriveService;
 use App\Models\ModelPengumpulanBerkas;
+use App\Models\ModelUbahUser;
+use Google\Client as GoogleClient;
+use Google\Service\Drive as GoogleDrive;
+use Google\Service\Drive\DriveFile;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class KodeController extends Controller
@@ -77,15 +86,21 @@ class KodeController extends Controller
         $pegawai = session('user_info')->user_nip;
         $user = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->join('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->join('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
             ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->where('user_nip', $pegawai)
-            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*')
+            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->first();
         if (!$pegawai) {
             return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
         }
-        return view('homepage_detailpegawai', compact('user'));
+        $jabatans = ModelJabatan::all();
+        $eselons = ModelEselon::all();
+        $bidangs = ModelBidang::all();
+        $golongans = ModelGolongan::all();
+        $pendidikans = ModelPendidikan::all();
+        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans'));
     }
     public function strukturOrganisasi()
     {
@@ -825,59 +840,164 @@ class KodeController extends Controller
     /// Data Kepegawaian
     public function kepegawaianDashboard()
     {
-        $users = ModelUser::with('bidang')
-            ->where('user_status', 1)
-            ->get();
-
-        $rekapBidang = $users->groupBy('user_bidang')->map(function ($group) {
-            return [
-                'nama' => optional($group->first()->bidang)->bidang_nama,
-                'jumlah' => $group->count(),
-            ];
-        });
-        $users = ModelUser::with('golongan')
-            ->where('user_status', 1)
-            ->get();
-
-        $rekapGolongan = $users->groupBy('user_golongan')->map(function ($group) {
-            return [
-                'nama' => optional($group->first()->golongan)->golongan_nama,
-                'jumlah' => $group->count(),
-            ];
-        });
-        $users = ModelUser::with('jabatan')
-            ->where('user_status', 1)
-            ->get();
-
-        $rekapJabatan = $users->groupBy('user_jabatan')->map(function ($group) {
-            return [
-                'nama' => optional($group->first()->jabatan)->jabatan_nama,
-                'jumlah' => $group->count(),
-            ];
-        });
-        $jumlahLaki = ModelUser::where('user_jk', 'L')->where('user_status', 1)->count();
-        $jumlahPerempuan = ModelUser::where('user_jk', 'P')->where('user_status', 1)->count();
-
         $dataPegawai = ModelUser::where('user_status', 1)->get();
         $datapnspegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
         $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
         $totalPegawai = ModelUser::where('user_status', 1)->count();
 
-        $dataPns = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->get();
-        $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
+        $pemuktahiran = ModelUbahUser::where('ubahuser_status', 0)->count();
+        $pemuktahiranPns = ModelUbahUser::where('ubahuser_status', 0)->where('ubahuser_jeniskerja', 1)->count();
+        $pemuktahiranPppk = ModelUbahUser::where('ubahuser_status', 0)->where('ubahuser_jeniskerja', 2)->count();
+
         return view('kepegawaian.dashboard', compact(
             'dataPegawai',
             'totalPegawai',
-            'rekapBidang',
-            'rekapGolongan',
-            'rekapJabatan',
-            'jumlahLaki',
-            'jumlahPerempuan',
             'datapnspegawai',
             'datapppkpegawai',
-            'dataPns',
-            'dataPppk'
+            'pemuktahiran',
+            'pemuktahiranPns',
+            'pemuktahiranPppk'
         ));
+    }
+    public function dataPegawai()
+    {
+        // Ambil semua pegawai dengan join tanpa alias
+        $dataPegawai = DB::table('sadarin_user')
+            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
+            ->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->select(
+                'sadarin_user.*',
+                'sadarin_bidang.*',
+                'sadarin_jabatan.*',
+                'sadarin_golongan.*',
+                'sadarin_eselon.*',
+                'sadarin_pendidikan.*'
+            )
+            ->where('sadarin_user.user_status', 1)
+            ->orderByRaw("
+                    CASE 
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Sekretaris' THEN 1
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Bidang' THEN 2
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala UPTD' THEN 3
+                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
+                        ELSE 5
+                    END,
+                    sadarin_user.user_jeniskerja ASC,
+                    sadarin_user.user_nama ASC
+                ")
+            ->get();
+
+        $datapnspegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
+        $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
+        $totalPegawai = ModelUser::where('user_status', 1)->count();
+
+        return view('kepegawaian.datapegawai', compact(
+            'dataPegawai',
+            'totalPegawai',
+            'datapnspegawai',
+            'datapppkpegawai'
+        ));
+    }
+    public function pemuktahiranData()
+    {
+        // Ambil semua pegawai dengan join tanpa alias
+        $dataPegawai = DB::table('sadarin_ubahuser')
+            ->leftJoin('sadarin_bidang', 'sadarin_ubahuser.ubahuser_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_golongan', 'sadarin_ubahuser.ubahuser_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->leftJoin('sadarin_eselon', 'sadarin_ubahuser.ubahuser_eselon', '=', 'sadarin_eselon.eselon_id')
+            ->leftJoin('sadarin_pendidikan', 'sadarin_ubahuser.ubahuser_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
+            ->leftJoin('sadarin_jabatan', 'sadarin_ubahuser.ubahuser_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->select(
+                'sadarin_ubahuser.*',
+                'sadarin_bidang.*',
+                'sadarin_jabatan.*',
+                'sadarin_golongan.*',
+                'sadarin_eselon.*',
+                'sadarin_pendidikan.*'
+            )
+            ->where('sadarin_ubahuser.ubahuser_status', 0)
+            ->orderByRaw("
+                    sadarin_ubahuser.ubahuser_id ASC
+                ")
+            ->get();
+
+        $datapnspegawai = ModelUbahUser::where('ubahuser_status', 0)->where('ubahuser_jeniskerja', 1)->count();
+        $datapppkpegawai = ModelUbahUser::where('ubahuser_status', 0)->where('ubahuser_jeniskerja', 2)->count();
+        $totalPegawaiPemuktahiran = ModelUbahUser::where('ubahuser_status', 0)->count();
+        $totalPegawai = ModelUser::where('user_status', 1)->count();
+
+        return view('kepegawaian.pemuktahiran', compact(
+            'dataPegawai',
+            'totalPegawai',
+            'totalPegawaiPemuktahiran',
+            'datapnspegawai',
+            'datapppkpegawai',
+        ));
+    }
+    public function pegawaiUpdate(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'user_nama' => 'required|string|max:100',
+            'user_nik' => 'required|string|max:100',
+            'user_nip' => 'required|string|max:100',
+            'user_email' => 'nullable|email|max:100',
+            'user_notelp' => 'nullable|numeric',
+            'user_npwp' => 'nullable|numeric',
+            'user_bpjs' => 'nullable|numeric',
+            'user_norek' => 'nullable|numeric',
+            'user_jmltanggungan' => 'nullable|numeric',
+            'user_foto' => 'nullable|file|mimes:jpeg,jpg,png|max:2048', // max 2MB
+            'user_tgllahir' => 'required|date',
+            'user_tmt' => 'required|date',
+            'user_spmt' => 'required|date',
+        ]);
+
+        // Ambil user
+        $ubah = new ModelUbahUser();
+        $ubah->ubahuser_iduser = $request->user_id;
+        $ubah->ubahuser_nip = $request->user_nip;
+        $ubah->ubahuser_nama = $request->user_nama;
+        $ubah->ubahuser_nik = $request->user_nik;
+        $ubah->ubahuser_tgllahir = $request->user_tgllahir;
+        $ubah->ubahuser_jabatan = $request->jabatan_id;
+        $ubah->ubahuser_npwp = $request->user_npwp;
+        $ubah->ubahuser_pendidikan = $request->user_pendidikan;
+        $ubah->ubahuser_norek = $request->user_norek;
+        $ubah->ubahuser_tmt = $request->user_tmt;
+        $ubah->ubahuser_spmt = $request->user_spmt;
+        $ubah->ubahuser_gelardepan = $request->user_gelardepan;
+        $ubah->ubahuser_gelarbelakang = $request->user_gelarbelakang;
+        $ubah->ubahuser_kelasjabatan = $request->user_kelasjabatan;
+        $ubah->ubahuser_eselon = $request->user_eselon;
+        $ubah->ubahuser_golongan = $request->user_golongan;
+        $ubah->ubahuser_email = $request->user_email;
+        $ubah->ubahuser_notelp = $request->user_notelp;
+        $ubah->ubahuser_alamat = $request->user_alamat;
+        $ubah->ubahuser_jk = $request->user_jk;
+        $ubah->ubahuser_bidang = $request->bidang_id;
+        $ubah->ubahuser_jmltanggungan = $request->user_jmltanggungan;
+        $ubah->ubahuser_status = 0;
+        $ubah->ubahuser_jeniskerja = $request->user_jeniskerja;
+
+        // Simpan foto di storage/app/public/foto_pegawai
+        if ($request->hasFile('user_foto')) {
+            $file = $request->file('user_foto');
+            $nip = $request->user_nip;
+            $filename = "{$nip}_Pasfoto." . $file->getClientOriginalExtension();
+
+            $file->storeAs('public/foto_pegawai', $filename);
+
+            $ubah->ubahuser_foto = $filename;
+        }
+
+        $ubah->save();
+
+        return redirect()->back()->with('success', 'Data perubahan berhasil disimpan. Menunggu verifikasi admin.');
     }
     /// Akhir Data Kepegawaian
 
@@ -888,20 +1008,20 @@ class KodeController extends Controller
         $dataPegawai = DB::table('sadarin_user')
             ->leftJoin('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
             ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
+            ->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->select(
-                'sadarin_user.user_id',
-                'sadarin_user.user_nip',
-                'sadarin_user.user_nama',
-                'sadarin_user.user_jeniskerja',
-                'sadarin_user.user_status',
-                'sadarin_user.user_jabatan',
-                'sadarin_user.user_bidang',
+                'sadarin_user.*',
                 'sadarin_pengumpulanberkas.kumpulan_id',
                 'sadarin_pengumpulanberkas.kumpulan_status',
                 'sadarin_pengumpulanberkas.kumpulan_file',
                 'sadarin_bidang.bidang_nama',
-                'sadarin_jabatan.jabatan_nama'
+                'sadarin_jabatan.jabatan_nama',
+                'sadarin_golongan.*',
+                'sadarin_eselon.*',
+                'sadarin_pendidikan.*'
             )
             ->where('sadarin_user.user_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $id)
@@ -927,12 +1047,16 @@ class KodeController extends Controller
         $jumlahPnsKumpul = $dataPns->where('kumpulan_status', 1)->count();
         $jumlahPppkKumpul = $dataPppk->where('kumpulan_status', 1)->count();
 
+        $dataPns = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->get();
+        $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
         return view('kepegawaian.paktaintegritas', compact(
             'dataPegawai',
             'dataPns',
             'dataPppk',
             'jumlahPnsKumpul',
             'jumlahPppkKumpul',
+            'dataPns',
+            'dataPppk'
         ));
     }
     /// akhir Pakta Integritas
