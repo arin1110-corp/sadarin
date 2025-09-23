@@ -108,7 +108,7 @@ class KodeController extends Controller
                 ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
                 ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
                 ->where('jabatan_kategori', 'Fungsional')
-                ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama,sadarin_bidang.*', 'sadarin_golongan.*')
+                ->select('sadarin_user.*', 'sadarin_jabatan.*', 'sadarin_bidang.*', 'sadarin_golongan.*')
                 ->get();
 
             $kepalaAtas = null;

@@ -185,7 +185,11 @@
                 <br>
                 <img src="{{ $kepala->user_foto && $kepala->user_foto != '-' ? asset($kepala->user_foto) : asset('assets/image/pemprov.png') }}"
                     alt="Foto">
-                <h6 class="fw-bold">{{ $kepala->user_nama }}</h6>
+                <h6 class="fw-bold">
+                    {{ $kepala->user_gelardepan && $kepala->user_gelardepan != '-' ? $kepala->user_gelardepan . ' ' : '' }}
+                    {{ $kepala->user_nama }}
+                    {{ $kepala->user_gelarbelakang && $kepala->user_gelarbelakang != '-' ? ',' . $kepala->user_gelarbelakang : '' }}
+                </h6>
                 <small class="fw-bold">NIP. {{ $kepala->user_nip }}</small>
                 <h6 class="fw-bold" style="font-size: 13px;">
                     {{ $kepala->golongan_nama. ' - ' . $kepala->golongan_pangkat}}
@@ -209,7 +213,11 @@
                 <br>
                 <img src="{{ $s->user_foto && $s->user_foto != '-' ? asset($s->user_foto) : asset('assets/image/pemprov.png') }}"
                     alt="Foto">
-                <h6 class="fw-bold">{{ $s->user_nama }}</h6>
+                <h6 class="fw-bold">
+                    {{ $s->user_gelardepan && $s->user_gelardepan != '-' ? $s->user_gelardepan . ' ' : '' }}
+                    {{ $s->user_nama }}
+                    {{ $s->user_gelarbelakang && $s->user_gelarbelakang != '-' ? ',' . $s->user_gelarbelakang : '' }}
+                </h6>
                 <small class="fw-bold">NIP. {{ $s->user_nip }}</small>
                 <h6 class="fw-bold" style="font-size: 13px;">
                     {{ $s->golongan_nama. ' - ' . $s->golongan_pangkat}}

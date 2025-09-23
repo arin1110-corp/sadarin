@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('sadarin_ubahuser', function (Blueprint $table) {
             $table->increments('ubahuser_id');
+            $table->string('ubahuser_iduser', 100);
             $table->string('ubahuser_nip', 100);
             $table->string('ubahuser_nama', 100);
             $table->string('ubahuser_nik', 100);

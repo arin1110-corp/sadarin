@@ -172,7 +172,11 @@
                 <br>
                 <img src="{{ $kadis->user_foto && $kadis->user_foto != '-' ? asset($kadis->user_foto) : asset('assets/image/pemprov.png') }}"
                     alt="Foto">
-                <h6 class="fw-bold" style="font-size: 15px;">{{ $kadis->user_nama }}</h6>
+                <h6 class="fw-bold" style="font-size: 15px;">
+                    {{ $kadis->user_gelardepan && $kadis->user_gelardepan != '-' ? $kadis->user_gelardepan . ' ' : '' }}
+                    {{ $kadis->user_nama }}
+                    {{ $kadis->user_gelarbelakang && $kadis->user_gelarbelakang != '-' ? ',' . $kadis->user_gelarbelakang : '' }}
+                </h6>
                 <h6 class="fw-bold" style="font-size: 13px;">NIP. {{ $kadis->user_nip }}</h6>
                 <h6 class="fw-bold" style="font-size: 13px;">
                     {{ $kadis->golongan_nama. ' - ' . $kadis->golongan_pangkat}}
