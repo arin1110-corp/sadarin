@@ -103,6 +103,9 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/struktur-organisasi', [KodeController::class, 'strukturOrganisasi'])->name('struktur.organisasi');
     route::get('/lihat-jajaran', [KodeController::class, 'lihatjajaran'])->name('lihat.jajaran');
     Route::post('/pegawai-update', [KodeController::class, 'pegawaiUpdate'])->name('pegawai.update');
+    Route::post('/pemuktahiran-update', [KodeController::class, 'updateDataPegawai'])->name('pemuktahiran.update');
+    Route::post('/pemuktahiran-update-pasfoto', [KodeController::class, 'updatePasFoto'])->name('pemuktahiran.update.pasfoto');
+
     // Rute untuk halaman cek Subbag
 
     Route::get('/data-ppep', [KodeController::class, 'datappep'])->name('data.ppep');

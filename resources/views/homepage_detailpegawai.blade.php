@@ -179,6 +179,12 @@
                                 <i class="bi bi-pencil-square"></i> Edit Data
                             </button>
                         </div>
+                        <div class="d-flex justify-content-end mb-2">
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                data-bs-target="#editPasFoto">
+                                <i class="bi bi-pencil-square"></i> Edit Pas Foto
+                            </button>
+                        </div>
 
                         <div class="text-center mb-4">
                             <img src="{{ $user->user_foto && $user->user_foto != '-' ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"
@@ -308,15 +314,14 @@
     </div>
 
     /// Modal Edit Data Pegawai
-    <div class="modal fade" id="editPegawaiModal" tabindex="-1" aria-labelledby="editPegawaiModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPegawaiModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="{{ route('pegawai.update') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('pemuktahiran.update.pasfoto') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="user_id" value="{{ $user->user_id }}">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editPegawaiModalLabel">Edit Data Pegawai</h5>
+                        <h5 class="modal-title" id="editPegawaiModalLabel">Edit Pas Foto Pegawai</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -370,7 +375,29 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    /// Modal Edit Data Pegawai
+    <div class="modal fade" id="editPegawaiModal" tabindex="-1" aria-labelledby="editPegawaiModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('pemuktahiran.update') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $user->user_id }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPegawaiModalLabel">Edit Data Pegawai</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
 
                         <!-- Gelar Depan & Belakang -->
                         <div class="row mb-3">

@@ -208,7 +208,7 @@
                                             <td class="text-center">
                                                 <button class="btn btn-sm btn-info" data-bs-toggle="modal"
                                                     data-bs-target="#modalDetailAll{{ $user->ubahuser_id }}">
-                                                    <i class="bi bi-eye"></i>
+                                                    <i class="bi bi-check"></i>
                                                 </button>
                                             </td>
                                         </tr>

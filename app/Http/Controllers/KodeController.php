@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Validator;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDrive;
 use Google\Service\Drive\DriveFile;
+use Intervention\Image\Colors\Rgb\Channels\Red;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class KodeController extends Controller
@@ -1026,6 +1027,93 @@ class KodeController extends Controller
 
         return redirect()->back()->with('success', 'Data perubahan berhasil disimpan. Menunggu verifikasi admin.');
     }
+    public function updateDataPegawai(Request $request)
+    {
+        // Cari user berdasarkan ID
+        $user = ModelUser::find($request->user_id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User tidak ditemukan.');
+        }
+
+        // Validasi semua field kecuali foto
+        $request->validate([
+            'user_nama' => 'required|string|max:100',
+            'user_nik' => 'required|string|max:100',
+            'user_nip' => 'required|string|max:100',
+            'user_email' => 'nullable|email|max:100',
+            'user_notelp' => 'nullable|numeric',
+            'user_npwp' => 'nullable|numeric',
+            'user_bpjs' => 'nullable|numeric',
+            'user_norek' => 'nullable|numeric',
+            'user_jmltanggungan' => 'nullable|numeric',
+            'user_tgllahir' => 'required|date',
+            'user_tmt' => 'required|date',
+            'user_spmt' => 'required|date',
+            // jangan validasi user_foto di sini
+        ]);
+
+        // Update semua field dari form
+        $user->user_gelardepan = $request->user_gelardepan;
+        $user->user_gelarbelakang = $request->user_gelarbelakang;
+        $user->user_nama = $request->user_nama;
+        $user->user_jk = $request->user_jk;
+        $user->user_nip = $request->user_nip;
+        $user->user_nik = $request->user_nik;
+        $user->user_jabatan = $request->jabatan_id;
+        $user->user_bidang = $request->bidang_id;
+        $user->user_email = $request->user_email;
+        $user->user_notelp = $request->user_notelp;
+        $user->user_norek = $request->user_norek;
+        $user->user_jmltanggungan = $request->user_jmltanggungan;
+        $user->user_npwp = $request->user_npwp;
+        $user->user_bpjs = $request->user_bpjs;
+        $user->user_alamat = $request->user_alamat;
+        $user->user_golongan = $request->user_golongan;
+        $user->user_kelasjabatan = $request->user_kelasjabatan;
+        $user->user_eselon = $request->user_eselon;
+        $user->user_tmt = $request->user_tmt;
+        $user->user_spmt = $request->user_spmt;
+        $user->user_tempatlahir = $request->user_tempatlahir;
+        $user->user_tgllahir = $request->user_tgllahir;
+        $user->user_pendidikan = $request->user_pendidikan;
+        $user->user_jeniskerja = $request->user_jeniskerja;
+
+        // Foto langsung diisi "-" karena nanti di upload terpisah
+        $user->user_foto = '-';
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Data pegawai berhasil diupdate.');
+    }
+    public function updatePasfoto(Request $request)
+    {
+        $request->validate([
+            'user_foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+        ], [
+            'user_foto.image' => 'File yang diupload harus berupa gambar.',
+            'user_foto.mimes' => 'Format foto hanya boleh JPG atau PNG.',
+            'user_foto.max'   => 'Ukuran foto maksimal 2MB.',
+        ]);
+
+        $user = ModelUser::findOrFail($request->user_id);
+
+        if ($request->hasFile('user_foto')) {
+            $file = $request->file('user_foto');
+            $nip = $request->user_nip ?? $user->user_nip;
+            $filename = "{$nip}_Pasfoto." . $file->getClientOriginalExtension();
+
+            $destinationPath = public_path('assets/foto_pegawai');
+            $file->move($destinationPath, $filename);
+
+            $user->user_foto = "assets/foto_pegawai/{$filename}";
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Data pegawai berhasil diupdate.');
+    }
+
     public function verifikasiPemuktahiran($id)
     {
         $ubah = ModelUbahUser::findOrFail($id);
