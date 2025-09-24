@@ -957,6 +957,7 @@ class KodeController extends Controller
                 'user_tgllahir'    => 'required|date',
                 'user_tmt'         => 'required|date',
                 'user_spmt'        => 'required|date',
+                'user_tempatlahir'  => 'required|string|max:100',
 
                 'user_foto' => 'nullable|file|image|mimes:jpeg,jpg,png|max:2048',
             ],
@@ -988,6 +989,7 @@ class KodeController extends Controller
         $ubah->ubahuser_pendidikan = $request->user_pendidikan;
         $ubah->ubahuser_norek = $request->user_norek;
         $ubah->ubahuser_tmt = $request->user_tmt;
+        $ubah->ubahuser_tempatlahir = $request->user_tempatlahir;
         $ubah->ubahuser_spmt = $request->user_spmt;
         $ubah->ubahuser_gelardepan = $request->user_gelardepan;
         $ubah->ubahuser_gelarbelakang = $request->user_gelarbelakang;
@@ -1043,6 +1045,7 @@ class KodeController extends Controller
         $user->user_jabatan       = $ubah->ubahuser_jabatan;
         $user->user_golongan      = $ubah->ubahuser_golongan;
         $user->user_eselon        = $ubah->ubahuser_eselon;
+        $user->user_tempatlahir   = $ubah->ubahuser_tempatlahir;
         $user->user_kelasjabatan  = $ubah->ubahuser_kelasjabatan;
         $user->user_bidang        = $ubah->ubahuser_bidang;
         $user->user_tmt           = $ubah->ubahuser_tmt;

@@ -228,8 +228,9 @@
                             <div class="col-sm-8">{{ $user->eselon_nama }}</div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Tanggal Lahir</div>
+                            <div class="col-sm-4 fw-bold">Tempat dan Tanggal Lahir</div>
                             <div class="col-sm-8">
+                                {{ $user->user_tempatlahir }},
                                 {{ \Carbon\Carbon::parse($user->user_tgllahir)->translatedFormat('j F Y') }}
                             </div>
                         </div>
@@ -535,10 +536,17 @@
                             </div>
                         </div>
                         <!-- Tanggal Lahir -->
-                        <div class="mb-3">
-                            <label class="form-label">Tanggal Lahir</label>
-                            <input type="date" name="user_tgllahir" class="form-control"
-                                value="{{ $user->user_tgllahir }}">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Tempat Lahir</label>
+                                <input type="text" name="user_tempatlahir" class="form-control"
+                                    value="{{ $user->user_tempatlahir }}">
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Tanggal Lahir</label>
+                                <input type="date" name="user_tgllahir" class="form-control"
+                                    value="{{ $user->user_tgllahir }}">
+                            </div>
                         </div>
 
                         <!-- Pendidikan -->

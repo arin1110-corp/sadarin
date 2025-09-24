@@ -265,8 +265,10 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th>Tanggal Lahir</th>
+                                                <th>Tempat dan Tanggal Lahir</th>
                                                 <td>:
+                                                    {{ $user->user_tempatlahir
+                                                    }},
                                                     {{ \Carbon\Carbon::parse($user->user_tgllahir)->translatedFormat('j F Y') }}
                                                 </td>
                                             </tr>
