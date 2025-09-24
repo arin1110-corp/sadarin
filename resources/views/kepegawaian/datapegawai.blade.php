@@ -228,7 +228,7 @@
                             <div class="modal-body">
                                 <div class="row g-3">
                                     <div class="col-md-4 text-center">
-                                        <img src="{{ ($user->user_foto && $user->user_foto != '-') ? asset('storage/foto/'.$user->user_foto) : asset('assets/image/pemprov.png') }}"
+                                        <img src="{{ ($user->user_foto && $user->user_foto != '-') ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"
                                             alt="Foto Pegawai" class="img-thumbnail rounded shadow-sm" width="384px"
                                             height="auto">
                                     </div>

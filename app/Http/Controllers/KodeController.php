@@ -23,6 +23,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Services\GoogleDriveService;
 use App\Models\ModelPengumpulanBerkas;
 use App\Models\ModelUbahUser;
+use Illuminate\Support\Facades\Validator;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDrive;
 use Google\Service\Drive\DriveFile;
@@ -921,7 +922,7 @@ class KodeController extends Controller
             )
             ->where('sadarin_ubahuser.ubahuser_status', 0)
             ->orderByRaw("
-                    sadarin_ubahuser.ubahuser_id ASC
+                    sadarin_ubahuser.created_at DESC
                 ")
             ->get();
 
@@ -940,23 +941,40 @@ class KodeController extends Controller
     }
     public function pegawaiUpdate(Request $request)
     {
-        // Validasi input
-        $request->validate([
-            'user_nama' => 'required|string|max:100',
-            'user_nik' => 'required|string|max:100',
-            'user_nip' => 'required|string|max:100',
-            'user_email' => 'nullable|email|max:100',
-            'user_notelp' => 'nullable|numeric',
-            'user_npwp' => 'nullable|numeric',
-            'user_bpjs' => 'nullable|numeric',
-            'user_norek' => 'nullable|numeric',
-            'user_jmltanggungan' => 'nullable|numeric',
-            'user_foto' => 'nullable|file|mimes:jpeg,jpg,png|max:2048', // max 2MB
-            'user_tgllahir' => 'required|date',
-            'user_tmt' => 'required|date',
-            'user_spmt' => 'required|date',
-        ]);
 
+        $validator = Validator::make(
+            array_merge($request->all(), $request->allFiles()), // 👈 tambahin file
+            [
+                'user_nama'        => 'required|string|max:100',
+                'user_nik'         => 'required|string|max:100',
+                'user_nip'         => 'required|string|max:100',
+                'user_email'       => 'nullable|email|max:100',
+                'user_notelp'      => 'nullable|numeric',
+                'user_npwp'        => 'nullable|numeric',
+                'user_bpjs'        => 'nullable|numeric',
+                'user_norek'       => 'nullable|numeric',
+                'user_jmltanggungan' => 'nullable|numeric',
+                'user_tgllahir'    => 'required|date',
+                'user_tmt'         => 'required|date',
+                'user_spmt'        => 'required|date',
+
+                'user_foto' => 'nullable|file|image|mimes:jpeg,jpg,png|max:2048',
+            ],
+            [
+                'user_foto.image' => 'File yang diupload harus berupa gambar.',
+                'user_foto.mimes' => 'Format foto hanya boleh JPG atau PNG.',
+                'user_foto.max'   => 'Ukuran foto maksimal 2MB.',
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
+        // Ambil data user asli dari tabel sadarin_user
+        $userAsli = ModelUser::findOrFail($request->user_id);
         // Ambil user
         $ubah = new ModelUbahUser();
         $ubah->ubahuser_iduser = $request->user_id;
@@ -966,6 +984,7 @@ class KodeController extends Controller
         $ubah->ubahuser_tgllahir = $request->user_tgllahir;
         $ubah->ubahuser_jabatan = $request->jabatan_id;
         $ubah->ubahuser_npwp = $request->user_npwp;
+        $ubah->ubahuser_bpjs = $request->user_bpjs;
         $ubah->ubahuser_pendidikan = $request->user_pendidikan;
         $ubah->ubahuser_norek = $request->user_norek;
         $ubah->ubahuser_tmt = $request->user_tmt;
@@ -983,21 +1002,68 @@ class KodeController extends Controller
         $ubah->ubahuser_jmltanggungan = $request->user_jmltanggungan;
         $ubah->ubahuser_status = 0;
         $ubah->ubahuser_jeniskerja = $request->user_jeniskerja;
-
-        // Simpan foto di storage/app/public/foto_pegawai
+        // Cek upload foto
         if ($request->hasFile('user_foto')) {
             $file = $request->file('user_foto');
             $nip = $request->user_nip;
             $filename = "{$nip}_Pasfoto." . $file->getClientOriginalExtension();
 
-            $file->storeAs('public/foto_pegawai', $filename);
+            // simpan langsung ke public/assets/foto_pegawai
+            $destinationPath = public_path('assets/foto_pegawai');
+            $file->move($destinationPath, $filename);
 
-            $ubah->ubahuser_foto = $filename;
+            // simpan path relatif untuk dipakai di img src
+            $ubah->ubahuser_foto = "assets/foto_pegawai/{$filename}";
+        } else {
+            // pakai foto lama dari tabel user
+            $ubah->ubahuser_foto = $userAsli->user_foto;
         }
+
 
         $ubah->save();
 
         return redirect()->back()->with('success', 'Data perubahan berhasil disimpan. Menunggu verifikasi admin.');
+    }
+    public function verifikasiPemuktahiran($id)
+    {
+        $ubah = ModelUbahUser::findOrFail($id);
+
+        // cari user di tabel sadarin_user sesuai id user
+        $user = ModelUser::findOrFail($ubah->ubahuser_iduser);
+
+        // mapping field satu per satu
+        $user->user_nama          = $ubah->ubahuser_nama;
+        $user->user_nip           = $ubah->ubahuser_nip;
+        $user->user_nik           = $ubah->ubahuser_nik;
+        $user->user_gelardepan    = $ubah->ubahuser_gelardepan;
+        $user->user_gelarbelakang = $ubah->ubahuser_gelarbelakang;
+        $user->user_jk            = $ubah->ubahuser_jk;
+        $user->user_tgllahir      = $ubah->ubahuser_tgllahir;
+        $user->user_pendidikan    = $ubah->ubahuser_pendidikan;
+        $user->user_jabatan       = $ubah->ubahuser_jabatan;
+        $user->user_golongan      = $ubah->ubahuser_golongan;
+        $user->user_eselon        = $ubah->ubahuser_eselon;
+        $user->user_kelasjabatan  = $ubah->ubahuser_kelasjabatan;
+        $user->user_bidang        = $ubah->ubahuser_bidang;
+        $user->user_tmt           = $ubah->ubahuser_tmt;
+        $user->user_spmt          = $ubah->ubahuser_spmt;
+        $user->user_jeniskerja    = $ubah->ubahuser_jeniskerja;
+        $user->user_alamat        = $ubah->ubahuser_alamat;
+        $user->user_notelp        = $ubah->ubahuser_notelp;
+        $user->user_email         = $ubah->ubahuser_email;
+        $user->user_bpjs          = $ubah->ubahuser_bpjs;
+        $user->user_norek         = $ubah->ubahuser_norek;
+        $user->user_npwp          = $ubah->ubahuser_npwp;
+        $user->user_jmltanggungan = $ubah->ubahuser_jmltanggungan;
+        $user->user_foto          = $ubah->ubahuser_foto; // karena simpan di path sama
+
+        $user->save();
+
+        // update status ubahuser
+        $ubah->ubahuser_status = 1;
+        $ubah->save();
+
+        return redirect()->back()->with('success', 'Data pegawai berhasil diverifikasi dan disimpan.');
     }
     /// Akhir Data Kepegawaian
 

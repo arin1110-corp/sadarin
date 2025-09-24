@@ -181,7 +181,7 @@
                         </div>
 
                         <div class="text-center mb-4">
-                            <img src="{{ $user->user_foto != '-' ? asset('storage/foto_pegawai/' . $user->user_foto) : asset('assets/image/pemprov.png') }}"
+                            <img src="{{ $user->user_foto != '-' ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"
                                 alt="Foto Pegawai"
                                 style="width:120px; height:180px; object-fit:cover; border-radius:5px; border:1px solid #ccc;">
                         </div>
@@ -311,8 +311,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="{{ route('pegawai.update', $user->user_id) }}" method="POST"
-                    enctype="multipart/form-data">
+                <form action="{{ route('pegawai.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="user_id" value="{{ $user->user_id }}">
                     <div class="modal-header">
@@ -322,14 +321,19 @@
                     <div class="modal-body">
                         <!-- Foto -->
                         <div class="mb-3">
+
                             <label class="form-label">Foto Pegawai</label>
                             <input type="file" name="user_foto" class="form-control">
 
                             @if($user->user_foto != '-' && $user->user_foto != null)
-                            <img src="{{ asset('storage/foto_pegawai/' . $user->user_foto) }}" alt="Foto Pegawai"
-                                class="mt-2" style="width:100px;height:150px;object-fit:cover;border:1px solid #ccc;">
+                            <img src="{{ asset($user->user_foto) }}" alt="Foto Pegawai" class="mt-2"
+                                style="width:100px;height:150px;object-fit:cover;border:1px solid #ccc;">
                             @endif
 
+                            {{-- Error khusus user_foto --}}
+                            @error('user_foto')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                             <div class="mt-3">
                                 <small class="text-danger fw-bold">* Ketentuan warna latar belakang foto (wajib baju
                                     keki) ukuran 4x6 :</small>
@@ -382,9 +386,21 @@
                         </div>
 
                         <!-- Nama -->
-                        <div class="mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text" name="user_nama" class="form-control" value="{{ $user->user_nama }}">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Nama (Huruf Kapital)</label>
+                                <input type="text" name="user_nama" class="form-control" value="{{ $user->user_nama }}">
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Jenis Kelamin</label>
+                                <select name="user_jk" class="form-select">
+                                    <option value="{{ $user->user_jk }}" selected>
+                                        {{ $user->user_jk == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                    </option>
+                                    <option value="L">Laki-laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- NIP & NIK -->
@@ -400,7 +416,7 @@
                         </div>
 
                         <!-- Jabatan -->
-                        <div class="mb-3">
+                        <div class="row mb-3">
                             <div class="col">
                                 <label class="form-label">Jabatan</label>
                                 <select name="jabatan_id" class="form-select">
@@ -415,10 +431,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-
-                        <!-- Bidang -->
-                        <div class="mb-3">
                             <div class="col">
                                 <label class="form-label">Bidang</label>
                                 <select name="bidang_id" class="form-select">

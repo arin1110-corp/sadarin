@@ -78,6 +78,7 @@ Route::get('/data-golongan', [KodeController::class, 'dataGolongan'])->name('kep
 Route::get('/data-pendidikan', [KodeController::class, 'dataPendidikan'])->name('kepegawaian.data.pendidikan');
 Route::get('/data-bidang', [KodeController::class, 'dataBidang'])->name('kepegawaian.data.bidang');
 Route::get('/data-pegawai', [KodeController::class, 'dataPegawai'])->name('kepegawaian.data.pegawai');
+Route::put('/verifikasi-user/{id}', [KodeController::class, 'verifikasiPemuktahiran'])->name('kepegawaian.verifikasi.user');
 
 
 

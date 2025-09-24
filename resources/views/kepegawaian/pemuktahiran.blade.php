@@ -117,12 +117,12 @@
                                         @foreach($dataPegawai as $no => $user)
                                         <tr>
                                             <td class="text-center">{{ $no + 1 }}</td>
-                                            <td>{{ $user->user_nip }}</td>
-                                            <td>{{ $user->user_nama }}</td>
+                                            <td>{{ $user->ubahuser_nip }}</td>
+                                            <td>{{ $user->ubahuser_nama }}</td>
                                             <td class="text-center">
-                                                @if($user->user_jeniskerja == '1')
+                                                @if($user->ubahuser_jeniskerja == '1')
                                                 <span class="badge bg-success">PNS</span>
-                                                @elseif ($user->user_jeniskerja == '2')
+                                                @elseif ($user->ubahuser_jeniskerja == '2')
                                                 <span class="badge bg-primary">PPPK</span>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Aktif</span>
@@ -130,7 +130,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                    data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                    data-bs-target="#modalDetailAll{{ $user->ubahuser_id }}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </td>
@@ -154,13 +154,13 @@
                                     </thead>
                                     <tbody>
                                         @foreach($dataPegawai as $no => $user)
-                                        @if($user->user_jeniskerja == '1') {{-- 1 = PNS --}}
+                                        @if($user->ubahuser_jeniskerja == '1') {{-- 1 = PNS --}}
                                         <tr>
                                             <td class="text-center">{{ $no + 1 }}</td>
-                                            <td>{{ $user->user_nip }}</td>
-                                            <td>{{ $user->user_nama }}</td>
+                                            <td>{{ $user->ubahuser_nip }}</td>
+                                            <td>{{ $user->ubahuser_nama }}</td>
                                             <td class="text-center">
-                                                @if($user->user_status == '1')
+                                                @if($user->ubahuser_status == '1')
                                                 <span class="badge bg-success">Aktif</span>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Aktif</span>
@@ -168,7 +168,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                    data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                    data-bs-target="#modalDetailAll{{ $user->ubahuser_id }}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </td>
@@ -193,13 +193,13 @@
                                     </thead>
                                     <tbody>
                                         @foreach($dataPegawai as $no => $user)
-                                        @if($user->user_jeniskerja == '2') {{-- 2 = PPPK --}}
+                                        @if($user->ubahuser_jeniskerja == '2') {{-- 2 = PPPK --}}
                                         <tr>
                                             <td class="text-center">{{ $no + 1 }}</td>
-                                            <td>{{ $user->user_nip }}</td>
-                                            <td>{{ $user->user_nama }}</td>
+                                            <td>{{ $user->ubahuser_nip }}</td>
+                                            <td>{{ $user->ubahuser_nama }}</td>
                                             <td class="text-center">
-                                                @if($user->user_status == '1')
+                                                @if($user->ubahuser_status == '1')
                                                 <span class="badge bg-success">Aktif</span>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Aktif</span>
@@ -207,7 +207,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                    data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                    data-bs-target="#modalDetailAll{{ $user->ubahuser_id }}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </td>
@@ -225,19 +225,20 @@
                 {{-- Modals: dipisah di luar tabel agar HTML valid --}}
                 {{-- Modals untuk "All" --}}
                 @foreach($dataPegawai as $user)
-                <div class="modal fade" id="modalDetailAll{{ $user->user_id }}" tabindex="-1"
-                    aria-labelledby="modalDetailAllLabel{{ $user->user_id }}" aria-hidden="true">
+                <div class="modal fade" id="modalDetailAll{{ $user->ubahuser_id }}" tabindex="-1"
+                    aria-labelledby="modalDetailAllLabel{{ $user->ubahuser_id }}" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header bg-dark text-white">
-                                <h5 class="modal-title" id="modalDetailAllLabel{{ $user->user_id }}">Detail Pegawai</h5>
+                                <h5 class="modal-title" id="modalDetailAllLabel{{ $user->ubahuser_id }}">Detail Pegawai
+                                </h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3">
                                     <div class="col-md-4 text-center">
-                                        <img src="{{ ($user->user_foto && $user->user_foto != '-') ? asset('storage/foto/'.$user->user_foto) : asset('assets/image/pemprov.png') }}"
+                                        <img src="{{ ($user->ubahuser_foto && $user->ubahuser_foto != '-') ? asset($user->ubahuser_foto) : asset('assets/image/pemprov.png') }}"
                                             alt="Foto Pegawai" class="img-thumbnail rounded shadow-sm" width="384px"
                                             height="auto">
                                     </div>
@@ -249,40 +250,40 @@
                                             </tr>
                                             <tr>
                                                 <th width="30%">NIP</th>
-                                                <td>: {{ $user->user_nip }}</td>
+                                                <td>: {{ $user->ubahuser_nip }}</td>
                                             </tr>
                                             <tr>
                                                 <th>NIK</th>
-                                                <td>: {{ $user->user_nik }}</td>
+                                                <td>: {{ $user->ubahuser_nik }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Nama</th>
-                                                <td>: {{ $user->user_nama }}</td>
+                                                <td>: {{ $user->ubahuser_nama }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Gelar Depan</th>
-                                                <td>: {{ $user->user_gelardepan ?? '-' }}</td>
+                                                <td>: {{ $user->ubahuser_gelardepan ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Gelar Belakang</th>
-                                                <td>: {{ $user->user_gelarbelakang ?? '-' }}</td>
+                                                <td>: {{ $user->ubahuser_gelarbelakang ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Jenis Kelamin</th>
                                                 <td>:
-                                                    {{ $user->user_jk == 'L' ? 'Laki-laki' : ($user->user_jk == 'P' ? 'Perempuan' : '-') }}
+                                                    {{ $user->ubahuser_jk == 'L' ? 'Laki-laki' : ($user->ubahuser_jk == 'P' ? 'Perempuan' : '-') }}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Tanggal Lahir</th>
                                                 <td>:
-                                                    {{ \Carbon\Carbon::parse($user->user_tgllahir)->translatedFormat('j F Y') }}
+                                                    {{ \Carbon\Carbon::parse($user->ubahuser_tgllahir)->translatedFormat('j F Y') }}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Pendidikan</th>
                                                 <td>:
-                                                    {{ $user->pendidikan_jenjang ?? ($user->pendidikan->pendidikan_jurusan ?? '-') }}
+                                                    {{ $user->pendidikan_jenjang.' '.$user->pendidikan_jurusan ?? '-' }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -303,7 +304,7 @@
                                             </tr>
                                             <tr>
                                                 <th>Kelas Jabatan</th>
-                                                <td>: Kelas Jabatan {{ $user->user_kelasjabatan ?? '-' }}</td>
+                                                <td>: Kelas Jabatan {{ $user->ubahuser_kelasjabatan ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Unit Kerja</th>
@@ -312,19 +313,19 @@
                                             <tr>
                                                 <th>TMT</th>
                                                 <td>:
-                                                    {{ \Carbon\Carbon::parse($user->user_tmt)->translatedFormat('j F Y') }}
+                                                    {{ \Carbon\Carbon::parse($user->ubahuser_tmt)->translatedFormat('j F Y') }}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>SPMT</th>
                                                 <td>:
-                                                    {{ \Carbon\Carbon::parse($user->user_spmt)->translatedFormat('j F Y') }}
+                                                    {{ \Carbon\Carbon::parse($user->ubahuser_spmt)->translatedFormat('j F Y') }}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Jenis Kerja</th>
                                                 <td>:
-                                                    {{ $user->user_jeniskerja == '1' ? 'PNS' : ($user->user_jeniskerja == '2' ? 'PPPK' : '-') }}
+                                                    {{ $user->ubahuser_jeniskerja == '1' ? 'PNS' : ($user->ubahuser_jeniskerja == '2' ? 'PPPK' : '-') }}
                                                 </td>
                                             </tr>
                                             <!-- Informasi Kontak -->
@@ -333,47 +334,50 @@
                                             </tr>
                                             <tr>
                                                 <th>Alamat</th>
-                                                <td>: {{ $user->user_alamat ?? '-' }}</td>
+                                                <td>: {{ $user->ubahuser_alamat ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>No. Telepon</th>
-                                                <td>: {{ $user->user_notelp ?? '-' }}</td>
+                                                <td>: {{ $user->ubahuser_notelp ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Email</th>
-                                                <td>: {{ $user->user_email ?? '-' }}</td>
+                                                <td>: {{ $user->ubahuser_email ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>BPJS</th>
-                                                <td>: {{ $user->user_bpjs ?? '-' }}</td>
+                                                <td>: {{ $user->ubahuser_bpjs ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>No. Rekening</th>
-                                                <td>: {{ $user->user_norek ?? '-' }}</td>
+                                                <td>: {{ $user->ubahuser_norek ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>NPWP</th>
-                                                <td>: {{ $user->user_npwp ?? '-' }}</td>
+                                                <td>: {{ $user->ubahuser_npwp ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Jumlah Tanggungan</th>
-                                                <td>: {{ $user->user_jmltanggungan ?? '-' }} Orang</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Status</th>
-                                                <td>:
-                                                    @if($user->user_status == '1')
-                                                    <span class="badge bg-success">Aktif</span>
-                                                    @else
-                                                    <span class="badge bg-secondary">Tidak Aktif</span>
-                                                    @endif
-                                                </td>
+                                                <td>: {{ $user->ubahuser_jmltanggungan ?? '-' }} Orang</td>
                                             </tr>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <form action="{{ route('kepegawaian.verifikasi.user', $user->ubahuser_id) }}"
+                                    method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PUT')
+                                    @if($user->ubahuser_status == 1)
+                                    <span class="badge bg-success me-3">Sudah Diverifikasi</span>
+                                    @else
+                                    <button type="submit" class="btn btn-primary"
+                                        onclick="return confirm('Yakin ingin memverifikasi data ini?')">
+                                        Verifikasi
+                                    </button>
+                                    @endif
+                                </form>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                             </div>
                         </div>
