@@ -181,7 +181,7 @@
                         </div>
 
                         <div class="text-center mb-4">
-                            <img src="{{ $user->user_foto != '-' ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"
+                            <img src="{{ $user->user_foto && $user->user_foto != '-' ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"
                                 alt="Foto Pegawai"
                                 style="width:120px; height:180px; object-fit:cover; border-radius:5px; border:1px solid #ccc;">
                         </div>
