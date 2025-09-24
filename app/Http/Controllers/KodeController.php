@@ -1079,8 +1079,6 @@ class KodeController extends Controller
         $user->user_pendidikan = $request->user_pendidikan;
         $user->user_jeniskerja = $request->user_jeniskerja;
 
-        // Foto langsung diisi "-" karena nanti di upload terpisah
-        $user->user_foto = '-';
 
         $user->save();
 
