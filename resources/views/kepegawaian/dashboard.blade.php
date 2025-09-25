@@ -85,8 +85,8 @@
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-badge text-dark fs-2 mb-2"></i>
-                                <h6 class="fw-semibold">Pemuktahiran PNS</h6>
-                                <p class="display-6 fw-bold text-dark">{{ @$pemuktahiranPns }}</p>
+                                <h6 class="fw-semibold">Belum Ada Foto</h6>
+                                <p class="display-6 fw-bold text-dark">{{ @$pemuktahiranFoto }}</p>
                             </div>
                         </div>
                     </div>
@@ -94,8 +94,8 @@
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-workspace text-danger fs-2 mb-2"></i>
-                                <h6 class="fw-semibold">Pemuktahiran PPPK</h6>
-                                <p class="display-6 fw-bold text-danger">{{ @$pemuktahiranPppk }}</p>
+                                <h6 class="fw-semibold">Jabatan Masih PPPK belum sesuai</h6>
+                                <p class="display-6 fw-bold text-danger">{{ @$pemuktahiranJabatan }}</p>
                             </div>
                         </div>
                     </div>

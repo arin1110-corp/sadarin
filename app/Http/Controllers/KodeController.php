@@ -847,9 +847,9 @@ class KodeController extends Controller
         $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
         $totalPegawai = ModelUser::where('user_status', 1)->count();
 
-        $pemuktahiran = ModelUbahUser::where('ubahuser_status', 0)->count();
-        $pemuktahiranPns = ModelUbahUser::where('ubahuser_status', 0)->where('ubahuser_jeniskerja', 1)->count();
-        $pemuktahiranPppk = ModelUbahUser::where('ubahuser_status', 0)->where('ubahuser_jeniskerja', 2)->count();
+        $pemuktahiran = ModelUser::where('user_tmt', !'1990-01-01')->count();
+        $pemuktahiranFoto = ModelUser::where('user_foto', '-')->count();
+        $pemuktahiranJabatan = ModelUser::where('user_jabatan', 65)->count();
 
         return view('kepegawaian.dashboard', compact(
             'dataPegawai',
@@ -857,8 +857,8 @@ class KodeController extends Controller
             'datapnspegawai',
             'datapppkpegawai',
             'pemuktahiran',
-            'pemuktahiranPns',
-            'pemuktahiranPppk'
+            'pemuktahiranFoto',
+            'pemuktahiranJabatan'
         ));
     }
     public function dataPegawai()
