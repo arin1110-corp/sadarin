@@ -1112,6 +1112,141 @@ class KodeController extends Controller
         return redirect()->back()->with('success', 'Data pegawai berhasil diupdate.');
     }
 
+    public function dataPendidikan()
+    {
+        $pendidikans = DB::table('sadarin_pendidikan')->get();
+        return view('kepegawaian.pendidikan', compact('pendidikans'));
+    }
+
+    public function tambahPendidikan(Request $request)
+    {
+        $request->validate([
+            'pendidikan_jenjang' => 'required|string|max:100',
+            'pendidikan_jurusan' => 'required|string|max:255',
+            'pendidikan_status' => 'required|integer',
+        ]);
+
+        DB::table('sadarin_pendidikan')->insert([
+            'pendidikan_jenjang' => $request->pendidikan_jenjang,
+            'pendidikan_jurusan' => $request->pendidikan_jurusan,
+            'pendidikan_status' => $request->pendidikan_status,
+        ]);
+
+        return redirect()->back()->with('success', 'Data pendidikan berhasil ditambahkan.');
+    }
+    public function hapusPendidikan(Request $request)
+    {
+        $id = $request->pendidikan_id;
+        DB::table('sadarin_pendidikan')->where('pendidikan_id', $id)->delete();
+        return redirect()->back()->with('success', 'Data pendidikan berhasil dihapus.');
+    }
+    public function ubahPendidikan(Request $request)
+    {
+        $request->validate([
+            'pendidikan_jenjang' => 'required|string|max:100',
+            'pendidikan_jurusan' => 'required|string|max:255',
+            'pendidikan_status' => 'required|integer',
+        ]);
+
+        DB::table('sadarin_pendidikan')
+            ->where('pendidikan_id', $request->pendidikan_id)
+            ->update([
+                'pendidikan_jenjang' => $request->pendidikan_jenjang,
+                'pendidikan_jurusan' => $request->pendidikan_jurusan,
+            ]);
+
+        return redirect()->back()->with('success', 'Data pendidikan berhasil diubah.');
+    }
+    public function dataGolongan()
+    {
+        $golongans = DB::table('sadarin_golongan')->get();
+        return view('kepegawaian.golongan', compact('golongans'));
+    }
+    public function tambahGolongan(Request $request)
+    {
+        $request->validate([
+            'golongan_nama' => 'required|string|max:100',
+            'golongan_pangkat' => 'nullable|string|max:255',
+            'golongan_status' => 'required|integer',
+        ]);
+
+        DB::table('sadarin_golongan')->insert([
+            'golongan_nama' => $request->golongan_nama,
+            'golongan_pangkat' => $request->golongan_pangkat,
+            'golongan_status' => $request->golongan_status,
+        ]);
+
+        return redirect()->back()->with('success', 'Data golongan berhasil ditambahkan.');
+    }
+    public function hapusGolongan(Request $request)
+    {
+        $id = $request->golongan_id;
+        DB::table('sadarin_golongan')->where('golongan_id', $id)->delete();
+        return redirect()->back()->with('success', 'Data golongan berhasil dihapus.');
+    }
+    public function ubahGolongan(Request $request)
+    {
+        $request->validate([
+            'golongan_nama' => 'required|string|max:100',
+            'golongan_kategori' => 'nullable|string|max:255',
+            'golongan_status' => 'required|integer',
+        ]);
+
+        DB::table('sadarin_golongan')
+            ->where('golongan_id', $request->golongan_id)
+            ->update([
+                'golongan_nama' => $request->golongan_nama,
+                'golongan_kategori' => $request->golongan_pangkat,
+                'golongan_status' => $request->golongan_status,
+            ]);
+
+        return redirect()->back()->with('success', 'Data golongan berhasil diubah.');
+    }
+    public function dataJabatan()
+    {
+        $jabatans = DB::table('sadarin_jabatan')->get();
+        return view('kepegawaian.jabatan', compact('jabatans'));
+    }
+    public function tambahJabatan(Request $request)
+    {
+        $request->validate([
+            'jabatan_nama' => 'required|string|max:255',
+            'jabatan_kategori' => 'required|string|max:255',
+            'jabatan_status' => 'required|integer',
+        ]);
+
+        DB::table('sadarin_jabatan')->insert([
+            'jabatan_nama' => $request->jabatan_nama,
+            'jabatan_kategori' => $request->jabatan_kategori,
+            'jabatan_status' => $request->jabatan_status,
+        ]);
+
+        return redirect()->back()->with('success', 'Data jabatan berhasil ditambahkan.');
+    }
+    public function hapusJabatan(Request $request)
+    {
+        $id = $request->jabatan_id;
+        DB::table('sadarin_jabatan')->where('jabatan_id', $id)->delete();
+        return redirect()->back()->with('success', 'Data jabatan berhasil dihapus.');
+    }
+    public function ubahJabatan(Request $request)
+    {
+        $request->validate([
+            'jabatan_nama' => 'required|string|max:255',
+            'jabatan_kategori' => 'required|string|max:255',
+            'jabatan_status' => 'required|integer',
+        ]);
+
+        DB::table('sadarin_jabatan')
+            ->where('jabatan_id', $request->jabatan_id)
+            ->update([
+                'jabatan_nama' => $request->jabatan_nama,
+                'jabatan_kategori' => $request->jabatan_kategori,
+                'jabatan_status' => $request->jabatan_status,
+            ]);
+
+        return redirect()->back()->with('success', 'Data jabatan berhasil diubah.');
+    }
     public function verifikasiPemuktahiran($id)
     {
         $ubah = ModelUbahUser::findOrFail($id);

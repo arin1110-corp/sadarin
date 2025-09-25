@@ -74,11 +74,25 @@ Route::get('/export-pegawai', [KodeController::class, 'exportPegawai'])->name('k
 Route::get('/pemuktahiran-data', [KodeController::class, 'pemuktahiranData'])->name('kepegawaian.data.pegawai.pemuktahiran');
 Route::get('/data-eselon', [KodeController::class, 'dataEselon'])->name('kepegawaian.data.eselon');
 Route::get('/data-jabatan', [KodeController::class, 'dataJabatan'])->name('kepegawaian.data.jabatan');
+Route::post('/tambah-jabatan', [KodeController::class, 'tambahJabatan'])->name('kepegawaian.tambah.jabatan');
+Route::post('/edit-jabatan', [KodeController::class, 'ubahJabatan'])->name('kepegawaian.edit.jabatan');
+Route::post('/hapus-jabatan', [KodeController::class, 'hapusJabatan'])->name('kepegawaian.hapus.jabatan');
+
 Route::get('/data-golongan', [KodeController::class, 'dataGolongan'])->name('kepegawaian.data.golongan');
+Route::post('/tambah-golongan', [KodeController::class, 'tambahGolongan'])->name('kepegawaian.tambah.golongan');
+Route::post('/edit-golongan', [KodeController::class, 'ubahGolongan'])->name('kepegawaian.edit.golongan');
+Route::post('/hapus-golongan', [KodeController::class, 'hapusGolongan'])->name('kepegawaian.hapus.golongan');
+
 Route::get('/data-pendidikan', [KodeController::class, 'dataPendidikan'])->name('kepegawaian.data.pendidikan');
+Route::post('/tambah-pendidikan', [KodeController::class, 'tambahPendidikan'])->name('kepegawaian.tambah.pendidikan');
+Route::post('/edit-pendidikan', [KodeController::class, 'ubahPendidikan'])->name('kepegawaian.edit.pendidikan');
+Route::post('/hapus-pendidikan', [KodeController::class, 'hapusPendidikan'])->name('kepegawaian.hapus.pendidikan');
+
+
 Route::get('/data-bidang', [KodeController::class, 'dataBidang'])->name('kepegawaian.data.bidang');
 Route::get('/data-pegawai', [KodeController::class, 'dataPegawai'])->name('kepegawaian.data.pegawai');
 Route::put('/verifikasi-user/{id}', [KodeController::class, 'verifikasiPemuktahiran'])->name('kepegawaian.verifikasi.user');
+
 
 
 
