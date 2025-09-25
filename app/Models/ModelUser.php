@@ -49,6 +49,10 @@ class ModelUser extends Model
     {
         return $this->belongsTo(ModelJenisKerja::class, 'user_jeniskerja', 'jeniskerja_id');
     }
+    public function pendidikan()
+    {
+        return $this->belongsTo(ModelPendidikan::class, 'user_pendidikan', 'pendidikan_id');
+    }
 
 
     // Accessor untuk tanggal pensiun

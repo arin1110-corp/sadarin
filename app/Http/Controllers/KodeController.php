@@ -1296,7 +1296,9 @@ class KodeController extends Controller
         $endThisMonth   = $now->copy()->endOfMonth();
 
         // ambil data user yang punya tanggal lahir (optimalkan with() sesuai relasi di projectmu)
-        $users = ModelUser::with(['jabatan', 'eselon'])->whereNotNull('user_tgllahir')->get();
+        $users = ModelUser::with(['jabatan', 'eselon', 'bidang', 'pendidikan', 'golongan'])
+            ->whereNotNull('user_tgllahir')
+            ->get();
 
         // hitung tanggal_pensiun untuk tiap user (pakai accessor jika sudah ada di model)
         $users = $users->map(function ($u) {
