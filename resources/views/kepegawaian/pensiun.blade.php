@@ -228,7 +228,8 @@
                                             <tr>
                                                 <th>Pendidikan</th>
                                                 <td>:
-                                                    {{ $pegawai->pendidikan_jenjang ?? ($pegawai->pendidikan->pendidikan_jurusan ?? '-') }}
+                                                    {{ $pegawai->pendidikan_jenjang ?? '-' }}
+                                                    {{ $pegawai->pendidikan_jurusan ? ' ' . $pegawai->pendidikan_jurusan : '' }}
                                                 </td>
                                             </tr>
                                             <tr>
