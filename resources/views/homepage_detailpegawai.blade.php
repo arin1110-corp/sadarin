@@ -15,6 +15,8 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         html,
         body {
@@ -626,6 +628,47 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap Select JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+
+
+    <!-- jQuery (wajib untuk Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Untuk Jabatan
+            $('select[name="jabatan_id"]').select2({
+                dropdownParent: $('#editPegawaiModal'),
+                width: '100%'
+            });
+
+            // Untuk Bidang
+            $('select[name="bidang_id"]').select2({
+                dropdownParent: $('#editPegawaiModal'),
+                width: '100%'
+            });
+
+            // Untuk Golongan
+            $('select[name="user_golongan"]').select2({
+                dropdownParent: $('#editPegawaiModal'),
+                width: '100%'
+            });
+
+            // Untuk Eselon
+            $('select[name="user_eselon"]').select2({
+                dropdownParent: $('#editPegawaiModal'),
+                width: '100%'
+            });
+
+            // Untuk Pendidikan
+            $('select[name="user_pendidikan"]').select2({
+                dropdownParent: $('#editPegawaiModal'),
+                width: '100%'
+            });
+        });
+    </script>
 
 </body>
 
