@@ -9,50 +9,50 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
-        body {
-            background: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-        }
+    body {
+        background: #f8f9fa;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-        .container {
-            max-width: 960px;
-            margin-top: 50px;
-            background: white;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-        }
+    .container {
+        max-width: 960px;
+        margin-top: 50px;
+        background: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        padding: 40px;
+    }
 
-        .title h1 {
-            font-weight: bold;
-            font-size: 50px;
-            line-height: 1.2;
-        }
+    .title h1 {
+        font-weight: bold;
+        font-size: 50px;
+        line-height: 1.2;
+    }
 
-        .title .in {
-            color: orangered;
-        }
+    .title .in {
+        color: orangered;
+    }
 
-        .form-access {
-            margin-top: 30px;
-            padding: 30px;
-            background: #f1f1f1;
-            border-radius: 15px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-        }
+    .form-access {
+        margin-top: 30px;
+        padding: 30px;
+        background: #f1f1f1;
+        border-radius: 15px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    }
 
-        .form-access input {
-            border-radius: 10px;
-            height: 45px;
-        }
+    .form-access input {
+        border-radius: 10px;
+        height: 45px;
+    }
 
-        .form-access button {
-            border-radius: 10px;
-        }
+    .form-access button {
+        border-radius: 10px;
+    }
 
-        footer {
-            font-size: 14px;
-        }
+    footer {
+        font-size: 14px;
+    }
     </style>
 </head>
 
@@ -90,7 +90,7 @@
         </div>
 
         <div class="mt-5">
-            <a href="#" class="btn btn-outline-secondary me-2">ADMIN SECTION</a>
+            <a href="{{ route('login') }}" class="btn btn-outline-secondary me-2">LOGIN ADMIN</a>
             <a href="#" class="btn btn-outline-primary">Panduan Pengguna</a>
         </div>
 

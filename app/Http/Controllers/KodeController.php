@@ -24,12 +24,14 @@ use App\Services\GoogleDriveService;
 use App\Models\ModelPengumpulanBerkas;
 use App\Models\ModelUbahUser;
 use Carbon\Carbon;
+use App\Models\ModelAdmin;
 use Illuminate\Support\Facades\Validator;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDrive;
 use Google\Service\Drive\DriveFile;
 use Intervention\Image\Colors\Rgb\Channels\Red;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Facades\Hash;
 
 class KodeController extends Controller
 {
@@ -41,6 +43,64 @@ class KodeController extends Controller
     public function __construct(GoogleDriveService $drive)
     {
         $this->drive = $drive;
+    }
+    public function login()
+    {
+        return view('homepage_login');
+    }
+    // Proses login
+    public function loginSubmit(Request $request)
+    {
+        $request->validate([
+            'nip' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        // Cari admin berdasarkan NIP
+        $admin = ModelAdmin::where('admin_nip', $request->nip)->first();
+
+        if (!$admin) {
+            return back()->withErrors(['login' => 'NIP tidak ditemukan'])->withInput();
+        }
+
+        // Cek password
+        if (!Hash::check($request->password, $admin->admin_password)) {
+            return back()->withErrors(['login' => 'Password salah'])->withInput();
+        }
+
+        // Cek status aktif
+        if ($admin->admin_status != 1) {
+            return back()->withErrors(['login' => 'Akun tidak aktif'])->withInput();
+        }
+
+
+
+        // Redirect berdasarkan role
+        if ($admin->admin_role === 'Admin') {
+            // Simpan session
+            session([
+                'admin_id' => $admin->admin_id,
+                'admin_role' => $admin->admin_role,
+                'admin_nip' => $admin->admin_nip
+            ]);
+            return redirect()->route('dashboard'); // route dashboard admin
+        } elseif ($admin->admin_role === 'Kepegawaian') {
+            session([
+                'kepegawaian_id' => $admin->admin_id,
+                'kepegawaian_role' => $admin->admin_role,
+                'kepegawaian_nip' => $admin->admin_nip
+            ]);
+            return redirect()->route('kepegawaian.dashboard'); // route dashboard kepegawaian
+        }
+
+        return back()->withErrors(['login' => 'Role tidak dikenali']);
+    }
+
+    // Logout
+    public function logout()
+    {
+        session()->forget(['admin_id', 'admin_role', 'admin_nip']);
+        return redirect()->route('akses.form');
     }
     public function form()
     {
