@@ -1247,6 +1247,56 @@ class KodeController extends Controller
 
         return redirect()->back()->with('success', 'Data jabatan berhasil diubah.');
     }
+    public function dataEselon()
+    {
+        $eselons = DB::table('sadarin_eselon')->get();
+        return view('kepegawaian.eselon', compact('eselons'));
+    }
+    public function tambahEselon(Request $request)
+    {
+        $request->validate([
+            'eselon_nama' => 'required|string|max:100',
+            'eselon_status' => 'required|integer',
+        ]);
+
+        DB::table('sadarin_eselon')->insert([
+            'eselon_nama' => $request->eselon_nama,
+            'eselon_status' => $request->eselon_status,
+        ]);
+
+        return redirect()->back()->with('success', 'Data eselon berhasil ditambahkan.');
+    }
+    public function hapusEselon(Request $request)
+    {
+        $id = $request->eselon_id;
+        DB::table('sadarin_eselon')->where('eselon_id', $id)->delete();
+        return redirect()->back()->with('success', 'Data eselon berhasil dihapus.');
+    }
+    public function ubahEselon(Request $request)
+    {
+        $request->validate([
+            'eselon_nama' => 'required|string|max:100',
+            'eselon_status' => 'required|integer',
+        ]);
+
+        DB::table('sadarin_eselon')
+            ->where('eselon_id', $request->eselon_id)
+            ->update([
+                'eselon_nama' => $request->eselon_nama,
+                'eselon_status' => $request->eselon_status,
+            ]);
+
+        return redirect()->back()->with('success', 'Data eselon berhasil diubah.');
+    }
+    public function dataPensiun()
+    {
+        $dataPegawai = ModelUser::where('user_status', 1)
+            ->where('user_jeniskerja', 1) // hanya PNS
+            ->where('user_tmt', '!=', '1990-01-01') // yang sudah update TMT
+            ->get();
+
+        return view('kepegawaian.pensiun', compact('dataPegawai'));
+    }
     public function verifikasiPemuktahiran($id)
     {
         $ubah = ModelUbahUser::findOrFail($id);

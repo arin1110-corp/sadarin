@@ -24,7 +24,6 @@
                         <i class="bi bi-speedometer2 me-2"></i> Dashboard
                     </h2>
                     <div class="d-flex align-items-center gap-3">
-                        <input class="form-control form-control-sm" type="text" placeholder="🔍 Cari data...">
                         <div class="dropdown">
                             <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
                                 data-bs-toggle="dropdown">
@@ -41,7 +40,7 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-                        <h5 class="mb-0"><i class="bi bi-mortarboard me-2"></i> Data Golongan</h5>
+                        <h5 class="mb-0"><i class="bi bi-diagram-3 me-2"></i> Data Golongan</h5>
                         <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#tambahDataModal">
                             <i class="bi bi-plus-lg me-1"></i> Tambah Data
                         </button>

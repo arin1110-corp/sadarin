@@ -40,7 +40,7 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-                        <h5 class="mb-0"><i class="bi bi-briefcase me-2"></i> Data Jabatan</h5>
+                        <h5 class="mb-0"><i class="bi bi-layers me-2"></i> Data Eselon</h5>
                         <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#tambahDataModal">
                             <i class="bi bi-plus-lg me-1"></i> Tambah Data
                         </button>
@@ -69,26 +69,21 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="tambahDataModalLabel">Tambah Data Jabatan</h5>
+                                <h5 class="modal-title" id="tambahDataModalLabel">Tambah Data Eselon</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('kepegawaian.tambah.jabatan') }}" method="POST">
+                            <form action="{{ route('kepegawaian.tambah.eselon') }}" method="POST">
                                 @csrf
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <label for="jabatan_nama" class="form-label">Nama Jabatan</label>
-                                        <input type="text" class="form-control" id="jabatan_nama" name="jabatan_nama"
+                                        <label for="eselon_nama" class="form-label">Nama Eselon</label>
+                                        <input type="text" class="form-control" id="eselon_nama" name="eselon_nama"
                                             required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="jabatan_kategori" class="form-label">Kategori Jabatan</label>
-                                        <input type="text" class="form-control" id="jabatan_kategori"
-                                            name="jabatan_kategori" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="jabatan_status" class="form-label">Status</label>
-                                        <select class="form-select" id="jabatan_status" name="jabatan_status" required>
+                                        <label for="eselon_status" class="form-label">Status</label>
+                                        <select class="form-select" id="eselon_status" name="eselon_status" required>
                                             <option value="1">Aktif</option>
                                             <option value="0">Tidak Aktif</option>
                                         </select>
@@ -111,20 +106,18 @@
                             <thead class="table-dark">
                                 <tr class="text-center">
                                     <th>#</th>
-                                    <th>Nama Jabatan</th>
-                                    <th>Kategori Jabatan</th>
+                                    <th>Nama Eselon</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($jabatans as $no => $user)
+                                @foreach($eselons as $no => $user)
                                 <tr>
                                     <td class="text-center">{{ $no + 1 }}</td>
-                                    <td>{{ $user->jabatan_nama }}</td>
-                                    <td>{{ $user->jabatan_kategori }}</td>
+                                    <td>{{ $user->eselon_nama }}</td>
                                     <td class="text-center">
-                                        @if($user->jabatan_status == '1')
+                                        @if($user->eselon_status == '1')
                                         <span class="badge bg-success">Aktif</span>
                                         @else
                                         <span class="badge bg-secondary">Tidak Aktif</span>
@@ -132,11 +125,11 @@
                                     </td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#modalEdit{{ $user->jabatan_id }}">
+                                            data-bs-target="#modalEdit{{ $user->eselon_id }}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                         <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#modalHapus{{ $user->jabatan_id }}">
+                                            data-bs-target="#modalHapus{{ $user->eselon_id }}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </td>
@@ -149,38 +142,31 @@
         </div>
 
         {{-- modal edit --}}
-        @foreach($jabatans as $user)
-        <div class="modal fade" id="modalEdit{{ $user->jabatan_id }}" tabindex="-1"
-            aria-labelledby="modalEditLabel{{ $user->jabatan_id }}" aria-hidden="true">
+        @foreach($eselons as $user)
+        <div class="modal fade" id="modalEdit{{ $user->eselon_id }}" tabindex="-1"
+            aria-labelledby="modalEditLabel{{ $user->eselon_id }}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditLabel{{ $user->jabatan_id }}">Edit Data Jabatan</h5>
+                        <h5 class="modal-title" id="modalEditLabel{{ $user->eselon_id }}">Edit Data Eselon</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="{{ route('kepegawaian.edit.jabatan') }}" method="POST">
+                    <form action="{{ route('kepegawaian.edit.eselon') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="jabatan_id" value="{{ $user->jabatan_id }}">
+                        <input type="hidden" name="eselon_id" value="{{ $user->eselon_id }}">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="jabatan_nama_{{ $user->jabatan_id }}" class="form-label">Pendidikan
-                                    Jenjang</label>
-                                <input type="text" class="form-control" id="jabatan_nama_{{ $user->jabatan_id }}"
-                                    name="jabatan_nama" value="{{ $user->jabatan_nama }}" required>
+                                <label for="eselon_nama_{{ $user->eselon_id }}" class="form-label">Eselon Nama</label>
+                                <input type="text" class="form-control" id="eselon_nama_{{ $user->eselon_id }}"
+                                    name="eselon_nama" value="{{ $user->eselon_nama }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="jabatan_kategori_{{ $user->jabatan_id }}" class="form-label">Pendidikan
-                                    Jurusan</label>
-                                <input type="text" class="form-control" id="jabatan_kategori_{{ $user->jabatan_id }}"
-                                    name="jabatan_kategori" value="{{ $user->jabatan_kategori }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="jabatan_status_{{ $user->jabatan_id }}" class="form-label">Status</label>
-                                <select class="form-select" id="jabatan_status_{{ $user->jabatan_id }}"
-                                    name="jabatan_status" required>
-                                    <option value="1" {{ $user->jabatan_status == '1' ? 'selected' : '' }}>Aktif
+                                <label for="eselon_status_{{ $user->eselon_id }}" class="form-label">Status</label>
+                                <select class="form-select" id="eselon_status_{{ $user->eselon_id }}"
+                                    name="eselon_status" required>
+                                    <option value="1" {{ $user->eselon_status == '1' ? 'selected' : '' }}>Aktif
                                     </option>
-                                    <option value="0" {{ $user->jabatan_status == '0' ? 'selected' : '' }}>Tidak
+                                    <option value="0" {{ $user->eselon_status == '0' ? 'selected' : '' }}>Tidak
                                         Aktif
                                     </option>
                                 </select>
@@ -197,23 +183,23 @@
         @endforeach
 
         {{-- modal hapus --}}
-        @foreach($jabatans as $user)
-        <div class="modal fade" id="modalHapus{{ $user->jabatan_id }}" tabindex="-1"
-            aria-labelledby="modalHapusLabel{{ $user->jabatan_id }}" aria-hidden="true">
+        @foreach($eselons as $user)
+        <div class="modal fade" id="modalHapus{{ $user->eselon_id }}" tabindex="-1"
+            aria-labelledby="modalHapusLabel{{ $user->eselon_id }}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalHapusLabel{{ $user->jabatan_id }}">Hapus Data Jabatan
+                        <h5 class="modal-title" id="modalHapusLabel{{ $user->eselon_id }}">Hapus Data Eselon
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="{{ route('kepegawaian.hapus.jabatan') }}" method="POST">
+                    <form action="{{ route('kepegawaian.hapus.eselon') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="jabatan_id" value="{{ $user->jabatan_id }}">
+                        <input type="hidden" name="eselon_id" value="{{ $user->eselon_id }}">
                         <input type="hidden" name="action" value="delete">
                         <div class="modal-body">
-                            <p>Apakah Anda yakin ingin menghapus Data Jabatan
-                                <strong>{{ $user->jabatan_nama }} - {{ $user->jabatan_kategori }}</strong>?
+                            <p>Apakah Anda yakin ingin menghapus Data Eselon
+                                <strong>{{ $user->eselon_nama }}</strong>?
                             </p>
                         </div>
                         <div class="modal-footer">

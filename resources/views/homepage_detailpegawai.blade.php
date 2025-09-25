@@ -476,6 +476,61 @@
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Pendidikan -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Jenjang Pendidikan</label>
+                                <select name="user_pendidikan" class="form-select">
+                                    <option value="{{ $user->user_pendidikan }}">
+                                        {{ $user->pendidikan_jenjang }} - {{ $user->pendidikan_jurusan }}
+                                    </option>
+                                    @foreach($pendidikans as $pendidikan)
+                                    <option value="{{ $pendidikan->pendidikan_id }}"
+                                        {{ $user->user_pendidikan == $pendidikan->pendidikan_id ? 'selected' : '' }}>
+                                        {{ $pendidikan->pendidikan_jenjang }} - {{ $pendidikan->pendidikan_jurusan }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <!-- Golongan, Kelas Jabatan, Eselon -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Golongan</label>
+                                <select name="user_golongan" class="form-select">
+                                    <option value="{{ $user->user_golongan }}">
+                                        {{ $user->golongan_nama }}-{{ $user->golongan_pangkat }}
+                                    </option>
+                                    @foreach($golongans as $golongan)
+                                    <option value="{{ $golongan->golongan_id }}"
+                                        {{ $user->user_golongan == $golongan->golongan_id ? 'selected' : '' }}>
+                                        {{ $golongan->golongan_nama }} - {{ $golongan->golongan_pangkat }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Kelas Jabatan</label>
+                                <input type="text" name="user_kelasjabatan" class="form-control"
+                                    value="{{ $user->user_kelasjabatan }}">
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Eselon</label>
+                                <select name="user_eselon" class="form-select">
+                                    <option value="{{ $user->user_eselon }}">{{ $user->eselon_nama }}</option>
+                                    @foreach($eselons as $eselon)
+                                    <option value="{{ $eselon->eselon_id }}"
+                                        {{ $user->user_eselon == $eselon->eselon_id ? 'selected' : '' }}>
+                                        {{ $eselon->eselon_nama }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- Email & Telepon -->
                         <div class="row mb-3">
                             <div class="col">
@@ -518,40 +573,6 @@
                             <textarea name="user_alamat" class="form-control">{{ $user->user_alamat }}</textarea>
                         </div>
 
-                        <!-- Golongan, Kelas Jabatan, Eselon -->
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label class="form-label">Golongan</label>
-                                <select name="user_golongan" class="form-select">
-                                    <option value="{{ $user->user_golongan }}">
-                                        {{ $user->golongan_nama }}-{{ $user->golongan_pangkat }}
-                                    </option>
-                                    @foreach($golongans as $golongan)
-                                    <option value="{{ $golongan->golongan_id }}"
-                                        {{ $user->user_golongan == $golongan->golongan_id ? 'selected' : '' }}>
-                                        {{ $golongan->golongan_nama }} - {{ $golongan->golongan_pangkat }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label class="form-label">Kelas Jabatan</label>
-                                <input type="text" name="user_kelasjabatan" class="form-control"
-                                    value="{{ $user->user_kelasjabatan }}">
-                            </div>
-                            <div class="col">
-                                <label class="form-label">Eselon</label>
-                                <select name="user_eselon" class="form-select">
-                                    <option value="{{ $user->user_eselon }}">{{ $user->eselon_nama }}</option>
-                                    @foreach($eselons as $eselon)
-                                    <option value="{{ $eselon->eselon_id }}"
-                                        {{ $user->user_eselon == $eselon->eselon_id ? 'selected' : '' }}>
-                                        {{ $eselon->eselon_nama }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
 
                         <!-- SPMT & TMT -->
                         <div class="row mb-3">
@@ -578,23 +599,6 @@
                             </div>
                         </div>
 
-                        <!-- Pendidikan -->
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label class="form-label">Jenjang Pendidikan</label>
-                                <select name="user_pendidikan" class="form-select">
-                                    <option value="{{ $user->user_pendidikan }}">
-                                        {{ $user->pendidikan_jenjang }} - {{ $user->pendidikan_jurusan }}
-                                    </option>
-                                    @foreach($pendidikans as $pendidikan)
-                                    <option value="{{ $pendidikan->pendidikan_id }}"
-                                        {{ $user->user_pendidikan == $pendidikan->pendidikan_id ? 'selected' : '' }}>
-                                        {{ $pendidikan->pendidikan_jenjang }} - {{ $pendidikan->pendidikan_jurusan }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
                         <div class="row mb-3">
                             <label class="form-label">Status Kerja</label>
                             <input type="text" class="form-control"

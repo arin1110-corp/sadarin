@@ -72,7 +72,16 @@ Route::get('/export-paktaintegritas', [KodeController::class, 'exportPaktaIntegr
 Route::get('/import-pegawai', [KodeController::class, 'syncPegawai'])->name('kepegawaian.import.pegawai');
 Route::get('/export-pegawai', [KodeController::class, 'exportPegawai'])->name('kepegawaian.export.pegawai');
 Route::get('/pemuktahiran-data', [KodeController::class, 'pemuktahiranData'])->name('kepegawaian.data.pegawai.pemuktahiran');
+
+Route::get('/data-naikpangkat', [KodeController::class, 'dataNaikPangkat'])->name('kepegawaian.data.naikpangkat');
+
+Route::get('/data-pensiun', [KodeController::class, 'dataPensiun'])->name('kepegawaian.data.pensiun');
+
 Route::get('/data-eselon', [KodeController::class, 'dataEselon'])->name('kepegawaian.data.eselon');
+Route::post('/tambah-eselon', [KodeController::class, 'tambahEselon'])->name('kepegawaian.tambah.eselon');
+Route::post('/edit-eselon', [KodeController::class, 'ubahEselon'])->name('kepegawaian.edit.eselon');
+Route::post('/hapus-eselon', [KodeController::class, 'hapusEselon'])->name('kepegawaian.hapus.eselon');
+
 Route::get('/data-jabatan', [KodeController::class, 'dataJabatan'])->name('kepegawaian.data.jabatan');
 Route::post('/tambah-jabatan', [KodeController::class, 'tambahJabatan'])->name('kepegawaian.tambah.jabatan');
 Route::post('/edit-jabatan', [KodeController::class, 'ubahJabatan'])->name('kepegawaian.edit.jabatan');
@@ -87,7 +96,6 @@ Route::get('/data-pendidikan', [KodeController::class, 'dataPendidikan'])->name(
 Route::post('/tambah-pendidikan', [KodeController::class, 'tambahPendidikan'])->name('kepegawaian.tambah.pendidikan');
 Route::post('/edit-pendidikan', [KodeController::class, 'ubahPendidikan'])->name('kepegawaian.edit.pendidikan');
 Route::post('/hapus-pendidikan', [KodeController::class, 'hapusPendidikan'])->name('kepegawaian.hapus.pendidikan');
-
 
 Route::get('/data-bidang', [KodeController::class, 'dataBidang'])->name('kepegawaian.data.bidang');
 Route::get('/data-pegawai', [KodeController::class, 'dataPegawai'])->name('kepegawaian.data.pegawai');

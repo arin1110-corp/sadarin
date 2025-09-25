@@ -11,11 +11,12 @@
     $menuItems = [
     ['route' => 'kepegawaian.dashboard', 'icon' => 'bi-speedometer2', 'label' => 'Dashboard'],
     ['route' => 'kepegawaian.data.pegawai', 'icon' => 'bi-people', 'label' => 'Data Pegawai'],
+    ['route' => 'kepegawaian.data.naikpangkat', 'icon' => 'bi-person-fill-up', 'label' => 'Data Kenaikan Pangkat'],
+    ['route' => 'kepegawaian.data.pensiun', 'icon' => 'bi-person-fill-slash', 'label' => 'Data Pensiun'],
     ['route' => 'kepegawaian.data.pegawai.pemuktahiran', 'icon' => 'bi-person-plus', 'label' => 'Pemuktahiran Data'],
     ['route' => 'kepegawaian.data.golongan', 'icon' => 'bi-diagram-3', 'label' => 'Data Golongan'],
     ['route' => 'kepegawaian.data.jabatan', 'icon' => 'bi-briefcase', 'label' => 'Data Jabatan'],
     ['route' => 'kepegawaian.data.eselon', 'icon' => 'bi-layers', 'label' => 'Data Eselon'],
-    ['route' => 'kepegawaian.data.bidang', 'icon' => 'bi-diagram-2', 'label' => 'Data Bidang'],
     ['route' => 'kepegawaian.data.pendidikan', 'icon' => 'bi-mortarboard', 'label' => 'Data Pendidikan'],
     ['route' => 'kepegawaian.pakta.integritas', 'icon' => 'bi-card-text', 'label' => 'Pakta Integritas', 'param' =>
     'Pakta Integritas'],
