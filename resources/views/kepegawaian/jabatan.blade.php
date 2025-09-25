@@ -83,8 +83,11 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="jabatan_kategori" class="form-label">Kategori Jabatan</label>
-                                        <input type="text" class="form-control" id="jabatan_kategori"
-                                            name="jabatan_kategori" required>
+                                        <select class="form-select" id="jabatan_kategori" name="jabatan_kategori"
+                                            required>
+                                            <option value="Struktural">Struktural</option>
+                                            <option value="Fungsional">Fungsional</option>
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="jabatan_status" class="form-label">Status</label>
@@ -163,16 +166,25 @@
                         <input type="hidden" name="jabatan_id" value="{{ $user->jabatan_id }}">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="jabatan_nama_{{ $user->jabatan_id }}" class="form-label">Pendidikan
-                                    Jenjang</label>
+                                <label for="jabatan_nama_{{ $user->jabatan_id }}" class="form-label">Nama
+                                    Jabatan</label>
                                 <input type="text" class="form-control" id="jabatan_nama_{{ $user->jabatan_id }}"
                                     name="jabatan_nama" value="{{ $user->jabatan_nama }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="jabatan_kategori_{{ $user->jabatan_id }}" class="form-label">Pendidikan
-                                    Jurusan</label>
-                                <input type="text" class="form-control" id="jabatan_kategori_{{ $user->jabatan_id }}"
-                                    name="jabatan_kategori" value="{{ $user->jabatan_kategori }}" required>
+                                <label for="jabatan_kategori_{{ $user->jabatan_id }}" class="form-label">Kategori
+                                    Jabatan</label>
+                                <select class="form-select" id="jabatan_kategori_{{ $user->jabatan_id }}"
+                                    name="jabatan_kategori" required>
+                                    <option value="Struktural"
+                                        {{ $user->jabatan_kategori == 'Struktural' ? 'selected' : '' }}>
+                                        Struktural
+                                    </option>
+                                    <option value="Fungsional"
+                                        {{ $user->jabatan_kategori == 'Fungsional' ? 'selected' : '' }}>
+                                        Fungsional
+                                    </option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="jabatan_status_{{ $user->jabatan_id }}" class="form-label">Status</label>
