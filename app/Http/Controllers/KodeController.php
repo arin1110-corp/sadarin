@@ -23,6 +23,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Services\GoogleDriveService;
 use App\Models\ModelPengumpulanBerkas;
 use App\Models\ModelUbahUser;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDrive;
@@ -1290,13 +1291,156 @@ class KodeController extends Controller
     }
     public function dataPensiun()
     {
-        $dataPegawai = ModelUser::where('user_status', 1)
-            ->where('user_jeniskerja', 1) // hanya PNS
-            ->where('user_tmt', '!=', '1990-01-01') // yang sudah update TMT
-            ->get();
+        $now = Carbon::now();
+        $startThisMonth = $now->copy()->startOfMonth();
+        $endThisMonth   = $now->copy()->endOfMonth();
 
-        return view('kepegawaian.pensiun', compact('dataPegawai'));
+        // ambil data user yang punya tanggal lahir (optimalkan with() sesuai relasi di projectmu)
+        $users = ModelUser::with(['jabatan', 'eselon'])->whereNotNull('user_tgllahir')->get();
+
+        // hitung tanggal_pensiun untuk tiap user (pakai accessor jika sudah ada di model)
+        $users = $users->map(function ($u) {
+            if (isset($u->tanggal_pensiun) && $u->tanggal_pensiun instanceof Carbon) {
+                $tp = $u->tanggal_pensiun;
+            } else {
+                $tp = $this->hitungTanggalPensiun($u);
+            }
+            $u->tanggal_pensiun = $tp instanceof Carbon ? $tp : Carbon::parse($tp);
+            return $u;
+        });
+
+        // Statistik hitungan
+        $pensiunBulanIni   = $users->whereBetween('tanggal_pensiun', [$startThisMonth, $endThisMonth])->count();
+        $pensiunBulanDepan = $users->whereBetween('tanggal_pensiun', [
+            $now->copy()->addMonth()->startOfMonth(),
+            $now->copy()->addMonth()->endOfMonth()
+        ])->count();
+        $pensiun3Bulan = $users->whereBetween('tanggal_pensiun', [$now, $now->copy()->addMonths(3)->endOfMonth()])->count();
+        $pensiun6Bulan = $users->whereBetween('tanggal_pensiun', [$now, $now->copy()->addMonths(6)->endOfMonth()])->count();
+        $pensiun1Tahun = $users->whereBetween('tanggal_pensiun', [$now, $now->copy()->addYear()->endOfMonth()])->count();
+
+        // Statistik tahun 2025 dan 2026
+        $pensiun2025 = $users->filter(fn($u) => $u->tanggal_pensiun->year == 2025)->count();
+        $pensiun2026 = $users->filter(fn($u) => $u->tanggal_pensiun->year == 2026)->count();
+
+        // List detail pegawai yang pensiun tahun 2025 dan 2026 (collection of models)
+        $listPensiun2025 = $users->filter(fn($u) => $u->tanggal_pensiun->year == 2025)->sortBy('tanggal_pensiun');
+        $listPensiun2026 = $users->filter(fn($u) => $u->tanggal_pensiun->year == 2026)->sortBy('tanggal_pensiun');
+
+        // daftar pegawai yang pensiun 1 tahun ke depan (dari awal bulan sekarang sampai 1 tahun ke depan)
+        $daftarPensiun = $users->filter(function ($u) use ($startThisMonth, $now) {
+            return $u->tanggal_pensiun >= $startThisMonth && $u->tanggal_pensiun <= $now->copy()->addYear()->endOfYear();
+        })->sortBy('tanggal_pensiun')
+            // normalisasi supaya view mudah akses fields (tetap bisa pakai model kalau mau)
+            ->map(function ($u) {
+                return (object) [
+                    'id' => $u->user_id ?? $u->id ?? null,
+                    'user_id' => $u->user_id ?? $u->id ?? null,
+                    'user_nama' => $u->user_nama,
+                    'user_nip' => $u->user_nip,
+                    'user_jabatan' => $u->jabatan->jabatan_nama ?? ($u->user_jabatan ?? '-'),
+                    'user_eselon' => $u->eselon->eselon_nama ?? ($u->user_eselon ?? '-'),
+                    'user_jeniskerja' => $u->user_jeniskerja,
+                    'user_status' => $u->user_status ?? null,
+                    'user_jk' => $u->user_jk ?? null,
+                    'golongan_nama' => $u->golongan->golongan_nama ?? ($u->user_golongan ?? '-'),
+                    'golongan_pangkat' => $u->golongan->golongan_pangkat ?? null,
+                    'user_tmt' => $u->user_tmt ?? null,
+                    'user_spmt' => $u->user_spmt ?? null,
+
+                    'user_foto' => $u->user_foto ?? null,
+                    'tanggal_pensiun' => $u->tanggal_pensiun,
+                    'user_tgllahir' => $u->user_tgllahir ?? null,
+                    'user_alamat' => $u->user_alamat ?? null,
+                    'user_notelp' => $u->user_notelp ?? null,
+                    'user_email' => $u->user_email ?? null,
+                    'user_bpjs' => $u->user_bpjs ?? null,
+                    'user_norek' => $u->user_norek ?? null,
+                    'user_npwp' => $u->user_npwp ?? null,
+                    'user_jmltanggungan' => $u->user_jmltanggungan ?? null,
+                    'user_gelardepan' => $u->user_gelardepan ?? null,
+                    'user_gelarbelakang' => $u->user_gelarbelakang ?? null,
+                    'user_tempatlahir' => $u->user_tempatlahir ?? null,
+                ];
+            });
+
+        // statistik besar PNS & PPPK yang pensiun TAHUN INI
+        $pnsTahunIni = $users->filter(function ($u) use ($now) {
+            return ((string)$u->user_jeniskerja === '1' || $u->user_jeniskerja == 1)
+                && $u->tanggal_pensiun->year == $now->year;
+        })->count();
+
+        $pppkTahunIni = $users->filter(function ($u) use ($now) {
+            return ((string)$u->user_jeniskerja === '2' || $u->user_jeniskerja == 2)
+                && $u->tanggal_pensiun->year == $now->year;
+        })->count();
+
+        // opsional: statistik total agar sesuai bagian atas dashboard
+        $totalPegawai = ModelUser::count();
+        $datapnspegawai = ModelUser::where('user_jeniskerja', 1)->count();
+        $datapppkpegawai = ModelUser::where('user_jeniskerja', 2)->count();
+
+        return view('kepegawaian.pensiun', compact(
+            'totalPegawai',
+            'datapnspegawai',
+            'datapppkpegawai',
+            'pensiunBulanIni',
+            'pensiunBulanDepan',
+            'pensiun3Bulan',
+            'pensiun6Bulan',
+            'pensiun1Tahun',
+            'pensiun2025',
+            'pensiun2026',
+            'pnsTahunIni',
+            'pppkTahunIni',
+            'daftarPensiun',
+            'listPensiun2025',
+            'listPensiun2026'
+        ));
     }
+
+    /**
+     * Hitung tanggal pensiun berdasarkan nama/jabatan/kategori.
+     * (logika fleksibel: cari kata kunci seperti "ahli utama", "ahli madya", "eselon iii", "kepala dinas", dll)
+     */
+    protected function hitungTanggalPensiun($u)
+    {
+        $tglLahir = Carbon::parse($u->user_tgllahir);
+        $usia = 58; // default
+
+        $nama = strtolower($u->jabatan->jabatan_nama ?? ($u->user_jabatan ?? ''));
+        $kategori = strtolower($u->jabatan->jabatan_kategori ?? ($u->jabatan_kategori ?? ''));
+
+        // Struktural
+        if ($kategori === 'struktural' || str_contains($nama, 'eselon') || str_contains($nama, 'kepala dinas')) {
+            if (str_contains($nama, 'pimpinan tinggi madya')) {
+                $usia = 60;
+            } elseif (str_contains($nama, 'pimpinan tinggi pratama')) {
+                $usia = 60;
+            } elseif (str_contains($nama, 'kepala dinas')) {
+                $usia = 60;
+            } elseif (str_contains($nama, 'eselon iii') || str_contains($nama, 'eselon iv') || str_contains($nama, 'administrator') || str_contains($nama, 'pengawas')) {
+                $usia = 58;
+            }
+        }
+
+        // Fungsional
+        if ($kategori === 'fungsional' || str_contains($nama, 'ahli') || str_contains($nama, 'guru besar') || str_contains($nama, 'profesor')) {
+            if (str_contains($nama, 'ahli utama')) {
+                $usia = 65;
+            } elseif (str_contains($nama, 'ahli madya')) {
+                $usia = 60;
+            } elseif (str_contains($nama, 'guru besar') || str_contains($nama, 'profesor')) {
+                $usia = 70;
+            } else {
+                // default fungsional
+                $usia = 65;
+            }
+        }
+
+        return $tglLahir->copy()->addYears($usia);
+    }
+
     public function verifikasiPemuktahiran($id)
     {
         $ubah = ModelUbahUser::findOrFail($id);

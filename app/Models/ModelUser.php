@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+use Carbon\Carbon;
 
 class ModelUser extends Model
 {
@@ -44,5 +48,51 @@ class ModelUser extends Model
     public function jenisKerja()
     {
         return $this->belongsTo(ModelJenisKerja::class, 'user_jeniskerja', 'jeniskerja_id');
+    }
+
+
+    // Accessor untuk tanggal pensiun
+    public function getTanggalPensiunAttribute()
+    {
+        $tglLahir = Carbon::parse($this->user_tgllahir);
+        $usia = 58; // default
+
+        if ($this->jabatan) {
+            $namaJabatan = strtolower($this->jabatan->jabatan_nama);
+            $kategori    = strtolower($this->jabatan->jabatan_kategori);
+
+            // --- Jabatan Struktural ---
+            if ($kategori === 'struktural') {
+                if (str_contains($namaJabatan, 'pimpinan tinggi madya')) {
+                    $usia = 60; // usulan 63
+                } elseif (str_contains($namaJabatan, 'pimpinan tinggi pratama')) {
+                    $usia = 60; // usulan 62
+                } elseif (
+                    str_contains($namaJabatan, 'administrator') ||
+                    str_contains($namaJabatan, 'pengawas') ||
+                    str_contains($namaJabatan, 'eselon iii') ||
+                    str_contains($namaJabatan, 'eselon iv')
+                ) {
+                    $usia = 58; // usulan 60
+                } elseif (str_contains($namaJabatan, 'kepala dinas')) {
+                    $usia = 60; // sesuai aturan Kepala Dinas
+                }
+            }
+
+            // --- Jabatan Fungsional ---
+            if ($kategori === 'fungsional') {
+                if (str_contains($namaJabatan, 'ahli utama')) {
+                    $usia = 65;
+                } elseif (str_contains($namaJabatan, 'guru besar') || str_contains($namaJabatan, 'profesor')) {
+                    $usia = 70;
+                } elseif (str_contains($namaJabatan, 'ahli madya')) {
+                    $usia = 60; // sesuai aturan
+                } else {
+                    $usia = 65; // default fungsional lain
+                }
+            }
+        }
+
+        return $tglLahir->copy()->addYears($usia);
     }
 }
