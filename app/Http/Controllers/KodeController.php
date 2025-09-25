@@ -1348,7 +1348,7 @@ class KodeController extends Controller
                     'user_jk' => $u->user_jk ?? null,
                     'bidang_nama' => $u->bidang->bidang_nama ?? ($u->user_bidang ?? '-'),
                     'pendidikan_jenjang' => $u->pendidikan->pendidikan_jenjang ?? ($u->user_pendidikan ?? '-'),
-                    'pendidikan_jurusan' => $u->pendidikan->pendidikan_jurusan ?? null,
+                    'pendidikan_jurusan' => $u->pendidikan->pendidikan_jurusan ?? ($u->user_pendidikan ?? '-'),
                     'user_kelasjabatan' => $u->user_kelasjabatan ?? null,
                     'golongan_nama' => $u->golongan->golongan_nama ?? ($u->user_golongan ?? '-'),
                     'golongan_pangkat' => $u->golongan->golongan_pangkat ?? null,
