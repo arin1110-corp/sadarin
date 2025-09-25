@@ -847,7 +847,7 @@ class KodeController extends Controller
         $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
         $totalPegawai = ModelUser::where('user_status', 1)->count();
 
-        $pemuktahiran = ModelUser::where('user_tmt', !'1990-01-01')->count();
+        $pemuktahiran = ModelUser::where('user_tmt', '!=', '1990-01-01')->count();
         $pemuktahiranFoto = ModelUser::where('user_foto', '-')->count();
         $pemuktahiranJabatan = ModelUser::where('user_jabatan', 65)->count();
 
