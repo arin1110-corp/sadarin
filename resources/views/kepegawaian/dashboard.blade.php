@@ -24,7 +24,6 @@
                         <i class="bi bi-speedometer2 me-2"></i> Dashboard
                     </h2>
                     <div class="d-flex align-items-center gap-3">
-                        <input class="form-control form-control-sm" type="text" placeholder="🔍 Cari data...">
                         <div class="dropdown">
                             <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
                                 data-bs-toggle="dropdown">
@@ -33,7 +32,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                 <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profil</a></li>
-                                <li><a class="dropdown-item text-danger" href="#"><i
+                                <li><a class="dropdown-item text-danger" href="{{ route('logout') }}"><i
                                             class="bi bi-box-arrow-right me-2"></i> Keluar</a></li>
                             </ul>
                         </div>
@@ -118,11 +117,11 @@
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#tableAll').DataTable();
-            $('#tablePns').DataTable();
-            $('#tablePppk').DataTable();
-        });
+    $(document).ready(function() {
+        $('#tableAll').DataTable();
+        $('#tablePns').DataTable();
+        $('#tablePppk').DataTable();
+    });
     </script>
 </body>
 
