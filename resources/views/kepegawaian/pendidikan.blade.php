@@ -79,8 +79,16 @@
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="pendidikan_jenjang" class="form-label">Pendidikan Jenjang</label>
-                                        <input type="text" class="form-control" id="pendidikan_jenjang"
-                                            name="pendidikan_jenjang" required>
+                                        <select class="form-select" id="pendidikan_jenjang" name="pendidikan_jenjang"
+                                            required>
+                                            <option value="SD">SD</option>
+                                            <option value="SMP">SMP</option>
+                                            <option value="SMA">SMA</option>
+                                            <option value="D3">D3</option>
+                                            <option value="S1">S1</option>
+                                            <option value="S2">S2</option>
+                                            <option value="S3">S3</option>
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="pendidikan_jurusan" class="form-label">Pendidikan Jurusan</label>
@@ -167,9 +175,23 @@
                             <div class="mb-3">
                                 <label for="pendidikan_jenjang_{{ $user->pendidikan_id }}" class="form-label">Pendidikan
                                     Jenjang</label>
-                                <input type="text" class="form-control"
-                                    id="pendidikan_jenjang_{{ $user->pendidikan_id }}" name="pendidikan_jenjang"
-                                    value="{{ $user->pendidikan_jenjang }}" required>
+                                <select class="form-select" id="pendidikan_jenjang_{{ $user->pendidikan_id }}"
+                                    name="pendidikan_jenjang" required>
+                                    <option value="SD" {{ $user->pendidikan_jenjang == 'SD' ? 'selected' : '' }}>SD
+                                    </option>
+                                    <option value="SMP" {{ $user->pendidikan_jenjang == 'SMP' ? 'selected' : '' }}>SMP
+                                    </option>
+                                    <option value="SMA" {{ $user->pendidikan_jenjang == 'SMA' ? 'selected' : '' }}>SMA
+                                    </option>
+                                    <option value="D3" {{ $user->pendidikan_jenjang == 'D3' ? 'selected' : '' }}>D3
+                                    </option>
+                                    <option value="S1" {{ $user->pendidikan_jenjang == 'S1' ? 'selected' : '' }}>S1
+                                    </option>
+                                    <option value="S2" {{ $user->pendidikan_jenjang == 'S2' ? 'selected' : '' }}>S2
+                                    </option>
+                                    <option value="S3" {{ $user->pendidikan_jenjang == 'S3' ? 'selected' : '' }}>S3
+                                    </option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="pendidikan_jurusan_{{ $user->pendidikan_id }}" class="form-label">Pendidikan
