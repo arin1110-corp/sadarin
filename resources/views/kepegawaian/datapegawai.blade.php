@@ -70,7 +70,52 @@
                         </div>
                     </div>
                 </div>
+                <!-- Tombol trigger -->
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
+                    Export Excel
+                </button>
+                <br>
 
+                <!-- Modal -->
+                <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="POST" action="{{ route('kepegawaian.export.data.pegawai') }}">
+                            @csrf
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exportModalLabel">Pilih Kolom untuk Export</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    @php
+                                    $fields = [
+                                    'user_id' => 'ID',
+                                    'user_nip' => 'NIP',
+                                    'user_nama' => 'Nama',
+                                    'user_nik' => 'NIK',
+                                    'user_tgllahir' => 'Tanggal Lahir',
+                                    'user_jabatan' => 'Jabatan',
+                                    'jenis_kerja' => 'Jenis Kerja',
+                                    ];
+                                    @endphp
+
+                                    @foreach ($fields as $key => $label)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="fields[]" value="{{ $key }}" id="field_{{ $key }}" checked>
+                                        <label class="form-check-label" for="field_{{ $key }}">
+                                            {{ $label }}
+                                        </label>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-primary">Export</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 {{-- Tabs Data Pegawai --}}
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white border-0 pb-0">

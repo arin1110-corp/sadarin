@@ -101,6 +101,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-pegawai', [KodeController::class, 'dataPegawai'])->name('kepegawaian.data.pegawai');
     Route::put('/verifikasi-user/{id}', [KodeController::class, 'verifikasiPemuktahiran'])->name('kepegawaian.verifikasi.user');
     Route::get('/data-kenaikanberkala', [KodeController::class, 'dataKGB'])->name('kepegawaian.data.berkala');
+    Route::get('export-data-pegawai', [KodeController::class, 'exportDataPegawai'])->name('kepegawaian.export.data.pegawai');
     // ... Tambahkan route kepegawaian lain di sini ...
 });
 
