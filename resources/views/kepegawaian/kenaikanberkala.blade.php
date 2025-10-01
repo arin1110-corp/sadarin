@@ -135,7 +135,8 @@
                                     <td>{{ $pegawai->golongan_nama }} - {{ $pegawai->golongan_pangkat }}</td>
                                     <td>{{ $pegawai->user_jeniskerja == '1' ? 'PNS' : ($pegawai->user_jeniskerja == '2' ? 'PPPK' : '-') }}
                                     </td>
-                                    <td>{{ \Carbon\Carbon::parse($pegawai->tanggal_kgb)->translatedFormat('d F Y') }}
+                                    <td data-order="{{ \Carbon\Carbon::parse($pegawai->tanggal_kgb)->format('Y-m-d') }}">
+                                        {{ \Carbon\Carbon::parse($pegawai->tanggal_kgb)->translatedFormat('d F Y') }}
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
