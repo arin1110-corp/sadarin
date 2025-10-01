@@ -909,6 +909,7 @@ class KodeController extends Controller
         $totalPegawai = ModelUser::where('user_status', 1)->count();
 
         $pemuktahiran = ModelUser::where('user_tmt', '!=', '1990-01-01')->count();
+        $pendidikan = ModelUser::where('user_pendidikan', '=', 0)->count();
         $pemuktahiranFoto = ModelUser::where('user_foto', '-')->count();
         $pemuktahiranJabatan = ModelUser::where('user_jabatan', 65)->count();
 
@@ -917,6 +918,7 @@ class KodeController extends Controller
             'totalPegawai',
             'datapnspegawai',
             'datapppkpegawai',
+            'pendidikan',
             'pemuktahiran',
             'pemuktahiranFoto',
             'pemuktahiranJabatan'
@@ -1507,6 +1509,88 @@ class KodeController extends Controller
 
         return $tglLahir->copy()->addYears($usia);
     }
+    public function dataKgb()
+    {
+    $now = Carbon::now();
+    $startThisMonth = $now->copy()->startOfMonth();
+    $endThisMonth   = $now->copy()->endOfMonth();
+
+    // ambil data user yang punya TMT (atau field dasar perhitungan KGB)
+    $users = ModelUser::with(['jabatan', 'eselon', 'bidang', 'pendidikan', 'golongan'])
+        ->whereNotNull('user_tmt')
+        ->get();
+
+    // hitung tanggal_kgb untuk tiap user
+    $users = $users->map(function ($u) {
+        if (isset($u->tanggal_kgb) && $u->tanggal_kgb instanceof Carbon) {
+            $tkgb = $u->tanggal_kgb;
+        } else {
+            $tkgb = $this->hitungTanggalKgb($u);
+        }
+        $u->tanggal_kgb = $tkgb instanceof Carbon ? $tkgb : Carbon::parse($tkgb);
+        return $u;
+    });
+
+    // Statistik hitungan
+    $kgbBulanIni   = $users->whereBetween('tanggal_kgb', [$startThisMonth, $endThisMonth])->count();
+    $kgbBulanDepan = $users->whereBetween('tanggal_kgb', [
+        $now->copy()->addMonth()->startOfMonth(),
+        $now->copy()->addMonth()->endOfMonth()
+    ])->count();
+    $kgb3Bulan = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addMonths(3)->endOfMonth()])->count();
+    $kgb6Bulan = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addMonths(6)->endOfMonth()])->count();
+    $kgb1Tahun = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addYear()->endOfMonth()])->count();
+
+    // List detail KGB tahun 2025 & 2026
+    $listKgb2025 = $users->filter(fn($u) => $u->tanggal_kgb->year == 2025)->sortBy('tanggal_kgb');
+    $listKgb2026 = $users->filter(fn($u) => $u->tanggal_kgb->year == 2026)->sortBy('tanggal_kgb');
+
+    // daftar pegawai KGB dalam 1 tahun ke depan
+    $daftarKgb = $users->filter(function ($u) use ($startThisMonth, $now) {
+        return $u->tanggal_kgb >= $startThisMonth && $u->tanggal_kgb <= $now->copy()->addYear()->endOfYear();
+    })->sortBy('tanggal_kgb')->map(function ($u) {
+        return (object) [
+            'id' => $u->user_id ?? $u->id ?? null,
+            'user_nama' => $u->user_nama,
+            'user_nip' => $u->user_nip,
+            'user_jabatan' => $u->jabatan->jabatan_nama ?? '-',
+            'bidang_nama' => $u->bidang->bidang_nama ?? '-',
+            'golongan_nama' => $u->golongan->golongan_nama ?? '-',
+            'pendidikan' => ($u->pendidikan->pendidikan_jenjang ?? '-') . ' ' . ($u->pendidikan->pendidikan_jurusan ?? ''),
+            'tanggal_kgb' => $u->tanggal_kgb,
+            'user_tmt' => $u->user_tmt,
+        ];
+    });
+
+    // opsional: total pegawai dll
+    $totalPegawai = ModelUser::count();
+    $datapnspegawai = ModelUser::where('user_jeniskerja', 1)->count();
+    $datapppkpegawai = ModelUser::where('user_jeniskerja', 2)->count();
+
+    return view('kepegawaian.kenaikanberkala', compact(
+        'totalPegawai',
+        'datapnspegawai',
+        'datapppkpegawai',
+        'kgbBulanIni',
+        'kgbBulanDepan',
+        'kgb3Bulan',
+        'kgb6Bulan',
+        'kgb1Tahun',
+        'listKgb2025',
+        'listKgb2026',
+        'daftarKgb'
+    ));
+}
+
+/**
+ * Hitung tanggal KGB berikutnya (umumnya setiap 2 tahun dari TMT/KGB terakhir)
+ */
+protected function hitungTanggalKgb($u)
+{
+    $tmt = Carbon::parse($u->user_tmt);
+    return $tmt->copy()->addYears(2); // aturan umum: 2 tahun sekali
+}
+
 
     public function verifikasiPemuktahiran($id)
     {

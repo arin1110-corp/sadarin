@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="row g-3 mb-4">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-people-fill text-danger fs-2 mb-2"></i>
@@ -80,7 +80,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-badge text-dark fs-2 mb-2"></i>
@@ -89,7 +89,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-workspace text-danger fs-2 mb-2"></i>
@@ -98,6 +98,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-mortarboard text-warning fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">Pendidikan Belum Di Diubah</h6>
+                                <p class="display-6 fw-bold text-warning">{{ @$pendidikan }}</p>
+                            </div>
+                        </div>
                 </div>
 
                 {{-- Footer --}}
