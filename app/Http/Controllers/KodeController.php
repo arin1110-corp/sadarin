@@ -1510,110 +1510,110 @@ class KodeController extends Controller
         return $tglLahir->copy()->addYears($usia);
     }
     public function dataKgb()
-{
-    $now = Carbon::now();
-    $startThisMonth = $now->copy()->startOfMonth();
-    $endThisMonth   = $now->copy()->endOfMonth();
+    {
+        $now = Carbon::now();
+        $startThisMonth = $now->copy()->startOfMonth();
+        $endThisMonth   = $now->copy()->endOfMonth();
 
-    // ambil data user yang punya TMT (dasar perhitungan KGB)
-    $users = ModelUser::with(['jabatan', 'eselon', 'bidang', 'pendidikan', 'golongan'])
-        ->whereNotNull('user_tmt')
-        ->get();
+        // ambil data user yang punya TMT (dasar perhitungan KGB)
+        $users = ModelUser::with(['jabatan', 'eselon', 'bidang', 'pendidikan', 'golongan'])
+            ->whereNotNull('user_tmt')
+            ->get();
 
-    // hitung tanggal_kgb untuk tiap user
-    $users = $users->map(function ($u) {
-        if (isset($u->tanggal_kgb) && $u->tanggal_kgb instanceof Carbon) {
-            $tkgb = $u->tanggal_kgb;
-        } else {
-            $tkgb = $this->hitungTanggalKgb($u);
-        }
-        $u->tanggal_kgb = $tkgb instanceof Carbon ? $tkgb : Carbon::parse($tkgb);
-        return $u;
-    });
+        // hitung tanggal_kgb untuk tiap user
+        $users = $users->map(function ($u) {
+            if (isset($u->tanggal_kgb) && $u->tanggal_kgb instanceof Carbon) {
+                $tkgb = $u->tanggal_kgb;
+            } else {
+                $tkgb = $this->hitungTanggalKgb($u);
+            }
+            $u->tanggal_kgb = $tkgb instanceof Carbon ? $tkgb : Carbon::parse($tkgb);
+            return $u;
+        });
 
-    // Statistik hitungan
-    $kgbBulanIni   = $users->whereBetween('tanggal_kgb', [$startThisMonth, $endThisMonth])->count();
-    $kgbBulanDepan = $users->whereBetween('tanggal_kgb', [
-        $now->copy()->addMonth()->startOfMonth(),
-        $now->copy()->addMonth()->endOfMonth()
-    ])->count();
-    $kgb3Bulan = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addMonths(3)->endOfMonth()])->count();
-    $kgb6Bulan = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addMonths(6)->endOfMonth()])->count();
-    $kgb1Tahun = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addYear()->endOfMonth()])->count();
+        // Statistik hitungan
+        $kgbBulanIni   = $users->whereBetween('tanggal_kgb', [$startThisMonth, $endThisMonth])->count();
+        $kgbBulanDepan = $users->whereBetween('tanggal_kgb', [
+            $now->copy()->addMonth()->startOfMonth(),
+            $now->copy()->addMonth()->endOfMonth()
+        ])->count();
+        $kgb3Bulan = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addMonths(3)->endOfMonth()])->count();
+        $kgb6Bulan = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addMonths(6)->endOfMonth()])->count();
+        $kgb1Tahun = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addYear()->endOfMonth()])->count();
 
-    // List detail KGB tahun 2025 & 2026
-    $listKgb2025 = $users->filter(fn($u) => $u->tanggal_kgb->year == 2025)->sortBy('tanggal_kgb')->values();
-    $listKgb2026 = $users->filter(fn($u) => $u->tanggal_kgb->year == 2026)->sortBy('tanggal_kgb')->values();
+        // List detail KGB tahun 2025 & 2026
+        $listKgb2025 = $users->filter(fn($u) => $u->tanggal_kgb->year == 2025)->sortBy('tanggal_kgb')->values();
+        $listKgb2026 = $users->filter(fn($u) => $u->tanggal_kgb->year == 2026)->sortBy('tanggal_kgb')->values();
 
-    // daftar pegawai KGB dalam 1 tahun ke depan
-    $daftarKgb = $users->filter(function ($u) use ($startThisMonth, $now) {
-        return $u->tanggal_kgb >= $startThisMonth && $u->tanggal_kgb <= $now->copy()->addYear()->endOfYear();
-    })->map(function ($u) {
-        return (object) [
-            'id' => $u->user_id ?? $u->id ?? null,
-            'user_id' => $u->user_id ?? $u->id ?? null,
-            'user_nama' => $u->user_nama,
-            'user_nip' => $u->user_nip,
-            'user_nik' => $u->user_nik ?? null,
-            'user_jabatan' => $u->jabatan->jabatan_nama ?? ($u->user_jabatan ?? '-'),
-            'user_eselon' => $u->eselon->eselon_nama ?? ($u->user_eselon ?? '-'),
-            'user_jeniskerja' => $u->user_jeniskerja,
-            'user_status' => $u->user_status ?? null,
-            'user_jk' => $u->user_jk ?? null,
-            'bidang_nama' => $u->bidang->bidang_nama ?? ($u->user_bidang ?? '-'),
-            'pendidikan_jenjang' => $u->pendidikan->pendidikan_jenjang ?? '-',
-            'pendidikan_jurusan' => $u->pendidikan->pendidikan_jurusan ?? '-',
-            'user_kelasjabatan' => $u->user_kelasjabatan ?? null,
-            'golongan_nama' => $u->golongan->golongan_nama ?? ($u->user_golongan ?? '-'),
-            'golongan_pangkat' => $u->golongan->golongan_pangkat ?? null,
-            'user_tmt' => $u->user_tmt ?? null,
-            'user_spmt' => $u->user_spmt ?? null,
-            'user_foto' => $u->user_foto ?? null,
-            'tanggal_kgb' => $u->tanggal_kgb instanceof Carbon
-                ? $u->tanggal_kgb
-                : Carbon::parse($u->tanggal_kgb),
-            'user_tgllahir' => $u->user_tgllahir ?? null,
-            'user_alamat' => $u->user_alamat ?? null,
-            'user_notelp' => $u->user_notelp ?? null,
-            'user_email' => $u->user_email ?? null,
-            'user_bpjs' => $u->user_bpjs ?? null,
-            'user_norek' => $u->user_norek ?? null,
-            'user_npwp' => $u->user_npwp ?? null,
-            'user_jmltanggungan' => $u->user_jmltanggungan ?? null,
-            'user_gelardepan' => $u->user_gelardepan ?? null,
-            'user_gelarbelakang' => $u->user_gelarbelakang ?? null,
-            'user_tempatlahir' => $u->user_tempatlahir ?? null,
-        ];
-    })->sortBy('tanggal_kgb')->values();
+        // daftar pegawai KGB dalam 1 tahun ke depan
+        $daftarKgb = $users->filter(function ($u) use ($startThisMonth, $now) {
+            return $u->tanggal_kgb >= $startThisMonth && $u->tanggal_kgb <= $now->copy()->addYear()->endOfYear();
+        })->map(function ($u) {
+            return (object) [
+                'id' => $u->user_id ?? $u->id ?? null,
+                'user_id' => $u->user_id ?? $u->id ?? null,
+                'user_nama' => $u->user_nama,
+                'user_nip' => $u->user_nip,
+                'user_nik' => $u->user_nik ?? null,
+                'user_jabatan' => $u->jabatan->jabatan_nama ?? ($u->user_jabatan ?? '-'),
+                'user_eselon' => $u->eselon->eselon_nama ?? ($u->user_eselon ?? '-'),
+                'user_jeniskerja' => $u->user_jeniskerja,
+                'user_status' => $u->user_status ?? null,
+                'user_jk' => $u->user_jk ?? null,
+                'bidang_nama' => $u->bidang->bidang_nama ?? ($u->user_bidang ?? '-'),
+                'pendidikan_jenjang' => $u->pendidikan->pendidikan_jenjang ?? '-',
+                'pendidikan_jurusan' => $u->pendidikan->pendidikan_jurusan ?? '-',
+                'user_kelasjabatan' => $u->user_kelasjabatan ?? null,
+                'golongan_nama' => $u->golongan->golongan_nama ?? ($u->user_golongan ?? '-'),
+                'golongan_pangkat' => $u->golongan->golongan_pangkat ?? null,
+                'user_tmt' => $u->user_tmt ?? null,
+                'user_spmt' => $u->user_spmt ?? null,
+                'user_foto' => $u->user_foto ?? null,
+                'tanggal_kgb' => Carbon::parse($u->tanggal_kgb), // 🔥 PAKSA JADI CARBON
+                'user_tgllahir' => $u->user_tgllahir ?? null,
+                'user_alamat' => $u->user_alamat ?? null,
+                'user_notelp' => $u->user_notelp ?? null,
+                'user_email' => $u->user_email ?? null,
+                'user_bpjs' => $u->user_bpjs ?? null,
+                'user_norek' => $u->user_norek ?? null,
+                'user_npwp' => $u->user_npwp ?? null,
+                'user_jmltanggungan' => $u->user_jmltanggungan ?? null,
+                'user_gelardepan' => $u->user_gelardepan ?? null,
+                'user_gelarbelakang' => $u->user_gelarbelakang ?? null,
+                'user_tempatlahir' => $u->user_tempatlahir ?? null,
+            ];
+        })->sortBy(function ($u) {
+            return $u->tanggal_kgb->timestamp; // 🔥 urut berdasarkan timestamp
+        })->values();
 
-    // opsional: total pegawai dll
-    $totalPegawai = ModelUser::count();
-    $datapnspegawai = ModelUser::where('user_jeniskerja', 1)->count();
-    $datapppkpegawai = ModelUser::where('user_jeniskerja', 2)->count();
+        // opsional: total pegawai dll
+        $totalPegawai = ModelUser::count();
+        $datapnspegawai = ModelUser::where('user_jeniskerja', 1)->count();
+        $datapppkpegawai = ModelUser::where('user_jeniskerja', 2)->count();
 
-    return view('kepegawaian.kenaikanberkala', compact(
-        'totalPegawai',
-        'datapnspegawai',
-        'datapppkpegawai',
-        'kgbBulanIni',
-        'kgbBulanDepan',
-        'kgb3Bulan',
-        'kgb6Bulan',
-        'kgb1Tahun',
-        'listKgb2025',
-        'listKgb2026',
-        'daftarKgb'
-    ));
-}
+        return view('kepegawaian.kenaikanberkala', compact(
+            'totalPegawai',
+            'datapnspegawai',
+            'datapppkpegawai',
+            'kgbBulanIni',
+            'kgbBulanDepan',
+            'kgb3Bulan',
+            'kgb6Bulan',
+            'kgb1Tahun',
+            'listKgb2025',
+            'listKgb2026',
+            'daftarKgb'
+        ));
+    }
 
-/**
- * Hitung tanggal KGB berikutnya (umumnya setiap 2 tahun dari TMT/KGB terakhir)
- */
-protected function hitungTanggalKgb($u)
-{
-    $tmt = Carbon::parse($u->user_tmt);
-    return $tmt->copy()->addYears(2); // aturan umum: 2 tahun sekali
-}
+    /**
+     * Hitung tanggal KGB berikutnya (umumnya setiap 2 tahun dari TMT/KGB terakhir)
+     */
+    protected function hitungTanggalKgb($u)
+    {
+        $tmt = Carbon::parse($u->user_tmt);
+        return $tmt->copy()->addYears(2); // aturan umum: 2 tahun sekali
+    }
 
 
     public function verifikasiPemuktahiran($id)
