@@ -79,7 +79,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/import-pegawai', [KodeController::class, 'syncPegawai'])->name('kepegawaian.import.pegawai');
     Route::get('/export-pegawai', [KodeController::class, 'exportPegawai'])->name('kepegawaian.export.pegawai');
     Route::get('/pemuktahiran-data', [KodeController::class, 'pemuktahiranData'])->name('kepegawaian.data.pegawai.pemuktahiran');
-    Route::get('/data-naikpangkat', [KodeController::class, 'dataNaikPangkat'])->name('kepegawaian.data.naikpangkat');
+    Route::get('/data-naikpangkat', [KodeController::class, 'dataKP'])->name('kepegawaian.data.naikpangkat');
     Route::get('/data-pensiun', [KodeController::class, 'dataPensiun'])->name('kepegawaian.data.pensiun');
     Route::get('/data-eselon', [KodeController::class, 'dataEselon'])->name('kepegawaian.data.eselon');
     Route::post('/tambah-eselon', [KodeController::class, 'tambahEselon'])->name('kepegawaian.tambah.eselon');
