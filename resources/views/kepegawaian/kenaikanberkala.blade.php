@@ -120,6 +120,7 @@
                                     <th>Nama</th>
                                     <th>Jabatan</th>
                                     <th>Golongan</th>
+                                    <th>Jenis Kerja</th>
                                     <th>Tanggal KGB</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -130,6 +131,8 @@
                                     <td>{{ $pegawai->user_nama }}</td>
                                     <td>{{ $pegawai->user_jabatan }}</td>
                                     <td>{{ $pegawai->golongan_nama }}</td>
+                                    <td>{{ $pegawai->user_jeniskerja == '1' ? 'PNS' : ($pegawai->user_jeniskerja == '2' ? 'PPPK' : '-') }}
+                                    </td>
                                     <td>{{ \Carbon\Carbon::parse($pegawai->tanggal_kgb)->translatedFormat('d F Y') }}
                                     </td>
                                     <td>
