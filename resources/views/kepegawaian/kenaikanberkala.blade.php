@@ -257,9 +257,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th>Tanggal Pensiun</th>
+                                                <th>Tanggal Kenaikan</th>
                                                 <td>:
-                                                    {{ \Carbon\Carbon::parse($pegawai->tanggal_pensiun)->translatedFormat('d F Y') }}
+                                                    {{ \Carbon\Carbon::parse($pegawai->tanggal_kgb)->translatedFormat('d F Y') }}
                                                 </td>
                                             </tr>
 
