@@ -335,7 +335,11 @@
 
     <script>
         $(document).ready(function() {
-            $('#tableKgb').DataTable();
+            $('#tableKgb').DataTable({
+                "order": [
+                    [5, "asc"]
+                ] // urutkan ASC berdasarkan kolom ke-6 (Tanggal KGB)
+            });
         });
     </script>
 </body>
