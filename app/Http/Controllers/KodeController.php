@@ -1548,43 +1548,46 @@ class KodeController extends Controller
     // daftar pegawai KGB dalam 1 tahun ke depan
     $daftarKgb = $users->filter(function ($u) use ($startThisMonth, $now) {
         return $u->tanggal_kgb >= $startThisMonth && $u->tanggal_kgb <= $now->copy()->addYear()->endOfYear();
-    })->sortBy('tanggal_kgb')->map(function ($u) {
+    })
+    ->sortBy(fn($u) => $u->tanggal_kgb->timestamp) // pastikan pakai Carbon timestamp
+    ->values() // reset index biar rapi
+    ->map(function ($u) {
         return (object) [
             'id' => $u->user_id ?? $u->id ?? null,
             'user_id' => $u->user_id ?? $u->id ?? null,
-                    'user_nama' => $u->user_nama,
-                    'user_nip' => $u->user_nip,
-                    'user_nik' => $u->user_nik ?? null,
-                    'user_jabatan' => $u->jabatan->jabatan_nama ?? ($u->user_jabatan ?? '-'),
-                    'user_eselon' => $u->eselon->eselon_nama ?? ($u->user_eselon ?? '-'),
-                    'user_jeniskerja' => $u->user_jeniskerja,
-                    'user_status' => $u->user_status ?? null,
-                    'user_jk' => $u->user_jk ?? null,
-                    'bidang_nama' => $u->bidang->bidang_nama ?? ($u->user_bidang ?? '-'),
-                    'pendidikan_jenjang' => $u->pendidikan->pendidikan_jenjang ?? '-',
-                    'pendidikan_jurusan' => $u->pendidikan->pendidikan_jurusan ?? '-',
-
-                    'user_kelasjabatan' => $u->user_kelasjabatan ?? null,
-                    'golongan_nama' => $u->golongan->golongan_nama ?? ($u->user_golongan ?? '-'),
-                    'golongan_pangkat' => $u->golongan->golongan_pangkat ?? null,
-                    'user_tmt' => $u->user_tmt ?? null,
-                    'user_spmt' => $u->user_spmt ?? null,
-                    'user_foto' => $u->user_foto ?? null,
-                    'tanggal_pensiun' => $u->tanggal_pensiun,
-                    'user_tgllahir' => $u->user_tgllahir ?? null,
-                    'user_alamat' => $u->user_alamat ?? null,
-                    'user_notelp' => $u->user_notelp ?? null,
-                    'user_email' => $u->user_email ?? null,
-                    'user_bpjs' => $u->user_bpjs ?? null,
-                    'user_norek' => $u->user_norek ?? null,
-                    'user_npwp' => $u->user_npwp ?? null,
-                    'user_jmltanggungan' => $u->user_jmltanggungan ?? null,
-                    'user_gelardepan' => $u->user_gelardepan ?? null,
-                    'user_gelarbelakang' => $u->user_gelarbelakang ?? null,
-                    'user_tempatlahir' => $u->user_tempatlahir ?? null,
+            'user_nama' => $u->user_nama,
+            'user_nip' => $u->user_nip,
+            'user_nik' => $u->user_nik ?? null,
+            'user_jabatan' => $u->jabatan->jabatan_nama ?? ($u->user_jabatan ?? '-'),
+            'user_eselon' => $u->eselon->eselon_nama ?? ($u->user_eselon ?? '-'),
+            'user_jeniskerja' => $u->user_jeniskerja,
+            'user_status' => $u->user_status ?? null,
+            'user_jk' => $u->user_jk ?? null,
+            'bidang_nama' => $u->bidang->bidang_nama ?? ($u->user_bidang ?? '-'),
+            'pendidikan_jenjang' => $u->pendidikan->pendidikan_jenjang ?? '-',
+            'pendidikan_jurusan' => $u->pendidikan->pendidikan_jurusan ?? '-',
+            'user_kelasjabatan' => $u->user_kelasjabatan ?? null,
+            'golongan_nama' => $u->golongan->golongan_nama ?? ($u->user_golongan ?? '-'),
+            'golongan_pangkat' => $u->golongan->golongan_pangkat ?? null,
+            'user_tmt' => $u->user_tmt ?? null,
+            'user_spmt' => $u->user_spmt ?? null,
+            'user_foto' => $u->user_foto ?? null,
+            'tanggal_pensiun' => $u->tanggal_pensiun ?? null,
+            'user_tgllahir' => $u->user_tgllahir ?? null,
+            'user_alamat' => $u->user_alamat ?? null,
+            'user_notelp' => $u->user_notelp ?? null,
+            'user_email' => $u->user_email ?? null,
+            'user_bpjs' => $u->user_bpjs ?? null,
+            'user_norek' => $u->user_norek ?? null,
+            'user_npwp' => $u->user_npwp ?? null,
+            'user_jmltanggungan' => $u->user_jmltanggungan ?? null,
+            'user_gelardepan' => $u->user_gelardepan ?? null,
+            'user_gelarbelakang' => $u->user_gelarbelakang ?? null,
+            'user_tempatlahir' => $u->user_tempatlahir ?? null,
             'tanggal_kgb' => $u->tanggal_kgb,
         ];
     });
+
 
     // opsional: total pegawai dll
     $totalPegawai = ModelUser::count();
