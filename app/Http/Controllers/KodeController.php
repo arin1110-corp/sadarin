@@ -1551,7 +1551,7 @@ class KodeController extends Controller
     })->sortBy('tanggal_kgb')->map(function ($u) {
         return (object) [
             'id' => $u->user_id ?? $u->id ?? null,
-                    'user_id' => $u->user_id ?? $u->id ?? null,
+            'user_id' => $u->user_id ?? $u->id ?? null,
                     'user_nama' => $u->user_nama,
                     'user_nip' => $u->user_nip,
                     'user_nik' => $u->user_nik ?? null,
@@ -1582,6 +1582,7 @@ class KodeController extends Controller
                     'user_gelardepan' => $u->user_gelardepan ?? null,
                     'user_gelarbelakang' => $u->user_gelarbelakang ?? null,
                     'user_tempatlahir' => $u->user_tempatlahir ?? null,
+            'tanggal_kgb' => $u->tanggal_kgb,
         ];
     });
 
