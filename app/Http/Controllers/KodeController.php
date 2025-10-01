@@ -1549,8 +1549,10 @@ class KodeController extends Controller
     $daftarKgb = $users->filter(function ($u) use ($startThisMonth, $now) {
         return $u->tanggal_kgb >= $startThisMonth && $u->tanggal_kgb <= $now->copy()->addYear()->endOfYear();
     })
-    ->sortBy(fn($u) => $u->tanggal_kgb->timestamp) // pastikan pakai Carbon timestamp
-    ->values() // reset index biar rapi
+    ->sortBy(function ($u) {
+        return Carbon::parse($u->tanggal_kgb)->timestamp;
+    })
+    ->values()
     ->map(function ($u) {
         return (object) [
             'id' => $u->user_id ?? $u->id ?? null,
