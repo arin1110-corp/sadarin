@@ -141,6 +141,7 @@
                                 <tr>
                                     <th>Nama</th>
                                     <th>Jabatan</th>
+                                    <th>Unit Kerja</th>
                                     <th>Jenis Kerja</th>
                                     <th>Tanggal Pensiun</th>
                                     <th>Aksi</th>
@@ -151,6 +152,7 @@
                                 <tr>
                                     <td>{{ $pegawai->user_nama }}</td>
                                     <td>{{ $pegawai->user_jabatan }}</td>
+                                    <td>{{ $pegawai->bidang_nama ?? '-' }}</td>
                                     <td>{{ $pegawai->user_jeniskerja == '1' ? 'PNS' : ($pegawai->user_jeniskerja == '2' ? 'PPPK' : '-') }}
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($pegawai->tanggal_pensiun)->translatedFormat('d F Y') }}
