@@ -166,12 +166,50 @@
                                     <div class="col-md-8">
                                         <table class="table table-borderless">
                                             <tr>
+                                                <th colspan="2" class="text-center">*** IDENTITAS PEGAWAI ***</th>
+                                            </tr>
+                                            <tr>
                                                 <th width="30%">NIP</th>
                                                 <td>: {{ $pegawai->user_nip }}</td>
                                             </tr>
                                             <tr>
+                                                <th>NIK</th>
+                                                <td>: {{ $pegawai->user_nik ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
                                                 <th>Nama</th>
                                                 <td>: {{ $pegawai->user_nama }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Gelar Depan</th>
+                                                <td>: {{ $pegawai->user_gelardepan ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Gelar Belakang</th>
+                                                <td>: {{ $pegawai->user_gelarbelakang ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Jenis Kelamin</th>
+                                                <td>:
+                                                    {{ $pegawai->user_jk == 'L' ? 'Laki-laki' : ($pegawai->user_jk == 'P' ? 'Perempuan' : '-') }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tempat dan Tanggal Lahir</th>
+                                                <td>:
+                                                    {{ $pegawai->user_tempatlahir ?? '-' }},
+                                                    {{ $pegawai->user_tgllahir ? \Carbon\Carbon::parse($pegawai->user_tgllahir)->translatedFormat('j F Y') : '-' }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Pendidikan</th>
+                                                <td>:
+                                                    {{ $pegawai->pendidikan_jenjang ?? '-' }}
+                                                    {{ $pegawai->pendidikan_jurusan ? ' ' . $pegawai->pendidikan_jurusan : '' }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" class="text-center">*** IDENTITAS JABATAN ***</th>
                                             </tr>
                                             <tr>
                                                 <th>Jabatan</th>
@@ -179,19 +217,87 @@
                                             </tr>
                                             <tr>
                                                 <th>Golongan</th>
-                                                <td>: {{ $pegawai->golongan_nama ?? '-' }}</td>
+                                                <td>:
+                                                    {{ $pegawai->golongan_nama.' - '.$pegawai->golongan_pangkat ?? '-' }}
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <th>Tanggal KGB</th>
-                                                <td>: {{ \Carbon\Carbon::parse($pegawai->tanggal_kgb)->translatedFormat('d F Y') }}</td>
+                                                <th>Eselon</th>
+                                                <td>: {{ $pegawai->user_eselon ?? '-' }}</td>
                                             </tr>
                                             <tr>
-                                                <th>Pendidikan</th>
-                                                <td>: {{ $pegawai->pendidikan }}</td>
+                                                <th>Kelas Jabatan</th>
+                                                <td>: Kelas Jabatan {{ $pegawai->user_kelasjabatan ?? '-' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Unit Kerja</th>
                                                 <td>: {{ $pegawai->bidang_nama ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>TMT</th>
+                                                <td>:
+                                                    {{ $pegawai->user_tmt ? \Carbon\Carbon::parse($pegawai->user_tmt)->translatedFormat('j F Y') : '-' }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>SPMT</th>
+                                                <td>:
+                                                    {{ $pegawai->user_spmt ? \Carbon\Carbon::parse($pegawai->user_spmt)->translatedFormat('j F Y') : '-' }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Jenis Kerja</th>
+                                                <td>:
+                                                    {{ $pegawai->user_jeniskerja == '1' ? 'PNS' : ($pegawai->user_jeniskerja == '2' ? 'PPPK' : '-') }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tanggal Pensiun</th>
+                                                <td>:
+                                                    {{ \Carbon\Carbon::parse($pegawai->tanggal_pensiun)->translatedFormat('d F Y') }}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th colspan="2" class="text-center">*** INFORMASI KONTAK ***</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Alamat</th>
+                                                <td>: {{ $pegawai->user_alamat ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>No. Telepon</th>
+                                                <td>: {{ $pegawai->user_notelp ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Email</th>
+                                                <td>: {{ $pegawai->user_email ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>BPJS</th>
+                                                <td>: {{ $pegawai->user_bpjs ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>No. Rekening</th>
+                                                <td>: {{ $pegawai->user_norek ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>NPWP</th>
+                                                <td>: {{ $pegawai->user_npwp ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Jumlah Tanggungan</th>
+                                                <td>: {{ $pegawai->user_jmltanggungan ?? '-' }} Orang</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Status</th>
+                                                <td>:
+                                                    @if($pegawai->user_status == '1')
+                                                    <span class="badge bg-success">Aktif</span>
+                                                    @else
+                                                    <span class="badge bg-secondary">Tidak Aktif</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
