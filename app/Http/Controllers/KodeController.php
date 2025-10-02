@@ -1783,6 +1783,7 @@ class KodeController extends Controller
                 'sadarin_pengumpulanberkas.kumpulan_id',
                 'sadarin_pengumpulanberkas.kumpulan_status',
                 'sadarin_pengumpulanberkas.kumpulan_file',
+                'sadarin_pengumpulanberkas.kumpulan_jenis',
                 'sadarin_bidang.bidang_nama',
                 'sadarin_jabatan.jabatan_nama',
                 'sadarin_golongan.*',
@@ -1815,12 +1816,14 @@ class KodeController extends Controller
 
         $dataPns = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->get();
         $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
+        $jenis = $dataPegawai[0]->kumpulan_jenis;
         return view('kepegawaian.paktaintegritas', compact(
             'dataPegawai',
             'dataPns',
             'dataPppk',
             'jumlahPnsKumpul',
             'jumlahPppkKumpul',
+            'jenis',
             'dataPns',
             'dataPppk'
         ));
@@ -1883,7 +1886,7 @@ class KodeController extends Controller
     }
     /// akhir lihat pakta
     /// export data pakta
-    public function exportPaktaIntegritas()
+    public function exportPaktaIntegritas(Request $request,$id)
     {
         $dataPegawai = DB::table('sadarin_user')
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
@@ -1891,6 +1894,7 @@ class KodeController extends Controller
             ->leftJoin('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
             ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_file')
             ->where('sadarin_user.user_status', 1)
+            ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $id)
             ->orderByRaw("
                     CASE 
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
@@ -1908,7 +1912,7 @@ class KodeController extends Controller
         $dataPns = $dataPegawai->where('user_jeniskerja', '1');
         $dataPppk = $dataPegawai->where('user_jeniskerja', '2');
 
-        return Excel::download(new PegawaiExport($dataPns, $dataPppk), 'PaktaIntegritasDisbud.xlsx');
+        return Excel::download(new PegawaiExport($dataPns, $dataPppk), $id . 'Disbud.xlsx');
     }
     public function uploadBerkas(Request $request)
     {

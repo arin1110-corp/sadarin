@@ -67,7 +67,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5>DOWNLOAD DATA</h5>
-                                <a href="{{ route('kepegawaian.export.paktaintegritas') }}"
+                                <a href="{{ route('kepegawaian.export', ['id' => $jenis]) }}"
                                     class="btn btn-warning">Export Excel</a>
                             </div>
                         </div>
