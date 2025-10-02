@@ -1,0 +1,15 @@
+require 'vendor/autoload.php';
+
+$client = new Google_Client();
+$client->setClientId(env('GOOGLE_DRIVE_CLIENT_ID'));
+$client->setClientSecret(env('GOOGLE_DRIVE_CLIENT_SECRET'));
+$client->setRedirectUri('http://localhost/oauth2callback');
+$client->addScope(Google_Service_Drive::DRIVE);
+
+if (!isset($_GET['code'])) {
+    $auth_url = $client->createAuthUrl();
+    echo "Open this URL in browser: <a href='$auth_url'>$auth_url</a>";
+} else {
+    $client->authenticate($_GET['code']);
+    echo "Refresh Token: " . $client->getRefreshToken();
+}

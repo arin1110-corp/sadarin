@@ -175,19 +175,35 @@
                     <h3 class="mb-4">Detail Pegawai</h3>
 
                     <div class="card shadow-sm p-4">
-                        <div class="d-flex justify-content-end mb-2">
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editPegawaiModal">
-                                <i class="bi bi-pencil-square"></i> Edit Data
+                        <div class="d-flex align-items-center mb-2">
+                            {{-- Tombol Back di kiri --}}
+                            <button onclick="window.history.back()" class="btn btn-dark me-auto">
+                                ← Kembali
                             </button>
-                        </div>
-                        <div class="d-flex justify-content-end mb-2">
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editPasFoto">
-                                <i class="bi bi-pencil-square"></i> Edit Pas Foto
-                            </button>
-                        </div>
+                            &nbsp;
 
+                            {{-- Tombol aksi di kanan --}}
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPegawaiModal">
+                                    <i class="bi bi-pencil-square"></i> Edit Data
+                                </button>
+
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPasFoto">
+                                    <i class="bi bi-pencil-square"></i> Edit Pas Foto
+                                </button>
+                            </div>
+                        </div>
+                        <div class='d-flex align-items-center justify-content-end mb-2'>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahEvaluasiModal">
+                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan III
+                                </button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahUmpanBalikModal">
+                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan III
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="text-center mb-4">
                             <img src="{{ $user->user_foto && $user->user_foto != '-' ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"
                                 alt="Foto Pegawai"
@@ -313,6 +329,64 @@
         </div>
 
     </div>
+    </div>
+
+    /// Modal Tambah Evaluasi dan Umpan Balik
+    <div class="modal fade" id="tambahEvaluasiModal" tabindex="-1" aria-labelledby="tambahEvaluasiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('tambah.evaluasi.tw3') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahEvaluasiModalLabel">Tambah Evaluasi Kinerja Triwulan III</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Evaluasi Kinerja Triwulan III</label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <input type="hidden" name="kumpulan_jenis" value="Evaluasi Kinerja Triwulan III">
+                        <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                        <input type="hidden" name="jenisfile" value="evkin">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    /// Modal Tambah Umpan Balik
+    <div class="modal fade" id="tambahUmpanBalikModal" tabindex="-1" aria-labelledby="tambahUmpanBalikModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('tambah.umpanbalik.tw3') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Umpan Balik Triwulan III</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Umpan Balik Triwulan III</label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <input type="hidden" name="kumpulan_jenis" value="Umpan Balik Triwulan III">
+                        <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                        <input type="hidden" name="jenisfile" value="umpanbalik">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     /// Modal Edit Data Pegawai

@@ -62,7 +62,40 @@ return [
             'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
             'folderId' => env('GOOGLE_DRIVE_FOLDER_ID'),
         ],
+        // === Pakta ===
+        'google_pakta' => [
+            'driver' => 'google',
+            'clientId' => env('GOOGLE_DRIVE_CLIENT_ID'),
+            'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
+            'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
+            'folderId' => env('GOOGLE_DRIVE_PAKTA_FOLDER_ID'),
+            'serviceAccountCredentials' => storage_path(env('GOOGLE_DRIVE_PAKTA_CREDENTIALS')),
+        ],
 
+        // === Kinerja ===
+        'google_evkin_pns' => [
+            'driver' => 'google',
+            'folderId' => env('GOOGLE_DRIVE_EVKIN_PNS_ID'),
+            'serviceAccountCredentials' => storage_path(env('GOOGLE_DRIVE_KINERJA_CREDENTIALS')),
+        ],
+
+        'google_evkin_pppk' => [
+            'driver' => 'google',
+            'folderId' => env('GOOGLE_DRIVE_EVKIN_PPPK_ID'),
+            'serviceAccountCredentials' => storage_path(env('GOOGLE_DRIVE_KINERJA_CREDENTIALS')),
+        ],
+
+        'google_umpan_pns' => [
+            'driver' => 'google',
+            'folderId' => env('GOOGLE_DRIVE_UMPAN_PNS_ID'),
+            'serviceAccountCredentials' => storage_path(env('GOOGLE_DRIVE_KINERJA_CREDENTIALS')),
+        ],
+
+        'google_umpan_pppk' => [
+            'driver' => 'google',
+            'folderId' => env('GOOGLE_DRIVE_UMPAN_PPPK_ID'),
+            'serviceAccountCredentials' => storage_path(env('GOOGLE_DRIVE_KINERJA_CREDENTIALS')),
+        ],
     ],
 
     /*

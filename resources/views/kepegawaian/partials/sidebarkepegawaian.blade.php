@@ -21,6 +21,8 @@
     ['route' => 'kepegawaian.data.pendidikan', 'icon' => 'bi-mortarboard', 'label' => 'Data Pendidikan'],
     ['route' => 'kepegawaian.pakta.integritas', 'icon' => 'bi-card-text', 'label' => 'Pakta Integritas', 'param' =>
     'Pakta Integritas'],
+    ['route' => 'kepegawaian.evkin.tw3', 'icon' => 'bi-card-text', 'label' => 'EVKIN TW3', 'param' => 'Evaluasi Kinerja Triwulan III'],
+    ['route' => 'kepegawaian.umpan.tw3', 'icon' => 'bi-card-text', 'label' => 'Umpan Balik TW3', 'param' => 'Umpan Balik Triwulan III'],
     ];
     $currentRoute = Route::currentRouteName();
     @endphp

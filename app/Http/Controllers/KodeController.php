@@ -9,7 +9,6 @@ use App\Models\ModelSubBag;
 use App\Models\ModelNavigasiSekretariat;
 use App\Models\ModelSubNavigasiSekretariat;
 use App\Models\ModelPakta;
-use Google\Service\Bigquery\Model;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -26,12 +25,13 @@ use App\Models\ModelUbahUser;
 use Carbon\Carbon;
 use App\Models\ModelAdmin;
 use Illuminate\Support\Facades\Validator;
-use Google\Client as GoogleClient;
-use Google\Service\Drive as GoogleDrive;
-use Google\Service\Drive\DriveFile;
-use Intervention\Image\Colors\Rgb\Channels\Red;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Support\Facades\Hash;
+
+// ✅ Google API Client
+use Google_Client;
+use Google_Service_Drive;
+use Google_Service_Drive_DriveFile;
+
 
 class KodeController extends Controller
 {
@@ -1909,5 +1909,113 @@ class KodeController extends Controller
         $dataPppk = $dataPegawai->where('user_jeniskerja', '2');
 
         return Excel::download(new PegawaiExport($dataPns, $dataPppk), 'PaktaIntegritasDisbud.xlsx');
+    }
+    public function uploadBerkas(Request $request)
+    {
+        $request->validate([
+            'user_nip'        => 'required|string',
+            'file'            => 'required|mimes:pdf',
+            'kumpulan_jenis'  => 'required|string',
+            'jenisfile'       => 'required|string', // 'evkin' atau 'umpanbalik'
+            'user_jeniskerja' => 'required|string', // '1' = PNS, '2' = PPPK
+        ]);
+
+        $nip        = $request->user_nip;
+        $jenis      = $request->kumpulan_jenis;
+        $jenisfile  = $request->jenisfile;
+        $jeniskerja = $request->user_jeniskerja;
+
+        // Tentukan filename
+        $filename = $nip . '_' . str_replace(' ', '_', $jenis) . '.pdf';
+
+        // Mapping folder di public/assets/
+        $folderMap = [
+            'evkin' => [
+                '1' => 'assets/evkin/pns',
+                '2' => 'assets/evkin/pppk',
+            ],
+            'umpanbalik' => [
+                '1' => 'assets/umpanbalik/pns',
+                '2' => 'assets/umpanbalik/pppk',
+            ],
+        ];
+
+        if (!isset($folderMap[$jenisfile][$jeniskerja])) {
+            return back()->with('error', 'Folder untuk jenis file ini belum disiapkan.');
+        }
+
+        $folder = $folderMap[$jenisfile][$jeniskerja];
+
+        // Buat folder jika belum ada
+        if (!file_exists(public_path($folder))) {
+            mkdir(public_path($folder), 0755, true);
+        }
+
+        // Upload file ke public/assets/
+        $file = $request->file('file');
+        $file->move(public_path($folder), $filename);
+
+        // Path file yang bisa diakses via asset()
+        $url = asset($folder . '/' . $filename);
+
+        // Simpan ke DB
+        ModelPengumpulanBerkas::updateOrCreate(
+            [
+                'kumpulan_user'  => $nip,
+                'kumpulan_jenis' => $jenis,
+            ],
+            [
+                'kumpulan_file'   => $url,
+                'kumpulan_status' => 1,
+            ]
+        );
+
+        return back()->with('success', 'File berhasil diupload.')->with('file_url', $url);
+    }
+     public function prefillEvaluasi()
+    {
+        // Jenis pengumpulan baru
+        $kumpulanJenisBaru = 'Evaluasi Kinerja Triwulan III';
+
+        // Ambil semua pegawai aktif
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
+                ],
+                [
+                    'kumpulan_status' => 0,
+                    'kumpulan_file'   => 'null',
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+    }
+     public function prefillUmbal()
+    {
+        // Jenis pengumpulan baru
+        $kumpulanJenisBaru = 'Umpan Balik Triwulan III';
+
+        // Ambil semua pegawai aktif
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
+                ],
+                [
+                    'kumpulan_status' => 0,
+                    'kumpulan_file'   => 'null',
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
 }
