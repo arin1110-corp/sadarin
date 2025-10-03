@@ -16,3 +16,26 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+# buat cadangan .gitignore dulu
+cp .gitignore .gitignore.bak
+
+# tambahkan aturan ignore: ignore semua di public/assets kecuali css & image
+cat >> .gitignore <<'EOF'
+
+# ignore uploaded folders under public/assets — keep only css and image tracked
+/public/assets/*
+!/public/assets/css/
+!/public/assets/css/**     # biar isi css tetap bisa ter-track
+!/public/assets/image/
+!/public/assets/image/**   # biar isi image tetap bisa ter-track
+
+# explicitly ignore some other folders (jika ada di root atau di public/)
+public/assets/evkin/
+public/assets/foto_pegawai/
+public/assets/umpanbalik/
+public/evkin/
+public/foto_pegawai/
+public/umpanbalik/
+EOF
+
+
