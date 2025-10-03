@@ -170,6 +170,12 @@
             <p class="display-7 fw-bold text-secondary">
                 Data Detail Pegawai
             </p>
+            @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
             <div class="container mt-5" style="text-align: left;">
                 <div class="container mt-5" style="max-width: 700px;">
                     <h3 class="mb-4">Detail Pegawai</h3>

@@ -1721,8 +1721,6 @@ class KodeController extends Controller
         return $tmt->copy()->addYears(4); // aturan umum: 4 tahun sekali
     }
 
-
-
     public function verifikasiPemuktahiran($id)
     {
         $ubah = ModelUbahUser::findOrFail($id);
@@ -1886,7 +1884,7 @@ class KodeController extends Controller
     }
     /// akhir lihat pakta
     /// export data pakta
-    public function exportPaktaIntegritas(Request $request,$id)
+    public function exportPaktaIntegritas(Request $request, $id)
     {
         $dataPegawai = DB::table('sadarin_user')
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
@@ -1976,7 +1974,7 @@ class KodeController extends Controller
 
         return back()->with('success', 'File berhasil diupload.')->with('file_url', $url);
     }
-     public function prefillEvaluasi()
+    public function prefillEvaluasi()
     {
         // Jenis pengumpulan baru
         $kumpulanJenisBaru = 'Evaluasi Kinerja Triwulan III';
@@ -1999,7 +1997,7 @@ class KodeController extends Controller
 
         return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
-     public function prefillUmbal()
+    public function prefillUmbal()
     {
         // Jenis pengumpulan baru
         $kumpulanJenisBaru = 'Umpan Balik Triwulan III';
