@@ -1828,39 +1828,72 @@ class KodeController extends Controller
     }
     /// akhir Pakta Integritas
     /// lihat pakta
-    public function syncPaktaIntegritas()
-    {
-        // ambil semua pegawai aktif
-        $users = ModelUser::whereIn('user_jeniskerja', ['1', '2'])->get();
+    // public function syncPaktaIntegritas()
+    // {
+    //     // ambil semua pegawai aktif
+    //     $users = ModelUser::whereIn('user_jeniskerja', ['1', '2'])->get();
 
-        foreach ($users as $user) {
-            // tentukan folder berdasarkan jenis kerja
-            if ($user->user_jeniskerja == '1') {
-                $folderId = env('GOOGLE_DRIVE_FOLDER_PNS');
-            } elseif ($user->user_jeniskerja == '2') {
-                $folderId = env('GOOGLE_DRIVE_FOLDER_PPPK');
-            } else {
-                continue;
-            }
+    //     foreach ($users as $user) {
+    //         // tentukan folder berdasarkan jenis kerja
+    //         if ($user->user_jeniskerja == '1') {
+    //             $folderId = env('GOOGLE_DRIVE_FOLDER_PNS');
+    //         } elseif ($user->user_jeniskerja == '2') {
+    //             $folderId = env('GOOGLE_DRIVE_FOLDER_PPPK');
+    //         } else {
+    //             continue;
+    //         }
 
-            // cek file di Google Drive
-            $fileData = $this->drive->findFileByNip($user->user_nip, $folderId);
+    //         // cek file di Google Drive
+    //         $fileData = $this->drive->findFileByNip($user->user_nip, $folderId);
 
-            // simpan ke tabel pengumpulan berkas
-            ModelPengumpulanBerkas::updateOrCreate(
-                [
-                    'kumpulan_user'  => $user->user_nip,
-                    'kumpulan_jenis' => 'Pakta Integritas',
-                ],
-                [
-                    'kumpulan_file'   => $fileData['file_url'],
-                    'kumpulan_status' => $fileData['status'],
-                ]
-            );
-        }
+    //         // simpan ke tabel pengumpulan berkas
+    //         ModelPengumpulanBerkas::updateOrCreate(
+    //             [
+    //                 'kumpulan_user'  => $user->user_nip,
+    //                 'kumpulan_jenis' => 'Pakta Integritas',
+    //             ],
+    //             [
+    //                 'kumpulan_file'   => $fileData['file_url'],
+    //                 'kumpulan_status' => $fileData['status'],
+    //             ]
+    //         );
+    //     }
 
-        return response()->json(['message' => 'Sinkronisasi selesai.']);
-    }
+    //     return response()->json(['message' => 'Sinkronisasi selesai.']);
+    // }
+    // public function prefillSyntaxC2025()
+    // {
+    //     // ambil semua pegawai aktif
+    //     $users = ModelUser::whereIn('user_jeniskerja', ['1', '2'])->get();
+
+    //     foreach ($users as $user) {
+    //         // tentukan folder berdasarkan jenis kerja
+    //         if ($user->user_jeniskerja == '1') {
+    //             $folderId = env('GOOGLE_DRIVE_FOLDER_MODELC_PNS');
+    //         } elseif ($user->user_jeniskerja == '2') {
+    //             $folderId = env('GOOGLE_DRIVE_FOLDER_MODELC_PPPK');
+    //         } else {
+    //             continue;
+    //         }
+
+    //         // cek file di Google Drive
+    //         $fileData = $this->drive->findFileByNip($user->user_nip, $folderId);
+
+    //         // simpan ke tabel pengumpulan berkas
+    //         ModelPengumpulanBerkas::updateOrCreate(
+    //             [
+    //                 'kumpulan_user'  => $user->user_nip,
+    //                 'kumpulan_jenis' => 'Model C 2025',
+    //             ],
+    //             [
+    //                 'kumpulan_file'   => $fileData['file_url'],
+    //                 'kumpulan_status' => $fileData['status'],
+    //             ]
+    //         );
+    //     }
+
+    //     return response()->json(['message' => 'Sinkronisasi selesai.']);
+    // }
     public function lihatPakta($id)
     {
         $berkas = DB::table('sadarin_pengumpulanberkas')
@@ -2001,6 +2034,29 @@ class KodeController extends Controller
     {
         // Jenis pengumpulan baru
         $kumpulanJenisBaru = 'Umpan Balik Triwulan III';
+
+        // Ambil semua pegawai aktif
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
+                ],
+                [
+                    'kumpulan_status' => 0,
+                    'kumpulan_file'   => 'null',
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+    }
+    public function prefillModelC2025()
+    {
+        // Jenis pengumpulan baru
+        $kumpulanJenisBaru = 'Model C 2025';
 
         // Ambil semua pegawai aktif
         $pegawai = ModelUser::where('user_status', 1)->get();

@@ -17,15 +17,16 @@ class GoogleDriveService
         $this->driveService = new Drive($client);
     }
 
-    public function findFileByNip($nip, $folderId)
+    public function findFileByNip($nip, $folderId, $jenis)
     {
-        // Query cari file di folder sesuai NIP
+        $driveService = $this->getClient($jenis);
+
         $query = sprintf("'%s' in parents and name contains '%s' and trashed = false", $folderId, $nip);
 
-        $files = $this->driveService->files->listFiles([
+        $files = $driveService->files->listFiles([
             'q' => $query,
             'fields' => 'files(id, name, webViewLink)',
-            'pageSize' => 1, // cukup ambil 1 file pertama
+            'pageSize' => 1,
         ]);
 
         if (count($files->files) > 0) {
@@ -42,5 +43,19 @@ class GoogleDriveService
             'file_url' => 'null',
             'file_name' => 'null',
         ];
+    }
+    private function getClient($jenis)
+    {
+        $client = new \Google_Client();
+        $client->setScopes([\Google_Service_Drive::DRIVE_READONLY]);
+
+        // Tentukan credential berdasarkan jenis berkas
+        if (in_array(strtolower($jenis), ['pakta', 'foto'])) {
+            $client->setAuthConfig(storage_path('app/google/sadarin-drive.json'));
+        } else {
+            $client->setAuthConfig(storage_path('app/google/sadarin-kinerja.json'));
+        }
+
+        return new \Google_Service_Drive($client);
     }
 }

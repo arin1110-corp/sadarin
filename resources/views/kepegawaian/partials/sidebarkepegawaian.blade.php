@@ -23,6 +23,7 @@
     'Pakta Integritas'],
     ['route' => 'kepegawaian.evkin.tw3', 'icon' => 'bi-card-text', 'label' => 'EVKIN TW3', 'param' => 'Evaluasi Kinerja Triwulan III'],
     ['route' => 'kepegawaian.umpan.tw3', 'icon' => 'bi-card-text', 'label' => 'Umpan Balik TW3', 'param' => 'Umpan Balik Triwulan III'],
+    ['route' => 'kepegawaian.model.c.2025', 'icon' => 'bi-card-text', 'label' => 'Model C 2025', 'param' => 'Model C 2025'],
     ];
     $currentRoute = Route::currentRouteName();
     @endphp

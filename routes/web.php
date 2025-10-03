@@ -22,6 +22,8 @@ Route::post('/cek-kode', [KodeController::class, 'cek'])->name('akses.cek');
 Route::get('/akses-kode', [KodeController::class, 'akses_kode'])->name('akses.kode');
 Route::get('/pengumpulan/prefill-evaluasi', [KodeController::class, 'prefillEvaluasi']);
 Route::get('/pengumpulan/prefill-umpanbalik', [KodeController::class, 'prefillUmbal']);
+Route::get('/model-c-2025', [KodeController::class, 'prefillModelC2025']);
+Route::get('/syntax-c-2025', [KodeController::class, 'prefillSyntaxC2025']);
 
 
 // -------------------- Admin / Kepegawaian --------------------
@@ -78,6 +80,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-pakta-integritas/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.integritas');
     Route::get('/data-evkin-tw3/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.tw3');
     Route::get('/data-umpan-balik-tw3/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.umpan.tw3');
+    Route::get('/data-model-c-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.model.c.2025');
     Route::get('/data-kepegawaian', [KodeController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
     Route::get('/import-paktaintegritas', [KodeController::class, 'syncPaktaIntegritas'])->name('kepegawaian.import.paktaintegritas');
     Route::get('/export/{id}', [KodeController::class, 'exportPaktaIntegritas'])->name('kepegawaian.export');
