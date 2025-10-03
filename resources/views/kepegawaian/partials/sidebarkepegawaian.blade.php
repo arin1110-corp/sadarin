@@ -1,4 +1,5 @@
-<nav class="col-md-2 d-none d-md-block sidebar p-3 bg-dark text-white">
+<nav class="col-md-2 d-none d-md-block sidebar p-3 bg-dark text-white" 
+     style="height:100vh; overflow-y:auto;">
     <div class="text-center mb-4">
         <img src="{{ asset('assets/image/pemprov.png') }}" alt="Logo" width="80" class="mb-2">
         <h5 class="fw-bold">SADAR<in>IN</in>
