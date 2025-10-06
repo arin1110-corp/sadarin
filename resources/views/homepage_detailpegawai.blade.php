@@ -370,10 +370,10 @@
                         <div class="row mb-2">
                             <div class="col-sm-6 fw-bold">Data Rekaman Umpan Balik 2025</div>
                             <div class="col-sm-6">
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan I') }} showFiles" data-jenis="Rekaman Umpan Balik Triwulan I">TW I</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan II') }} showFiles" data-jenis="Rekaman Umpan Balik Triwulan II">TW II</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan III') }} showFiles" data-jenis="Rekaman Umpan Balik Triwulan III">TW III</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan IV') }} showFiles" data-jenis="Rekaman Umpan Balik Triwulan IV">TW IV</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan I') }} showFiles" data-jenis="Umpan Balik Triwulan I">TW I</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan II') }} showFiles" data-jenis="Umpan Balik Triwulan II">TW II</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan III') }} showFiles" data-jenis="Umpan Balik Triwulan III">TW III</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan IV') }} showFiles" data-jenis="Umpan Balik Triwulan IV">TW IV</button>
                             </div>
                         </div>
 
