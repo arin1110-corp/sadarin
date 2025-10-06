@@ -159,6 +159,8 @@
                                         'jenis_kerja' => 'Jenis Kerja', ];
                                         @endphp @foreach ($fields as $key =>
                                         $label)
+
+                                        
                                         <div class="form-check">
                                             <input
                                                 class="form-check-input"
