@@ -157,6 +157,7 @@
                                     <th>Nama</th>
                                     <th>Jabatan</th>
                                     <th>Bidang</th>
+                                    <th>Status</th>
                                     <th>Status Kumpul</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -169,6 +170,15 @@
                                     <td>{{ $user->user_nama }}</td>
                                     <td>{{ $user->jabatan_nama }}</td>
                                     <td>{{ $user->bidang_nama }}</td>
+                                    <td>
+                                        @if($user->user_jeniskerja == '1')
+                                        <span class="badge bg-success">PNS</span>
+                                        @elseif($user->user_jeniskerja == '2')
+                                        <span class="badge bg-primary">PPPK</span>
+                                        @else
+                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if($user->kumpulan_status == 1)
                                         <span class="text-success fw-bold">Terkumpul</span>
@@ -202,6 +212,7 @@
                                     <th>Nama</th>
                                     <th>Jabatan</th>
                                     <th>Bidang</th>
+                                    <th>Status</th>
                                     <th>Status Kumpul</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -215,6 +226,15 @@
                                     <td>{{ $user->user_nama }}</td>
                                     <td>{{ $user->jabatan_nama }}</td>
                                     <td>{{ $user->bidang_nama }}</td>
+                                    <td>
+                                        @if($user->user_jeniskerja == '1')
+                                        <span class="badge bg-success">PNS</span>
+                                        @elseif($user->user_jeniskerja == '2')
+                                        <span class="badge bg-primary">PPPK</span>
+                                        @else
+                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if($user->kumpulan_status == 1)
                                         <span class="text-success fw-bold">Terkumpul</span>
