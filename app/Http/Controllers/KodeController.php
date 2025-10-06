@@ -152,18 +152,23 @@ class KodeController extends Controller
             ->join('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->join('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
             ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->join('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
             ->where('user_nip', $pegawai)
-            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
+            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_pengumpulanberkas.*','sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->first();
         if (!$pegawai) {
             return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
         }
+        $berkas = DB::table('sadarin_pengumpulanberkas')
+        ->where('kumpulan_user', $pegawai)
+        ->orderBy('created_at', 'desc')
+        ->get();
         $jabatans = ModelJabatan::all();
         $eselons = ModelEselon::all();
         $bidangs = ModelBidang::all();
         $golongans = ModelGolongan::all();
         $pendidikans = ModelPendidikan::all();
-        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans'));
+        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas'));
     }
     public function strukturOrganisasi()
     {

@@ -215,10 +215,54 @@
                                 alt="Foto Pegawai"
                                 style="width:120px; height:180px; object-fit:cover; border-radius:5px; border:1px solid #ccc;">
                         </div>
+                        <hr>
+                        <div class="mb-4 text-center fw-bold">*** Data Kepegawaian ***</div>
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">NIP</div>
                             <div class="col-sm-8">{{ $user->user_nip }}</div>
                         </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Golongan</div>
+                            <div class="col-sm-8">
+                                {{ $user->golongan_nama }} ({{ $user->golongan_pangkat }})
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Kelas Jabatan</div>
+                            <div class="col-sm-8">Kelas Jabatan {{ $user->user_kelasjabatan }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Bidang</div>
+                            <div class="col-sm-8">{{ $user->bidang_nama }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Eselon</div>
+                            <div class="col-sm-8">{{ $user->eselon_nama }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Jabatan</div>
+                            <div class="col-sm-8">{{ $user->jabatan_nama }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">TMT</div>
+                            <div class="col-sm-8">
+                                {{ \Carbon\Carbon::parse($user->user_tmt)->translatedFormat('j F Y') }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">SPMT</div>
+                            <div class="col-sm-8">
+                                {{ \Carbon\Carbon::parse($user->user_spmt)->translatedFormat('j F Y') }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Jenis Kerja</div>
+                            <div class="col-sm-8">
+                                {{ $user->user_jeniskerja == 1 ? 'Pegawai Negeri Sipil' ?? 2 : 'Pegawai Pemerintah dengan Perjanjian Kerja' }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mb-4 text-center fw-bold">*** Data Pegawai ***</div>
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">NIK</div>
                             <div class="col-sm-8">{{ $user->user_nik }}</div>
@@ -232,8 +276,10 @@
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Jabatan</div>
-                            <div class="col-sm-8">{{ $user->jabatan_nama }}</div>
+                            <div class="col-sm-4 fw-bold">Jenis Kelamin</div>
+                            <div class="col-sm-8">
+                                {{ $user->user_jk == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                            </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Email</div>
@@ -242,20 +288,6 @@
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Nomor Telepon</div>
                             <div class="col-sm-8">{{ $user->user_notelp }}</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Kelas Jabatan</div>
-                            <div class="col-sm-8">Kelas Jabatan {{ $user->user_kelasjabatan }}</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Golongan</div>
-                            <div class="col-sm-8">
-                                {{ $user->golongan_nama }} ({{ $user->golongan_pangkat }})
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Eselon</div>
-                            <div class="col-sm-8">{{ $user->eselon_nama }}</div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Tempat dan Tanggal Lahir</div>
@@ -268,6 +300,14 @@
                             <div class="col-sm-4 fw-bold">Alamat</div>
                             <div class="col-sm-8">{{ $user->user_alamat }}</div>
                         </div>
+                        <hr>
+                        <div class="mb-4 text-center fw-bold">*** Data Pendidikan ***</div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Pendidikan</div>
+                            <div class="col-sm-8">
+                                {{ $user->pendidikan_jenjang }} - {{ $user->pendidikan_jurusan }}
+                            </div>
+                        </div>
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Gelar Depan</div>
                             <div class="col-sm-8">{{ $user->user_gelardepan }}</div>
@@ -276,10 +316,12 @@
                             <div class="col-sm-4 fw-bold">Gelar Belakang</div>
                             <div class="col-sm-8">{{ $user->user_gelarbelakang }}</div>
                         </div>
+                        <hr>
+                        <div class="mb-4 text-center fw-bold">*** Data Penggajian ***</div>
                         <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Jenis Kelamin</div>
+                            <div class="col-sm-4 fw-bold">Jumlah Tanggunggan</div>
                             <div class="col-sm-8">
-                                {{ $user->user_jk == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                {{ $user->user_jmltanggungan }} Orang
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -295,39 +337,62 @@
                             <div class="col-sm-8">{{ $user->user_norek }}</div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Jumlah Tanggunggan</div>
-                            <div class="col-sm-8">
-                                {{ $user->user_jmltanggungan }} Orang
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">TMT</div>
-                            <div class="col-sm-8">
-                                {{ \Carbon\Carbon::parse($user->user_tmt)->translatedFormat('j F Y') }}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">SPMT</div>
-                            <div class="col-sm-8">
-                                {{ \Carbon\Carbon::parse($user->user_spmt)->translatedFormat('j F Y') }}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Pendidikan</div>
-                            <div class="col-sm-8">
-                                {{ $user->pendidikan_jenjang }} - {{ $user->pendidikan_jurusan }}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-4 fw-bold">Bidang</div>
-                            <div class="col-sm-8">{{ $user->bidang_nama }}</div>
-                        </div>
-                        <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Status</div>
                             <div class="col-sm-8">
                                 {{ $user->user_status == 1 ? 'Aktif' : 'Non-Aktif' }}
                             </div>
                         </div>
+                        <hr>
+                        <hr>
+                        @php
+                            // bantu fungsi buat cek status berkas
+                            function cekBerkas($berkas, $jenis) {
+                                $data = $berkas->firstWhere('kumpulan_jenis', $jenis);
+                                if (!$data) return 'secondary'; // belum ada di tabel
+                                return $data->kumpulan_status == 1 ? 'success' : 'secondary'; // hijau kalau status 1
+                            }
+                        @endphp
+
+                        <div class="mb-4 text-center fw-bold">*** Berkas ***</div>
+
+                        {{-- Evaluasi Kinerja --}}
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fw-bold">Data Evaluasi Kinerja 2025</div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Triwulan I') }} showFiles" data-jenis="Evaluasi Kinerja Triwulan I">TW I</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Triwulan II') }} showFiles" data-jenis="Evaluasi Kinerja Triwulan II">TW II</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Triwulan III') }} showFiles" data-jenis="Evaluasi Kinerja Triwulan III">TW III</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Triwulan IV') }} showFiles" data-jenis="Evaluasi Kinerja Triwulan IV">TW IV</button>
+                            </div>
+                        </div>
+
+                        {{-- Rekaman Umpan Balik --}}
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fw-bold">Data Rekaman Umpan Balik 2025</div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Rekaman Umpan Balik Triwulan I') }} showFiles" data-jenis="Rekaman Umpan Balik Triwulan I">TW I</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Rekaman Umpan Balik Triwulan II') }} showFiles" data-jenis="Rekaman Umpan Balik Triwulan II">TW II</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Rekaman Umpan Balik Triwulan III') }} showFiles" data-jenis="Rekaman Umpan Balik Triwulan III">TW III</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Rekaman Umpan Balik Triwulan IV') }} showFiles" data-jenis="Rekaman Umpan Balik Triwulan IV">TW IV</button>
+                            </div>
+                        </div>
+
+                        {{-- Pakta Integritas --}}
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fw-bold">Data Pakta Integritas</div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Pakta Integritas') }} showFiles" data-jenis="Pakta Integritas">2025</button>
+                            </div>
+                        </div>
+
+                        {{-- Model C --}}
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fw-bold">Data Model C</div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Model C 2025') }} showFiles" data-jenis="Model C 2025">2025</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -337,7 +402,7 @@
     </div>
     </div>
 
-    /// Modal Tambah Evaluasi dan Umpan Balik
+    <!-- Modal Tambah Evaluasi dan Umpan Balik -->
     <div class="modal fade" id="tambahEvaluasiModal" tabindex="-1" aria-labelledby="tambahEvaluasiModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -366,7 +431,7 @@
         </div>
     </div>
 
-    /// Modal Tambah Umpan Balik
+    <!-- /// Modal Tambah Umpan Balik -->
     <div class="modal fade" id="tambahUmpanBalikModal" tabindex="-1" aria-labelledby="tambahUmpanBalikModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -395,7 +460,7 @@
         </div>
     </div>
 
-    /// Modal Edit Data Pegawai
+    <!-- /// Modal Edit Data Pegawai -->
     <div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPegawaiModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -467,7 +532,7 @@
         </div>
     </div>
 
-    /// Modal Edit Data Pegawai
+    <!-- /// Modal Edit Data Pegawai -->
     <div class="modal fade" id="editPegawaiModal" tabindex="-1" aria-labelledby="editPegawaiModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -752,6 +817,31 @@
                 width: '100%'
             });
         });
+    </script>
+    <script>
+    const allFiles = @json($berkas);
+
+    document.querySelectorAll('.showFiles').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const jenis = this.dataset.jenis;
+
+        // cari file yang cocok dengan jenis tombol
+        const filtered = allFiles.filter(f => 
+        f.kumpulan_jenis.toLowerCase().trim() === jenis.toLowerCase().trim()
+        );
+
+        if (filtered.length === 0) {
+        alert('Tidak ada file ditemukan untuk ' + jenis);
+        return;
+        }
+
+        // kalau ada lebih dari 1 file, buka semuanya di tab baru
+        filtered.forEach(file => {
+        const fileUrl = file.kumpulan_file;
+        window.open(fileUrl, '_blank');
+        });
+    });
+    });
     </script>
 
 </body>
