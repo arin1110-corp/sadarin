@@ -1817,8 +1817,6 @@ class KodeController extends Controller
         $jumlahPnsKumpul = $dataPns->where('kumpulan_status', 1)->count();
         $jumlahPppkKumpul = $dataPppk->where('kumpulan_status', 1)->count();
 
-        $dataPns = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->get();
-        $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
         $jenis = $dataPegawai[0]->kumpulan_jenis;
         return view('kepegawaian.paktaintegritas', compact(
             'dataPegawai',
