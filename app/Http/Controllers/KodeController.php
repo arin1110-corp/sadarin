@@ -2056,6 +2056,98 @@ class KodeController extends Controller
 
         return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
+    public function prefillEvaluasiTWII()
+    {
+        // Jenis pengumpulan baru
+        $kumpulanJenisBaru = 'Evaluasi Kinerja Triwulan II';
+
+        // Ambil semua pegawai aktif
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
+                ],
+                [
+                    'kumpulan_status' => 0,
+                    'kumpulan_file'   => 'null',
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+    }
+    public function prefillUmbalTWII()
+    {
+        // Jenis pengumpulan baru
+        $kumpulanJenisBaru = 'Umpan Balik Triwulan II';
+
+        // Ambil semua pegawai aktif
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
+                ],
+                [
+                    'kumpulan_status' => 0,
+                    'kumpulan_file'   => 'null',
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+    }
+    public function prefillEvaluasiTWI()
+    {
+        // Jenis pengumpulan baru
+        $kumpulanJenisBaru = 'Evaluasi Kinerja Triwulan I';
+
+        // Ambil semua pegawai aktif
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
+                ],
+                [
+                    'kumpulan_status' => 0,
+                    'kumpulan_file'   => 'null',
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+    }
+    public function prefillUmbalTWI()
+    {
+        // Jenis pengumpulan baru
+        $kumpulanJenisBaru = 'Umpan Balik Triwulan I';
+
+        // Ambil semua pegawai aktif
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
+                ],
+                [
+                    'kumpulan_status' => 0,
+                    'kumpulan_file'   => 'null',
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+    }
     public function prefillModelC2025()
     {
         // Jenis pengumpulan baru

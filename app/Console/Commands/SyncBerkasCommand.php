@@ -22,8 +22,12 @@ class SyncBerkasCommand extends Command
         $mapJenis = [
             'pakta'  => 'Pakta Integritas',
             'modelc' => 'Model C 2025',
-            'evkin'  => 'Evaluasi Kinerja',
-            'umbal'  => 'Umpan Balik',
+            'evkin_3'  => 'Evaluasi Kinerja Triwulan III',
+            'evkin_1'  => 'Evaluasi Kinerja Triwulan I',
+            'evkin_2'  => 'Evaluasi Kinerja Triwulan II',
+            'umpan_3'  => 'Umpan Balik Triwulan III',
+            'umpan_2'  => 'Umpan Balik Triwulan II',
+            'umpan_1'  => 'Umpan Balik Triwulan I',
         ];
 
         if (!isset($mapJenis[$jenis])) {
@@ -35,6 +39,8 @@ class SyncBerkasCommand extends Command
 
         foreach ($users as $user) {
             // tentukan key env sesuai jenis dan jeniskerja
+            // jeda biar gak kebanyakan request ke Google API
+            usleep(500000); // jeda 0.5 detik
             $envKey = $user->user_jeniskerja == 1
                 ? 'GOOGLE_DRIVE_FOLDER_PNS_' . strtoupper($jenis)
                 : 'GOOGLE_DRIVE_FOLDER_PPPK_' . strtoupper($jenis);
