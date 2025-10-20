@@ -103,15 +103,15 @@
                                 </div>
                                 <div class="modal-body">
                                     @php$fields = [
-                                            'user_id' => 'ID',
-                                            'user_nip' => 'NIP',
-                                            'user_nama' => 'Nama',
-                                            'user_nik' => 'NIK',
-                                            'user_tgllahir' => 'Tanggal Lahir',
-                                            'user_jabatan' => 'Jabatan',
-                                            'jenis_kerja' => 'Jenis Kerja',
-                                        ];
-                                    @endphp @foreach ($fields as $key => $label)
+                                                                                                                            'user_id' => 'ID',
+                                                                                                                            'user_nip' => 'NIP',
+                                                                                                                            'user_nama' => 'Nama',
+                                                                                                                            'user_nik' => 'NIK',
+                                                                                                                            'user_tgllahir' => 'Tanggal Lahir',
+                                                                                                                            'user_jabatan' => 'Jabatan',
+                                                                                                                            'jenis_kerja' => 'Jenis Kerja',
+                                                                                                                        ];
+                                                                                                            @endphp ?> ?> @foreach ($fields as $key => $label)
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="fields[]"
                                                 value="{{ $key }}" id="field_{{ $key }}" checked />
@@ -184,8 +184,7 @@
                                                 <td class="text-center">
                                                     @if ($user->user_jeniskerja == '1')
                                                         <span class="badge bg-success">PNS</span>
-                                                        @elseif
-                                                        ($user->user_jeniskerja == '2')
+                                                    @elseif($user->user_jeniskerja == '2')
                                                         <span class="badge bg-primary">PPPK</span>
                                                     @else
                                                         <span class="badge bg-secondary">Tidak Aktif</span>
