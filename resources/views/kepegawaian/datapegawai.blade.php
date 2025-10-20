@@ -102,16 +102,17 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    @php$fields = [
-                                                                                                                            'user_id' => 'ID',
-                                                                                                                            'user_nip' => 'NIP',
-                                                                                                                            'user_nama' => 'Nama',
-                                                                                                                            'user_nik' => 'NIK',
-                                                                                                                            'user_tgllahir' => 'Tanggal Lahir',
-                                                                                                                            'user_jabatan' => 'Jabatan',
-                                                                                                                            'jenis_kerja' => 'Jenis Kerja',
-                                                                                                                        ];
-                                                                                                            @endphp ?> ?> @foreach ($fields as $key => $label)
+                                    @php
+                                    $fields = [
+                                        'user_id' => 'ID',
+                                        'user_nip' => 'NIP',
+                                        'user_nama' => 'Nama',
+                                        'user_nik' => 'NIK',
+                                        'user_tgllahir' => 'Tanggal Lahir',
+                                        'user_jabatan' => 'Jabatan',
+                                        'jenis_kerja' => 'Jenis Kerja',
+                                    ];
+                                    @endphp ?> ?> @foreach ($fields as $key => $label)
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="fields[]"
                                                 value="{{ $key }}" id="field_{{ $key }}" checked />
