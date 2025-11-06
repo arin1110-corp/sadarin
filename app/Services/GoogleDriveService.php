@@ -13,53 +13,49 @@ class GoogleDriveService
     {
         $client = new Client();
         $client->setAuthConfig(storage_path('app/google/sadarin-drive.json'));
-        $client->addScope(Drive::DRIVE_READONLY);
+        $client->addScope(Drive::DRIVE_READONLY); // cukup readonly untuk cek file
         $this->driveService = new Drive($client);
     }
 
-    /**
-     * Cari file berdasarkan NIP dalam folder
-     * Auto retry jika error
-     */
-    public function findFileByNip($nip, $folderId)
+    public function findFileByNip($nip, $folderId, $jenis)
     {
-        $query = "'{$folderId}' in parents and name contains '{$nip}' and trashed = false";
+        $driveService = $this->getClient($jenis);
 
-        for ($i = 1; $i <= 3; $i++) {
-            try {
-                $files = $this->driveService->files->listFiles([
-                    'q' => $query,
-                    'fields' => 'files(id, name, webViewLink)',
-                    'pageSize' => 1,
-                ]);
+        $query = sprintf("'%s' in parents and name contains '%s' and trashed = false", $folderId, $nip);
 
-                if (count($files->files) > 0) {
-                    $file = $files->files[0];
+        $files = $driveService->files->listFiles([
+            'q' => $query,
+            'fields' => 'files(id, name, webViewLink)',
+            'pageSize' => 1,
+        ]);
 
-                    return [
-                        'status' => 1,
-                        'file_url' => $file->webViewLink,
-                        'file_name' => $file->name,
-                    ];
-                }
-
-                return [
-                    'status' => 0,
-                    'file_url' => 'null',
-                    'file_name' => 'null',
-                ];
-
-            } catch (\Exception $e) {
-                // Jika error internal dari Google, tunggu dan ulangi
-                sleep(2);
-            }
+        if (count($files->files) > 0) {
+            $file = $files->files[0];
+            return [
+                'status' => 1,
+                'file_url' => $file->webViewLink,
+                'file_name' => $file->name,
+            ];
         }
 
-        // Jika tetap gagal setelah 3x
         return [
             'status' => 0,
             'file_url' => 'null',
             'file_name' => 'null',
         ];
+    }
+    private function getClient($jenis)
+    {
+        $client = new \Google_Client();
+        $client->setScopes([\Google_Service_Drive::DRIVE_READONLY]);
+
+        // Tentukan credential berdasarkan jenis berkas
+        if (in_array(strtolower($jenis), ['pakta', 'foto'])) {
+            $client->setAuthConfig(storage_path('app/google/sadarin-drive.json'));
+        } else {
+            $client->setAuthConfig(storage_path('app/google/sadarin-kinerja.json'));
+        }
+
+        return new \Google_Service_Drive($client);
     }
 }
