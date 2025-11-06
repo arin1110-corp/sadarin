@@ -7,55 +7,77 @@ use Google\Service\Drive;
 
 class GoogleDriveService
 {
-    protected $driveService;
+    protected $clients = [];
 
     public function __construct()
     {
-        $client = new Client();
-        $client->setAuthConfig(storage_path('app/google/sadarin-drive.json'));
-        $client->addScope(Drive::DRIVE_READONLY); // cukup readonly untuk cek file
-        $this->driveService = new Drive($client);
+        // Kosong, karena client akan dipilih sesuai jenis
     }
 
-    public function findFileByNip($nip, $folderId, $jenis)
+    /**
+     * Ambil client berdasarkan jenis berkas
+     */
+    private function getDriveByJenis($jenis)
     {
-        $driveService = $this->getClient($jenis);
+        $jenis = strtolower($jenis);
 
-        $query = sprintf("'%s' in parents and name contains '%s' and trashed = false", $folderId, $nip);
-
-        $files = $driveService->files->listFiles([
-            'q' => $query,
-            'fields' => 'files(id, name, webViewLink)',
-            'pageSize' => 1,
-        ]);
-
-        if (count($files->files) > 0) {
-            $file = $files->files[0];
-            return [
-                'status' => 1,
-                'file_url' => $file->webViewLink,
-                'file_name' => $file->name,
-            ];
+        // Cache biar tidak buat client berulang
+        if (isset($this->clients[$jenis])) {
+            return $this->clients[$jenis];
         }
 
-        return [
-            'status' => 0,
-            'file_url' => 'null',
-            'file_name' => 'null',
-        ];
-    }
-    private function getClient($jenis)
-    {
-        $client = new \Google_Client();
-        $client->setScopes([\Google_Service_Drive::DRIVE_READONLY]);
+        $client = new Client();
+        $client->setScopes([Drive::DRIVE_READONLY]);
 
-        // Tentukan credential berdasarkan jenis berkas
-        if (in_array(strtolower($jenis), ['pakta', 'foto'])) {
+        if (in_array($jenis, ['pakta', 'foto'])) {
             $client->setAuthConfig(storage_path('app/google/sadarin-drive.json'));
         } else {
             $client->setAuthConfig(storage_path('app/google/sadarin-kinerja.json'));
         }
 
-        return new \Google_Service_Drive($client);
+        $this->clients[$jenis] = new Drive($client);
+        return $this->clients[$jenis];
+    }
+
+    /**
+     * AMBIL SEMUA FILE DALAM 1 FOLDER (PAGINATION)
+     * — aman untuk ribuan file, tidak putus di tengah —
+     */
+    public function getAllFilesInFolder($folderId, $jenis)
+    {
+        $drive = $this->getDriveByJenis($jenis);
+
+        $files = [];
+        $pageToken = null;
+
+        do {
+            try {
+                $response = $drive->files->listFiles([
+                    'q' => "'{$folderId}' in parents and trashed = false",
+                    'fields' => 'nextPageToken, files(id, name, webViewLink)',
+                    'pageSize' => 200,
+                    'supportsAllDrives' => true,
+                    'includeItemsFromAllDrives' => true,
+                    'pageToken' => $pageToken
+                ]);
+
+                foreach ($response->files as $f) {
+                    $files[] = [
+                        'id' => $f->id,
+                        'name' => $f->name,
+                        'url' => $f->webViewLink
+                    ];
+                }
+
+                $pageToken = $response->nextPageToken;
+                usleep(200000); // jeda 0.2 detik agar tidak kena rate limit
+
+            } catch (\Exception $e) {
+                \Log::error("Google API Error: " . $e->getMessage());
+                sleep(2); // retry
+            }
+        } while ($pageToken);
+
+        return $files;
     }
 }
