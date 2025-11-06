@@ -7,77 +7,59 @@ use Google\Service\Drive;
 
 class GoogleDriveService
 {
-    protected $clients = [];
+    protected $driveService;
 
     public function __construct()
     {
-        // Kosong, karena client akan dipilih sesuai jenis
-    }
-
-    /**
-     * Ambil client berdasarkan jenis berkas
-     */
-    private function getDriveByJenis($jenis)
-    {
-        $jenis = strtolower($jenis);
-
-        // Cache biar tidak buat client berulang
-        if (isset($this->clients[$jenis])) {
-            return $this->clients[$jenis];
-        }
-
         $client = new Client();
-        $client->setScopes([Drive::DRIVE_READONLY]);
-
-        if (in_array($jenis, ['pakta', 'foto'])) {
-            $client->setAuthConfig(storage_path('app/google/sadarin-drive.json'));
-        } else {
-            $client->setAuthConfig(storage_path('app/google/sadarin-kinerja.json'));
-        }
-
-        $this->clients[$jenis] = new Drive($client);
-        return $this->clients[$jenis];
+        $client->setAuthConfig(storage_path('app/google/sadarin-drive.json'));
+        $client->addScope(Drive::DRIVE_READONLY);
+        $this->driveService = new Drive($client);
     }
 
     /**
-     * AMBIL SEMUA FILE DALAM 1 FOLDER (PAGINATION)
-     * — aman untuk ribuan file, tidak putus di tengah —
+     * Cari file berdasarkan NIP dalam folder
+     * Auto retry jika error
      */
-    public function getAllFilesInFolder($folderId, $jenis)
+    public function findFileByNip($nip, $folderId)
     {
-        $drive = $this->getDriveByJenis($jenis);
+        $query = "'{$folderId}' in parents and name contains '{$nip}' and trashed = false";
 
-        $files = [];
-        $pageToken = null;
-
-        do {
+        for ($i = 1; $i <= 3; $i++) {
             try {
-                $response = $drive->files->listFiles([
-                    'q' => "'{$folderId}' in parents and trashed = false",
-                    'fields' => 'nextPageToken, files(id, name, webViewLink)',
-                    'pageSize' => 200,
-                    'supportsAllDrives' => true,
-                    'includeItemsFromAllDrives' => true,
-                    'pageToken' => $pageToken
+                $files = $this->driveService->files->listFiles([
+                    'q' => $query,
+                    'fields' => 'files(id, name, webViewLink)',
+                    'pageSize' => 1,
                 ]);
 
-                foreach ($response->files as $f) {
-                    $files[] = [
-                        'id' => $f->id,
-                        'name' => $f->name,
-                        'url' => $f->webViewLink
+                if (count($files->files) > 0) {
+                    $file = $files->files[0];
+
+                    return [
+                        'status' => 1,
+                        'file_url' => $file->webViewLink,
+                        'file_name' => $file->name,
                     ];
                 }
 
-                $pageToken = $response->nextPageToken;
-                usleep(200000); // jeda 0.2 detik agar tidak kena rate limit
+                return [
+                    'status' => 0,
+                    'file_url' => 'null',
+                    'file_name' => 'null',
+                ];
 
             } catch (\Exception $e) {
-                \Log::error("Google API Error: " . $e->getMessage());
-                sleep(2); // retry
+                // Jika error internal dari Google, tunggu dan ulangi
+                sleep(2);
             }
-        } while ($pageToken);
+        }
 
-        return $files;
+        // Jika tetap gagal setelah 3x
+        return [
+            'status' => 0,
+            'file_url' => 'null',
+            'file_name' => 'null',
+        ];
     }
 }

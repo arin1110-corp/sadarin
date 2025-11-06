@@ -35,12 +35,11 @@ class SyncBerkasCommand extends Command
             return;
         }
 
-        // ambil user cukup field penting saja, jauh lebih ringan
         $users = ModelUser::select('user_nip', 'user_jeniskerja')->get();
-        $cacheFolder = [];
 
         foreach ($users as $user) {
 
+            // tentukan folder ENV
             $envKey = $user->user_jeniskerja == 1
                 ? 'GOOGLE_DRIVE_FOLDER_PNS_' . strtoupper($jenis)
                 : 'GOOGLE_DRIVE_FOLDER_PPPK_' . strtoupper($jenis);
@@ -52,32 +51,25 @@ class SyncBerkasCommand extends Command
                 continue;
             }
 
-            // PENTING: Panggil dengan dua parameter sesuai signature layanan
-            if (!isset($cacheFolder[$folderId])) {
-                $this->info("Ambil daftar file dari Drive untuk folder: {$folderId}");
-                // perhatikan: kirim juga $jenis agar service memilih credential yang sesuai
-                $cacheFolder[$folderId] = $googleDrive->getAllFilesInFolder($folderId, $jenis);
-            }
+            // delay agar tidak kena rate-limit
+            usleep(400000);
 
-            $files = $cacheFolder[$folderId];
+            // cari file di Drive
+            $result = $googleDrive->findFileByNip($user->user_nip, $folderId);
 
-            $found = collect($files)->first(function ($f) use ($user, $mapJenis, $jenis) {
-                return str_contains(strtolower($f['name']), strtolower($user->user_nip))
-                    && str_contains(strtolower($f['name']), strtolower($mapJenis[$jenis]));
-            });
-
+            // simpan ke database
             ModelPengumpulanBerkas::updateOrCreate(
                 [
                     'kumpulan_user'  => $user->user_nip,
                     'kumpulan_jenis' => $mapJenis[$jenis],
                 ],
                 [
-                    'kumpulan_file'   => $found['url'] ?? 'null',
-                    'kumpulan_status' => $found ? 1 : 0,
+                    'kumpulan_file'   => $result['file_url'] ?? 'null',
+                    'kumpulan_status' => $result['status'],
                 ]
             );
 
-            $this->info("{$user->user_nip} → " . ($found['url'] ?? 'TIDAK ADA'));
+            $this->info("{$user->user_nip} -> {$result['file_url']}");
         }
 
         $this->info("Sinkronisasi {$jenis} selesai!");
