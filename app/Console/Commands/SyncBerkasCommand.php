@@ -52,10 +52,11 @@ class SyncBerkasCommand extends Command
                 continue;
             }
 
-            // Query 1x saja per folder
+            // PENTING: Panggil dengan dua parameter sesuai signature layanan
             if (!isset($cacheFolder[$folderId])) {
                 $this->info("Ambil daftar file dari Drive untuk folder: {$folderId}");
-                $cacheFolder[$folderId] = $googleDrive->getAllFilesInFolder($folderId);
+                // perhatikan: kirim juga $jenis agar service memilih credential yang sesuai
+                $cacheFolder[$folderId] = $googleDrive->getAllFilesInFolder($folderId, $jenis);
             }
 
             $files = $cacheFolder[$folderId];
