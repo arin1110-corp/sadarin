@@ -72,7 +72,7 @@ class SyncBerkasCommand extends Command
                     'kumpulan_jenis' => $mapJenis[$jenis],
                 ],
                 [
-                    'kumpulan_file'   => $found['url'] ?? null,
+                    'kumpulan_file'   => $found['url'] ?? 'null',
                     'kumpulan_status' => $found ? 1 : 0,
                 ]
             );
