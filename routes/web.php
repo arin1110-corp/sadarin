@@ -26,6 +26,7 @@ Route::get('/pengumpulan/prefill-evaluasi-tw2', [KodeController::class, 'prefill
 Route::get('/pengumpulan/prefill-umpanbalik', [KodeController::class, 'prefillUmbal']);
 Route::get('/pengumpulan/prefill-umpanbalik-tw1', [KodeController::class, 'prefillUmbalTWI']);
 Route::get('/pengumpulan/prefill-umpanbalik-tw2', [KodeController::class, 'prefillUmbalTWII']);
+Route::get('/pakta-integritas-2025', [KodeController::class, 'prefillPaktaIntegritas1Desember']);
 Route::get('/model-c-2025', [KodeController::class, 'prefillModelC2025']);
 Route::get('/syntax-c-2025', [KodeController::class, 'prefillSyntaxC2025']);
 

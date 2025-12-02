@@ -2037,6 +2037,36 @@ class KodeController extends Controller
 
         return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
+    public function prefillPaktaIntegritas1Desember()
+    {
+        $kumpulanJenisBaru = 'Pakta Integritas 1 Desember 2025';
+
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+
+            // Cek apakah sudah ada record untuk jenis ini
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $user->user_nip)
+                ->where('kumpulan_jenis', $kumpulanJenisBaru)
+                ->first();
+
+            // Kalau SUDAH ADA → jangan sentuh
+            if ($cek) {
+                continue;
+            }
+
+            // Kalau BELUM ADA → buat prefill baru
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user'   => $user->user_nip,
+                'kumpulan_jenis'  => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file'   => 'null', // WAJIB string "null" karena query lama pakai itu
+            ]);
+        }
+
+        return back()->with('success', "Prefill Pakta Integritas 1 Desember 2025 berhasil ditambahkan tanpa mengubah file lama.");
+    }
+
     public function prefillUmbal()
     {
         // Jenis pengumpulan baru
