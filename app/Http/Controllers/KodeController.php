@@ -37,7 +37,7 @@ class KodeController extends Controller
 {
 
     protected $drive;
-    private $kodeValid = ['A1@B2', 'X9#K7', 'R5$T3', 'Y7@U1', 'Z8%P4', 'K0#L9', 'N3&M6', 'G7*H8', 'W6!Q2', 'D4@Z5'];
+    private $kodeValid = ['X9#K7', 'R5$T3', 'Y7@U1', 'Z8%P4', 'K0#L9', 'N3&M6', 'G7*H8', 'W6!Q2', 'D4@Z5'];
 
 
     public function __construct(GoogleDriveService $drive)
