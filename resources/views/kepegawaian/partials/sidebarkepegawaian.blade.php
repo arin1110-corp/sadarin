@@ -18,7 +18,6 @@
             ['route' => 'kepegawaian.data.jabatan', 'icon' => 'bi-briefcase', 'label' => 'Data Jabatan'],
             ['route' => 'kepegawaian.data.eselon', 'icon' => 'bi-layers', 'label' => 'Data Eselon'],
             ['route' => 'kepegawaian.data.pendidikan', 'icon' => 'bi-mortarboard', 'label' => 'Data Pendidikan'],
-            ['route' => 'kepegawaian.pakta.integritas', 'icon' => 'bi-card-text', 'label' => 'Pakta Integritas', 'param' => 'Pakta Integritas'],
         ];
 
         $currentRoute = Route::currentRouteName();
@@ -34,6 +33,17 @@
                 </a>
             </li>
         @endforeach
+
+        {{-- Dropdown Pakta Integritas --}}
+        <li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#paktaDropdown" role="button" aria-expanded="false" aria-controls="evkinDropdown">
+                <i class="bi bi-clipboard-data me-2"></i> Data Pakta Integritas
+            </a>
+            <div class="collapse ps-4" id="paktaDropdown">
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.pakta.integritas', ['id' => 'Pakta Integritas']) }}">Pakta Integritas 1 September 2025</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.pakta.1desember', ['id' => 'Pakta Integritas 1 Desember 2025']) }}">Pakta Integritas 1 Desember 2025</a>
+            </div>
+        </li>
 
         {{-- Dropdown Evaluasi Kinerja --}}
         <li class="nav-item mb-1">
