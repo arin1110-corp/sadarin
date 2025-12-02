@@ -1976,6 +1976,10 @@ class KodeController extends Controller
                 '1' => 'assets/umpanbalik/pns',
                 '2' => 'assets/umpanbalik/pppk',
             ],
+            'pakta1desember' => [
+                '1' => 'assets/pakta1desember/pns',
+                '2' => 'assets/pakta1desember/pppk',
+            ],
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {

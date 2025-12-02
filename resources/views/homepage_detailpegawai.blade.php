@@ -218,6 +218,12 @@
                                     <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan III
                                 </button>
                             </div> -->
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#tambahPaktaIntegritas1DesemberModal">
+                                    <i class="bi bi-plus-lg"></i> Pakta Integritas 1 Desember 2025
+                                </button>
+                            </div>
                         </div>
                         <hr>
                         <div class="text-center mb-4">
@@ -408,7 +414,10 @@
                             <div class="col-sm-6">
                                 <button class="btn btn-{{ cekBerkas($berkas, 'Pakta Integritas') }} showFiles"
                                     data-jenis="Pakta Integritas">2025</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Pakta Integritas 1 Desember 2025') }} showFiles"
+                                    data-jenis="Pakta Integritas 1 Desember 2025">1 Desember 2025</button>
                             </div>
+
                         </div>
 
                         {{-- Model C --}}
@@ -482,6 +491,37 @@
                         <input type="hidden" name="kumpulan_jenis" value="Umpan Balik Triwulan III">
                         <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
                         <input type="hidden" name="jenisfile" value="umpanbalik">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- /// Modal Pakta Integritas 1 Desember 2025 -->
+    <div class="modal fade" id="tambahPaktaIntegritas1DesemberModal" tabindex="-1" aria-labelledby="tambahPaktaIntegritasModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('tambah.pakta.1desember') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Pakta Integritas 1 Desember 2025</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Pakta Integritas 1 Desember 2025</label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <input type="hidden" name="kumpulan_jenis" value="Pakta Integritas 1 Desember 2025">
+                        <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                        <input type="hidden" name="jenisfile" value="pakta1desember">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

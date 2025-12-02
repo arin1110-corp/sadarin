@@ -85,6 +85,9 @@
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
                     Export Excel
                 </button>
+                <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#modalTambahPegawai">
+                    Tambah Data Pegawai
+                </button>
                 <br />
 
                 <!-- Modal -->
@@ -134,6 +137,8 @@
                         </form>
                     </div>
                 </div>
+
+
                 {{-- Tabs Data Pegawai --}}
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white border-0 pb-0">
@@ -516,6 +521,28 @@
                         </div>
                     </div>
                 @endforeach
+                {{-- End Modal Detail Pegawai --}}
+                {{-- End Tabs Data Pegawai --}}
+                
+                {{-- Modal Tambah Data Pegawai --}}
+                <div class="modal fade" id="modalTambahPegawai" tabindex="-1"
+                    aria-labelledby="modalTambahPegawaiLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-dark text-white">
+                                <h5 class="modal-title" id="modalTambahPegawaiLabel">
+                                    Tambah Data Pegawai
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- End Modal Tambah Data Pegawai --}}
 
                 {{-- Footer --}}
                 @include('kepegawaian.partials.footerkepegawaian')

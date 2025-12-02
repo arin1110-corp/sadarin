@@ -149,6 +149,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/pemuktahiran-update-pasfoto', [KodeController::class, 'updatePasFoto'])->name('pemuktahiran.update.pasfoto');
     Route::post('/tambah-evaluasi-tw3', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw3');
     Route::post('/tambah-umpan-balik-tw3', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tw3');
+    Route::post('/tambah-pakta-1desember', [KodeController::class, 'uploadBerkas'])->name('tambah.pakta.1desember');
 
     // Rute untuk halaman cek Subbag
 
