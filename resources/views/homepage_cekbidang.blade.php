@@ -18,7 +18,7 @@
         <div class="grid-menu">
             @if(isset($user))
             <a href="/detail-pegawai" class="menu-box-nama nama-menucek">
-                {{ $user->user_nip }}<br>{{ $user->user_nama }}<br>{{ $user->jabatan_nama }}
+                {{ $user->user_nip }}<br>{{ $user->user_nik }}<br{{ $user->user_nama }}<br>{{ $user->jabatan_nama }}
             </a>
             @endif
             <a href="{{ route('struktur.organisasi') }}" class="menu-box-struktur" target="_blank">
