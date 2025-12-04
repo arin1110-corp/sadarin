@@ -70,7 +70,7 @@
 
         <div class="form-access mt-5">
             <p class="mb-4" style="font-size: 16px; color: #555;">
-                Masukkan <strong>kode akses</strong> atau <strong>NIP</strong> untuk masuk ke dalam sistem data dan
+                Masukkan <strong>kode akses</strong> atau <strong>NIP</strong> atau <strong>NIK</strong> untuk masuk ke dalam sistem data dan
                 arsip internal:
             </p>
             <form method="POST" action="{{ route('akses.cek') }}">
