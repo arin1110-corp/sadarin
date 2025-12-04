@@ -147,8 +147,13 @@ class KodeController extends Controller
     }
     public function detailpegawai()
     {
-        $pegawai = session('user_info')->user_nip;
+        $pegawai  = session('user_info')->user_nip;
         $pegawai1 = session('user_info')->user_nik;
+
+        if (!$pegawai && !$pegawai1) {
+            return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
+        }
+
         $user = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->join('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
@@ -169,19 +174,21 @@ class KodeController extends Controller
                 'sadarin_pendidikan.*'
             )
             ->first();
-        if (!$pegawai && !$pegawai1) {
-            return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
-        }
+
         $berkas = DB::table('sadarin_pengumpulanberkas')
             ->where('kumpulan_user', $pegawai)
             ->orderBy('created_at', 'desc')
             ->get();
-        $jabatans = ModelJabatan::all();
-        $eselons = ModelEselon::all();
-        $bidangs = ModelBidang::all();
-        $golongans = ModelGolongan::all();
-        $pendidikans = ModelPendidikan::all();
-        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas'));
+
+        return view('homepage_detailpegawai', [
+            'user' => $user,
+            'jabatans' => ModelJabatan::all(),
+            'eselons' => ModelEselon::all(),
+            'bidangs' => ModelBidang::all(),
+            'golongans' => ModelGolongan::all(),
+            'pendidikans' => ModelPendidikan::all(),
+            'berkas' => $berkas,
+        ]);
     }
     public function strukturOrganisasi()
     {
