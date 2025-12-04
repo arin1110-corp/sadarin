@@ -16,12 +16,11 @@
         </div>
 
         <div class="grid-menu">
-            @if(session('user_info'))
-                <a href="/detail-pegawai" class="menu-box-nama nama-menucek">
-                    {{ session('user_info')->user_nama }}<br>{{ session('user_info')->jabatan_nama }}
-                </a>
+            @if(isset($user))
+            <a href="/detail-pegawai" class="menu-box-nama nama-menucek">
+                {{ $user->user_nip }}<br>{{ $user->user_nik }}<br>{{ $user->user_nama }}<br>{{ $user->jabatan_nama }}
+            </a>
             @endif
-
             <a href="{{ route('struktur.organisasi') }}" class="menu-box-struktur" target="_blank">
                 Struktur Organisasi
             </a>
