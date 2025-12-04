@@ -129,7 +129,7 @@ class KodeController extends Controller
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->where('user_nip', $request->kode_akses)
             ->orwhere('user_nik', $request->kode_akses)
-            ->select('sadarin_user.*', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama')
+            ->select('sadarin_user.user_nip', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_user.user_nik')
             ->first();
 
         if ($user) {
@@ -147,48 +147,31 @@ class KodeController extends Controller
     }
     public function detailpegawai()
     {
-        $pegawai  = session('user_info')->user_nip;
+        $pegawai = session('user_info')->user_nip;
         $pegawai1 = session('user_info')->user_nik;
-
-        if (!$pegawai && !$pegawai1) {
-            return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
-        }
-
         $user = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->join('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->join('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
             ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->join('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
-            ->where(function ($q) use ($pegawai, $pegawai1) {
-                $q->where('user_nip', $pegawai)
-                    ->orWhere('user_nik', $pegawai1);
-            })
-            ->select(
-                'sadarin_user.*',
-                'sadarin_golongan.*',
-                'sadarin_pengumpulanberkas.*',
-                'sadarin_jabatan.jabatan_nama',
-                'sadarin_bidang.bidang_nama',
-                'sadarin_eselon.*',
-                'sadarin_pendidikan.*'
-            )
+            ->where('user_nip', $pegawai)
+            ->orwhere('user_nik', $pegawai1)
+            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_pengumpulanberkas.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->first();
-
+        if (!$pegawai && !$pegawai1) {
+            return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
+        }
         $berkas = DB::table('sadarin_pengumpulanberkas')
-            ->where('kumpulan_user', $pegawai)
+            ->whereIn('kumpulan_user', [$pegawai, $pegawai1])
             ->orderBy('created_at', 'desc')
             ->get();
-
-        return view('homepage_detailpegawai', [
-            'user' => $user,
-            'jabatans' => ModelJabatan::all(),
-            'eselons' => ModelEselon::all(),
-            'bidangs' => ModelBidang::all(),
-            'golongans' => ModelGolongan::all(),
-            'pendidikans' => ModelPendidikan::all(),
-            'berkas' => $berkas,
-        ]);
+        $jabatans = ModelJabatan::all();
+        $eselons = ModelEselon::all();
+        $bidangs = ModelBidang::all();
+        $golongans = ModelGolongan::all();
+        $pendidikans = ModelPendidikan::all();
+        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas'));
     }
     public function strukturOrganisasi()
     {
