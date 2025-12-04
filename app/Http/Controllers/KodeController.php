@@ -129,7 +129,7 @@ class KodeController extends Controller
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->where('user_nip', $request->kode_akses)
             ->orwhere('user_nik', $request->kode_akses)
-            ->select('sadarin_user.user_nip', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_user.user_nik')
+            ->select('sadarin_user.*', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama')
             ->first();
 
         if ($user) {
