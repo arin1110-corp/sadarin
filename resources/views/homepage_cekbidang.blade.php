@@ -16,7 +16,7 @@
         </div>
 
         <div class="grid-menu">
-            @if(isset($user))
+            @if(!empty($user))
             <a href="/detail-pegawai" class="menu-box-nama nama-menucek">
                 {{ $user->user_nip }}<br>{{ $user->user_nik }}<br>{{ $user->user_nama }}<br>{{ $user->jabatan_nama }}
             </a>
