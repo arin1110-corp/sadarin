@@ -155,11 +155,11 @@ class KodeController extends Controller
             ->join('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
             ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->join('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
-            ->where('user_nip', $pegawai)
+            ->orwhere('user_nip', $pegawai)
             ->orwhere('user_nik', $pegawai1)
             ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_pengumpulanberkas.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->first();
-        if (!$pegawai) {
+        if (!$pegawai && !$pegawai1) {
             return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
         }
         $berkas = DB::table('sadarin_pengumpulanberkas')
