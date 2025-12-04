@@ -148,6 +148,7 @@ class KodeController extends Controller
     public function detailpegawai()
     {
         $pegawai = session('user_info')->user_nip;
+        $pegawai1 = session('user_info')->user_nik;
         $user = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->join('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
@@ -155,6 +156,7 @@ class KodeController extends Controller
             ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->join('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
             ->where('user_nip', $pegawai)
+            ->orwhere('user_nik', $pegawai1)
             ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_pengumpulanberkas.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->first();
         if (!$pegawai) {
