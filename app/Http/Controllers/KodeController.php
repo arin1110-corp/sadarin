@@ -924,6 +924,8 @@ class KodeController extends Controller
         $dataPegawai = ModelUser::where('user_status', 1)->get();
         $datapnspegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
         $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
+        $datapppkparuhwaktu = ModelUser::where('user_status', 1)->where('user_jeniskerja', 3)->count();
+        $datanonasn = ModelUser::where('user_status', 1)->where('user_jeniskerja', 4)->count();
         $totalPegawai = ModelUser::where('user_status', 1)->count();
 
         $pemuktahiran = ModelUser::where('user_tmt', '!=', '1990-01-01')->count();
@@ -939,7 +941,9 @@ class KodeController extends Controller
             'pendidikan',
             'pemuktahiran',
             'pemuktahiranFoto',
-            'pemuktahiranJabatan'
+            'pemuktahiranJabatan',
+            'datapppkparuhwaktu',
+            'datanonasn'
         ));
     }
     public function dataPegawai()

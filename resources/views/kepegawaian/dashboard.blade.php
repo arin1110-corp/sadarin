@@ -68,6 +68,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-mortarboard text-info fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">PPPK Paruh Waktu</h6>
+                                <p class="display-6 fw-bold text-info">{{ @$datapppkparuhwaktu }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-person-lines-fill text-secondary fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">Non ASN</h6>
+                                <p class="display-6 fw-bold text-secondary">{{ @$datanonasn }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row g-3 mb-4">
