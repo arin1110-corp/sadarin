@@ -1077,8 +1077,16 @@
 
                         <div class="row mb-3">
                             <label class="form-label">Status Kerja</label>
+                            @php
+                                $jenisKerjaMap = [
+                                    1 => 'PNS',
+                                    2 => 'PPPK',
+                                    3 => 'PPPK Paruh Waktu',
+                                    4 => 'NON ASN',
+                                ];
+                            @endphp
                             <input type="text" class="form-control"
-                                value="{{ $user->user_jeniskerja == 1 ? 'PNS' : 'PPPK' }}" disabled>
+                                value="{{ $jenisKerjaMap[$user->user_jeniskerja] ?? 'Tidak Diketahui' }}" disabled>
                             <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
                         </div>
                         <div class="modal-footer">
