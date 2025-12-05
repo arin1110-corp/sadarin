@@ -61,6 +61,28 @@
                     <div class="col-md-4">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
+                                <i class="bi bi-person-check-fill text-muted fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">Total Pegawai Aktif</h6>
+                                <p class="display-6 fw-bold text-muted">
+                                    {{ @$dataPegawaiaktif }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-person-x-fill text-secondary fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">Total Pegawai Non Aktif</h6>
+                                <p class="display-6 fw-bold text-secondary">
+                                    {{ @$dataPegawainonaktif }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
                                 <i class="bi bi-person-badge text-success fs-2 mb-2"></i>
                                 <h6 class="fw-semibold">PNS</h6>
                                 <p class="display-6 fw-bold text-success">
@@ -69,13 +91,35 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-workspace text-primary fs-2 mb-2"></i>
                                 <h6 class="fw-semibold">PPPK</h6>
                                 <p class="display-6 fw-bold text-primary">
                                     {{ @$datapppkpegawai }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-mortarboard text-info fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">PPPK Paruh Waktu</h6>
+                                <p class="display-6 fw-bold text-info">
+                                    {{ @$datapppkparuhwaktu }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-person-lines-fill text-secondary fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">Non ASN</h6>
+                                <p class="display-6 fw-bold text-secondary">
+                                    {{ @$datanonasn }}
                                 </p>
                             </div>
                         </div>
@@ -88,6 +132,7 @@
                 <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#modalTambahPegawai">
                     Tambah Data Pegawai
                 </button>
+                <br />
                 <br />
 
                 <!-- Modal -->
@@ -161,6 +206,18 @@
                                     PPPK
                                 </button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pppkparuhwaktu-tab" data-bs-toggle="tab"
+                                    data-bs-target="#pppkparuhwaktu" type="button" role="tab">
+                                    PPPK Paruh Waktu
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="nonasn-tab" data-bs-toggle="tab"
+                                    data-bs-target="#nonasn" type="button" role="tab">
+                                    Non ASN
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
@@ -175,6 +232,7 @@
                                             <th>#</th>
                                             <th>NIP</th>
                                             <th>Nama</th>
+                                            <th>Jenis Kerja</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -192,6 +250,15 @@
                                                         <span class="badge bg-success">PNS</span>
                                                     @elseif($user->user_jeniskerja == '2')
                                                         <span class="badge bg-primary">PPPK</span>
+                                                    @elseif($user->user_jeniskerja == '3')
+                                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                                    @elseif($user->user_jeniskerja == '4')
+                                                        <span class="badge bg-secondary">Non ASN</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($user->user_status == '1')
+                                                        <span class="badge bg-success">Aktif</span>
                                                     @else
                                                         <span class="badge bg-secondary">Tidak Aktif</span>
                                                     @endif
@@ -200,6 +267,10 @@
                                                     <button class="btn btn-sm btn-info" data-bs-toggle="modal"
                                                         data-bs-target="#modalDetailAll{{ $user->user_id }}">
                                                         <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                        <i class="bi bi-pencil"></i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -266,6 +337,91 @@
                                         @foreach ($dataPegawai as $no => $user)
                                             @if ($user->user_jeniskerja == '2')
                                                 {{-- 2 = PPPK --}}
+                                                <tr>
+                                                    <td class="text-center">
+                                                        {{ $no + 1 }}
+                                                    </td>
+                                                    <td>{{ $user->user_nip }}</td>
+                                                    <td>{{ $user->user_nama }}</td>
+                                                    <td class="text-center">
+                                                        @if ($user->user_status == '1')
+                                                            <span class="badge bg-success">Aktif</span>
+                                                        @else
+                                                            <span class="badge bg-secondary">Tidak Aktif</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                            data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {{-- Tab PPPK Paruh Waktu --}}
+                            <div class="tab-pane fade" id="pppkparuhwaktu" role="tabpanel" aria-labelledby="pppk-tab">
+                                <table id="tablePppk" class="table table-striped table-bordered w-100 align-middle">
+                                    <thead class="table-dark">
+                                        <tr class="text-center">
+                                            <th>#</th>
+                                            <th>NIP</th>
+                                            <th>Nama</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($dataPegawai as $no => $user)
+                                            @if ($user->user_jeniskerja == '3')
+                                                {{-- 2 = PPPK --}}
+                                                <tr>
+                                                    <td class="text-center">
+                                                        {{ $no + 1 }}
+                                                    </td>
+                                                    <td>{{ $user->user_nip }}</td>
+                                                    <td>{{ $user->user_nama }}</td>
+                                                    <td class="text-center">
+                                                        @if ($user->user_status == '1')
+                                                            <span class="badge bg-success">Aktif</span>
+                                                        @else
+                                                            <span class="badge bg-secondary">Tidak Aktif</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                            data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {{-- Tab Non ASN --}}
+                            <div class="tab-pane fade" id="nonasn" role="tabpanel" aria-labelledby="nonasn-tab">
+                                <table id="tableNonAsn"
+                                    class="table table-striped table-bordered w-100 align-middle">
+                                    <thead class="table-dark">
+                                        <tr class="text-center">
+                                            <th>#</th>
+                                            <th>NIP</th>
+                                            <th>Nama</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($dataPegawai as $no => $user)
+                                            @if ($user->user_jeniskerja == '4')
+                                                {{-- 4 = Non ASN --}}
                                                 <tr>
                                                     <td class="text-center">
                                                         {{ $no + 1 }}
@@ -543,6 +699,50 @@
                     </div>
                 </div>
                 {{-- End Modal Tambah Data Pegawai --}}
+
+                {{-- Modal Ganti Status Pegawai --}}
+                @foreach ($dataPegawai as $user)
+                    <div class="modal fade" id="modalGantiStatusPegawai{{ $user->user_id }}" tabindex="-1"
+                        aria-labelledby="modalGantiStatusPegawaiLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-dark text-white">
+                                    <h5 class="modal-title" id="modalGantiStatusPegawaiLabel">
+                                        Ganti Status Pegawai
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('kepegawaian.gantistatuspegawai') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="user_id" value="{{ $user->user_id }}">
+                                        <div class="mb-3">
+                                            <label for="user_status" class="form-label">Status Pegawai</label>
+                                            <select name="user_status" class="form-select">
+                                                <option value="{{ $user->user_status }}" selected>
+                                                    {{ $user->user_status == '1' ? 'Aktif' : 'Tidak Aktif' }}
+                                                </option>
+                                                <option value="1">Aktif</option>
+                                                <option value="2">Tidak Aktif</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="keterangan" class="form-label">Keterangan</label>
+                                            <textarea name="user_ket" id="keterangan" class="form-control" rows="3" required>{{ $user->user_ket }}</textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Tutup</button>
+                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+                {{-- End Modal Ganti Status Pegawai --}}
 
                 {{-- Footer --}}
                 @include('kepegawaian.partials.footerkepegawaian')

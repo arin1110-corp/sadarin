@@ -101,6 +101,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/pemuktahiran-data', [KodeController::class, 'pemuktahiranData'])->name('kepegawaian.data.pegawai.pemuktahiran');
     Route::get('/data-naikpangkat', [KodeController::class, 'dataKP'])->name('kepegawaian.data.naikpangkat');
     Route::get('/data-pensiun', [KodeController::class, 'dataPensiun'])->name('kepegawaian.data.pensiun');
+    Route::post('/update-status-pegawai', [KodeController::class, 'updateStatusPegawai'])->name('kepegawaian.gantistatuspegawai');
     Route::get('/data-eselon', [KodeController::class, 'dataEselon'])->name('kepegawaian.data.eselon');
     Route::post('/tambah-eselon', [KodeController::class, 'tambahEselon'])->name('kepegawaian.tambah.eselon');
     Route::post('/edit-eselon', [KodeController::class, 'ubahEselon'])->name('kepegawaian.edit.eselon');

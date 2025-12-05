@@ -921,12 +921,14 @@ class KodeController extends Controller
     /// Data Kepegawaian
     public function kepegawaianDashboard()
     {
-        $dataPegawai = ModelUser::where('user_status', 1)->get();
+        $dataPegawai = ModelUser::get();
+        $dataPegawaiaktif = ModelUser::where('user_status', 1)->count();
+        $dataPegawainonaktif = ModelUser::where('user_status', 0)->count();
         $datapnspegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
         $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
         $datapppkparuhwaktu = ModelUser::where('user_status', 1)->where('user_jeniskerja', 3)->count();
         $datanonasn = ModelUser::where('user_status', 1)->where('user_jeniskerja', 4)->count();
-        $totalPegawai = ModelUser::where('user_status', 1)->count();
+        $totalPegawai = ModelUser::count();
 
         $pemuktahiran = ModelUser::where('user_tmt', '!=', '1990-01-01')->count();
         $pendidikan = ModelUser::where('user_pendidikan', '=', 0)->count();
@@ -943,7 +945,9 @@ class KodeController extends Controller
             'pemuktahiranFoto',
             'pemuktahiranJabatan',
             'datapppkparuhwaktu',
-            'datanonasn'
+            'datanonasn',
+            'dataPegawaiaktif',
+            'dataPegawainonaktif'
         ));
     }
     public function dataPegawai()
@@ -962,8 +966,7 @@ class KodeController extends Controller
                 'sadarin_golongan.*',
                 'sadarin_eselon.*',
                 'sadarin_pendidikan.*'
-            )
-            ->where('sadarin_user.user_status', 1)
+        )
             ->orderByRaw("
                     CASE 
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
@@ -978,16 +981,40 @@ class KodeController extends Controller
                 ")
             ->get();
 
+        $dataPegawai = ModelUser::get();
+        $dataPegawaiaktif = ModelUser::where('user_status', 1)->count();
+        $dataPegawainonaktif = ModelUser::where('user_status', 0)->count();
         $datapnspegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
         $datapppkpegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
-        $totalPegawai = ModelUser::where('user_status', 1)->count();
+        $datapppkparuhwaktu = ModelUser::where('user_status', 1)->where('user_jeniskerja', 3)->count();
+        $datanonasn = ModelUser::where('user_status', 1)->where('user_jeniskerja', 4)->count();
+        $totalPegawai = ModelUser::count();
 
         return view('kepegawaian.datapegawai', compact(
             'dataPegawai',
             'totalPegawai',
             'datapnspegawai',
-            'datapppkpegawai'
+            'datapppkpegawai',
+            'datapppkparuhwaktu',
+            'datanonasn',
+            'dataPegawaiaktif',
+            'dataPegawainonaktif'
         ));
+    }
+    public function updateStatusPegawai(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $newStatus = $request->input('user_status');
+        $ketStatus = $request->input('user_ket');
+        $user = ModelUser::find($userId);
+        if ($user) {
+            $user->user_status = $newStatus;
+            $user->user_ket = $ketStatus;
+            $user->save();
+            return redirect()->route('kepegawaian.data.pegawai')->with('success', 'Status pegawai berhasil diperbarui.');
+        } else {
+            return redirect()->route('kepegawaian.data.pegawai')->with('error', 'Pegawai tidak ditemukan.');
+        }
     }
     public function pemuktahiranData()
     {

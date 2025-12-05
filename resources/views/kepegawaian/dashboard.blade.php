@@ -53,13 +53,31 @@
                     <div class="col-md-4">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
+                                <i class="bi bi-person-check-fill text-muted fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">Total Pegawai Aktif</h6>
+                                <p class="display-6 fw-bold text-muted">{{ @$dataPegawaiaktif }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-person-x-fill text-secondary fs-2 mb-2"></i>
+                                <h6 class="fw-semibold">Total Pegawai Non Aktif</h6>
+                                <p class="display-6 fw-bold text-secondary">{{ @$dataPegawainonaktif }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
                                 <i class="bi bi-person-badge text-success fs-2 mb-2"></i>
                                 <h6 class="fw-semibold">PNS</h6>
                                 <p class="display-6 fw-bold text-success">{{ @$datapnspegawai }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-workspace text-primary fs-2 mb-2"></i>
@@ -68,7 +86,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-mortarboard text-info fs-2 mb-2"></i>
@@ -77,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-lines-fill text-secondary fs-2 mb-2"></i>
