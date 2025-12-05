@@ -23,6 +23,7 @@ class ModelUser extends Model
         'user_notelp',
         'user_alamat',
         'user_jk',
+        'user_nik',
         'user_foto',
         'user_bidang',
         'user_jabatan',

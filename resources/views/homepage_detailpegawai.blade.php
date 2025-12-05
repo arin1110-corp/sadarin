@@ -188,15 +188,17 @@
                             </button>
                             &nbsp;
 
-                            <div class="d-flex gap-2">
+                            <!-- <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#pemuktahiranPegawaiModal">
                                     <i class="bi bi-pencil-square"></i>
                                     Ajukan Pemutakhiran Data
                                 </button>
-                            </div>
+                            </div> -->
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end mb-2">
 
-                            <!-- {{-- Tombol aksi di kanan --}}
+                            {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPegawaiModal">
                                     <i class="bi bi-pencil-square"></i> Edit Data
@@ -205,7 +207,7 @@
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPasFoto">
                                     <i class="bi bi-pencil-square"></i> Edit Pas Foto
                                 </button>
-                            </div> -->
+                            </div>
                         </div>
                         <div class='d-flex align-items-center justify-content-end mb-2'>
                             <!-- <div class="d-flex gap-2">
@@ -274,7 +276,15 @@
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Jenis Kerja</div>
                             <div class="col-sm-8">
-                                {{ $user->user_jeniskerja == 1 ? 'Pegawai Negeri Sipil' ?? 2 : 'Pegawai Pemerintah dengan Perjanjian Kerja' }}
+                                @php
+                                    $jenis = [
+                                        1 => 'Pegawai Negeri Sipil',
+                                        2 => 'Pegawai Pemerintah dengan Perjanjian Kerja',
+                                        3 => 'Pegawai Pemerintah dengan Perjanjian Kerja Paruh Waktu',
+                                        4 => 'NON ASN'
+                                    ];
+                                @endphp
+                                {{ $jenis[$user->user_jeniskerja] ?? 'Tidak Diketahui' }}
                             </div>
                         </div>
                         <hr>
@@ -360,17 +370,6 @@
                         </div>
                         <hr>
                         <hr>
-                        @php
-                            // bantu fungsi buat cek status berkas
-                            function cekBerkas($berkas, $jenis)
-                            {
-                                $data = $berkas->firstWhere('kumpulan_jenis', $jenis);
-                                if (!$data) {
-                                    return 'secondary';
-                                } // belum ada di tabel
-                                return $data->kumpulan_status == 1 ? 'success' : 'secondary'; // hijau kalau status 1
-                            }
-                        @endphp
 
                         <div class="mb-4 text-center fw-bold">*** Berkas ***</div>
 
@@ -593,6 +592,10 @@
                                     <li>
                                         <span class="badge" style="background:orange;">&nbsp;&nbsp;&nbsp;</span>
                                         PPPK Lainnya (Oranye)
+                                    </li>
+                                    <li>
+                                        <span class="badge" style="background:rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;</span>
+                                        Non ASN (Putih)
                                     </li>
                                 </ul>
                             </div>
