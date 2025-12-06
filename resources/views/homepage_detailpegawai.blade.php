@@ -508,6 +508,7 @@
                 <form action="{{ route('tambah.pakta.1desember') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <input type="hidden" name="user_nik" value="{{ $user->user_nik }}">
                     <div class="modal-header">
                         <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Pakta Integritas 1 Desember 2025</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"

@@ -1210,8 +1210,15 @@ class KodeController extends Controller
 
         if ($request->hasFile('user_foto')) {
             $file = $request->file('user_foto');
+
+            // Ambil NIP & NIK (request → fallback ke data lama)
             $nip = $request->user_nip ?? $user->user_nip;
-            $filename = "{$nip}_Pasfoto." . $file->getClientOriginalExtension();
+            $nik = $request->user_nik ?? $user->user_nik;
+
+            // Jika NIP adalah '-' maka gunakan NIK
+            $finalId = ($nip == '-' || $nip == null || $nip == '') ? $nik : $nip;
+
+            $filename = "{$finalId}_Pasfoto." . $file->getClientOriginalExtension();
 
             $destinationPath = public_path('assets/foto_pegawai');
             $file->move($destinationPath, $filename);
@@ -2003,12 +2010,15 @@ class KodeController extends Controller
         ]);
 
         $nip        = $request->user_nip;
+        $nik        = $request->user_nik;
         $jenis      = $request->kumpulan_jenis;
         $jenisfile  = $request->jenisfile;
         $jeniskerja = $request->user_jeniskerja;
 
+        // Jika NIP adalah '-' maka gunakan NIK
+        $finalId = ($nip == '-' || $nip == null || $nip == '') ? $nik : $nip;
         // Tentukan filename
-        $filename = $nip . '_' . str_replace(' ', '_', $jenis) . '.pdf';
+        $filename = $finalId . '_' . str_replace(' ', '_', $jenis) . '.pdf';
 
         // Mapping folder di public/assets/
         $folderMap = [
@@ -2023,6 +2033,7 @@ class KodeController extends Controller
             'pakta1desember' => [
                 '1' => 'assets/pakta1desember/pns',
                 '2' => 'assets/pakta1desember/pppk',
+                '4' => 'assets/pakta1desember/nonasn',
             ],
         ];
 
