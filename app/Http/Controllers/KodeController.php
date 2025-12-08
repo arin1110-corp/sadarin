@@ -986,7 +986,7 @@ class KodeController extends Controller
                 ")
             ->get();
 
-        $dataPegawai = ModelUser::get();
+        $dataPegawaiTotal = ModelUser::get();
         $dataPegawaiaktif = ModelUser::where('user_status', 1)->count();
         $dataPegawainonaktif = ModelUser::where('user_status', 0)->count();
         $datapnspegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
