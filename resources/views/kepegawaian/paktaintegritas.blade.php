@@ -278,7 +278,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>NIP</th>
+                                    <th>NIK</th>
                                     <th>Nama</th>
                                     <th>Jabatan</th>
                                     <th>Bidang</th>
@@ -292,7 +292,7 @@
 
                                 <tr>
                                     <td>{{ $no + 1 }}</td>
-                                    <td>{{ $user->user_nip }}</td>
+                                    <td>{{ $user->user_nik }}</td>
                                     <td>{{ $user->user_nama }}</td>
                                     <td>{{ $user->jabatan_nama }}</td>
                                     <td>{{ $user->bidang_nama }}</td>
@@ -336,7 +336,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>NIP</th>
+                                    <th>NIK</th>
                                     <th>Nama</th>
                                     <th>Jabatan</th>
                                     <th>Bidang</th>
@@ -350,7 +350,7 @@
 
                                 <tr>
                                     <td>{{ $no + 1 }}</td>
-                                    <td>{{ $user->user_nip }}</td>
+                                    <td>{{ $user->user_nik }}</td>
                                     <td>{{ $user->user_nama }}</td>
                                     <td>{{ $user->jabatan_nama }}</td>
                                     <td>{{ $user->bidang_nama }}</td>
