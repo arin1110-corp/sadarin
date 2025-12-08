@@ -724,7 +724,7 @@
                                                     {{ $user->user_status == '1' ? 'Aktif' : 'Tidak Aktif' }}
                                                 </option>
                                                 <option value="1">Aktif</option>
-                                                <option value="2">Tidak Aktif</option>
+                                                <option value="0">Tidak Aktif</option>
                                             </select>
                                         </div>
                                         <div class="mb-3">
