@@ -60,27 +60,32 @@ class PreFillController extends Controller
 
         foreach ($pegawai as $user) {
 
-            // Cek apakah sudah ada record untuk jenis ini
-            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $user->user_nip)
+            // Tentukan identitas sesuai kondisi
+            $identitas = ($user->user_nip != '-' && $user->user_nip != null)
+                ? $user->user_nip
+                : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)
                 ->where('kumpulan_jenis', $kumpulanJenisBaru)
                 ->first();
 
-            // Kalau SUDAH ADA → jangan sentuh
             if ($cek) {
                 continue;
             }
 
-            // Kalau BELUM ADA → buat prefill baru
+            // Buat prefill
             ModelPengumpulanBerkas::create([
-                'kumpulan_user'   => $user->user_nip,
+                'kumpulan_user'   => $identitas,
                 'kumpulan_jenis'  => $kumpulanJenisBaru,
                 'kumpulan_status' => 0,
-                'kumpulan_file'   => 'null', // WAJIB string "null" karena query lama pakai itu
+                'kumpulan_file'   => 'null',
             ]);
         }
 
-        return back()->with('success', "Prefill Pakta Integritas 1 Desember 2025 berhasil ditambahkan tanpa mengubah file lama.");
+        return back()->with('success', "Prefill Pakta Integritas 1 Desember 2025 berhasil ditambahkan.");
     }
+
 
     public function prefillUmbal()
     {

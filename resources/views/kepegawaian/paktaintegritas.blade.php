@@ -88,6 +88,14 @@
                         <button class="nav-link" id="pppk-tab" data-bs-toggle="tab" data-bs-target="#pppk" type="button"
                             role="tab" aria-controls="pppk" aria-selected="false">PPPK</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="paruhwaktu-tab" data-bs-toggle="tab" data-bs-target="#paruhwaktu" type="button"
+                            role="tab" aria-controls="paruhwaktu" aria-selected="false">PPPK Paruh Waktu</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nonasn-tab" data-bs-toggle="tab" data-bs-target="#nonasn" type="button"
+                            role="tab" aria-controls="nonasn" aria-selected="false">Non ASN</button>
+                    </li>
                 </ul>
 
                 <div class="tab-content" id="dataTabsContent">
@@ -120,8 +128,10 @@
                                         <span class="badge bg-success">PNS</span>
                                         @elseif($user->user_jeniskerja == '2')
                                         <span class="badge bg-primary">PPPK</span>
-                                        @else
-                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                        @elseif($user->user_jeniskerja == '3')
+                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                        @elseif($user->user_jeniskerja == '4')
+                                        <span class="badge bg-secondary">Non ASN</span>
                                         @endif
                                     </td>
                                     <td>
@@ -175,8 +185,10 @@
                                         <span class="badge bg-success">PNS</span>
                                         @elseif($user->user_jeniskerja == '2')
                                         <span class="badge bg-primary">PPPK</span>
-                                        @else
-                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                        @elseif($user->user_jeniskerja == '3')
+                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                        @elseif($user->user_jeniskerja == '4')
+                                        <span class="badge bg-secondary">Non ASN</span>
                                         @endif
                                     </td>
                                     <td>
@@ -231,8 +243,126 @@
                                         <span class="badge bg-success">PNS</span>
                                         @elseif($user->user_jeniskerja == '2')
                                         <span class="badge bg-primary">PPPK</span>
+                                        @elseif($user->user_jeniskerja == '3')
+                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                        @elseif($user->user_jeniskerja == '4')
+                                        <span class="badge bg-secondary">Non ASN</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($user->kumpulan_status == 1)
+                                        <span class="text-success fw-bold">Terkumpul</span>
                                         @else
-                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                        <span class="text-danger fw-bold">Belum</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                            class="btn btn-sm btn-primary">
+                                            Lihat File
+                                        </a>
+                                        @else
+                                        <span class="text-muted">-</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Tab Paruh Waktu --}}
+                    <div class="tab-pane fade" id="paruhwaktu" role="tabpanel" aria-labelledby="paruhwaktu-tab">
+                        <table id="tableParuhWaktu" class="table table-striped table-bordered w-100">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NIP</th>
+                                    <th>Nama</th>
+                                    <th>Jabatan</th>
+                                    <th>Bidang</th>
+                                    <th>Status</th>
+                                    <th>Status Kumpul</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($dataParuhWaktu as $no => $user)
+
+                                <tr>
+                                    <td>{{ $no + 1 }}</td>
+                                    <td>{{ $user->user_nip }}</td>
+                                    <td>{{ $user->user_nama }}</td>
+                                    <td>{{ $user->jabatan_nama }}</td>
+                                    <td>{{ $user->bidang_nama }}</td>
+                                    <td>
+                                        @if($user->user_jeniskerja == '1')
+                                        <span class="badge bg-success">PNS</span>
+                                        @elseif($user->user_jeniskerja == '2')
+                                        <span class="badge bg-primary">PPPK</span>
+                                        @elseif($user->user_jeniskerja == '3')
+                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                        @elseif($user->user_jeniskerja == '4')
+                                        <span class="badge bg-secondary">Non ASN</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($user->kumpulan_status == 1)
+                                        <span class="text-success fw-bold">Terkumpul</span>
+                                        @else
+                                        <span class="text-danger fw-bold">Belum</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                            class="btn btn-sm btn-primary">
+                                            Lihat File
+                                        </a>
+                                        @else
+                                        <span class="text-muted">-</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Tab Non ASN --}}
+                    <div class="tab-pane fade" id="nonasn" role="tabpanel" aria-labelledby="nonasn-tab">
+                        <table id="tableNonASN" class="table table-striped table-bordered w-100">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NIP</th>
+                                    <th>Nama</th>
+                                    <th>Jabatan</th>
+                                    <th>Bidang</th>
+                                    <th>Status</th>
+                                    <th>Status Kumpul</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($dataNonASN as $no => $user)
+
+                                <tr>
+                                    <td>{{ $no + 1 }}</td>
+                                    <td>{{ $user->user_nip }}</td>
+                                    <td>{{ $user->user_nama }}</td>
+                                    <td>{{ $user->jabatan_nama }}</td>
+                                    <td>{{ $user->bidang_nama }}</td>
+                                    <td>
+                                        @if($user->user_jeniskerja == '1')
+                                        <span class="badge bg-success">PNS</span>
+                                        @elseif($user->user_jeniskerja == '2')
+                                        <span class="badge bg-primary">PPPK</span>
+                                        @elseif($user->user_jeniskerja == '3')
+                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                        @elseif($user->user_jeniskerja == '4')
+                                        <span class="badge bg-secondary">Non ASN</span>
                                         @endif
                                     </td>
                                     <td>
@@ -281,6 +411,8 @@
             $('#tableAll').DataTable();
             $('#tablePns').DataTable();
             $('#tablePppk').DataTable();
+            $('#tableParuhWaktu').DataTable();
+            $('#tableNonASN').DataTable();
         });
     </script>
 </body>

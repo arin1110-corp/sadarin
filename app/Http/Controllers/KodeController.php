@@ -1826,7 +1826,14 @@ class KodeController extends Controller
     {
         // Ambil semua pegawai dengan join tanpa alias
         $dataPegawai = DB::table('sadarin_user')
-            ->leftJoin('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
+            ->leftJoin('sadarin_pengumpulanberkas', function ($join) {
+                $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', DB::raw("
+                CASE 
+                    WHEN sadarin_user.user_nip <> '-' THEN sadarin_user.user_nip
+                    ELSE sadarin_user.user_nik
+                END
+            "));
+            })
             ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
@@ -1863,6 +1870,8 @@ class KodeController extends Controller
         // Filter PNS dan PPPK
         $dataPns = $dataPegawai->where('user_jeniskerja', '1');
         $dataPppk = $dataPegawai->where('user_jeniskerja', '2');
+        $dataParuhWaktu = $dataPegawai->where('user_jeniskerja', '3');
+        $dataNonASN = $dataPegawai->where('user_jeniskerja', '4');
 
         // Statistik jumlah yang sudah kumpul
         $jumlahPnsKumpul = $dataPns->where('kumpulan_status', 1)->count();
@@ -1877,7 +1886,9 @@ class KodeController extends Controller
             'jumlahPppkKumpul',
             'jenis',
             'dataPns',
-            'dataPppk'
+            'dataPppk',
+            'dataParuhWaktu',
+            'dataNonASN'
         ));
     }
     /// akhir Pakta Integritas
