@@ -2069,7 +2069,7 @@ class KodeController extends Controller
         // Simpan ke DB
         ModelPengumpulanBerkas::updateOrCreate(
             [
-                'kumpulan_user'  => $nip,
+                'kumpulan_user'  => $finalId,
                 'kumpulan_jenis' => $jenis,
             ],
             [
