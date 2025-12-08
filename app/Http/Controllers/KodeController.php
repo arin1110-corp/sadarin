@@ -173,7 +173,12 @@ class KodeController extends Controller
             return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
         }
         $berkas = DB::table('sadarin_pengumpulanberkas')
-            ->where('kumpulan_user', [$pegawai, $pegawai1])
+            ->where(function ($q) use ($pegawai, $pegawai1) {
+                if ($pegawai) {
+                    $q->where('kumpulan_user', $pegawai);
+                }
+                $q->orWhere('kumpulan_user', $pegawai1);
+            })
             ->orderBy('created_at', 'desc')
             ->get();
         $jabatans = ModelJabatan::all();
