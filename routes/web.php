@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KodeController;
+use App\Http\Controllers\PreFillController;
 use Database\Seeders\EselonSeeder;
 
 /*
@@ -20,15 +21,15 @@ Route::get('/', [KodeController::class, 'form'])->name('akses.form');
 Route::get('/halaman-utama', [KodeController::class, 'form'])->name('halaman.utama');
 Route::post('/cek-kode', [KodeController::class, 'cek'])->name('akses.cek');
 Route::get('/akses-kode', [KodeController::class, 'akses_kode'])->name('akses.kode');
-Route::get('/pengumpulan/prefill-evaluasi', [KodeController::class, 'prefillEvaluasi']);
-Route::get('/pengumpulan/prefill-evaluasi-tw1', [KodeController::class, 'prefillEvaluasiTWI']);
-Route::get('/pengumpulan/prefill-evaluasi-tw2', [KodeController::class, 'prefillEvaluasiTWII']);
-Route::get('/pengumpulan/prefill-umpanbalik', [KodeController::class, 'prefillUmbal']);
-Route::get('/pengumpulan/prefill-umpanbalik-tw1', [KodeController::class, 'prefillUmbalTWI']);
-Route::get('/pengumpulan/prefill-umpanbalik-tw2', [KodeController::class, 'prefillUmbalTWII']);
-Route::get('/pakta-integritas-2025', [KodeController::class, 'prefillPaktaIntegritas1Desember']);
-Route::get('/model-c-2025', [KodeController::class, 'prefillModelC2025']);
-Route::get('/syntax-c-2025', [KodeController::class, 'prefillSyntaxC2025']);
+Route::get('/pengumpulan/prefill-evaluasi', [PreFillController::class, 'prefillEvaluasi']);
+Route::get('/pengumpulan/prefill-evaluasi-tw1', [PreFillController::class, 'prefillEvaluasiTWI']);
+Route::get('/pengumpulan/prefill-evaluasi-tw2', [PreFillController::class, 'prefillEvaluasiTWII']);
+Route::get('/pengumpulan/prefill-umpanbalik', [PreFillController::class, 'prefillUmbal']);
+Route::get('/pengumpulan/prefill-umpanbalik-tw1', [PreFillController::class, 'prefillUmbalTWI']);
+Route::get('/pengumpulan/prefill-umpanbalik-tw2', [PreFillController::class, 'prefillUmbalTWII']);
+Route::get('/pakta-integritas-2025', [PreFillController::class, 'prefillPaktaIntegritas1Desember']);
+Route::get('/model-c-2025', [PreFillController::class, 'prefillModelC2025']);
+Route::get('/syntax-c-2025', [PreFillController::class, 'prefillSyntaxC2025']);
 
 
 // -------------------- Admin / Kepegawaian --------------------
@@ -81,7 +82,6 @@ Route::middleware('admin.auth')->group(function () {
 // Dashboard kepegawaian
 Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/kepegawaian-dashboard', [KodeController::class, 'kepegawaianDashboard'])->name('kepegawaian.dashboard');
-
     Route::get('/data-pakta-integritas/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.integritas');
     Route::get('/data-pakta-1desember/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.1desember');
     Route::get('/data-evkin-tw1/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.tw1');
