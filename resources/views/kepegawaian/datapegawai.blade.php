@@ -532,7 +532,7 @@
                                                     <th>Pendidikan</th>
                                                     <td>
                                                         :
-                                                        {{ $user->pendidikan_jenjang - $user->pendidikan_jurusan ?? '-' }}
+                                                        {{ $user->pendidikan_jenjang .' - '. $user->pendidikan_jurusan ?? '-' }}
                                                     </td>
                                                 </tr>
                                                 <tr>
