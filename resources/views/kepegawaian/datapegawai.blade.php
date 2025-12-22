@@ -6,6 +6,17 @@
 
     {{-- DataTables CSS --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+    <style>
+        table.dataTable {
+            table-layout: fixed;
+            width: 100% !important;
+        }
+
+        .dataTables_wrapper .dataTables_processing {
+            background: rgba(255,255,255,0.8);
+        }
+</style>
+
 </head>
 
 <body class="bg-light">
