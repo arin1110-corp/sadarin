@@ -469,7 +469,7 @@
                                         <div class="col-md-4 text-center">
                                             <img src="{{ $user->user_foto && $user->user_foto != '-' ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"
                                                 alt="Foto Pegawai" class="img-thumbnail rounded shadow-sm"
-                                                width="384px" height="auto" />
+                                                width="384px" height="auto" loading="lazy" />
                                         </div>
                                         <div class="col-md-8">
                                             <table class="table table-borderless">
@@ -759,7 +759,7 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
-    {{-- Inisialisasi DataTables --}}
+    <!-- {{-- Inisialisasi DataTables --}}
     <script>
         $(document).ready(function() {
             $("#tableAll").DataTable({
@@ -803,7 +803,100 @@
                 }
             });
         });
-    </script>
+    </script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // ===============================
+            // KONFIGURASI GLOBAL DATATABLE
+            // ===============================
+            function dataTableConfig() {
+                return {
+                    deferRender: true,
+                    pageLength: 10,
+                    lengthChange: false,
+                    processing: true,
+                    autoWidth: false,
+                    ordering: true,
+                    info: false,
+                    stateSave: true,
+                    searchDelay: 600,
+                    language: {
+                        processing: "Memuat data...",
+                        search: "Cari:"
+                    },
+                    columnDefs: [
+                        { orderable: false, targets: -1 },
+                        { searchable: false, targets: -1 }
+                    ]
+                };
+            }
+
+            // ===============================
+            // SIMPAN INSTANCE TABLE
+            // ===============================
+            let tables = {};
+
+            function initTable(tableId) {
+                if (!tables[tableId]) {
+                    tables[tableId] = $(tableId).DataTable(dataTableConfig());
+                }
+            }
+
+            // ===============================
+            // INIT TABLE PERTAMA (TAB AKTIF)
+            // ===============================
+            let firstTable = document.querySelector('.tab-pane.active table');
+            if (firstTable) {
+                initTable('#' + firstTable.id);
+            }
+
+            // ===============================
+            // LAZY INIT TABLE SAAT TAB DIBUKA
+            // ===============================
+            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+                let target = $(e.target).data('bs-target');
+                let table = $(target).find('table');
+
+                if (table.length) {
+                    initTable('#' + table.attr('id'));
+                }
+
+                // Adjust column setelah tab tampil
+                setTimeout(() => {
+                    $.fn.dataTable
+                        .tables({ visible: true, api: true })
+                        .columns.adjust();
+                }, 150);
+            });
+
+            // ===============================
+            // MODAL: PREVENT RENDER BERAT
+            // ===============================
+            $('.modal').on('shown.bs.modal', function () {
+                $(this).find('table').each(function () {
+                    if (!$.fn.DataTable.isDataTable(this)) {
+                        $(this).DataTable({
+                            paging: false,
+                            searching: false,
+                            info: false,
+                            ordering: false,
+                            deferRender: true
+                        });
+                    }
+                });
+            });
+
+            // ===============================
+            // TOOLTIP DITUNDA
+            // ===============================
+            setTimeout(() => {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }, 1200);
+
+        });
+        </script>
+
 </body>
 
 </html>
