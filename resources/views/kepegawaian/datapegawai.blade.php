@@ -376,7 +376,7 @@
 
                             {{-- Tab PPPK Paruh Waktu --}}
                             <div class="tab-pane fade" id="pppkparuhwaktu" role="tabpanel" aria-labelledby="pppk-tab">
-                                <table id="tablePppk" class="table table-striped table-bordered w-100 align-middle">
+                                <table id="tablePppkParuhWaktu" class="table table-striped table-bordered w-100 align-middle">
                                     <thead class="table-dark">
                                         <tr class="text-center">
                                             <th>#</th>
@@ -760,12 +760,10 @@
         </div>
     </div>
 
-    {{-- Bootstrap JS --}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     {{-- jQuery --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+    {{-- Bootstrap JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     {{-- DataTables JS --}}
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
