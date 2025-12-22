@@ -814,97 +814,77 @@
         });
     </script> -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+$(document).ready(function () {
 
-            // ===============================
-            // KONFIGURASI GLOBAL DATATABLE
-            // ===============================
-            function dataTableConfig() {
-                return {
-                    deferRender: true,
-                    pageLength: 10,
-                    lengthChange: false,
-                    processing: true,
-                    autoWidth: false,
-                    ordering: true,
-                    info: false,
-                    stateSave: true,
-                    searchDelay: 600,
-                    language: {
-                        processing: "Memuat data...",
-                        search: "Cari:"
-                    },
-                    columnDefs: [
-                        { orderable: false, targets: -1 },
-                        { searchable: false, targets: -1 }
-                    ]
-                };
-            }
+    // ==================================
+    // KONFIGURASI GLOBAL DATATABLE
+    // ==================================
+    const DT_CONFIG = {
+        deferRender: true,
+        pageLength: 10,
+        lengthChange: false,
+        processing: true,
+        autoWidth: false,
+        ordering: true,
+        info: false,
+        stateSave: true,
+        searchDelay: 700,
+        language: {
+            processing: "Memuat data...",
+            search: "Cari:"
+        },
+        columnDefs: [
+            { orderable: false, searchable: false, targets: -1 }
+        ]
+    };
 
-            // ===============================
-            // SIMPAN INSTANCE TABLE
-            // ===============================
-            let tables = {};
+    // ==================================
+    // SIMPAN INSTANCE DATATABLE
+    // ==================================
+    const tables = new Map();
 
-            function initTable(tableId) {
-                if (!tables[tableId]) {
-                    tables[tableId] = $(tableId).DataTable(dataTableConfig());
-                }
-            }
+    function initTable($table) {
+        if (!$table.length) return;
 
-            // ===============================
-            // INIT TABLE PERTAMA (TAB AKTIF)
-            // ===============================
-            let firstTable = document.querySelector('.tab-pane.active table');
-            if (firstTable) {
-                initTable('#' + firstTable.id);
-            }
+        if (!$.fn.DataTable.isDataTable($table)) {
+            const dt = $table.DataTable(DT_CONFIG);
+            tables.set($table[0], dt);
+        }
+    }
 
-            // ===============================
-            // LAZY INIT TABLE SAAT TAB DIBUKA
-            // ===============================
-            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-                let target = $(e.target).data('bs-target');
-                let table = $(target).find('table');
+    // ==================================
+    // INIT TAB AKTIF SAAT LOAD
+    // ==================================
+    initTable($('.tab-pane.active table'));
 
-                if (table.length) {
-                    initTable('#' + table.attr('id'));
-                }
+    // ==================================
+    // LAZY INIT TAB SAAT DIBUKA
+    // ==================================
+    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
 
-                // Adjust column setelah tab tampil
-                setTimeout(() => {
-                    $.fn.dataTable
-                        .tables({ visible: true, api: true })
-                        .columns.adjust();
-                }, 150);
-            });
+        const targetPane = $($(e.target).data('bs-target'));
+        const table = targetPane.find('table');
 
-            // ===============================
-            // MODAL: PREVENT RENDER BERAT
-            // ===============================
-            $('.modal').on('shown.bs.modal', function () {
-                $(this).find('table').each(function () {
-                    if (!$.fn.DataTable.isDataTable(this)) {
-                        $(this).DataTable({
-                            paging: false,
-                            searching: false,
-                            info: false,
-                            ordering: false,
-                            deferRender: true
-                        });
-                    }
-                });
-            });
+        initTable(table);
 
-            // ===============================
-            // TOOLTIP DITUNDA
-            // ===============================
-            setTimeout(() => {
-                $('[data-bs-toggle="tooltip"]').tooltip();
-            }, 1200);
+        // cegah kolom patah
+        setTimeout(() => {
+            $.fn.dataTable
+                .tables({ visible: true, api: true })
+                .columns.adjust();
+        }, 100);
+    });
 
-        });
-        </script>
+    // ==================================
+    // TOOLTIP (DITUNDA AGAR TIDAK BLOCK)
+    // ==================================
+    setTimeout(() => {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    }, 1200);
+
+});
+</script>
+
 
 </body>
 
