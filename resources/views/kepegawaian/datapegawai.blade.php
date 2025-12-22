@@ -532,7 +532,7 @@
                                                     <th>Pendidikan</th>
                                                     <td>
                                                         :
-                                                        {{ $user->pendidikan_jenjang ?? ($user->pendidikan_jurusan ?? '-') }}
+                                                        {{ $user->pendidikan_jenjang - $user->pendidikan_jurusan ?? '-' }}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -759,11 +759,49 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
+    {{-- Inisialisasi DataTables --}}
     <script>
         $(document).ready(function() {
-            $("#tableAll").DataTable();
-            $("#tablePns").DataTable();
-            $("#tablePppk").DataTable();
+            $("#tableAll").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+            $("#tablePns").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+            $("#tablePppk").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+            $("#tableNonAsn").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+            $("#tablePppkParuhWaktu").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
         });
     </script>
 </body>
