@@ -126,12 +126,12 @@
                     </div>
                 </div>
                 <!-- Tombol trigger -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
+                <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
                     Export Excel
                 </button>
                 <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#modalTambahPegawai">
                     Tambah Data Pegawai
-                </button>
+                </button> -->
                 <br />
                 <br />
 
@@ -407,8 +407,7 @@
 
                             {{-- Tab Non ASN --}}
                             <div class="tab-pane fade" id="nonasn" role="tabpanel" aria-labelledby="nonasn-tab">
-                                <table id="tableNonAsn"
-                                    class="table table-striped table-bordered w-100 align-middle">
+                                <table id="tableNonAsn" class="table table-striped table-bordered w-100 align-middle">
                                     <thead class="table-dark">
                                         <tr class="text-center">
                                             <th>#</th>
