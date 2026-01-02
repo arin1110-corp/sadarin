@@ -2051,6 +2051,16 @@ class KodeController extends Controller
                 '2' => 'assets/pakta1desember/pppk',
                 '4' => 'assets/pakta1desember/nonasn',
             ],
+            'evkin2025' => [
+                '1' => 'assets/evkin2025/pns',
+                '2' => 'assets/evkin2025/pppk',
+                '4' => 'assets/evkin2025/nonasn',
+            ],
+            'umbal2025' => [
+                '1' => 'assets/umbal2025/pns',
+                '2' => 'assets/umbal2025/pppk',
+                '4' => 'assets/umbal2025/nonasn',
+            ],
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {

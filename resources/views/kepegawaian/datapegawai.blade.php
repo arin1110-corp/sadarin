@@ -772,13 +772,11 @@
     <!-- {{-- Inisialisasi DataTables --}}
     <script>
         $(document).ready(function() {
-<<<<<<< HEAD
             $("#tableAll").DataTable();
             $("#tablePns").DataTable();
             $("#tablePppk").DataTable();
             $("#tableNonAsn").DataTable();
             $("#tablePppkParuhWaktu").DataTable();
-=======
             $("#tableAll").DataTable({
                 deferRender: true,
                 pageLength: 10,
@@ -819,7 +817,6 @@
                     processing: "Memuat data..."
                 }
             });
->>>>>>> 791558b48f1d092340970ce15fbdfce21016d36f
         });
     </script> -->
     <script>

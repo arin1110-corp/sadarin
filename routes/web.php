@@ -24,9 +24,14 @@ Route::get('/akses-kode', [KodeController::class, 'akses_kode'])->name('akses.ko
 Route::get('/pengumpulan/prefill-evaluasi', [PreFillController::class, 'prefillEvaluasi']);
 Route::get('/pengumpulan/prefill-evaluasi-tw1', [PreFillController::class, 'prefillEvaluasiTWI']);
 Route::get('/pengumpulan/prefill-evaluasi-tw2', [PreFillController::class, 'prefillEvaluasiTWII']);
+Route::get('/pengumpulan/prefill-evaluasi-tw3', [PreFillController::class, 'prefillEvaluasiTWIII']);
+Route::get('/pengumpulan/prefill-evaluasi-tw4', [PreFillController::class, 'prefillEvaluasiTWIV']);
+Route::get('/pengumpulan/prefill-evaluasi-tahunan', [PreFillController::class, 'prefillEvaluasiTahunan2025']);
 Route::get('/pengumpulan/prefill-umpanbalik', [PreFillController::class, 'prefillUmbal']);
 Route::get('/pengumpulan/prefill-umpanbalik-tw1', [PreFillController::class, 'prefillUmbalTWI']);
 Route::get('/pengumpulan/prefill-umpanbalik-tw2', [PreFillController::class, 'prefillUmbalTWII']);
+Route::get('/pengumpulan/prefill-umpanbalik-tw3', [PreFillController::class, 'prefillUmbalTWIII']);
+Route::get('/pengumpulan/prefill-umpanbalik-tw4', [PreFillController::class, 'prefillUmbalTWIV']);
 Route::get('/pakta-integritas-2025', [PreFillController::class, 'prefillPaktaIntegritas1Desember']);
 Route::get('/model-c-2025', [PreFillController::class, 'prefillModelC2025']);
 Route::get('/syntax-c-2025', [PreFillController::class, 'prefillSyntaxC2025']);
@@ -88,6 +93,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-evkin-tw2/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.tw2');
     Route::get('/data-evkin-tw3/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.tw3');
     Route::get('/data-evkin-tw4/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.tw4');
+    Route::get('/data-evkin-tahunan-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.tahunan.2025');
     Route::get('/data-umpan-balik-tw1/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.umpan.tw1');
     Route::get('/data-umpan-balik-tw2/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.umpan.tw2');
     Route::get('/data-umpan-balik-tw3/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.umpan.tw3');
@@ -151,8 +157,13 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/pemuktahiran-update', [KodeController::class, 'updateDataPegawai'])->name('pemuktahiran.update');
     Route::post('/pemuktahiran-update-pasfoto', [KodeController::class, 'updatePasFoto'])->name('pemuktahiran.update.pasfoto');
     Route::post('/tambah-evaluasi-tw3', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw3');
+    Route::post('/tambah-evaluasi-tw4', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw4');
+    Route::post('/tambah-evaluasi-tahunan', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tahunan');
     Route::post('/tambah-umpan-balik-tw3', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tw3');
+    Route::post('/tambah-umpan-balik-tw4', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tw4');
+    Route::post('/tambah-umpan-balik-tahunan', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tahunan');
     Route::post('/tambah-pakta-1desember', [KodeController::class, 'uploadBerkas'])->name('tambah.pakta.1desember');
+
 
     // Rute untuk halaman cek Subbag
 

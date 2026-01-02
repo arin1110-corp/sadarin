@@ -55,6 +55,7 @@
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.tw2', ['id' => 'Evaluasi Kinerja Triwulan II']) }}">Triwulan II</a>
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.tw3', ['id' => 'Evaluasi Kinerja Triwulan III']) }}">Triwulan III</a>
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.tw4', ['id' => 'Evaluasi Kinerja Triwulan IV']) }}">Triwulan IV</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.tahunan.2025', ['id' => 'Evaluasi Kinerja Tahunan 2025']) }}">Tahunan</a>
             </div>
         </li>
 

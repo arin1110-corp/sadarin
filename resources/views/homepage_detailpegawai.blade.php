@@ -200,11 +200,13 @@
 
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPegawaiModal">
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editPegawaiModal">
                                     <i class="bi bi-pencil-square"></i> Edit Data
                                 </button>
 
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPasFoto">
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editPasFoto">
                                     <i class="bi bi-pencil-square"></i> Edit Pas Foto
                                 </button>
                             </div>
@@ -220,11 +222,34 @@
                                     <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan III
                                 </button>
                             </div> -->
-                            <div class="d-flex gap-2">
+                            <!-- <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#tambahPaktaIntegritas1DesemberModal">
                                     <i class="bi bi-plus-lg"></i> Pakta Integritas 1 Desember 2025
                                 </button>
+                            </div> -->
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#tambahEvaluasiModalTW4">
+                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan IV
+                                </button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#tambahUmpanBalikModalTW4">
+                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan IV
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-2">
+                            
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#tambahEvaluasiModalTahunan">
+                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Tahunan 2025
+                                </button>
+                                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#tambahUmpanBalikModalTahunan">
+                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Tahunan 
+                                </button> -->
                             </div>
                         </div>
                         <hr>
@@ -281,7 +306,7 @@
                                         1 => 'Pegawai Negeri Sipil',
                                         2 => 'Pegawai Pemerintah dengan Perjanjian Kerja',
                                         3 => 'Pegawai Pemerintah dengan Perjanjian Kerja Paruh Waktu',
-                                        4 => 'NON ASN'
+                                        4 => 'NON ASN',
                                     ];
                                 @endphp
                                 {{ $jenis[$user->user_jeniskerja] ?? 'Tidak Diketahui' }}
@@ -392,6 +417,8 @@
                             </div>
                         </div>
 
+
+
                         {{-- Rekaman Umpan Balik --}}
                         <div class="row mb-2">
                             <div class="col-sm-6 fw-bold">Data Rekaman Umpan Balik 2025</div>
@@ -406,14 +433,23 @@
                                     data-jenis="Umpan Balik Triwulan IV">TW IV</button>
                             </div>
                         </div>
-
+                        {{-- Penilaian Kinerja --}}
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fw-bold">Evaluasi Kinerja Tahunan</div>
+                            <div class="col-sm-6">
+                                <button
+                                    class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Tahunan 2025') }} showFiles"
+                                    data-jenis="Evaluasi Kinerja Tahunan 2025">2025</button>
+                            </div>
+                        </div>
                         {{-- Pakta Integritas --}}
                         <div class="row mb-2">
                             <div class="col-sm-6 fw-bold">Data Pakta Integritas</div>
                             <div class="col-sm-6">
                                 <button class="btn btn-{{ cekBerkas($berkas, 'Pakta Integritas') }} showFiles"
                                     data-jenis="Pakta Integritas">2025</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Pakta Integritas 1 Desember 2025') }} showFiles"
+                                <button
+                                    class="btn btn-{{ cekBerkas($berkas, 'Pakta Integritas 1 Desember 2025') }} showFiles"
                                     data-jenis="Pakta Integritas 1 Desember 2025">1 Desember 2025</button>
                             </div>
 
@@ -500,9 +536,101 @@
         </div>
     </div>
 
-    <!-- /// Modal Pakta Integritas 1 Desember 2025 -->
-    <div class="modal fade" id="tambahPaktaIntegritas1DesemberModal" tabindex="-1" aria-labelledby="tambahPaktaIntegritasModalLabel"
+    <!-- Modal Tambah Umpan Balik TW IV -->
+    <div class="modal fade" id="tambahUmpanBalikModalTW4" tabindex="-1" aria-labelledby="tambahUmpanBalikModalLabel"
         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('tambah.umpanbalik.tw4') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Umpan Balik Triwulan IV</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Umpan Balik Triwulan IV</label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <input type="hidden" name="kumpulan_jenis" value="Umpan Balik Triwulan IV">
+                        <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                        <input type="hidden" name="jenisfile" value="umpanbalik">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Tambah Evaluasi TW IV -->
+    <div class="modal fade" id="tambahEvaluasiModalTW4" tabindex="-1" aria-labelledby="tambahEvaluasiModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('tambah.evaluasi.tw4') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahEvaluasiModalLabel">Tambah Evaluasi Kinerja Triwulan IV
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Evaluasi Kinerja Triwulan IV</label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <input type="hidden" name="kumpulan_jenis" value="Evaluasi Kinerja Triwulan IV">
+                        <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                        <input type="hidden" name="jenisfile" value="evkin">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Evaluasi Tahunan -->
+    <div class="modal fade" id="tambahEvaluasiModalTahunan" tabindex="-1"
+        aria-labelledby="tambahEvaluasiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('tambah.evaluasi.tahunan') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahEvaluasiModalLabel">Tambah Evaluasi Kinerja Tahunan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Evaluasi Kinerja Tahunan</label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <input type="hidden" name="kumpulan_jenis" value="Evaluasi Kinerja Tahunan 2025">
+                        <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                        <input type="hidden" name="jenisfile" value="evkin2025">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /// Modal Pakta Integritas 1 Desember 2025 -->
+    <div class="modal fade" id="tambahPaktaIntegritas1DesemberModal" tabindex="-1"
+        aria-labelledby="tambahPaktaIntegritasModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form action="{{ route('tambah.pakta.1desember') }}" method="POST" enctype="multipart/form-data">
@@ -510,7 +638,8 @@
                     <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
                     <input type="hidden" name="user_nik" value="{{ $user->user_nik }}">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Pakta Integritas 1 Desember 2025</h5>
+                        <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Pakta Integritas 1 Desember
+                            2025</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
@@ -595,7 +724,8 @@
                                         PPPK Lainnya (Oranye)
                                     </li>
                                     <li>
-                                        <span class="badge" style="background:rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;</span>
+                                        <span class="badge"
+                                            style="background:rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;</span>
                                         Non ASN (Putih)
                                     </li>
                                 </ul>
