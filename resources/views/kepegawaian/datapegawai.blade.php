@@ -160,7 +160,8 @@
                                         'user_jabatan' => 'Jabatan',
                                         'jenis_kerja' => 'Jenis Kerja',
                                     ];
-                                    @endphp ?> ?> @foreach ($fields as $key => $label)
+                                    @endphp 
+                                    @foreach ($fields as $key => $label)
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="fields[]"
                                                 value="{{ $key }}" id="field_{{ $key }}" checked />
@@ -407,8 +408,7 @@
 
                             {{-- Tab Non ASN --}}
                             <div class="tab-pane fade" id="nonasn" role="tabpanel" aria-labelledby="nonasn-tab">
-                                <table id="tableNonAsn"
-                                    class="table table-striped table-bordered w-100 align-middle">
+                                <table id="tableNonAsn" class="table table-striped table-bordered w-100 align-middle">
                                     <thead class="table-dark">
                                         <tr class="text-center">
                                             <th>#</th>
@@ -765,6 +765,8 @@
             $("#tableAll").DataTable();
             $("#tablePns").DataTable();
             $("#tablePppk").DataTable();
+            $("#tableNonAsn").DataTable();
+            $("#tablePppkParuhWaktu").DataTable();
         });
     </script>
 </body>
