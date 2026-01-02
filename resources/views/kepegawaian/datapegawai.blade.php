@@ -6,6 +6,17 @@
 
     {{-- DataTables CSS --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+    <style>
+        table.dataTable {
+            table-layout: fixed;
+            width: 100% !important;
+        }
+
+        .dataTables_wrapper .dataTables_processing {
+            background: rgba(255,255,255,0.8);
+        }
+</style>
+
 </head>
 
 <body class="bg-light">
@@ -126,12 +137,12 @@
                     </div>
                 </div>
                 <!-- Tombol trigger -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
+                <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
                     Export Excel
                 </button>
                 <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#modalTambahPegawai">
                     Tambah Data Pegawai
-                </button>
+                </button> -->
                 <br />
                 <br />
 
@@ -366,7 +377,7 @@
 
                             {{-- Tab PPPK Paruh Waktu --}}
                             <div class="tab-pane fade" id="pppkparuhwaktu" role="tabpanel" aria-labelledby="pppk-tab">
-                                <table id="tablePppk" class="table table-striped table-bordered w-100 align-middle">
+                                <table id="tablePppkParuhWaktu" class="table table-striped table-bordered w-100 align-middle">
                                     <thead class="table-dark">
                                         <tr class="text-center">
                                             <th>#</th>
@@ -470,7 +481,7 @@
                                         <div class="col-md-4 text-center">
                                             <img src="{{ $user->user_foto && $user->user_foto != '-' ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"
                                                 alt="Foto Pegawai" class="img-thumbnail rounded shadow-sm"
-                                                width="384px" height="auto" />
+                                                width="384px" height="auto" loading="lazy" />
                                         </div>
                                         <div class="col-md-8">
                                             <table class="table table-borderless">
@@ -533,7 +544,7 @@
                                                     <th>Pendidikan</th>
                                                     <td>
                                                         :
-                                                        {{ $user->pendidikan_jenjang ?? ($user->pendidikan_jurusan ?? '-') }}
+                                                        {{ $user->pendidikan_jenjang .' - '. $user->pendidikan_jurusan ?? '-' }}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -750,25 +761,140 @@
         </div>
     </div>
 
-    {{-- Bootstrap JS --}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     {{-- jQuery --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+    {{-- Bootstrap JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     {{-- DataTables JS --}}
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
+    <!-- {{-- Inisialisasi DataTables --}}
     <script>
         $(document).ready(function() {
+<<<<<<< HEAD
             $("#tableAll").DataTable();
             $("#tablePns").DataTable();
             $("#tablePppk").DataTable();
             $("#tableNonAsn").DataTable();
             $("#tablePppkParuhWaktu").DataTable();
+=======
+            $("#tableAll").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+            $("#tablePns").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+            $("#tablePppk").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+            $("#tableNonAsn").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+            $("#tablePppkParuhWaktu").DataTable({
+                deferRender: true,
+                pageLength: 10,
+                processing: true,
+                language: {
+                    processing: "Memuat data..."
+                }
+            });
+>>>>>>> 791558b48f1d092340970ce15fbdfce21016d36f
         });
-    </script>
+    </script> -->
+    <script>
+$(document).ready(function () {
+
+    // ==================================
+    // KONFIGURASI GLOBAL DATATABLE
+    // ==================================
+    const DT_CONFIG = {
+        deferRender: true,
+        pageLength: 10,
+        lengthChange: false,
+        processing: true,
+        autoWidth: false,
+        ordering: true,
+        info: false,
+        stateSave: true,
+        searchDelay: 700,
+        language: {
+            processing: "Memuat data...",
+            search: "Cari:"
+        },
+        columnDefs: [
+            { orderable: false, searchable: false, targets: -1 }
+        ]
+    };
+
+    // ==================================
+    // SIMPAN INSTANCE DATATABLE
+    // ==================================
+    const tables = new Map();
+
+    function initTable($table) {
+        if (!$table.length) return;
+
+        if (!$.fn.DataTable.isDataTable($table)) {
+            const dt = $table.DataTable(DT_CONFIG);
+            tables.set($table[0], dt);
+        }
+    }
+
+    // ==================================
+    // INIT TAB AKTIF SAAT LOAD
+    // ==================================
+    initTable($('.tab-pane.active table'));
+
+    // ==================================
+    // LAZY INIT TAB SAAT DIBUKA
+    // ==================================
+    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+        const targetPane = $($(e.target).data('bs-target'));
+        const table = targetPane.find('table');
+
+        initTable(table);
+
+        // cegah kolom patah
+        setTimeout(() => {
+            $.fn.dataTable
+                .tables({ visible: true, api: true })
+                .columns.adjust();
+        }, 100);
+    });
+
+    // ==================================
+    // TOOLTIP (DITUNDA AGAR TIDAK BLOCK)
+    // ==================================
+    setTimeout(() => {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    }, 1200);
+
+});
+</script>
+
+
 </body>
 
 </html>
