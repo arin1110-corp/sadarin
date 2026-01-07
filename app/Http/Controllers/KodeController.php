@@ -353,6 +353,7 @@ class KodeController extends Controller
         $subbagNama = ModelSubbag::where('subbag_id', 3)->value('subbag_nama');
         $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
             ->where('navigasisekre_subbag', 3)
+            ->where('subnavigasisekre_status', 1)
             ->get();
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
