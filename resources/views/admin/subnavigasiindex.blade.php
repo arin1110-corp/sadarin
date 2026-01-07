@@ -64,7 +64,7 @@
                                     <td>{{ $b->navigasisekretariat->navigasisekre_nama}}</td>
 
                                     <td>
-                                        @if($b->navigasisekretariat->navigasisekre_status == '1')
+                                        @if($b->navigasisekretariat->subnavigasisekre_status == '1')
                                         <span class="badge bg-success">Aktif</span>
                                         @else
                                         <span class="badge bg-secondary">Tidak Aktif</span>
