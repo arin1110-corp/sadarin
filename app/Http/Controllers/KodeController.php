@@ -353,6 +353,7 @@ class KodeController extends Controller
         $subbagNama = ModelSubbag::where('subbag_id', 3)->value('subbag_nama');
         $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
             ->where('navigasisekre_subbag', 3)
+            ->where('navigasisekre_status', 1)
             ->get();
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
@@ -858,7 +859,7 @@ class KodeController extends Controller
     /// Sub Navigasi Management
     public function adminSubNavigasi()
     {
-        $navs = ModelNavigasiSekretariat::where('navigasisekre_status', 1)->get();
+        $navs = ModelNavigasiSekretariat::get();
         $subnavigasisekretariat = ModelSubNavigasiSekretariat::with('navigasisekretariat')->where('subnavigasisekre_status', 1)->get();
         return view('admin.subnavigasiindex', compact('subnavigasisekretariat', 'navs'));
     }
@@ -2060,6 +2061,11 @@ class KodeController extends Controller
                 '1' => 'assets/umbal2025/pns',
                 '2' => 'assets/umbal2025/pppk',
                 '4' => 'assets/umbal2025/nonasn',
+            ],
+            'skp2025' => [
+                '1' => 'assets/skp2025/pns',
+                '2' => 'assets/skp2025/pppk',
+                '4' => 'assets/skp2025/nonasn',
             ],
         ];
 

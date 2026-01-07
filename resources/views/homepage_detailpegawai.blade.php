@@ -153,7 +153,7 @@
     </style>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+< class="d-flex flex-column min-vh-100 bg-light">
 
     <!-- Fullscreen Tengah -->
     <div class="flex-grow-1 d-flex justify-content-center align-items-center">
@@ -240,15 +240,19 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-2">
-                            
+
                             <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#tambahEvaluasiModalTahunan">
                                     <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Tahunan 2025
                                 </button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#tambahSkp2025Modal">
+                                    <i class="bi bi-plus-lg"></i> SKP 2025
+                                </button>
                                 <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#tambahUmpanBalikModalTahunan">
-                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Tahunan 
+                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Tahunan
                                 </button> -->
                             </div>
                         </div>
@@ -537,8 +541,8 @@
     </div>
 
     <!-- Modal Tambah Umpan Balik TW IV -->
-    <div class="modal fade" id="tambahUmpanBalikModalTW4" tabindex="-1" aria-labelledby="tambahUmpanBalikModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="tambahUmpanBalikModalTW4" tabindex="-1"
+        aria-labelledby="tambahUmpanBalikModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form action="{{ route('tambah.umpanbalik.tw4') }}" method="POST" enctype="multipart/form-data">
@@ -660,6 +664,36 @@
             </div>
         </div>
     </div>
+    <!-- Modal SKP 2025-->
+    <div class="modal fade" id="tambahSkp2025Modal" tabindex="-1" aria-labelledby="tambahSkpModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('tambah.skp.2025') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tambahSkpModalLabel">Tambah SKP 2025</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">SKP 2025</label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <input type="hidden" name="kumpulan_jenis" value="SKP 2025">
+                        <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                        <input type="hidden" name="jenisfile" value="skp2025">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- /// Modal Edit Data Pegawai -->
     <div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPegawaiModalLabel"
@@ -692,7 +726,8 @@
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
                             <div class="mt-3">
-                                <small class="text-danger fw-bold">* Ketentuan warna latar belakang foto (wajib baju
+                                <small class="text-danger fw-bold">* Ketentuan warna latar belakang foto (wajib
+                                    baju
                                     keki) ukuran 4x6 :</small>
                                 <ul class="list-unstyled mt-2">
                                     <li>
@@ -843,7 +878,8 @@
                                 <div class="col">
                                     <label class="form-label">Jenjang Pendidikan</label>
                                     <select name="user_pendidikan" class="form-select">
-                                        <option value="{{ $user->user_pendidikan }}">{{ $user->pendidikan_jenjang }}
+                                        <option value="{{ $user->user_pendidikan }}">
+                                            {{ $user->pendidikan_jenjang }}
                                             - {{ $user->pendidikan_jurusan }}</option>
                                         @foreach ($pendidikans as $pendidikan)
                                             <option value="{{ $pendidikan->pendidikan_id }}"
@@ -866,7 +902,8 @@
                                         @foreach ($golongans as $golongan)
                                             <option value="{{ $golongan->golongan_id }}"
                                                 {{ $user->user_golongan == $golongan->golongan_id ? 'selected' : '' }}>
-                                                {{ $golongan->golongan_nama }} - {{ $golongan->golongan_pangkat }}
+                                                {{ $golongan->golongan_nama }} -
+                                                {{ $golongan->golongan_pangkat }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -879,7 +916,8 @@
                                 <div class="col">
                                     <label class="form-label">Eselon</label>
                                     <select name="user_eselon" class="form-select">
-                                        <option value="{{ $user->user_eselon }}">{{ $user->eselon_nama }}</option>
+                                        <option value="{{ $user->user_eselon }}">{{ $user->eselon_nama }}
+                                        </option>
                                         @foreach ($eselons as $eselon)
                                             <option value="{{ $eselon->eselon_id }}"
                                                 {{ $user->user_eselon == $eselon->eselon_id ? 'selected' : '' }}>
@@ -1315,6 +1353,6 @@
         });
     </script>
 
-</body>
+    </body>
 
 </html>

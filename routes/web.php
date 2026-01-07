@@ -163,6 +163,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-umpan-balik-tw4', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tw4');
     Route::post('/tambah-umpan-balik-tahunan', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tahunan');
     Route::post('/tambah-pakta-1desember', [KodeController::class, 'uploadBerkas'])->name('tambah.pakta.1desember');
+    Route::post('/tambah-skp-2025', [KodeController::class, 'uploadBerkas'])->name('tambah.skp.2025');
 
 
     // Rute untuk halaman cek Subbag
