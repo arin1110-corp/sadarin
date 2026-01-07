@@ -32,13 +32,10 @@ use Google_Client;
 use Google_Service_Drive;
 use Google_Service_Drive_DriveFile;
 
-
 class KodeController extends Controller
 {
-
     protected $drive;
     private $kodeValid = ['X9#K7', 'R5$T3', 'Y7@U1', 'Z8%P4', 'K0#L9', 'N3&M6', 'G7*H8', 'W6!Q2', 'D4@Z5'];
-
 
     public function __construct(GoogleDriveService $drive)
     {
@@ -60,20 +57,24 @@ class KodeController extends Controller
         $admin = ModelAdmin::where('admin_nip', $request->nip)->first();
 
         if (!$admin) {
-            return back()->withErrors(['login' => 'NIP tidak ditemukan'])->withInput();
+            return back()
+                ->withErrors(['login' => 'NIP tidak ditemukan'])
+                ->withInput();
         }
 
         // Cek password
         if (!Hash::check($request->password, $admin->admin_password)) {
-            return back()->withErrors(['login' => 'Password salah'])->withInput();
+            return back()
+                ->withErrors(['login' => 'Password salah'])
+                ->withInput();
         }
 
         // Cek status aktif
         if ($admin->admin_status != 1) {
-            return back()->withErrors(['login' => 'Akun tidak aktif'])->withInput();
+            return back()
+                ->withErrors(['login' => 'Akun tidak aktif'])
+                ->withInput();
         }
-
-
 
         // Redirect berdasarkan role
         if ($admin->admin_role === 'Admin') {
@@ -81,14 +82,14 @@ class KodeController extends Controller
             session([
                 'admin_id' => $admin->admin_id,
                 'admin_role' => $admin->admin_role,
-                'admin_nip' => $admin->admin_nip
+                'admin_nip' => $admin->admin_nip,
             ]);
             return redirect()->route('dashboard'); // route dashboard admin
         } elseif ($admin->admin_role === 'Kepegawaian') {
             session([
                 'kepegawaian_id' => $admin->admin_id,
                 'kepegawaian_role' => $admin->admin_role,
-                'kepegawaian_nip' => $admin->admin_nip
+                'kepegawaian_nip' => $admin->admin_nip,
             ]);
             return redirect()->route('kepegawaian.dashboard'); // route dashboard kepegawaian
         }
@@ -117,7 +118,7 @@ class KodeController extends Controller
             session([
                 'kode_akses_valid' => true,
                 'akses_full' => true,
-                'user_info' => null // akses penuh, tidak butuh data user
+                'user_info' => null, // akses penuh, tidak butuh data user
             ]);
 
             $bidang = ModelBidang::where('bidang_status', 1)->get();
@@ -128,8 +129,8 @@ class KodeController extends Controller
         $user = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->where(function ($q) use ($request) {
-                $q->where('user_nip', '!=', '-')        // tambahkan ini
-                    ->where('user_nip', $request->kode_akses)
+            $q->where('user_nip', '!=', '-') // tambahkan ini
+                ->where('user_nip', $request->kode_akses)
                 ->orWhere('user_nik', $request->kode_akses);
         })
             ->select('sadarin_user.user_nip', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_user.user_nik')
@@ -139,14 +140,16 @@ class KodeController extends Controller
             session([
                 'kode_akses_valid' => true,
                 'akses_full' => false,
-                'user_info' => $user
+                'user_info' => $user,
             ]);
 
             $bidang = ModelBidang::where('bidang_status', 1)->get();
             return view('homepage_cekbidang', compact('bidang', 'user'));
         }
 
-        return back()->withErrors(['kode_akses' => 'Kode akses salah.'])->withInput();
+        return back()
+            ->withErrors(['kode_akses' => 'Kode akses salah.'])
+            ->withInput();
     }
     public function detailpegawai()
     {
@@ -170,7 +173,9 @@ class KodeController extends Controller
             ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->first();
         if (!$pegawai && !$pegawai1) {
-            return redirect()->route('akses.form')->withErrors(['kode_akses' => 'Kode akses salah.']);
+            return redirect()
+                ->route('akses.form')
+                ->withErrors(['kode_akses' => 'Kode akses salah.']);
         }
         $berkas = DB::table('sadarin_pengumpulanberkas')
             ->where(function ($q) use ($pegawai, $pegawai1) {
@@ -190,13 +195,7 @@ class KodeController extends Controller
     }
     public function strukturOrganisasi()
     {
-        $dataPegawai = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-            ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
-            ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
-            ->join('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
-            ->where('sadarin_user.user_status', 1)
-            ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*')
-            ->get();
+        $dataPegawai = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->join('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->where('sadarin_user.user_status', 1)->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.*')->get();
         return view('homepagestrukturorganisasi', compact('dataPegawai'));
     }
     public function lihatjajaran(Request $request)
@@ -205,12 +204,7 @@ class KodeController extends Controller
 
         if ($kategori === 'Fungsional') {
             // Ambil semua pegawai fungsional
-            $pegawaiBidang = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-                ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
-                ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
-                ->where('jabatan_kategori', 'Fungsional')
-                ->select('sadarin_user.*', 'sadarin_jabatan.*', 'sadarin_bidang.*', 'sadarin_golongan.*')
-                ->get();
+            $pegawaiBidang = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->where('jabatan_kategori', 'Fungsional')->select('sadarin_user.*', 'sadarin_jabatan.*', 'sadarin_bidang.*', 'sadarin_golongan.*')->get();
 
             $kepalaAtas = null;
             $kepalaSejajar = null;
@@ -223,19 +217,10 @@ class KodeController extends Controller
             }
 
             // Ambil semua pegawai di bidang
-            $pegawaiBidang = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-                ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
-                ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
-                ->where('user_bidang', $bidangId)
-                ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.*', 'sadarin_golongan.*')
-                ->get();
+            $pegawaiBidang = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->where('user_bidang', $bidangId)->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.*', 'sadarin_golongan.*')->get();
 
             $kepala = $pegawaiBidang->filter(function ($p) {
-                return str_contains($p->jabatan_nama, 'Kepala Bidang')
-                    || str_contains($p->jabatan_nama, 'Sekretaris')
-                    || str_contains($p->jabatan_nama, 'Kepala UPTD')
-                    || str_contains($p->jabatan_nama, 'Kepala')
-                    && !str_contains($p->jabatan_nama, 'Kepala Dinas');
+                return str_contains($p->jabatan_nama, 'Kepala Bidang') || str_contains($p->jabatan_nama, 'Sekretaris') || str_contains($p->jabatan_nama, 'Kepala UPTD') || (str_contains($p->jabatan_nama, 'Kepala') && !str_contains($p->jabatan_nama, 'Kepala Dinas'));
             });
 
             $prioritasJabatan = [
@@ -247,7 +232,9 @@ class KodeController extends Controller
 
             $kepala = $kepala->sortBy(function ($p) use ($prioritasJabatan) {
                 foreach ($prioritasJabatan as $key => $value) {
-                    if (str_contains($p->jabatan_nama, $key)) return $value;
+                    if (str_contains($p->jabatan_nama, $key)) {
+                        return $value;
+                    }
                 }
                 return 999;
             });
@@ -336,8 +323,7 @@ class KodeController extends Controller
         // Cek apakah user punya akses penuh atau tidak
         $aksesFull = session('akses_full', false);
 
-        $datasekretariatQuery = ModelNavigasiSekretariat::with(['subnavigasisekretariat'])
-            ->where('navigasisekre_subbag', $subbagId);
+        $datasekretariatQuery = ModelNavigasiSekretariat::with(['subnavigasisekretariat'])->where('navigasisekre_subbag', $subbagId);
 
         // Kalau akses bukan penuh (login pakai NIP) → filter level = 1
         if (!$aksesFull) {
@@ -351,18 +337,21 @@ class KodeController extends Controller
     public function datappep()
     {
         $subbagNama = ModelSubbag::where('subbag_id', 3)->value('subbag_nama');
-        $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
+
+        $datasekretariat = ModelNavigasiSekretariat::with([
+            'subnavigasisekretariat' => function ($query) {
+                $query->where('subnavigasisekre_status', 1);
+            },
+        ])
             ->where('navigasisekre_subbag', 3)
-            ->where('subnavigasisekre_status', 1)
             ->get();
+
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
     public function datakeuangan()
     {
         $subbagNama = ModelSubbag::where('subbag_id', 2)->value('subbag_nama');
-        $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
-            ->where('navigasisekre_subbag', 2)
-            ->get();
+        $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')->where('navigasisekre_subbag', 2)->get();
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
     public function datasenirupa()
@@ -373,8 +362,7 @@ class KodeController extends Controller
         // Cek apakah user punya akses penuh atau tidak
         $aksesFull = session('akses_full', false);
 
-        $datasekretariatQuery = ModelNavigasiSekretariat::with(['subnavigasisekretariat'])
-            ->where('navigasisekre_subbag', $subbagId);
+        $datasekretariatQuery = ModelNavigasiSekretariat::with(['subnavigasisekretariat'])->where('navigasisekre_subbag', $subbagId);
 
         // Kalau akses bukan penuh (login pakai NIP) → filter level = 1
         if (!$aksesFull) {
@@ -392,9 +380,7 @@ class KodeController extends Controller
     }
     public function dataPegawaiPNS()
     {
-        $users = ModelUser::with('bidang')
-            ->where('user_status', 1)->where('user_jeniskerja', 1)
-            ->get();
+        $users = ModelUser::with('bidang')->where('user_status', 1)->where('user_jeniskerja', 1)->get();
 
         $rekapBidang = $users->groupBy('user_bidang')->map(function ($group) {
             return [
@@ -402,9 +388,7 @@ class KodeController extends Controller
                 'jumlah' => $group->count(),
             ];
         });
-        $users = ModelUser::with('golongan')
-            ->where('user_status', 1)->where('user_jeniskerja', 1)
-            ->get();
+        $users = ModelUser::with('golongan')->where('user_status', 1)->where('user_jeniskerja', 1)->get();
 
         $rekapGolongan = $users->groupBy('user_golongan')->map(function ($group) {
             return [
@@ -412,9 +396,7 @@ class KodeController extends Controller
                 'jumlah' => $group->count(),
             ];
         });
-        $users = ModelUser::with('jabatan')
-            ->where('user_status', 1)->where('user_jeniskerja', 1)
-            ->get();
+        $users = ModelUser::with('jabatan')->where('user_status', 1)->where('user_jeniskerja', 1)->get();
 
         $rekapJabatan = $users->groupBy('user_jabatan')->map(function ($group) {
             return [
@@ -427,7 +409,7 @@ class KodeController extends Controller
             'Kepala Dinas' => 1,
             'Sekretaris' => 2,
             'Kepala Bidang' => 3,
-            'Kepala UPT' => 4
+            'Kepala UPT' => 4,
         ];
 
         $rekapJabatan = $rekapJabatan->sortBy(function ($item) use ($order) {
@@ -453,31 +435,23 @@ class KodeController extends Controller
         $dataPegawai = ModelUser::join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->where('user_status', 1)
             ->where('user_jeniskerja', 1)
-            ->orderByRaw(" CASE 
+            ->orderByRaw(
+                " CASE
                         WHEN sadarin_jabatan.jabatan_nama = 'Kepala Dinas' THEN 1
                         WHEN sadarin_jabatan.jabatan_nama = 'Kepala Bidang' THEN 2
                         WHEN sadarin_jabatan.jabatan_nama = 'Kepala UPT' THEN 3
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
-                        ELSE 5 END ")
+                        ELSE 5 END ",
+            )
             ->orderBy('sadarin_user.user_nama', 'asc')
             ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama')
             ->get();
         $totalPegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->count();
-        return view('homepage_data_pegawai_pns', compact(
-            'dataPegawai',
-            'totalPegawai',
-            'rekapBidang',
-            'rekapGolongan',
-            'rekapJabatan',
-            'jumlahLaki',
-            'jumlahPerempuan'
-        ));
+        return view('homepage_data_pegawai_pns', compact('dataPegawai', 'totalPegawai', 'rekapBidang', 'rekapGolongan', 'rekapJabatan', 'jumlahLaki', 'jumlahPerempuan'));
     }
     public function dataPegawaiPPPK()
     {
-        $users = ModelUser::with('bidang')
-            ->where('user_status', 1)->where('user_jeniskerja', 2)
-            ->get();
+        $users = ModelUser::with('bidang')->where('user_status', 1)->where('user_jeniskerja', 2)->get();
 
         $rekapBidang = $users->groupBy('user_bidang')->map(function ($group) {
             return [
@@ -485,9 +459,7 @@ class KodeController extends Controller
                 'jumlah' => $group->count(),
             ];
         });
-        $users = ModelUser::with('golongan')
-            ->where('user_status', 1)->where('user_jeniskerja', 2)
-            ->get();
+        $users = ModelUser::with('golongan')->where('user_status', 1)->where('user_jeniskerja', 2)->get();
 
         $rekapGolongan = $users->groupBy('user_golongan')->map(function ($group) {
             return [
@@ -495,9 +467,7 @@ class KodeController extends Controller
                 'jumlah' => $group->count(),
             ];
         });
-        $users = ModelUser::with('jabatan')
-            ->where('user_status', 1)->where('user_jeniskerja', 2)
-            ->get();
+        $users = ModelUser::with('jabatan')->where('user_status', 1)->where('user_jeniskerja', 2)->get();
 
         $rekapJabatan = $users->groupBy('user_jabatan')->map(function ($group) {
             return [
@@ -509,7 +479,7 @@ class KodeController extends Controller
         $order = [
             'Kepala Dinas' => 1,
             'Kepala Bidang' => 2,
-            'Kepala UPT' => 3
+            'Kepala UPT' => 3,
         ];
 
         $rekapJabatan = $rekapJabatan->sortBy(function ($item) use ($order) {
@@ -531,19 +501,9 @@ class KodeController extends Controller
 
         $jumlahLaki = ModelUser::where('user_jk', 'L')->where('user_jeniskerja', 2)->where('user_status', 1)->count();
         $jumlahPerempuan = ModelUser::where('user_jk', 'P')->where('user_jeniskerja', 2)->where('user_status', 1)->count();
-        $dataPegawai = ModelUser::where('user_status', 1)
-            ->where('user_jeniskerja', 2)
-            ->get();
+        $dataPegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
         $totalPegawai = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->count();
-        return view('homepage_data_pegawai_pns', compact(
-            'dataPegawai',
-            'totalPegawai',
-            'rekapBidang',
-            'rekapGolongan',
-            'rekapJabatan',
-            'jumlahLaki',
-            'jumlahPerempuan'
-        ));
+        return view('homepage_data_pegawai_pns', compact('dataPegawai', 'totalPegawai', 'rekapBidang', 'rekapGolongan', 'rekapJabatan', 'jumlahLaki', 'jumlahPerempuan'));
     }
     public function dataPegawaiRincian()
     {
@@ -552,7 +512,8 @@ class KodeController extends Controller
             ->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->join('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->where('sadarin_user.user_status', 1)
-            ->orderByRaw("
+            ->orderByRaw(
+                "
                     CASE
                         WHEN sadarin_jabatan.jabatan_nama = 'Kepala Dinas' THEN 1
                         WHEN sadarin_jabatan.jabatan_nama = 'Sekretaris' THEN 2
@@ -562,21 +523,22 @@ class KodeController extends Controller
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 6
                         ELSE 7
                     END
-                ")
-            ->orderByRaw("
+                ",
+            )
+            ->orderByRaw(
+                "
         CASE
             WHEN sadarin_user.user_jeniskerja = 1 THEN 1
             WHEN sadarin_user.user_jeniskerja = 2 THEN 2
             ELSE 3
         END
-    ")
+    ",
+            )
             ->orderBy('sadarin_user.user_nama', 'asc')
             ->select('sadarin_user.*', 'sadarin_golongan.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama')
             ->get();
 
-        return view('homepage_rincian_pegawai', compact(
-            'dataPegawai'
-        ));
+        return view('homepage_rincian_pegawai', compact('dataPegawai'));
     }
     public function umpanbalik()
     {
@@ -596,7 +558,9 @@ class KodeController extends Controller
         if (session('kode_akses_valid')) {
             return redirect()->route('daftar.bagian');
         }
-        return redirect()->route('akses.kode')->withErrors(['kode_akses' => 'Kode Salah.']);
+        return redirect()
+            ->route('akses.kode')
+            ->withErrors(['kode_akses' => 'Kode Salah.']);
     }
     public function datadppa2025()
     {
@@ -620,7 +584,6 @@ class KodeController extends Controller
         return view('homepage_cekbidang');
     }
 
-
     public function dataupload()
     {
         return view('homepage_upload_data');
@@ -630,9 +593,7 @@ class KodeController extends Controller
 
     public function admin()
     {
-        $users = ModelUser::with('bidang')
-            ->where('user_status', 1)
-            ->get();
+        $users = ModelUser::with('bidang')->where('user_status', 1)->get();
 
         $rekapBidang = $users->groupBy('user_bidang')->map(function ($group) {
             return [
@@ -640,9 +601,7 @@ class KodeController extends Controller
                 'jumlah' => $group->count(),
             ];
         });
-        $users = ModelUser::with('golongan')
-            ->where('user_status', 1)
-            ->get();
+        $users = ModelUser::with('golongan')->where('user_status', 1)->get();
 
         $rekapGolongan = $users->groupBy('user_golongan')->map(function ($group) {
             return [
@@ -650,9 +609,7 @@ class KodeController extends Controller
                 'jumlah' => $group->count(),
             ];
         });
-        $users = ModelUser::with('jabatan')
-            ->where('user_status', 1)
-            ->get();
+        $users = ModelUser::with('jabatan')->where('user_status', 1)->get();
 
         $rekapJabatan = $users->groupBy('user_jabatan')->map(function ($group) {
             return [
@@ -670,22 +627,8 @@ class KodeController extends Controller
 
         $dataPns = ModelUser::where('user_status', 1)->where('user_jeniskerja', 1)->get();
         $dataPppk = ModelUser::where('user_status', 1)->where('user_jeniskerja', 2)->get();
-        return view('admin.dashboard', compact(
-            'dataPegawai',
-            'totalPegawai',
-            'rekapBidang',
-            'rekapGolongan',
-            'rekapJabatan',
-            'jumlahLaki',
-            'jumlahPerempuan',
-            'datapnspegawai',
-            'datapppkpegawai',
-            'dataPns',
-            'dataPppk'
-        ));
+        return view('admin.dashboard', compact('dataPegawai', 'totalPegawai', 'rekapBidang', 'rekapGolongan', 'rekapJabatan', 'jumlahLaki', 'jumlahPerempuan', 'datapnspegawai', 'datapppkpegawai', 'dataPns', 'dataPppk'));
     }
-
-
 
     // Bidang Management
     public function adminBidang()
@@ -736,7 +679,6 @@ class KodeController extends Controller
         return redirect()->route('admin.bidang')->with('success', 'Bidang berhasil dihapus.');
     }
     //// Akhir Bidang Management
-
 
     //// Sub Bagian Management
     public function adminSubBag()
@@ -793,13 +735,10 @@ class KodeController extends Controller
     }
     //// Akhir Sub Bagian Management
 
-
-
     /// Navigasi Management
     public function adminNavigasi()
     {
-        $navigasisekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
-            ->with('subbag')->where('navigasisekre_status', 1)->get();
+        $navigasisekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')->with('subbag')->where('navigasisekre_status', 1)->get();
         $subbags = ModelSubBag::where('subbag_status', 1)->get();
         return view('admin.navigasiindex', compact('navigasisekretariat', 'subbags'));
     }
@@ -812,7 +751,6 @@ class KodeController extends Controller
             'navigasisekre_subbag' => 'required|string',
             'navigasisekre_status' => 'required|integer',
             'navigasisekre_level' => 'required|integer',
-
         ]);
 
         ModelNavigasiSekretariat::create([
@@ -820,7 +758,7 @@ class KodeController extends Controller
             'navigasisekre_subbag' => $request->navigasisekre_subbag,
             'navigasisekre_deskripsi' => $request->navigasisekre_deskripsi,
             'navigasisekre_status' => $request->navigasisekre_status,
-            'navigasisekre_level' => $request->navigasisekre_level
+            'navigasisekre_level' => $request->navigasisekre_level,
         ]);
 
         return redirect()->route('admin.navigasi')->with('success', 'Navigasi berhasil ditambahkan.');
@@ -841,7 +779,7 @@ class KodeController extends Controller
             'navigasisekre_deskripsi' => $request->navigasisekre_deskripsi,
             'navigasisekre_subbag' => $request->navigasisekre_subbag,
             'navigasisekre_status' => $request->navigasisekre_status,
-            'navigasisekre_level' => $request->navigasisekre_level
+            'navigasisekre_level' => $request->navigasisekre_level,
         ]);
 
         return redirect()->route('admin.navigasi')->with('success', 'Navigasi berhasil diperbarui.');
@@ -853,8 +791,6 @@ class KodeController extends Controller
         return redirect()->route('admin.navigasi')->with('success', 'Navigasi berhasil dihapus.');
     }
     //// Akhir Navigasi Management
-
-
 
     /// Sub Navigasi Management
     public function adminSubNavigasi()
@@ -922,7 +858,6 @@ class KodeController extends Controller
 
     /// Akhir User Management
 
-
     /// Dashboard Kepegawaian
     /// Data Kepegawaian
     public function kepegawaianDashboard()
@@ -941,20 +876,7 @@ class KodeController extends Controller
         $pemuktahiranFoto = ModelUser::where('user_foto', '-')->count();
         $pemuktahiranJabatan = ModelUser::where('user_jabatan', 65)->count();
 
-        return view('kepegawaian.dashboard', compact(
-            'dataPegawai',
-            'totalPegawai',
-            'datapnspegawai',
-            'datapppkpegawai',
-            'pendidikan',
-            'pemuktahiran',
-            'pemuktahiranFoto',
-            'pemuktahiranJabatan',
-            'datapppkparuhwaktu',
-            'datanonasn',
-            'dataPegawaiaktif',
-            'dataPegawainonaktif'
-        ));
+        return view('kepegawaian.dashboard', compact('dataPegawai', 'totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'pendidikan', 'pemuktahiran', 'pemuktahiranFoto', 'pemuktahiranJabatan', 'datapppkparuhwaktu', 'datanonasn', 'dataPegawaiaktif', 'dataPegawainonaktif'));
     }
     public function dataPegawai()
     {
@@ -965,16 +887,10 @@ class KodeController extends Controller
             ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
             ->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-            ->select(
-                'sadarin_user.*',
-                'sadarin_bidang.*',
-                'sadarin_jabatan.*',
-                'sadarin_golongan.*',
-                'sadarin_eselon.*',
-                'sadarin_pendidikan.*'
-        )
-            ->orderByRaw("
-                    CASE 
+            ->select('sadarin_user.*', 'sadarin_bidang.*', 'sadarin_jabatan.*', 'sadarin_golongan.*', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
+            ->orderByRaw(
+                "
+                    CASE
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Sekretaris' THEN 1
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Bidang' THEN 2
@@ -984,7 +900,8 @@ class KodeController extends Controller
                     END,
                     sadarin_user.user_jeniskerja ASC,
                     sadarin_user.user_nama ASC
-                ")
+                ",
+            )
             ->get();
 
         $dataPegawaiTotal = ModelUser::get();
@@ -996,16 +913,7 @@ class KodeController extends Controller
         $datanonasn = ModelUser::where('user_status', 1)->where('user_jeniskerja', 4)->count();
         $totalPegawai = ModelUser::count();
 
-        return view('kepegawaian.datapegawai', compact(
-            'dataPegawai',
-            'totalPegawai',
-            'datapnspegawai',
-            'datapppkpegawai',
-            'datapppkparuhwaktu',
-            'datanonasn',
-            'dataPegawaiaktif',
-            'dataPegawainonaktif'
-        ));
+        return view('kepegawaian.datapegawai', compact('dataPegawai', 'totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'datapppkparuhwaktu', 'datanonasn', 'dataPegawaiaktif', 'dataPegawainonaktif'));
     }
     public function updateStatusPegawai(Request $request)
     {
@@ -1031,18 +939,13 @@ class KodeController extends Controller
             ->leftJoin('sadarin_eselon', 'sadarin_ubahuser.ubahuser_eselon', '=', 'sadarin_eselon.eselon_id')
             ->leftJoin('sadarin_pendidikan', 'sadarin_ubahuser.ubahuser_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->leftJoin('sadarin_jabatan', 'sadarin_ubahuser.ubahuser_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-            ->select(
-                'sadarin_ubahuser.*',
-                'sadarin_bidang.*',
-                'sadarin_jabatan.*',
-                'sadarin_golongan.*',
-                'sadarin_eselon.*',
-                'sadarin_pendidikan.*'
-            )
+            ->select('sadarin_ubahuser.*', 'sadarin_bidang.*', 'sadarin_jabatan.*', 'sadarin_golongan.*', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->where('sadarin_ubahuser.ubahuser_status', 0)
-            ->orderByRaw("
+            ->orderByRaw(
+                "
                     sadarin_ubahuser.created_at DESC
-                ")
+                ",
+            )
             ->get();
 
         $datapnspegawai = ModelUbahUser::where('ubahuser_status', 0)->where('ubahuser_jeniskerja', 1)->count();
@@ -1050,48 +953,38 @@ class KodeController extends Controller
         $totalPegawaiPemuktahiran = ModelUbahUser::where('ubahuser_status', 0)->count();
         $totalPegawai = ModelUser::where('user_status', 1)->count();
 
-        return view('kepegawaian.pemuktahiran', compact(
-            'dataPegawai',
-            'totalPegawai',
-            'totalPegawaiPemuktahiran',
-            'datapnspegawai',
-            'datapppkpegawai',
-        ));
+        return view('kepegawaian.pemuktahiran', compact('dataPegawai', 'totalPegawai', 'totalPegawaiPemuktahiran', 'datapnspegawai', 'datapppkpegawai'));
     }
     public function pegawaiUpdate(Request $request)
     {
-
         $validator = Validator::make(
             array_merge($request->all(), $request->allFiles()), // 👈 tambahin file
             [
-                'user_nama'        => 'required|string|max:100',
-                'user_nik'         => 'required|string|max:100',
-                'user_nip'         => 'required|string|max:100',
-                'user_email'       => 'nullable|email|max:100',
-                'user_notelp'      => 'nullable|numeric',
-                'user_npwp'        => 'nullable|numeric',
-                'user_bpjs'        => 'nullable|numeric',
-                'user_norek'       => 'nullable|numeric',
+                'user_nama' => 'required|string|max:100',
+                'user_nik' => 'required|string|max:100',
+                'user_nip' => 'required|string|max:100',
+                'user_email' => 'nullable|email|max:100',
+                'user_notelp' => 'nullable|numeric',
+                'user_npwp' => 'nullable|numeric',
+                'user_bpjs' => 'nullable|numeric',
+                'user_norek' => 'nullable|numeric',
                 'user_jmltanggungan' => 'nullable|numeric',
-                'user_tgllahir'    => 'required|date',
-                'user_tmt'         => 'required|date',
-                'user_spmt'        => 'required|date',
-                'user_tempatlahir'  => 'required|string|max:100',
+                'user_tgllahir' => 'required|date',
+                'user_tmt' => 'required|date',
+                'user_spmt' => 'required|date',
+                'user_tempatlahir' => 'required|string|max:100',
 
                 'user_foto' => 'nullable|file|image|mimes:jpeg,jpg,png|max:2048',
             ],
             [
                 'user_foto.image' => 'File yang diupload harus berupa gambar.',
                 'user_foto.mimes' => 'Format foto hanya boleh JPG atau PNG.',
-                'user_foto.max'   => 'Ukuran foto maksimal 2MB.',
-            ]
+                'user_foto.max' => 'Ukuran foto maksimal 2MB.',
+            ],
         );
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-
 
         // Ambil data user asli dari tabel sadarin_user
         $userAsli = ModelUser::findOrFail($request->user_id);
@@ -1139,7 +1032,6 @@ class KodeController extends Controller
             // pakai foto lama dari tabel user
             $ubah->ubahuser_foto = $userAsli->user_foto;
         }
-
 
         $ubah->save();
 
@@ -1197,20 +1089,22 @@ class KodeController extends Controller
         $user->user_pendidikan = $request->user_pendidikan;
         $user->user_jeniskerja = $request->user_jeniskerja;
 
-
         $user->save();
 
         return redirect()->back()->with('success', 'Data pegawai berhasil diupdate.');
     }
     public function updatePasfoto(Request $request)
     {
-        $request->validate([
-            'user_foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
-        ], [
-            'user_foto.image' => 'File yang diupload harus berupa gambar.',
-            'user_foto.mimes' => 'Format foto hanya boleh JPG atau PNG.',
-            'user_foto.max'   => 'Ukuran foto maksimal 2MB.',
-        ]);
+        $request->validate(
+            [
+                'user_foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            ],
+            [
+                'user_foto.image' => 'File yang diupload harus berupa gambar.',
+                'user_foto.mimes' => 'Format foto hanya boleh JPG atau PNG.',
+                'user_foto.max' => 'Ukuran foto maksimal 2MB.',
+            ],
+        );
 
         $user = ModelUser::findOrFail($request->user_id);
 
@@ -1222,7 +1116,7 @@ class KodeController extends Controller
             $nik = $request->user_nik ?? $user->user_nik;
 
             // Jika NIP adalah '-' maka gunakan NIK
-            $finalId = ($nip == '-' || $nip == null || $nip == '') ? $nik : $nip;
+            $finalId = $nip == '-' || $nip == null || $nip == '' ? $nik : $nip;
 
             $filename = "{$finalId}_Pasfoto." . $file->getClientOriginalExtension();
 
@@ -1417,7 +1311,7 @@ class KodeController extends Controller
     {
         $now = Carbon::now();
         $startThisMonth = $now->copy()->startOfMonth();
-        $endThisMonth   = $now->copy()->endOfMonth();
+        $endThisMonth = $now->copy()->endOfMonth();
 
         // ambil data user yang punya tanggal lahir (optimalkan with() sesuai relasi di projectmu)
         $users = ModelUser::with(['jabatan', 'eselon', 'bidang', 'pendidikan', 'golongan'])
@@ -1436,11 +1330,8 @@ class KodeController extends Controller
         });
 
         // Statistik hitungan
-        $pensiunBulanIni   = $users->whereBetween('tanggal_pensiun', [$startThisMonth, $endThisMonth])->count();
-        $pensiunBulanDepan = $users->whereBetween('tanggal_pensiun', [
-            $now->copy()->addMonth()->startOfMonth(),
-            $now->copy()->addMonth()->endOfMonth()
-        ])->count();
+        $pensiunBulanIni = $users->whereBetween('tanggal_pensiun', [$startThisMonth, $endThisMonth])->count();
+        $pensiunBulanDepan = $users->whereBetween('tanggal_pensiun', [$now->copy()->addMonth()->startOfMonth(), $now->copy()->addMonth()->endOfMonth()])->count();
         $pensiun3Bulan = $users->whereBetween('tanggal_pensiun', [$now, $now->copy()->addMonths(3)->endOfMonth()])->count();
         $pensiun6Bulan = $users->whereBetween('tanggal_pensiun', [$now, $now->copy()->addMonths(6)->endOfMonth()])->count();
         $pensiun1Tahun = $users->whereBetween('tanggal_pensiun', [$now, $now->copy()->addYear()->endOfMonth()])->count();
@@ -1454,14 +1345,16 @@ class KodeController extends Controller
         $listPensiun2026 = $users->filter(fn($u) => $u->tanggal_pensiun->year == 2026)->sortBy('tanggal_pensiun');
 
         // daftar pegawai yang pensiun 1 tahun ke depan (dari awal bulan sekarang sampai 1 tahun ke depan)
-        $daftarPensiun = $users->filter(function ($u) use ($startThisMonth, $now) {
-            return $u->tanggal_pensiun >= $startThisMonth && $u->tanggal_pensiun <= $now->copy()->addYear()->endOfYear();
-        })->sortBy('tanggal_pensiun')
+        $daftarPensiun = $users
+            ->filter(function ($u) use ($startThisMonth, $now) {
+                return $u->tanggal_pensiun >= $startThisMonth && $u->tanggal_pensiun <= $now->copy()->addYear()->endOfYear();
+            })
+            ->sortBy('tanggal_pensiun')
             // normalisasi supaya view mudah akses fields (tetap bisa pakai model kalau mau)
             ->map(function ($u) {
                 return (object) [
-                    'id' => $u->user_id ?? $u->id ?? null,
-                    'user_id' => $u->user_id ?? $u->id ?? null,
+                'id' => $u->user_id ?? ($u->id ?? null),
+                'user_id' => $u->user_id ?? ($u->id ?? null),
                     'user_nama' => $u->user_nama,
                     'user_nip' => $u->user_nip,
                     'user_nik' => $u->user_nik ?? null,
@@ -1496,38 +1389,24 @@ class KodeController extends Controller
             });
 
         // statistik besar PNS & PPPK yang pensiun TAHUN INI
-        $pnsTahunIni = $users->filter(function ($u) use ($now) {
-            return ((string)$u->user_jeniskerja === '1' || $u->user_jeniskerja == 1)
-                && $u->tanggal_pensiun->year == $now->year;
-        })->count();
+        $pnsTahunIni = $users
+            ->filter(function ($u) use ($now) {
+                return ((string) $u->user_jeniskerja === '1' || $u->user_jeniskerja == 1) && $u->tanggal_pensiun->year == $now->year;
+            })
+            ->count();
 
-        $pppkTahunIni = $users->filter(function ($u) use ($now) {
-            return ((string)$u->user_jeniskerja === '2' || $u->user_jeniskerja == 2)
-                && $u->tanggal_pensiun->year == $now->year;
-        })->count();
+        $pppkTahunIni = $users
+            ->filter(function ($u) use ($now) {
+                return ((string) $u->user_jeniskerja === '2' || $u->user_jeniskerja == 2) && $u->tanggal_pensiun->year == $now->year;
+            })
+            ->count();
 
         // opsional: statistik total agar sesuai bagian atas dashboard
         $totalPegawai = ModelUser::count();
         $datapnspegawai = ModelUser::where('user_jeniskerja', 1)->count();
         $datapppkpegawai = ModelUser::where('user_jeniskerja', 2)->count();
 
-        return view('kepegawaian.pensiun', compact(
-            'totalPegawai',
-            'datapnspegawai',
-            'datapppkpegawai',
-            'pensiunBulanIni',
-            'pensiunBulanDepan',
-            'pensiun3Bulan',
-            'pensiun6Bulan',
-            'pensiun1Tahun',
-            'pensiun2025',
-            'pensiun2026',
-            'pnsTahunIni',
-            'pppkTahunIni',
-            'daftarPensiun',
-            'listPensiun2025',
-            'listPensiun2026'
-        ));
+        return view('kepegawaian.pensiun', compact('totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'pensiunBulanIni', 'pensiunBulanDepan', 'pensiun3Bulan', 'pensiun6Bulan', 'pensiun1Tahun', 'pensiun2025', 'pensiun2026', 'pnsTahunIni', 'pppkTahunIni', 'daftarPensiun', 'listPensiun2025', 'listPensiun2026'));
     }
 
     /**
@@ -1575,7 +1454,7 @@ class KodeController extends Controller
     {
         $now = Carbon::now();
         $startThisMonth = $now->copy()->startOfMonth();
-        $endThisMonth   = $now->copy()->endOfMonth();
+        $endThisMonth = $now->copy()->endOfMonth();
 
         // ambil data user yang punya TMT (dasar perhitungan KGB)
         $users = ModelUser::with(['jabatan', 'eselon', 'bidang', 'pendidikan', 'golongan'])
@@ -1594,11 +1473,8 @@ class KodeController extends Controller
         });
 
         // Statistik hitungan
-        $kgbBulanIni   = $users->whereBetween('tanggal_kgb', [$startThisMonth, $endThisMonth])->count();
-        $kgbBulanDepan = $users->whereBetween('tanggal_kgb', [
-            $now->copy()->addMonth()->startOfMonth(),
-            $now->copy()->addMonth()->endOfMonth()
-        ])->count();
+        $kgbBulanIni = $users->whereBetween('tanggal_kgb', [$startThisMonth, $endThisMonth])->count();
+        $kgbBulanDepan = $users->whereBetween('tanggal_kgb', [$now->copy()->addMonth()->startOfMonth(), $now->copy()->addMonth()->endOfMonth()])->count();
         $kgb3Bulan = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addMonths(3)->endOfMonth()])->count();
         $kgb6Bulan = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addMonths(6)->endOfMonth()])->count();
         $kgb1Tahun = $users->whereBetween('tanggal_kgb', [$now, $now->copy()->addYear()->endOfMonth()])->count();
@@ -1608,12 +1484,14 @@ class KodeController extends Controller
         $listKgb2026 = $users->filter(fn($u) => $u->tanggal_kgb->year == 2026)->sortBy('tanggal_kgb')->values();
 
         // daftar pegawai KGB dalam 1 tahun ke depan
-        $daftarKgb = $users->filter(function ($u) use ($startThisMonth, $now) {
-            return $u->tanggal_kgb >= $startThisMonth && $u->tanggal_kgb <= $now->copy()->addYear()->endOfYear();
-        })->map(function ($u) {
-            return (object) [
-                'id' => $u->user_id ?? $u->id ?? null,
-                'user_id' => $u->user_id ?? $u->id ?? null,
+        $daftarKgb = $users
+            ->filter(function ($u) use ($startThisMonth, $now) {
+                return $u->tanggal_kgb >= $startThisMonth && $u->tanggal_kgb <= $now->copy()->addYear()->endOfYear();
+            })
+            ->map(function ($u) {
+                return (object) [
+                'id' => $u->user_id ?? ($u->id ?? null),
+                'user_id' => $u->user_id ?? ($u->id ?? null),
                 'user_nama' => $u->user_nama,
                 'user_nip' => $u->user_nip,
                 'user_nik' => $u->user_nik ?? null,
@@ -1644,28 +1522,18 @@ class KodeController extends Controller
                 'user_gelarbelakang' => $u->user_gelarbelakang ?? null,
                 'user_tempatlahir' => $u->user_tempatlahir ?? null,
             ];
-        })->sortBy(function ($u) {
-            return $u->tanggal_kgb->timestamp; // 🔥 urut berdasarkan timestamp
-        })->values();
+            })
+            ->sortBy(function ($u) {
+                return $u->tanggal_kgb->timestamp; // 🔥 urut berdasarkan timestamp
+            })
+            ->values();
 
         // opsional: total pegawai dll
         $totalPegawai = ModelUser::count();
         $datapnspegawai = ModelUser::where('user_jeniskerja', 1)->count();
         $datapppkpegawai = ModelUser::where('user_jeniskerja', 2)->count();
 
-        return view('kepegawaian.kenaikanberkala', compact(
-            'totalPegawai',
-            'datapnspegawai',
-            'datapppkpegawai',
-            'kgbBulanIni',
-            'kgbBulanDepan',
-            'kgb3Bulan',
-            'kgb6Bulan',
-            'kgb1Tahun',
-            'listKgb2025',
-            'listKgb2026',
-            'daftarKgb'
-        ));
+        return view('kepegawaian.kenaikanberkala', compact('totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'kgbBulanIni', 'kgbBulanDepan', 'kgb3Bulan', 'kgb6Bulan', 'kgb1Tahun', 'listKgb2025', 'listKgb2026', 'daftarKgb'));
     }
 
     /**
@@ -1680,7 +1548,7 @@ class KodeController extends Controller
     {
         $now = Carbon::now();
         $startThisMonth = $now->copy()->startOfMonth();
-        $endThisMonth   = $now->copy()->endOfMonth();
+        $endThisMonth = $now->copy()->endOfMonth();
 
         // ambil data user yang punya TMT (dasar perhitungan KP)
         $users = ModelUser::with(['jabatan', 'eselon', 'bidang', 'pendidikan', 'golongan'])
@@ -1699,11 +1567,8 @@ class KodeController extends Controller
         });
 
         // Statistik hitungan
-        $kpBulanIni   = $users->whereBetween('tanggal_kp', [$startThisMonth, $endThisMonth])->count();
-        $kpBulanDepan = $users->whereBetween('tanggal_kp', [
-            $now->copy()->addMonth()->startOfMonth(),
-            $now->copy()->addMonth()->endOfMonth()
-        ])->count();
+        $kpBulanIni = $users->whereBetween('tanggal_kp', [$startThisMonth, $endThisMonth])->count();
+        $kpBulanDepan = $users->whereBetween('tanggal_kp', [$now->copy()->addMonth()->startOfMonth(), $now->copy()->addMonth()->endOfMonth()])->count();
         $kp3Bulan = $users->whereBetween('tanggal_kp', [$now, $now->copy()->addMonths(3)->endOfMonth()])->count();
         $kp6Bulan = $users->whereBetween('tanggal_kp', [$now, $now->copy()->addMonths(6)->endOfMonth()])->count();
         $kp1Tahun = $users->whereBetween('tanggal_kp', [$now, $now->copy()->addYear()->endOfMonth()])->count();
@@ -1713,12 +1578,14 @@ class KodeController extends Controller
         $listKp2026 = $users->filter(fn($u) => $u->tanggal_kp->year == 2026)->sortBy('tanggal_kp')->values();
 
         // daftar pegawai KP dalam 1 tahun ke depan
-        $daftarKp = $users->filter(function ($u) use ($startThisMonth, $now) {
-            return $u->tanggal_kp >= $startThisMonth && $u->tanggal_kp <= $now->copy()->addYear()->endOfYear();
-        })->map(function ($u) {
-            return (object) [
-                'id' => $u->user_id ?? $u->id ?? null,
-                'user_id' => $u->user_id ?? $u->id ?? null,
+        $daftarKp = $users
+            ->filter(function ($u) use ($startThisMonth, $now) {
+                return $u->tanggal_kp >= $startThisMonth && $u->tanggal_kp <= $now->copy()->addYear()->endOfYear();
+            })
+            ->map(function ($u) {
+                return (object) [
+                'id' => $u->user_id ?? ($u->id ?? null),
+                'user_id' => $u->user_id ?? ($u->id ?? null),
                 'user_nama' => $u->user_nama,
                 'user_nip' => $u->user_nip,
                 'user_nik' => $u->user_nik ?? null,
@@ -1750,28 +1617,18 @@ class KodeController extends Controller
                 'user_gelarbelakang' => $u->user_gelarbelakang ?? null,
                 'user_tempatlahir' => $u->user_tempatlahir ?? null,
             ];
-        })->sortBy(function ($u) {
-            return $u->tanggal_kp->timestamp; // urut berdasarkan tanggal KP
-        })->values();
+            })
+            ->sortBy(function ($u) {
+                return $u->tanggal_kp->timestamp; // urut berdasarkan tanggal KP
+            })
+            ->values();
 
         // opsional: total pegawai dll
         $totalPegawai = ModelUser::count();
         $datapnspegawai = ModelUser::where('user_jeniskerja', 1)->count();
         $datapppkpegawai = ModelUser::where('user_jeniskerja', 2)->count();
 
-        return view('kepegawaian.kenaikanpangkat', compact(
-            'totalPegawai',
-            'datapnspegawai',
-            'datapppkpegawai',
-            'kpBulanIni',
-            'kpBulanDepan',
-            'kp3Bulan',
-            'kp6Bulan',
-            'kp1Tahun',
-            'listKp2025',
-            'listKp2026',
-            'daftarKp'
-        ));
+        return view('kepegawaian.kenaikanpangkat', compact('totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'kpBulanIni', 'kpBulanDepan', 'kp3Bulan', 'kp6Bulan', 'kp1Tahun', 'listKp2025', 'listKp2026', 'daftarKp'));
     }
 
     /**
@@ -1791,31 +1648,31 @@ class KodeController extends Controller
         $user = ModelUser::findOrFail($ubah->ubahuser_iduser);
 
         // mapping field satu per satu
-        $user->user_nama          = $ubah->ubahuser_nama;
-        $user->user_nip           = $ubah->ubahuser_nip;
-        $user->user_nik           = $ubah->ubahuser_nik;
-        $user->user_gelardepan    = $ubah->ubahuser_gelardepan;
+        $user->user_nama = $ubah->ubahuser_nama;
+        $user->user_nip = $ubah->ubahuser_nip;
+        $user->user_nik = $ubah->ubahuser_nik;
+        $user->user_gelardepan = $ubah->ubahuser_gelardepan;
         $user->user_gelarbelakang = $ubah->ubahuser_gelarbelakang;
-        $user->user_jk            = $ubah->ubahuser_jk;
-        $user->user_tgllahir      = $ubah->ubahuser_tgllahir;
-        $user->user_pendidikan    = $ubah->ubahuser_pendidikan;
-        $user->user_jabatan       = $ubah->ubahuser_jabatan;
-        $user->user_golongan      = $ubah->ubahuser_golongan;
-        $user->user_eselon        = $ubah->ubahuser_eselon;
-        $user->user_tempatlahir   = $ubah->ubahuser_tempatlahir;
-        $user->user_kelasjabatan  = $ubah->ubahuser_kelasjabatan;
-        $user->user_bidang        = $ubah->ubahuser_bidang;
-        $user->user_tmt           = $ubah->ubahuser_tmt;
-        $user->user_spmt          = $ubah->ubahuser_spmt;
-        $user->user_jeniskerja    = $ubah->ubahuser_jeniskerja;
-        $user->user_alamat        = $ubah->ubahuser_alamat;
-        $user->user_notelp        = $ubah->ubahuser_notelp;
-        $user->user_email         = $ubah->ubahuser_email;
-        $user->user_bpjs          = $ubah->ubahuser_bpjs;
-        $user->user_norek         = $ubah->ubahuser_norek;
-        $user->user_npwp          = $ubah->ubahuser_npwp;
+        $user->user_jk = $ubah->ubahuser_jk;
+        $user->user_tgllahir = $ubah->ubahuser_tgllahir;
+        $user->user_pendidikan = $ubah->ubahuser_pendidikan;
+        $user->user_jabatan = $ubah->ubahuser_jabatan;
+        $user->user_golongan = $ubah->ubahuser_golongan;
+        $user->user_eselon = $ubah->ubahuser_eselon;
+        $user->user_tempatlahir = $ubah->ubahuser_tempatlahir;
+        $user->user_kelasjabatan = $ubah->ubahuser_kelasjabatan;
+        $user->user_bidang = $ubah->ubahuser_bidang;
+        $user->user_tmt = $ubah->ubahuser_tmt;
+        $user->user_spmt = $ubah->ubahuser_spmt;
+        $user->user_jeniskerja = $ubah->ubahuser_jeniskerja;
+        $user->user_alamat = $ubah->ubahuser_alamat;
+        $user->user_notelp = $ubah->ubahuser_notelp;
+        $user->user_email = $ubah->ubahuser_email;
+        $user->user_bpjs = $ubah->ubahuser_bpjs;
+        $user->user_norek = $ubah->ubahuser_norek;
+        $user->user_npwp = $ubah->ubahuser_npwp;
         $user->user_jmltanggungan = $ubah->ubahuser_jmltanggungan;
-        $user->user_foto          = $ubah->ubahuser_foto; // karena simpan di path sama
+        $user->user_foto = $ubah->ubahuser_foto; // karena simpan di path sama
 
         $user->save();
 
@@ -1833,34 +1690,28 @@ class KodeController extends Controller
         // Ambil semua pegawai dengan join tanpa alias
         $dataPegawai = DB::table('sadarin_user')
             ->leftJoin('sadarin_pengumpulanberkas', function ($join) {
-                $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', DB::raw("
-                CASE 
+            $join->on(
+                'sadarin_pengumpulanberkas.kumpulan_user',
+                '=',
+                DB::raw("
+                CASE
                     WHEN sadarin_user.user_nip <> '-' THEN sadarin_user.user_nip
                     ELSE sadarin_user.user_nik
                 END
-            "));
+            "),
+            );
             })
             ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
             ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
             ->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-            ->select(
-                'sadarin_user.*',
-                'sadarin_pengumpulanberkas.kumpulan_id',
-                'sadarin_pengumpulanberkas.kumpulan_status',
-                'sadarin_pengumpulanberkas.kumpulan_file',
-                'sadarin_pengumpulanberkas.kumpulan_jenis',
-                'sadarin_bidang.bidang_nama',
-                'sadarin_jabatan.jabatan_nama',
-                'sadarin_golongan.*',
-                'sadarin_eselon.*',
-                'sadarin_pendidikan.*'
-            )
+            ->select('sadarin_user.*', 'sadarin_pengumpulanberkas.kumpulan_id', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_file', 'sadarin_pengumpulanberkas.kumpulan_jenis', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_golongan.*', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->where('sadarin_user.user_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $id)
-            ->orderByRaw("
-                    CASE 
+            ->orderByRaw(
+                "
+                    CASE
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Sekretaris' THEN 1
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Bidang' THEN 2
@@ -1870,7 +1721,8 @@ class KodeController extends Controller
                     END,
                     sadarin_user.user_jeniskerja ASC,
                     sadarin_user.user_nama ASC
-                ")
+                ",
+            )
             ->get();
 
         // Filter PNS dan PPPK
@@ -1884,18 +1736,7 @@ class KodeController extends Controller
         $jumlahPppkKumpul = $dataPppk->where('kumpulan_status', 1)->count();
 
         $jenis = $dataPegawai[0]->kumpulan_jenis;
-        return view('kepegawaian.paktaintegritas', compact(
-            'dataPegawai',
-            'dataPns',
-            'dataPppk',
-            'jumlahPnsKumpul',
-            'jumlahPppkKumpul',
-            'jenis',
-            'dataPns',
-            'dataPppk',
-            'dataParuhWaktu',
-            'dataNonASN'
-        ));
+        return view('kepegawaian.paktaintegritas', compact('dataPegawai', 'dataPns', 'dataPppk', 'jumlahPnsKumpul', 'jumlahPppkKumpul', 'jenis', 'dataPns', 'dataPppk', 'dataParuhWaktu', 'dataNonASN'));
     }
     /// akhir Pakta Integritas
     /// lihat pakta
@@ -1967,9 +1808,7 @@ class KodeController extends Controller
     // }
     public function lihatPakta($id)
     {
-        $berkas = DB::table('sadarin_pengumpulanberkas')
-            ->where('kumpulan_id', $id)
-            ->first();
+        $berkas = DB::table('sadarin_pengumpulanberkas')->where('kumpulan_id', $id)->first();
 
         if (!$berkas || $berkas->kumpulan_status != 1) {
             return redirect()->back()->with('error', 'Berkas tidak ditemukan atau belum terkumpul.');
@@ -1997,8 +1836,9 @@ class KodeController extends Controller
             ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_file')
             ->where('sadarin_user.user_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $id)
-            ->orderByRaw("
-                    CASE 
+            ->orderByRaw(
+                "
+                    CASE
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Sekretaris' THEN 1
                         WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Bidang' THEN 2
@@ -2008,7 +1848,8 @@ class KodeController extends Controller
                     END,
                     sadarin_user.user_jeniskerja ASC,
                     sadarin_user.user_nama ASC
-                ")
+                ",
+            )
             ->get();
 
         $dataPns = $dataPegawai->where('user_jeniskerja', '1');
@@ -2019,21 +1860,21 @@ class KodeController extends Controller
     public function uploadBerkas(Request $request)
     {
         $request->validate([
-            'user_nip'        => 'required|string',
-            'file'            => 'required|mimes:pdf',
-            'kumpulan_jenis'  => 'required|string',
-            'jenisfile'       => 'required|string', // 'evkin' atau 'umpanbalik'
+            'user_nip' => 'required|string',
+            'file' => 'required|mimes:pdf',
+            'kumpulan_jenis' => 'required|string',
+            'jenisfile' => 'required|string', // 'evkin' atau 'umpanbalik'
             'user_jeniskerja' => 'required|string', // '1' = PNS, '2' = PPPK
         ]);
 
-        $nip        = $request->user_nip;
-        $nik        = $request->user_nik;
-        $jenis      = $request->kumpulan_jenis;
-        $jenisfile  = $request->jenisfile;
+        $nip = $request->user_nip;
+        $nik = $request->user_nik;
+        $jenis = $request->kumpulan_jenis;
+        $jenisfile = $request->jenisfile;
         $jeniskerja = $request->user_jeniskerja;
 
         // Jika NIP adalah '-' maka gunakan NIK
-        $finalId = ($nip == '-' || $nip == null || $nip == '') ? $nik : $nip;
+        $finalId = $nip == '-' || $nip == null || $nip == '' ? $nik : $nip;
         // Tentukan filename
         $filename = $finalId . '_' . str_replace(' ', '_', $jenis) . '.pdf';
 
@@ -2090,13 +1931,13 @@ class KodeController extends Controller
         // Simpan ke DB
         ModelPengumpulanBerkas::updateOrCreate(
             [
-                'kumpulan_user'  => $finalId,
+                'kumpulan_user' => $finalId,
                 'kumpulan_jenis' => $jenis,
             ],
             [
-                'kumpulan_file'   => $url,
+                'kumpulan_file' => $url,
                 'kumpulan_status' => 1,
-            ]
+            ],
         );
 
         return back()->with('success', 'File berhasil diupload.')->with('file_url', $url);
