@@ -35,6 +35,7 @@ Route::get('/pengumpulan/prefill-umpanbalik-tw4', [PreFillController::class, 'pr
 Route::get('/pakta-integritas-2025', [PreFillController::class, 'prefillPaktaIntegritas1Desember']);
 Route::get('/model-c-2025', [PreFillController::class, 'prefillModelC2025']);
 Route::get('/syntax-c-2025', [PreFillController::class, 'prefillSyntaxC2025']);
+Route::get('/skp-2025', [PreFillController::class, 'prefillSKP2025']);
 
 
 // -------------------- Admin / Kepegawaian --------------------
