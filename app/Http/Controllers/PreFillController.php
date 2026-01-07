@@ -40,17 +40,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillPaktaIntegritas1Desember()
     {
@@ -59,16 +61,11 @@ class PreFillController extends Controller
         $pegawai = ModelUser::where('user_status', 1)->get();
 
         foreach ($pegawai as $user) {
-
             // Tentukan identitas sesuai kondisi
-            $identitas = ($user->user_nip != '-' && $user->user_nip != null)
-                ? $user->user_nip
-                : $user->user_nik; // gunakan NIK jika NIP '-'
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
 
             // Cek apakah sudah ada record
-            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)
-                ->where('kumpulan_jenis', $kumpulanJenisBaru)
-                ->first();
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
 
             if ($cek) {
                 continue;
@@ -76,16 +73,15 @@ class PreFillController extends Controller
 
             // Buat prefill
             ModelPengumpulanBerkas::create([
-                'kumpulan_user'   => $identitas,
-                'kumpulan_jenis'  => $kumpulanJenisBaru,
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
                 'kumpulan_status' => 0,
-                'kumpulan_file'   => 'null',
+                'kumpulan_file' => 'null',
             ]);
         }
 
-        return back()->with('success', "Prefill Pakta Integritas 1 Desember 2025 berhasil ditambahkan.");
+        return back()->with('success', 'Prefill Pakta Integritas 1 Desember 2025 berhasil ditambahkan.');
     }
-
 
     public function prefillUmbal()
     {
@@ -98,17 +94,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillEvaluasiTWII()
     {
@@ -121,17 +119,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillUmbalTWII()
     {
@@ -144,17 +144,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillEvaluasiTWI()
     {
@@ -167,17 +169,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillUmbalTWI()
     {
@@ -190,17 +194,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillUmbalTWIV()
     {
@@ -213,17 +219,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillEvaluasiTWIV()
     {
@@ -236,17 +244,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillUmbalTahunan2025()
     {
@@ -259,17 +269,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillEvaluasiTahunan2025()
     {
@@ -282,17 +294,19 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillModelC2025()
     {
@@ -305,39 +319,46 @@ class PreFillController extends Controller
         foreach ($pegawai as $user) {
             ModelPengumpulanBerkas::updateOrCreate(
                 [
-                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_user' => $user->user_nip,
                     'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
                 ],
                 [
                     'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
+                    'kumpulan_file' => 'null',
+                ],
             );
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return redirect()
+            ->back()
+            ->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
     public function prefillSKP2025()
     {
-        // Jenis pengumpulan baru
         $kumpulanJenisBaru = 'SKP 2025';
 
-        // Ambil semua pegawai aktif
         $pegawai = ModelUser::where('user_status', 1)->get();
 
         foreach ($pegawai as $user) {
-            ModelPengumpulanBerkas::updateOrCreate(
-                [
-                    'kumpulan_user'  => $user->user_nip,
-                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
-                ],
-                [
-                    'kumpulan_status' => 0,
-                    'kumpulan_file'   => 'null',
-                ]
-            );
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+            ]);
         }
 
-        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+        return back()->with('success', 'Prefill SKP 2025 berhasil ditambahkan.');
     }
 }
