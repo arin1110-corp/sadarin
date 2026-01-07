@@ -317,4 +317,27 @@ class PreFillController extends Controller
 
         return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
     }
+    public function prefillSKP2025()
+    {
+        // Jenis pengumpulan baru
+        $kumpulanJenisBaru = 'SKP 2025';
+
+        // Ambil semua pegawai aktif
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user'  => $user->user_nip,
+                    'kumpulan_jenis' => $kumpulanJenisBaru, // pastikan unik per pegawai
+                ],
+                [
+                    'kumpulan_status' => 0,
+                    'kumpulan_file'   => 'null',
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', "Semua pegawai berhasil dimasukkan ke pengumpulan berkas '$kumpulanJenisBaru' dengan status 0.");
+    }
 }
