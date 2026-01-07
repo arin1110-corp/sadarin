@@ -353,7 +353,6 @@ class KodeController extends Controller
         $subbagNama = ModelSubbag::where('subbag_id', 3)->value('subbag_nama');
         $datasekretariat = ModelNavigasiSekretariat::with('subnavigasisekretariat')
             ->where('navigasisekre_subbag', 3)
-            ->where('navigasisekre_status', 1)
             ->get();
         return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
     }
@@ -860,7 +859,7 @@ class KodeController extends Controller
     public function adminSubNavigasi()
     {
         $navs = ModelNavigasiSekretariat::get();
-        $subnavigasisekretariat = ModelSubNavigasiSekretariat::with('navigasisekretariat')->where('subnavigasisekre_status', 1)->get();
+        $subnavigasisekretariat = ModelSubNavigasiSekretariat::with('navigasisekretariat')->get();
         return view('admin.subnavigasiindex', compact('subnavigasisekretariat', 'navs'));
     }
     public function subnavigasiSimpan()
