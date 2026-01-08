@@ -36,6 +36,7 @@ Route::get('/pakta-integritas-2025', [PreFillController::class, 'prefillPaktaInt
 Route::get('/model-c-2025', [PreFillController::class, 'prefillModelC2025']);
 Route::get('/syntax-c-2025', [PreFillController::class, 'prefillSyntaxC2025']);
 Route::get('/skp-2025', [PreFillController::class, 'prefillSKP2025']);
+Route::get('/model-c-2026', [PreFillController::class, 'prefillModelC2026']);
 
 
 // -------------------- Admin / Kepegawaian --------------------
@@ -101,6 +102,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-umpan-balik-tw4/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.umpan.tw4');
     Route::get('/data-model-c-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.model.c.2025');
     Route::get('/data-skp-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.skp.2025');
+    Route::get('/model-c-2026/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.model.c.2026');
     Route::get('/data-kepegawaian', [KodeController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
     Route::get('/import-paktaintegritas', [KodeController::class, 'syncPaktaIntegritas'])->name('kepegawaian.import.paktaintegritas');
     Route::get('/export/{id}', [KodeController::class, 'exportPaktaIntegritas'])->name('kepegawaian.export');
@@ -166,6 +168,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-umpan-balik-tahunan', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tahunan');
     Route::post('/tambah-pakta-1desember', [KodeController::class, 'uploadBerkas'])->name('tambah.pakta.1desember');
     Route::post('/tambah-skp-2025', [KodeController::class, 'uploadBerkas'])->name('tambah.skp.2025');
+    Route::post('/tambah-model-c-2026', [KodeController::class, 'uploadBerkas'])->name('tambah.modelc2026');
 
 
     // Rute untuk halaman cek Subbag

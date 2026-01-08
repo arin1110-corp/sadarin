@@ -1908,6 +1908,12 @@ class KodeController extends Controller
                 '2' => 'assets/skp2025/pppk',
                 '4' => 'assets/skp2025/nonasn',
             ],
+            'modelc2026' => [
+                '1' => 'assets/modelc2026/pns',
+                '2' => 'assets/modelc2026/pppk',
+                '3' => 'assets/modelc2026/paruhwaktu',
+                '4' => 'assets/modelc2026/nonasn',
+            ],
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {

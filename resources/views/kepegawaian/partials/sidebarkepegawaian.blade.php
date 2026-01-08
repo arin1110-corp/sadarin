@@ -74,11 +74,12 @@
 
         {{-- Dropdown MODEL C --}}
         <li class="nav-item mb-1">
-            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#umpanDropdown" role="button" aria-expanded="false" aria-controls="umpanDropdown">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#modelcDropdown" role="button" aria-expanded="false" aria-controls="umpanDropdown">
                 <i class="bi bi-file-earmark-text me-2"></i> Data Model C
             </a>
-            <div class="collapse ps-4" id="umpanDropdown">
+            <div class="collapse ps-4" id="modelcDropdown">
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.model.c.2025', ['id' => 'Model C 2025']) }}">2025</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.model.c.2026', ['id' => 'Model C 2026']) }}">2026</a>
             </div>
         </li>
         {{-- Data SKP 2025 --}}
