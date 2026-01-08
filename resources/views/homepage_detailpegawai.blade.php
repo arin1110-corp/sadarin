@@ -257,6 +257,10 @@
 
                         <div class="d-flex gap-2">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#tambahModelC2025Modal">
+                                <i class="bi bi-plus-lg"></i> Model C 2025
+                            </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#tambahModelC2026Modal">
                                 <i class="bi bi-plus-lg"></i> Model C 2026
                             </button>
@@ -697,7 +701,7 @@
         </div>
     </div>
 </div>
-<-- Modal Model C 2026-->
+<!-- Modal Model C 2026 -->
 <div class="modal fade" id="tambahModelC2026Modal" tabindex="-1" aria-labelledby="tambahModelC2026ModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -726,6 +730,36 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Model C 2025  -->
+<div class="modal fade" id="tambahModelC2025Modal" tabindex="-1" aria-labelledby="tambahModelC2025ModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="{{ route('tambah.modelc2025') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahModelC2025ModalLabel">Tambah Model C 2025</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Model C 2025</label>
+                        <input type="file" name="file" class="form-control" required>
+                    </div>
+                    <input type="hidden" name="kumpulan_jenis" value="Model C 2025">
+                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                    <input type="hidden" name="jenisfile" value="modelc2025">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
 
 <!-- /// Modal Edit Data Pegawai -->
 <div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPegawaiModalLabel" aria-hidden="true">
