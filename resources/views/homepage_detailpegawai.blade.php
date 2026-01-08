@@ -415,8 +415,6 @@
                         </div>
                     </div>
 
-
-
                     {{-- Rekaman Umpan Balik --}}
                     <div class="row mb-2">
                         <div class="col-sm-6 fw-bold">Data Rekaman Umpan Balik 2025</div>
@@ -461,7 +459,14 @@
                                 data-jenis="Model C 2025">2025</button>
                         </div>
                     </div>
-
+                    {{-- SKP --}}
+                    <div class="row mb-2">
+                        <div class="col-sm-6 fw-bold">Data SKP</div>
+                        <div class="col-sm-6">
+                            <button class="btn btn-{{ cekBerkas($berkas, 'SKP 2025') }} showFiles"
+                                data-jenis="SKP 2025">2025</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 

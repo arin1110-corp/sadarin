@@ -81,5 +81,14 @@
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.model.c.2025', ['id' => 'Model C 2025']) }}">2025</a>
             </div>
         </li>
+        {{-- Data SKP 2025 --}}
+        <li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded text-white" data-bs-toggle="collapse" href="#SKPdropdown" role="button" aria-expanded="false" aria-controls="SKPDropdown">
+                <i class="bi bi-file-earmark-text me-2"></i> Data SKP
+            </a>
+            <div class="collapse ps-4" id="SKPdropdown">
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.skp.2025', ['id' => 'SKP 2025']) }}">2025</a>
+            </div>
+        </li>
     </ul>
 </nav>
