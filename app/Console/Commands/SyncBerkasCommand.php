@@ -23,7 +23,7 @@ class SyncBerkasCommand extends Command
         // Mapping jenis argumen ke nama berkas
         $mapJenis = [
             'pakta'            => 'Pakta Integritas',
-            'pakta_1_desember' => 'Pakta Integritas 1 Desember',
+            'pakta_1_desember_2025' => 'Pakta Integritas 1 Desember 2025',
             'modelc'           => 'Model C 2025',
             'evkin_1'          => 'Evaluasi Kinerja Triwulan I',
             'evkin_2'          => 'Evaluasi Kinerja Triwulan II',
