@@ -29,6 +29,7 @@ class SyncBerkasCommand extends Command
             'umpan_3'  => 'Umpan Balik Triwulan III',
             'umpan_2'  => 'Umpan Balik Triwulan II',
             'umpan_1'  => 'Umpan Balik Triwulan I',
+            'pakta_1_desember' => 'Pakta Integritas 1 Desember',
         ];
 
         if (!isset($mapJenis[$jenis])) {
@@ -42,9 +43,8 @@ class SyncBerkasCommand extends Command
             // tentukan key env sesuai jenis dan jeniskerja
             // jeda biar gak kebanyakan request ke Google API
             usleep(500000); // jeda 0.5 detik
-            $envKey = $user->user_jeniskerja == 1
-                ? 'GOOGLE_DRIVE_FOLDER_PNS_' . strtoupper($jenis)
-                : 'GOOGLE_DRIVE_FOLDER_PPPK_' . strtoupper($jenis);
+            $envKey = $user->user_jeniskerja == 1 ? 'GOOGLE_DRIVE_FOLDER_PNS_'  . strtoupper($jenis) : ($user->user_jeniskerja == 2 ? 'GOOGLE_DRIVE_FOLDER_PPPK_' . strtoupper($jenis) : ($user->user_jeniskerja == 3 ? 'GOOGLE_DRIVE_FOLDER_PARUHWAKTU_'  . strtoupper($jenis) : ($user->user_jeniskerja == 4 ? 'GOOGLE_DRIVE_FOLDER_NONASN_' . strtoupper($jenis) : null)));
+
 
             $folderId = env($envKey);
 
