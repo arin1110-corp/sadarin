@@ -902,7 +902,7 @@
                 autoWidth: false,
                 ordering: true,
                 info: false,
-                stateSave: true,
+                stateSave: false,
                 searchDelay: 700,
                 language: {
                     processing: "Memuat data...",
