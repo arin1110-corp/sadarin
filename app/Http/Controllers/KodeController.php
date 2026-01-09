@@ -904,6 +904,11 @@ class KodeController extends Controller
             )
             ->get();
 
+        $listpegawaiPNS = ModelUser::where('user_jeniskerja', 1)->get();
+        $listpegawaiPPPK = ModelUser::where('user_jeniskerja', 2)->get();
+        $listpegawaiPPPKParuhWaktu = ModelUser::where('user_jeniskerja', 3)->get();
+        $listpegawaiNonASN = ModelUser::where('user_jeniskerja', 4)->get();
+
         $dataPegawaiTotal = ModelUser::get();
         $dataPegawaiaktif = ModelUser::where('user_status', 1)->count();
         $dataPegawainonaktif = ModelUser::where('user_status', 0)->count();
@@ -913,7 +918,7 @@ class KodeController extends Controller
         $datanonasn = ModelUser::where('user_status', 1)->where('user_jeniskerja', 4)->count();
         $totalPegawai = ModelUser::count();
 
-        return view('kepegawaian.datapegawai', compact('dataPegawai', 'totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'datapppkparuhwaktu', 'datanonasn', 'dataPegawaiaktif', 'dataPegawainonaktif'));
+        return view('kepegawaian.datapegawai', compact('dataPegawai', 'listpegawaiNonASN', 'listpegawaiPNS', 'listpegawaiPPPK', 'listpegawaiPPPKParuhWaktu', 'totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'datapppkparuhwaktu', 'datanonasn', 'dataPegawaiaktif', 'dataPegawainonaktif'));
     }
     public function updateStatusPegawai(Request $request)
     {
@@ -926,6 +931,19 @@ class KodeController extends Controller
             $user->user_ket = $ketStatus;
             $user->save();
             return redirect()->route('kepegawaian.data.pegawai')->with('success', 'Status pegawai berhasil diperbarui.');
+        } else {
+            return redirect()->route('kepegawaian.data.pegawai')->with('error', 'Pegawai tidak ditemukan.');
+        }
+    }
+    public function updateJenisKerja(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $newJenisKerja = $request->input('user_jeniskerja');
+        $user = ModelUser::find($userId);
+        if ($user) {
+            $user->user_jeniskerja = $newJenisKerja;
+            $user->save();
+            return redirect()->route('kepegawaian.data.pegawai')->with('success', 'Jenis kerja pegawai berhasil diperbarui.');
         } else {
             return redirect()->route('kepegawaian.data.pegawai')->with('error', 'Pegawai tidak ditemukan.');
         }

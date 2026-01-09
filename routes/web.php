@@ -134,6 +134,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::put('/verifikasi-user/{id}', [KodeController::class, 'verifikasiPemuktahiran'])->name('kepegawaian.verifikasi.user');
     Route::get('/data-kenaikanberkala', [KodeController::class, 'dataKGB'])->name('kepegawaian.data.berkala');
     Route::get('export-data-pegawai', [KodeController::class, 'exportDataPegawai'])->name('kepegawaian.export.data.pegawai');
+    Route::post('/ganti-jenis-kerja', [KodeController::class, 'updateJenisKerja'])->name('kepegawaian.gantijeniskerjapegawai');
     // ... Tambahkan route kepegawaian lain di sini ...
 });
 

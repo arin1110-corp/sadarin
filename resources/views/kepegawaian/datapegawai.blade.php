@@ -13,9 +13,9 @@
         }
 
         .dataTables_wrapper .dataTables_processing {
-            background: rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.8);
         }
-</style>
+    </style>
 
 </head>
 
@@ -128,7 +128,7 @@
                         <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-lines-fill text-secondary fs-2 mb-2"></i>
-                                <h6 class="fw-semibold">Non ASN</h6>
+                                <h6 class="fw-semibold">PJLP</h6>
                                 <p class="display-6 fw-bold text-secondary">
                                     {{ @$datanonasn }}
                                 </p>
@@ -162,16 +162,16 @@
                                 </div>
                                 <div class="modal-body">
                                     @php
-                                    $fields = [
-                                        'user_id' => 'ID',
-                                        'user_nip' => 'NIP',
-                                        'user_nama' => 'Nama',
-                                        'user_nik' => 'NIK',
-                                        'user_tgllahir' => 'Tanggal Lahir',
-                                        'user_jabatan' => 'Jabatan',
-                                        'jenis_kerja' => 'Jenis Kerja',
-                                    ];
-                                    @endphp 
+                                        $fields = [
+                                            'user_id' => 'ID',
+                                            'user_nip' => 'NIP',
+                                            'user_nama' => 'Nama',
+                                            'user_nik' => 'NIK',
+                                            'user_tgllahir' => 'Tanggal Lahir',
+                                            'user_jabatan' => 'Jabatan',
+                                            'jenis_kerja' => 'Jenis Kerja',
+                                        ];
+                                    @endphp
                                     @foreach ($fields as $key => $label)
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="fields[]"
@@ -227,7 +227,7 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="nonasn-tab" data-bs-toggle="tab"
                                     data-bs-target="#nonasn" type="button" role="tab">
-                                    Non ASN
+                                    PJLP
                                 </button>
                             </li>
                         </ul>
@@ -265,7 +265,7 @@
                                                     @elseif($user->user_jeniskerja == '3')
                                                         <span class="badge bg-danger">PPPK Paruh Waktu</span>
                                                     @elseif($user->user_jeniskerja == '4')
-                                                        <span class="badge bg-secondary">Non ASN</span>
+                                                        <span class="badge bg-secondary">PJLP</span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
@@ -283,6 +283,10 @@
                                                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                         data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
                                                         <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                        <i class="bi bi-people-fill"></i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -304,30 +308,36 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($dataPegawai as $no => $user)
-                                            @if ($user->user_jeniskerja == '1')
-                                                {{-- 1 = PNS --}}
-                                                <tr>
-                                                    <td class="text-center">
-                                                        {{ $no + 1 }}
-                                                    </td>
-                                                    <td>{{ $user->user_nip }}</td>
-                                                    <td>{{ $user->user_nama }}</td>
-                                                    <td class="text-center">
-                                                        @if ($user->user_status == '1')
-                                                            <span class="badge bg-success">Aktif</span>
-                                                        @else
-                                                            <span class="badge bg-secondary">Tidak Aktif</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                            data-bs-target="#modalDetailAll{{ $user->user_id }}">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                        @foreach ($listpegawaiPNS as $no => $user)
+                                            {{-- 1 = PNS --}}
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{ $no + 1 }}
+                                                </td>
+                                                <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nama }}</td>
+                                                <td class="text-center">
+                                                    @if ($user->user_status == '1')
+                                                        <span class="badge bg-success">Aktif</span>
+                                                    @else
+                                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                        <i class="bi bi-people-fill"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -346,38 +356,45 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($dataPegawai as $no => $user)
-                                            @if ($user->user_jeniskerja == '2')
-                                                {{-- 2 = PPPK --}}
-                                                <tr>
-                                                    <td class="text-center">
-                                                        {{ $no + 1 }}
-                                                    </td>
-                                                    <td>{{ $user->user_nip }}</td>
-                                                    <td>{{ $user->user_nama }}</td>
-                                                    <td class="text-center">
-                                                        @if ($user->user_status == '1')
-                                                            <span class="badge bg-success">Aktif</span>
-                                                        @else
-                                                            <span class="badge bg-secondary">Tidak Aktif</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                            data-bs-target="#modalDetailAll{{ $user->user_id }}">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                        @foreach ($listpegawaiPPPK as $no => $user)
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{ $no + 1 }}
+                                                </td>
+                                                <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nama }}</td>
+                                                <td class="text-center">
+                                                    @if ($user->user_status == '1')
+                                                        <span class="badge bg-success">Aktif</span>
+                                                    @else
+                                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                        <i class="bi bi-people-fill"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
 
                             {{-- Tab PPPK Paruh Waktu --}}
-                            <div class="tab-pane fade" id="pppkparuhwaktu" role="tabpanel" aria-labelledby="pppk-tab">
-                                <table id="tablePppkParuhWaktu" class="table table-striped table-bordered w-100 align-middle">
+                            <div class="tab-pane fade" id="pppkparuhwaktu" role="tabpanel"
+                                aria-labelledby="pppk-tab">
+                                <table id="tablePppkParuhWaktu"
+                                    class="table table-striped table-bordered w-100 align-middle">
                                     <thead class="table-dark">
                                         <tr class="text-center">
                                             <th>#</th>
@@ -388,36 +405,41 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($dataPegawai as $no => $user)
-                                            @if ($user->user_jeniskerja == '3')
-                                                {{-- 2 = PPPK --}}
-                                                <tr>
-                                                    <td class="text-center">
-                                                        {{ $no + 1 }}
-                                                    </td>
-                                                    <td>{{ $user->user_nip }}</td>
-                                                    <td>{{ $user->user_nama }}</td>
-                                                    <td class="text-center">
-                                                        @if ($user->user_status == '1')
-                                                            <span class="badge bg-success">Aktif</span>
-                                                        @else
-                                                            <span class="badge bg-secondary">Tidak Aktif</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                            data-bs-target="#modalDetailAll{{ $user->user_id }}">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                        @foreach ($listpegawaiPPPKParuhWaktu as $no => $user)
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{ $no + 1 }}
+                                                </td>
+                                                <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nama }}</td>
+                                                <td class="text-center">
+                                                    @if ($user->user_status == '1')
+                                                        <span class="badge bg-success">Aktif</span>
+                                                    @else
+                                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                        <i class="bi bi-people-fill"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
 
-                            {{-- Tab Non ASN --}}
+                            {{-- Tab PJLP --}}
                             <div class="tab-pane fade" id="nonasn" role="tabpanel" aria-labelledby="nonasn-tab">
                                 <table id="tableNonAsn" class="table table-striped table-bordered w-100 align-middle">
                                     <thead class="table-dark">
@@ -430,30 +452,35 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($dataPegawai as $no => $user)
-                                            @if ($user->user_jeniskerja == '4')
-                                                {{-- 4 = Non ASN --}}
-                                                <tr>
-                                                    <td class="text-center">
-                                                        {{ $no + 1 }}
-                                                    </td>
-                                                    <td>{{ $user->user_nip }}</td>
-                                                    <td>{{ $user->user_nama }}</td>
-                                                    <td class="text-center">
-                                                        @if ($user->user_status == '1')
-                                                            <span class="badge bg-success">Aktif</span>
-                                                        @else
-                                                            <span class="badge bg-secondary">Tidak Aktif</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                            data-bs-target="#modalDetailAll{{ $user->user_id }}">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                        @foreach ($listpegawaiNonASN as $no => $user)
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{ $no + 1 }}
+                                                </td>
+                                                <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nama }}</td>
+                                                <td class="text-center">
+                                                    @if ($user->user_status == '1')
+                                                        <span class="badge bg-success">Aktif</span>
+                                                    @else
+                                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                        <i class="bi bi-people-fill"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -544,7 +571,7 @@
                                                     <th>Pendidikan</th>
                                                     <td>
                                                         :
-                                                        {{ $user->pendidikan_jenjang .' - '. $user->pendidikan_jurusan ?? '-' }}
+                                                        {{ $user->pendidikan_jenjang . ' - ' . $user->pendidikan_jurusan ?? '-' }}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -690,7 +717,7 @@
                 @endforeach
                 {{-- End Modal Detail Pegawai --}}
                 {{-- End Tabs Data Pegawai --}}
-                
+
                 {{-- Modal Tambah Data Pegawai --}}
                 <div class="modal fade" id="modalTambahPegawai" tabindex="-1"
                     aria-labelledby="modalTambahPegawaiLabel" aria-hidden="true">
@@ -704,7 +731,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -755,6 +782,48 @@
                 @endforeach
                 {{-- End Modal Ganti Status Pegawai --}}
 
+                {{-- Modal Ganti Jenis Kerja Pegawai --}}
+                @foreach ($dataPegawai as $user)
+                    <div class="modal fade" id="modalGantiJenisKerja{{ $user->user_id }}" tabindex="-1"
+                        aria-labelledby="modalGantiJenisKerjaPegawaiLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-dark text-white">
+                                    <h5 class="modal-title" id="modalGantiJenisKerjaPegawaiLabel">
+                                        Ganti Jenis Kerja Pegawai
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('kepegawaian.gantijeniskerjapegawai') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="user_id" value="{{ $user->user_id }}">
+                                        <div class="mb-3">
+                                            <label for="user_jeniskerja" class="form-label">Jenis Kerja Pegawai</label>
+                                            <select name="user_jeniskerja" class="form-select">
+                                                <option value="{{ $user->user_jeniskerja }}" selected>
+                                                    {{ $user->user_jeniskerja == '1' ? 'PNS' : ($user->user_jeniskerja == '2' ? 'PPPK' : ($user->user_jeniskerja == '3' ? 'PPPK Paruh Waktu' : 'PJLP')) }}
+                                                </option>
+                                                <option value="1">PNS</option>
+                                                <option value="2">PPPK</option>
+                                                <option value="3">PPPK Paruh Waktu</option>
+                                                <option value="4">PJLP</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Tutup</button>
+                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+                {{-- End Modal Ganti Jenis Kerja Pegawai --}}
+
                 {{-- Footer --}}
                 @include('kepegawaian.partials.footerkepegawaian')
             </main>
@@ -775,7 +844,7 @@
             $("#tableAll").DataTable();
             $("#tablePns").DataTable();
             $("#tablePppk").DataTable();
-            $("#tableNonAsn").DataTable();
+            $("#tablepjlp").DataTable();
             $("#tablePppkParuhWaktu").DataTable();
             $("#tableAll").DataTable({
                 deferRender: true,
@@ -820,76 +889,81 @@
         });
     </script> -->
     <script>
-$(document).ready(function () {
+        $(document).ready(function() {
 
-    // ==================================
-    // KONFIGURASI GLOBAL DATATABLE
-    // ==================================
-    const DT_CONFIG = {
-        deferRender: true,
-        pageLength: 10,
-        lengthChange: false,
-        processing: true,
-        autoWidth: false,
-        ordering: true,
-        info: false,
-        stateSave: true,
-        searchDelay: 700,
-        language: {
-            processing: "Memuat data...",
-            search: "Cari:"
-        },
-        columnDefs: [
-            { orderable: false, searchable: false, targets: -1 }
-        ]
-    };
+            // ==================================
+            // KONFIGURASI GLOBAL DATATABLE
+            // ==================================
+            const DT_CONFIG = {
+                deferRender: true,
+                pageLength: 10,
+                lengthChange: false,
+                processing: true,
+                autoWidth: false,
+                ordering: true,
+                info: false,
+                stateSave: true,
+                searchDelay: 700,
+                language: {
+                    processing: "Memuat data...",
+                    search: "Cari:"
+                },
+                columnDefs: [{
+                    orderable: false,
+                    searchable: false,
+                    targets: -1
+                }]
+            };
 
-    // ==================================
-    // SIMPAN INSTANCE DATATABLE
-    // ==================================
-    const tables = new Map();
+            // ==================================
+            // SIMPAN INSTANCE DATATABLE
+            // ==================================
+            const tables = new Map();
 
-    function initTable($table) {
-        if (!$table.length) return;
+            function initTable($table) {
+                if (!$table.length) return;
 
-        if (!$.fn.DataTable.isDataTable($table)) {
-            const dt = $table.DataTable(DT_CONFIG);
-            tables.set($table[0], dt);
-        }
-    }
+                if (!$.fn.DataTable.isDataTable($table)) {
+                    const dt = $table.DataTable(DT_CONFIG);
+                    tables.set($table[0], dt);
+                }
+            }
 
-    // ==================================
-    // INIT TAB AKTIF SAAT LOAD
-    // ==================================
-    initTable($('.tab-pane.active table'));
+            // ==================================
+            // INIT TAB AKTIF SAAT LOAD
+            // ==================================
+            initTable($('.tab-pane.active table'));
 
-    // ==================================
-    // LAZY INIT TAB SAAT DIBUKA
-    // ==================================
-    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+            // ==================================
+            // LAZY INIT TAB SAAT DIBUKA
+            // ==================================
+            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
 
-        const targetPane = $($(e.target).data('bs-target'));
-        const table = targetPane.find('table');
+                const targetPane = $($(e.target).data('bs-target'));
+                const table = targetPane.find('table');
 
-        initTable(table);
+                initTable(table);
 
-        // cegah kolom patah
-        setTimeout(() => {
-            $.fn.dataTable
-                .tables({ visible: true, api: true })
-                .columns.adjust();
-        }, 100);
-    });
+                // cegah kolom patah
+                setTimeout(() => {
+                    $.fn.dataTable
+                        .tables({
+                            visible: true,
+                            api: true
+                        })
+                        .columns.adjust();
+                }, 100);
+            });
 
-    // ==================================
-    // TOOLTIP (DITUNDA AGAR TIDAK BLOCK)
-    // ==================================
-    setTimeout(() => {
-        $('[data-bs-toggle="tooltip"]').tooltip();
-    }, 1200);
+            // ==================================
+            // TOOLTIP (DITUNDA AGAR TIDAK BLOCK)
+            // ==================================
+            setTimeout(() => {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }, 1200);
 
-});
-</script>
+        });
+    </script>
 
 
 </body>

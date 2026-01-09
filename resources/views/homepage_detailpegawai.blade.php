@@ -320,7 +320,7 @@
                                     1 => 'Pegawai Negeri Sipil',
                                     2 => 'Pegawai Pemerintah dengan Perjanjian Kerja',
                                     3 => 'Pegawai Pemerintah dengan Perjanjian Kerja Paruh Waktu',
-                                    4 => 'NON ASN',
+                                    4 => 'PJLP',
                                 ];
                             @endphp
                             {{ $jenis[$user->user_jeniskerja] ?? 'Tidak Diketahui' }}
@@ -824,7 +824,7 @@
                                 <li>
                                     <span class="badge"
                                         style="background:rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;</span>
-                                    Non ASN (Putih)
+                                    PJLP (Putih)
                                 </li>
                             </ul>
                         </div>
@@ -1311,7 +1311,7 @@
                                 1 => 'PNS',
                                 2 => 'PPPK',
                                 3 => 'PPPK Paruh Waktu',
-                                4 => 'NON ASN',
+                                4 => 'PJLP',
                             ];
                         @endphp
                         <input type="text" class="form-control"
