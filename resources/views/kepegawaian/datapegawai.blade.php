@@ -633,7 +633,7 @@
                                                     <th>Jenis Kerja</th>
                                                     <td>
                                                         :
-                                                        {{ $user->user_jeniskerja == '1' ? 'PNS' : ($user->user_jeniskerja == '2' ? 'PPPK' : '-') }}
+                                                        {{ $user->user_jeniskerja == '1' ? 'PNS' : ($user->user_jeniskerja == '2' ? 'PPPK' : ($user->user_jeniskerja == '3' ? 'PPPK Paruh Waktu' : 'PJLP')) }}
                                                     </td>
                                                 </tr>
                                                 <!-- Informasi Kontak -->
