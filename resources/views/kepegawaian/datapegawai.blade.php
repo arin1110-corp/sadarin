@@ -800,7 +800,8 @@
                                         @csrf
                                         <input type="hidden" name="user_id" value="{{ $user->user_id }}">
                                         <div class="mb-3">
-                                            <label for="user_jeniskerja" class="form-label">Jenis Kerja Pegawai</label>
+                                            <label for="user_jeniskerja" class="form-label">Jenis Kerja
+                                                Pegawai</label>
                                             <select name="user_jeniskerja" class="form-select">
                                                 <option value="{{ $user->user_jeniskerja }}" selected>
                                                     {{ $user->user_jeniskerja == '1' ? 'PNS' : ($user->user_jeniskerja == '2' ? 'PPPK' : ($user->user_jeniskerja == '3' ? 'PPPK Paruh Waktu' : 'PJLP')) }}
@@ -898,14 +899,13 @@
                 deferRender: true,
                 pageLength: 10,
                 lengthChange: false,
-                processing: true,
+                processing: false,
                 autoWidth: false,
                 ordering: true,
                 info: false,
-                stateSave: false,
-                searchDelay: 700,
+                stateSave: true,
+                searchDelay: 400,
                 language: {
-                    processing: "Memuat data...",
                     search: "Cari:"
                 },
                 columnDefs: [{
@@ -944,23 +944,21 @@
 
                 initTable(table);
 
-                // cegah kolom patah
+                // adjust hanya table aktif
                 setTimeout(() => {
-                    $.fn.dataTable
-                        .tables({
-                            visible: true,
-                            api: true
-                        })
-                        .columns.adjust();
-                }, 100);
+                    if ($.fn.DataTable.isDataTable(table)) {
+                        table.DataTable().columns.adjust();
+                    }
+                }, 80);
             });
+
 
             // ==================================
             // TOOLTIP (DITUNDA AGAR TIDAK BLOCK)
             // ==================================
             setTimeout(() => {
                 $('[data-bs-toggle="tooltip"]').tooltip();
-            }, 1200);
+            }, 800);
 
         });
     </script>
