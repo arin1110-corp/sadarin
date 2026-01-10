@@ -162,12 +162,17 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/pegawai-update', [KodeController::class, 'pegawaiUpdate'])->name('pegawai.update');
     Route::post('/pemuktahiran-update', [KodeController::class, 'updateDataPegawai'])->name('pemuktahiran.update');
     Route::post('/pemuktahiran-update-pasfoto', [KodeController::class, 'updatePasFoto'])->name('pemuktahiran.update.pasfoto');
+    Route::post('/tambah-evaluasi-tw1', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw1');
+    Route::post('/tambah-evaluasi-tw2', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw2');
     Route::post('/tambah-evaluasi-tw3', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw3');
     Route::post('/tambah-evaluasi-tw4', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw4');
     Route::post('/tambah-evaluasi-tahunan', [KodeController::class, 'uploadBerkas'])->name('tambah.evaluasi.tahunan');
+    Route::post('/tambah-umpan-balik-tw1', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tw1');
+    Route::post('/tambah-umpan-balik-tw2', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tw2');
     Route::post('/tambah-umpan-balik-tw3', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tw3');
     Route::post('/tambah-umpan-balik-tw4', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tw4');
     Route::post('/tambah-umpan-balik-tahunan', [KodeController::class, 'uploadBerkas'])->name('tambah.umpanbalik.tahunan');
+    Route::post('/tambah-pakta-2025', [KodeController::class, 'uploadBerkas'])->name('tambah.pakta.2025');
     Route::post('/tambah-pakta-1desember', [KodeController::class, 'uploadBerkas'])->name('tambah.pakta.1desember');
     Route::post('/tambah-skp-2025', [KodeController::class, 'uploadBerkas'])->name('tambah.skp.2025');
     Route::post('/tambah-model-c-2026', [KodeController::class, 'uploadBerkas'])->name('tambah.modelc2026');

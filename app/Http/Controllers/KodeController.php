@@ -1898,32 +1898,58 @@ class KodeController extends Controller
 
         // Mapping folder di public/assets/
         $folderMap = [
-            'evkin' => [
+            'evaluasikinerjatriwulan2' => [
+                '1' => 'assets/evkintw2/pns',
+                '2' => 'assets/evkintw2/pppk',
+                '3' => 'assets/evkintw2/paruhwaktu',
+                '4' => 'assets/evkintw2/nonasn',
+            ],
+            'umpanbaliktriwulan2' => [
+                '1' => 'assets/umpanbaliktw2/pns',
+                '2' => 'assets/umpanbaliktw2/pppk',
+                '3' => 'assets/umpanbaliktw2/paruhwaktu',
+                '4' => 'assets/umpanbaliktw2/nonasn',
+            ],
+            'evaluasikinerjatriwulan3' => [
+                '1' => 'assets/evkintw3/pns',
+                '2' => 'assets/evkintw3/pppk',
+                '3' => 'assets/evkintw3/paruhwaktu',
+                '4' => 'assets/evkintw3/nonasn',
+            ],
+            'umpanbaliktriwulan3' => [
+                '1' => 'assets/umpanbaliktw3/pns',
+                '2' => 'assets/umpanbaliktw3/pppk',
+                '3' => 'assets/umpanbaliktw3/paruhwaktu',
+                '4' => 'assets/umpanbaliktw3/nonasn',
+            ],
+            'evaluasikinerjatriwulan4' => [
                 '1' => 'assets/evkin/pns',
                 '2' => 'assets/evkin/pppk',
+                '3' => 'assets/evkin/paruhwaktu',
+                '4' => 'assets/evkin/nonasn',
             ],
-            'umpanbalik' => [
+            'umpanbaliktriwulan4' => [
                 '1' => 'assets/umpanbalik/pns',
                 '2' => 'assets/umpanbalik/pppk',
+                '3' => 'assets/umpanbalik/paruhwaktu',
+                '4' => 'assets/umpanbalik/nonasn',
+            ],
+            'evaluasikinerjatahunan2025' => [
+                '1' => 'assets/evkin2025/pns',
+                '2' => 'assets/evkin2025/pppk',
+                '3' => 'assets/evkin2025/paruhwaktu',
+                '4' => 'assets/evkin2025/nonasn',
             ],
             'pakta1desember' => [
                 '1' => 'assets/pakta1desember/pns',
                 '2' => 'assets/pakta1desember/pppk',
+                '3' => 'assets/pakta1desember/paruhwaktu',
                 '4' => 'assets/pakta1desember/nonasn',
-            ],
-            'evkin2025' => [
-                '1' => 'assets/evkin2025/pns',
-                '2' => 'assets/evkin2025/pppk',
-                '4' => 'assets/evkin2025/nonasn',
-            ],
-            'umbal2025' => [
-                '1' => 'assets/umbal2025/pns',
-                '2' => 'assets/umbal2025/pppk',
-                '4' => 'assets/umbal2025/nonasn',
             ],
             'skp2025' => [
                 '1' => 'assets/skp2025/pns',
                 '2' => 'assets/skp2025/pppk',
+                '3' => 'assets/skp2025/paruhwaktu',
                 '4' => 'assets/skp2025/nonasn',
             ],
             'modelc2026' => [
@@ -1938,6 +1964,13 @@ class KodeController extends Controller
                 '3' => 'assets/modelc2025/paruhwaktu',
                 '4' => 'assets/modelc2025/nonasn',
             ],
+            'paktaintegritas' => [
+                '1' => 'assets/pakta2025/pns',
+                '2' => 'assets/pakta2025/pppk',
+                '3' => 'assets/pakta2025/paruhwaktu',
+                '4' => 'assets/pakta2025/nonasn',
+            ],
+
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {
@@ -1970,6 +2003,6 @@ class KodeController extends Controller
             ],
         );
 
-        return back()->with('success', 'File berhasil diupload.')->with('file_url', $url);
+        return back()->with('success', 'File ' . $jenis . ' berhasil diupload.')->with('file_url', $url);
     }
 }

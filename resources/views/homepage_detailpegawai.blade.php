@@ -208,30 +208,62 @@
                             </button>
                         </div>
                     </div>
-                    <div class='d-flex align-items-center justify-content-end mb-2'>
-                        <!-- <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#tambahEvaluasiModal">
-                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan III
-                                </button>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#tambahUmpanBalikModal">
-                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan III
-                                </button>
-                            </div> -->
-                        <!-- <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#tambahPaktaIntegritas1DesemberModal">
-                                    <i class="bi bi-plus-lg"></i> Pakta Integritas 1 Desember 2025
-                                </button>
-                            </div> -->
+                    <div class="d-flex align-items-center justify-content-end mb-2">
                         <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#tambahEvaluasiModalTW4">
+                            <button class="btn btn-primary open-upload-modal"
+                                data-title="Evaluasi Kinerja Triwulan II"
+                                data-route="{{ route('tambah.evaluasi.tw2') }}"
+                                data-jenis="Evaluasi Kinerja Triwulan II" data-jenisfile="evaluasikinerjatriwulan2">
+                                <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan II
+                            </button>
+                            <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan II"
+                                data-route="{{ route('tambah.umpanbalik.tw2') }}" data-jenis="Umpan Balik Triwulan II"
+                                data-jenisfile="umpanbaliktriwulan2">
+                                <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan II
+                            </button>
+                        </div>
+                    </div>
+                    <div class='d-flex align-items-center justify-content-end mb-2'>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary open-upload-modal" data-title="Evaluasi Kinerja Triwulan III"
+                                data-route="{{ route('tambah.evaluasi.tw3') }}"
+                                data-jenis="Evaluasi Kinerja Triwulan III" data-jenisfile="evaluasikinerjatriwulan3">
+                                <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan III
+                            </button>
+                            <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan III"
+                                data-route="{{ route('tambah.umpanbalik.tw3') }}" data-jenis="Umpan Balik Triwulan III"
+                                data-jenisfile="umpanbaliktriwulan3">
+                                <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan III
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary open-upload-modal" data-title="Pakta Integritas 2025"
+                                data-route="{{ route('tambah.pakta.2025') }}" data-jenis="Pakta Integritas"
+                                data-jenisfile="paktaintegritas">
+                                <i class="bi bi-plus-lg"></i> Pakta Integritas 2025
+                            </button>
+                            <button class="btn btn-primary open-upload-modal"
+                                data-title="Pakta Integritas 1 Desember 2025"
+                                data-route="{{ route('tambah.pakta.1desember') }}"
+                                data-jenis="Pakta Integritas 1 Desember 2025" data-jenisfile="pakta1desember">
+                                <i class="bi bi-plus-lg"></i> Pakta Integritas Desember 2025
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary open-upload-modal"
+                                data-title="Evaluasi Kinerja Triwulan IV"
+                                data-route="{{ route('tambah.evaluasi.tw4') }}"
+                                data-jenis="Evaluasi Kinerja Triwulan IV" data-jenisfile="evaluasikinerjatriwulan4">
                                 <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan IV
                             </button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#tambahUmpanBalikModalTW4">
+                            <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan IV"
+                                data-route="{{ route('tambah.umpanbalik.tw4') }}" data-jenis="Umpan Balik Triwulan IV"
+                                data-jenisfile="umpanbaliktriwulan4">
                                 <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan IV
                             </button>
                         </div>
@@ -239,29 +271,31 @@
                     <div class="d-flex align-items-center justify-content-center mb-2">
 
                         <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#tambahEvaluasiModalTahunan">
+                            <button class="btn btn-primary open-upload-modal"
+                                data-title="Evaluasi Kinerja Tahunan 2025"
+                                data-route="{{ route('tambah.evaluasi.tahunan') }}"
+                                data-jenis="Evaluasi Kinerja Tahunan 2025"
+                                data-jenisfile="evaluasikinerjatahunan2025">
                                 <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Tahunan 2025
                             </button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#tambahSkp2025Modal">
+                            <button class="btn btn-primary open-upload-modal" data-title="SKP 2025"
+                                data-route="{{ route('tambah.skp.2025') }}" data-jenis="SKP 2025"
+                                data-jenisfile="skp2025">
                                 <i class="bi bi-plus-lg"></i> SKP 2025
                             </button>
-                            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#tambahUmpanBalikModalTahunan">
-                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Tahunan
-                                </button> -->
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center mb-2">
 
                         <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#tambahModelC2025Modal">
+                            <button class="btn btn-primary open-upload-modal" data-title="Model C 2025"
+                                data-route="{{ route('tambah.modelc2025') }}" data-jenis="Model C 2025"
+                                data-jenisfile="modelc2025">
                                 <i class="bi bi-plus-lg"></i> Model C 2025
                             </button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#tambahModelC2026Modal">
+                            <button class="btn btn-primary open-upload-modal" data-title="Model C 2026"
+                                data-route="{{ route('tambah.modelc2026') }}" data-jenis="Model C 2026"
+                                data-jenisfile="modelc2026">
                                 <i class="bi bi-plus-lg"></i> Model C 2026
                             </button>
                         </div>
@@ -470,7 +504,7 @@
                         <div class="col-sm-6">
                             <button class="btn btn-{{ cekBerkas($berkas, 'Model C 2025') }} showFiles"
                                 data-jenis="Model C 2025">2025</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Model C 2026') }} showFiles"
+                            <button class="btn btn-{{ cekBerkas($berkas, 'Model C 2026') }} showFiles"
                                 data-jenis="Model C 2026">2026</button>
                         </div>
                     </div>
@@ -490,355 +524,37 @@
 
 </div>
 </div>
-
-<!-- Modal Tambah Evaluasi dan Umpan Balik -->
-<div class="modal fade" id="tambahEvaluasiModal" tabindex="-1" aria-labelledby="tambahEvaluasiModalLabel"
-    aria-hidden="true">
+<!-- MODAL UNIVERSAL UPLOAD BERKAS -->
+<div class="modal fade" id="modalUploadBerkas" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="{{ route('tambah.evaluasi.tw3') }}" method="POST" enctype="multipart/form-data">
+            <form id="formUploadBerkas" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                <input type="hidden" name="kumpulan_jenis" id="kumpulan_jenis">
+                <input type="hidden" name="jenisfile" id="jenisfile">
+                <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tambahEvaluasiModalLabel">Tambah Evaluasi Kinerja Triwulan III
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="modalTitle">Upload Berkas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
+
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Evaluasi Kinerja Triwulan III</label>
+                        <label id="labelFile" class="form-label">File</label>
                         <input type="file" name="file" class="form-control" required>
                     </div>
-                    <input type="hidden" name="kumpulan_jenis" value="Evaluasi Kinerja Triwulan III">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="evkin">
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<!-- /// Modal Tambah Umpan Balik -->
-<div class="modal fade" id="tambahUmpanBalikModal" tabindex="-1" aria-labelledby="tambahUmpanBalikModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('tambah.umpanbalik.tw3') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Umpan Balik Triwulan III</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Umpan Balik Triwulan III</label>
-                        <input type="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" name="kumpulan_jenis" value="Umpan Balik Triwulan III">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="umpanbalik">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Tambah Umpan Balik TW IV -->
-<div class="modal fade" id="tambahUmpanBalikModalTW4" tabindex="-1" aria-labelledby="tambahUmpanBalikModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('tambah.umpanbalik.tw4') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Umpan Balik Triwulan IV</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Umpan Balik Triwulan IV</label>
-                        <input type="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" name="kumpulan_jenis" value="Umpan Balik Triwulan IV">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="umpanbalik">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Modal Tambah Evaluasi TW IV -->
-<div class="modal fade" id="tambahEvaluasiModalTW4" tabindex="-1" aria-labelledby="tambahEvaluasiModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('tambah.evaluasi.tw4') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahEvaluasiModalLabel">Tambah Evaluasi Kinerja Triwulan IV
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Evaluasi Kinerja Triwulan IV</label>
-                        <input type="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" name="kumpulan_jenis" value="Evaluasi Kinerja Triwulan IV">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="evkin">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Tambah Evaluasi Tahunan -->
-<div class="modal fade" id="tambahEvaluasiModalTahunan" tabindex="-1" aria-labelledby="tambahEvaluasiModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('tambah.evaluasi.tahunan') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahEvaluasiModalLabel">Tambah Evaluasi Kinerja Tahunan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Evaluasi Kinerja Tahunan</label>
-                        <input type="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" name="kumpulan_jenis" value="Evaluasi Kinerja Tahunan 2025">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="evkin2025">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- /// Modal Pakta Integritas 1 Desember 2025 -->
-<div class="modal fade" id="tambahPaktaIntegritas1DesemberModal" tabindex="-1"
-    aria-labelledby="tambahPaktaIntegritasModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('tambah.pakta.1desember') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
-                <input type="hidden" name="user_nik" value="{{ $user->user_nik }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahUmpanBalikModalLabel">Tambah Pakta Integritas 1 Desember
-                        2025</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Pakta Integritas 1 Desember 2025</label>
-                        <input type="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" name="kumpulan_jenis" value="Pakta Integritas 1 Desember 2025">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="pakta1desember">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Modal SKP 2025-->
-<div class="modal fade" id="tambahSkp2025Modal" tabindex="-1" aria-labelledby="tambahSkpModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('tambah.skp.2025') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahSkpModalLabel">Tambah SKP 2025</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">SKP 2025</label>
-                        <input type="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" name="kumpulan_jenis" value="SKP 2025">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="skp2025">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Modal Model C 2026 -->
-<div class="modal fade" id="tambahModelC2026Modal" tabindex="-1" aria-labelledby="tambahModelC2026ModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('tambah.modelc2026') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahModelC2026ModalLabel">Tambah Model C 2026</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Model C 2026</label>
-                        <input type="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" name="kumpulan_jenis" value="Model C 2026">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="modelc2026">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Model C 2025  -->
-<div class="modal fade" id="tambahModelC2025Modal" tabindex="-1" aria-labelledby="tambahModelC2025ModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('tambah.modelc2025') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahModelC2025ModalLabel">Tambah Model C 2025</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Model C 2025</label>
-                        <input type="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" name="kumpulan_jenis" value="Model C 2025">
-                    <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
-                    <input type="hidden" name="jenisfile" value="modelc2025">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> 
-
-<!-- /// Modal Edit Data Pegawai -->
-<div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPegawaiModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('pemuktahiran.update.pasfoto') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="user_id" value="{{ $user->user_id }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editPegawaiModalLabel">Edit Pas Foto Pegawai</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Foto -->
-                    <div class="mb-3">
-
-                        <label class="form-label">Foto Pegawai</label>
-                        <input type="file" name="user_foto" class="form-control">
-
-                        @if ($user->user_foto != '-' && $user->user_foto != null)
-                            <img src="{{ asset($user->user_foto) }}" alt="Foto Pegawai" class="mt-2"
-                                style="width:100px;height:150px;object-fit:cover;border:1px solid #ccc;">
-                        @endif
-
-                        {{-- Error khusus user_foto --}}
-                        @error('user_foto')
-                            <div class="text-danger mt-2">{{ $message }}</div>
-                        @enderror
-                        <div class="mt-3">
-                            <small class="text-danger fw-bold">* Ketentuan warna latar belakang foto (wajib
-                                baju
-                                keki) ukuran 4x6 :</small>
-                            <ul class="list-unstyled mt-2">
-                                <li>
-                                    <span class="badge" style="background:red;">&nbsp;&nbsp;&nbsp;</span>
-                                    Pejabat Eselon II (Merah)
-                                </li>
-                                <li>
-                                    <span class="badge" style="background:blue;">&nbsp;&nbsp;&nbsp;</span>
-                                    Pejabat Eselon III (Biru)
-                                </li>
-                                <li>
-                                    <span class="badge" style="background:green;">&nbsp;&nbsp;&nbsp;</span>
-                                    Pejabat Eselon IV (Hijau)
-                                </li>
-                                <li>
-                                    <span class="badge" style="background:orange;">&nbsp;&nbsp;&nbsp;</span>
-                                    Pegawai Non Eselon (Oranye)
-                                </li>
-                                <li>
-                                    <span class="badge" style="background:gray;">&nbsp;&nbsp;&nbsp;</span>
-                                    Pegawai/Pejabat Fungsional (Abu-abu)
-                                </li>
-                                <li>
-                                    <span class="badge" style="background:gray;">&nbsp;&nbsp;&nbsp;</span>
-                                    PPPK Fungsional (Abu-abu)
-                                </li>
-                                <li>
-                                    <span class="badge" style="background:orange;">&nbsp;&nbsp;&nbsp;</span>
-                                    PPPK Lainnya (Oranye)
-                                </li>
-                                <li>
-                                    <span class="badge"
-                                        style="background:rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;</span>
-                                    PJLP (Putih)
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 
 <!-- /// Modal Edit Data Pegawai -->
 <div class="modal fade" id="editPegawaiModal" tabindex="-1" aria-labelledby="editPegawaiModalLabel"
@@ -1170,6 +886,23 @@
         });
     });
 </script>
+<script>
+    $(document).on('click', '.open-upload-modal', function() {
+        const title = $(this).data('title');
+        const route = $(this).data('route');
+        const jenis = $(this).data('jenis');
+        const jenisfile = $(this).data('jenisfile');
+
+        $('#modalTitle').text(title);
+        $('#labelFile').text(title);
+        $('#kumpulan_jenis').val(jenis);
+        $('#jenisfile').val(jenisfile);
+        $('#formUploadBerkas').attr('action', route);
+
+        new bootstrap.Modal(document.getElementById('modalUploadBerkas')).show();
+    });
+</script>
+
 
 </body>
 
