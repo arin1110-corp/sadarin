@@ -803,14 +803,14 @@
 </div>
 
 <!-- /// Modal Edit Pas Foto Pegawai -->
-<div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPasFotoModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPasFotoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="{{ route('pemuktahiran.update.pasfoto') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ $user->user_id }}">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editPasFotoModalLabel">Edit Pas Foto Pegawai</h5>
+                    <h5 class="modal-title" id="editPasFotoLabel">Edit Pas Foto Pegawai</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
