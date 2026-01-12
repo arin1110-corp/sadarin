@@ -802,6 +802,85 @@
     </div>
 </div>
 
+<!-- /// Modal Edit Pas Foto Pegawai -->
+<div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPegawaiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="{{ route('pemuktahiran.update.pasfoto') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="user_id" value="{{ $user->user_id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPegawaiModalLabel">Edit Pas Foto Pegawai</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Foto -->
+                    <div class="mb-3">
+
+                        <label class="form-label">Foto Pegawai</label>
+                        <input type="file" name="user_foto" class="form-control">
+
+                        @if ($user->user_foto != '-' && $user->user_foto != null)
+                            <img src="{{ asset($user->user_foto) }}" alt="Foto Pegawai" class="mt-2"
+                                style="width:100px;height:150px;object-fit:cover;border:1px solid #ccc;">
+                        @endif
+
+                        {{-- Error khusus user_foto --}}
+                        @error('user_foto')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
+                        <div class="mt-3">
+                            <small class="text-danger fw-bold">* Ketentuan warna latar belakang foto (wajib
+                                baju
+                                keki) ukuran 4x6 :</small>
+                            <ul class="list-unstyled mt-2">
+                                <li>
+                                    <span class="badge" style="background:red;">&nbsp;&nbsp;&nbsp;</span>
+                                    Pejabat Eselon II (Merah)
+                                </li>
+                                <li>
+                                    <span class="badge" style="background:blue;">&nbsp;&nbsp;&nbsp;</span>
+                                    Pejabat Eselon III (Biru)
+                                </li>
+                                <li>
+                                    <span class="badge" style="background:green;">&nbsp;&nbsp;&nbsp;</span>
+                                    Pejabat Eselon IV (Hijau)
+                                </li>
+                                <li>
+                                    <span class="badge" style="background:orange;">&nbsp;&nbsp;&nbsp;</span>
+                                    Pegawai Non Eselon (Oranye)
+                                </li>
+                                <li>
+                                    <span class="badge" style="background:gray;">&nbsp;&nbsp;&nbsp;</span>
+                                    Pegawai/Pejabat Fungsional (Abu-abu)
+                                </li>
+                                <li>
+                                    <span class="badge" style="background:gray;">&nbsp;&nbsp;&nbsp;</span>
+                                    PPPK Fungsional (Abu-abu)
+                                </li>
+                                <li>
+                                    <span class="badge" style="background:orange;">&nbsp;&nbsp;&nbsp;</span>
+                                    PPPK Lainnya (Oranye)
+                                </li>
+                                <li>
+                                    <span class="badge"
+                                        style="background:rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;</span>
+                                    PJLP (Putih)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 
 <footer class="text-center py-4 px-3 bg-light small text-muted">
