@@ -153,7 +153,7 @@
     </style>
 </head>
 
-<body>
+<d>
     <!-- Fullscreen Tengah -->
     <div class="flex-grow-1 d-flex justify-content-center align-items-center">
         <div class="container text-center">
@@ -806,6 +806,7 @@
                 </form>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- /// Modal Edit Pas Foto Pegawai -->
