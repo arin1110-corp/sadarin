@@ -803,7 +803,7 @@
 </div>
 
 <!-- /// Modal Edit Pas Foto Pegawai -->
-<div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPegawaiModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPasFoto" tabindex="-1" aria-labelledby="editPPasFotoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="{{ route('pemuktahiran.update.pasfoto') }}" method="POST" enctype="multipart/form-data">
@@ -879,9 +879,7 @@
         </div>
     </div>
 </div>
-
-
-
+<!-- Footer -->
 
 <footer class="text-center py-4 px-3 bg-light small text-muted">
     &copy; {{ date('Y') }} Dinas Kebudayaan Provinsi Bali — <strong>SADARIN</strong>. All rights reserved.
