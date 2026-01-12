@@ -152,6 +152,7 @@
         }
     </style>
 </head>
+<body>
 <!-- Fullscreen Tengah -->
 <div class="flex-grow-1 d-flex justify-content-center align-items-center">
     <div class="container text-center">
