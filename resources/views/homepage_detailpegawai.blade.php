@@ -157,7 +157,6 @@
     <!-- Fullscreen Tengah -->
     <div class="flex-grow-1 d-flex justify-content-center align-items-center">
         <div class="container text-center">
-
             <h4 class="mb-3"><img src="{{ asset('assets/image/pemprov.png') }}"></h4>
             <h1 class="display-1 fw-bold text-secondary title">
                 SADAR<span class="in">IN</span>
@@ -529,7 +528,6 @@
 
             </div>
         </div>
-
     </div>
     <!-- MODAL UNIVERSAL UPLOAD BERKAS -->
     <div class="modal fade" id="modalUploadBerkas" tabindex="-1">
