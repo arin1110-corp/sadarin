@@ -1898,6 +1898,18 @@ class KodeController extends Controller
 
         // Mapping folder di public/assets/
         $folderMap = [
+            'evaluasikinerjatriwulan1' => [
+                '1' => 'assets/evkintw1/pns',
+                '2' => 'assets/evkintw1/pppk',
+                '3' => 'assets/evkintw1/paruhwaktu',
+                '4' => 'assets/evkintw1/nonasn',
+            ],
+            'umpanbaliktriwulan1' => [
+                '1' => 'assets/umpanbaliktw1/pns',
+                '2' => 'assets/umpanbaliktw1/pppk',
+                '3' => 'assets/umpanbaliktw1/paruhwaktu',
+                '4' => 'assets/umpanbaliktw1/nonasn',
+            ],
             'evaluasikinerjatriwulan2' => [
                 '1' => 'assets/evkintw2/pns',
                 '2' => 'assets/evkintw2/pppk',

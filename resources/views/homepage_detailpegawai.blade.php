@@ -212,6 +212,21 @@
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
                                 <button class="btn btn-primary open-upload-modal"
+                                    data-title="Evaluasi Kinerja Triwulan I"
+                                    data-route="{{ route('tambah.evaluasi.tw1') }}"
+                                    data-jenis="Evaluasi Kinerja Triwulan I" data-jenisfile="evaluasikinerjatriwulan1">
+                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan I
+                                </button>
+                                <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan I"
+                                    data-route="{{ route('tambah.umpanbalik.tw1') }}"
+                                    data-jenis="Umpan Balik Triwulan I" data-jenisfile="umpanbaliktriwulan1">
+                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan I
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end mb-2">
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan II"
                                     data-route="{{ route('tambah.evaluasi.tw2') }}"
                                     data-jenis="Evaluasi Kinerja Triwulan II" data-jenisfile="evaluasikinerjatriwulan2">
