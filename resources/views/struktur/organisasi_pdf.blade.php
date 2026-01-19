@@ -67,7 +67,7 @@
             <tr>
                 <td>
                     <div class="box" style="width:320px;">
-                        <strong>KEPALA DINAS</strong><br>
+                        <strong>PLT. KEPALA DINAS</strong><br>
                         <small>Dinas Kebudayaan Provinsi Bali</small><br><br>
 
                         @php
