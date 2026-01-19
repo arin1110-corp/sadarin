@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use App\Models\ModelAdmin;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Exports\PegawaiPerBidangExport;
 
 // ✅ Google API Client
 use Google_Client;
@@ -2016,5 +2017,12 @@ class KodeController extends Controller
         );
 
         return back()->with('success', 'File ' . $jenis . ' berhasil diupload.')->with('file_url', $url);
+    }
+    public function exportDataPegawai()
+    {
+        return Excel::download(
+            new PegawaiPerBidangExport,
+            'DATA_PEGAWAI_PER_BIDANG.xlsx'
+        );
     }
 }

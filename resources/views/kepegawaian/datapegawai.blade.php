@@ -137,10 +137,14 @@
                     </div>
                 </div>
                 <!-- Tombol trigger -->
-                <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
-                    Export Excel
-                </button>
-                <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#modalTambahPegawai">
+                <form method="POST" action="{{ route('kepegawaian.export.data.excel.pegawai') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-success">
+                        Export Excel
+                    </button>
+                </form>
+                <!-- <button type="button" class="btn btn-success me-2" data-bs-toggle="modal"
+                    data-bs-target="#modalTambahPegawai">
                     Tambah Data Pegawai
                 </button> -->
                 <br />
@@ -824,6 +828,8 @@
                     </div>
                 @endforeach
                 {{-- End Modal Ganti Jenis Kerja Pegawai --}}
+
+
 
                 {{-- Footer --}}
                 @include('kepegawaian.partials.footerkepegawaian')

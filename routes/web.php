@@ -108,7 +108,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/import-paktaintegritas', [KodeController::class, 'syncPaktaIntegritas'])->name('kepegawaian.import.paktaintegritas');
     Route::get('/export/{id}', [KodeController::class, 'exportPaktaIntegritas'])->name('kepegawaian.export');
     Route::get('/import-pegawai', [KodeController::class, 'syncPegawai'])->name('kepegawaian.import.pegawai');
-    Route::get('/export-pegawai', [KodeController::class, 'exportPegawai'])->name('kepegawaian.export.pegawai');
+    Route::post('/export-pegawai', [KodeController::class, 'exportDataPegawai'])->name('kepegawaian.export.data.excel.pegawai');
     Route::get('/pemuktahiran-data', [KodeController::class, 'pemuktahiranData'])->name('kepegawaian.data.pegawai.pemuktahiran');
     Route::get('/data-naikpangkat', [KodeController::class, 'dataKP'])->name('kepegawaian.data.naikpangkat');
     Route::get('/data-pensiun', [KodeController::class, 'dataPensiun'])->name('kepegawaian.data.pensiun');
