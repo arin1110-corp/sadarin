@@ -156,6 +156,12 @@
             <div style="font-size: 40px; color: #666;">
                 <strong>Struktur Organisasi</strong>
             </div>
+            <div style="font-size: 18px; color: #999;">
+                <button class="btn btn-sm btn-primary mt-3"
+                    onclick="window.location='{{ route('struktur.pdf') }}'">
+                    <i class="bi bi-file-earmark-pdf-fill"></i> Unduh PDF Struktur Organisasi
+                </button>
+            </div>
         </div>
 
         <!-- Struktur Organisasi -->

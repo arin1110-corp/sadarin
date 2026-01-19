@@ -27,11 +27,12 @@ use App\Models\ModelAdmin;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Exports\PegawaiPerBidangExport;
-
+use Google\Model;
 // ✅ Google API Client
 use Google_Client;
 use Google_Service_Drive;
 use Google_Service_Drive_DriveFile;
+use PDF;
 
 class KodeController extends Controller
 {
@@ -2024,5 +2025,25 @@ class KodeController extends Controller
             new PegawaiPerBidangExport,
             'DATA_PEGAWAI_PER_BIDANG.xlsx'
         );
+    }
+    public function cetakStrukturPegawaiPdf()
+    {
+        $dataPegawai = ModelUser::select(
+            'sadarin_user.*',
+            'sadarin_jabatan.jabatan_nama',
+            'sadarin_bidang.bidang_nama',
+            'sadarin_golongan.golongan_nama',
+            'sadarin_golongan.golongan_pangkat'
+        )
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->where('sadarin_user.user_status', 1)
+            ->get();
+
+        $pdf = PDF::loadView('struktur.organisasi_pdf', compact('dataPegawai'))
+            ->setPaper('A4', 'landscape');
+
+        return $pdf->stream('struktur-organisasi.pdf');
     }
 }

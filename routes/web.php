@@ -158,6 +158,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-taman-budaya', [KodeController::class, 'datatamanbudaya'])->name('data.taman-budaya');
     Route::get('/data-monumen', [KodeController::class, 'datamonumen'])->name('data.monumen');
     Route::get('/struktur-organisasi', [KodeController::class, 'strukturOrganisasi'])->name('struktur.organisasi');
+    Route::get('/struktur-organisasi/pdf', [KodeController::class, 'cetakStrukturPegawaiPdf'])->name('struktur.pdf');
     route::get('/lihat-jajaran', [KodeController::class, 'lihatjajaran'])->name('lihat.jajaran');
     Route::post('/pegawai-update', [KodeController::class, 'pegawaiUpdate'])->name('pegawai.update');
     Route::post('/pemuktahiran-update', [KodeController::class, 'updateDataPegawai'])->name('pemuktahiran.update');
