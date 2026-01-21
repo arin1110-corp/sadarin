@@ -1853,30 +1853,34 @@ class KodeController extends Controller
         $dataPegawai = DB::table('sadarin_user')
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
-            ->leftJoin('sadarin_pengumpulanberkas', 'sadarin_user.user_nip', '=', 'sadarin_pengumpulanberkas.kumpulan_user')
+            ->leftJoin('sadarin_pengumpulanberkas', function ($join) {
+                $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
+            })
             ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_file')
             ->where('sadarin_user.user_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $id)
             ->orderByRaw(
-                "
-                    CASE
-                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
-                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Sekretaris' THEN 1
-                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Bidang' THEN 2
-                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala UPTD' THEN 3
-                        WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
-                        ELSE 5
-                    END,
-                    sadarin_user.user_jeniskerja ASC,
-                    sadarin_user.user_nama ASC
-                ",
+            "
+        CASE
+            WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Dinas' THEN 0
+            WHEN sadarin_jabatan.jabatan_nama LIKE 'Sekretaris' THEN 1
+            WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala Bidang' THEN 2
+            WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala UPTD' THEN 3
+            WHEN sadarin_jabatan.jabatan_nama LIKE 'Kepala%' THEN 4
+            ELSE 5
+        END,
+        sadarin_user.user_jeniskerja ASC,
+        sadarin_user.user_nama ASC
+    ",
             )
             ->get();
 
         $dataPns = $dataPegawai->where('user_jeniskerja', '1');
         $dataPppk = $dataPegawai->where('user_jeniskerja', '2');
+        $dataParuhWaktu = $dataPegawai->where('user_jeniskerja', '3');
+        $dataPJLP = $dataPegawai->where('user_jeniskerja', '4');
 
-        return Excel::download(new PegawaiExport($dataPns, $dataPppk), $id . 'Disbud.xlsx');
+        return Excel::download(new PegawaiExport($dataPns, $dataPppk, $dataPJLP, $dataParuhWaktu), $id . 'Disbud.xlsx');
     }
     public function uploadBerkas(Request $request)
     {
@@ -2003,7 +2007,6 @@ class KodeController extends Controller
                 '3' => 'assets/databukurekening/paruhwaktu',
                 '4' => 'assets/databukurekening/nonasn',
             ],
-
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {
@@ -2036,32 +2039,19 @@ class KodeController extends Controller
             ],
         );
 
-        return back()->with('success', 'File ' . $jenis . ' berhasil diupload.')->with('file_url', $url);
+        return back()
+            ->with('success', 'File ' . $jenis . ' berhasil diupload.')
+            ->with('file_url', $url);
     }
     public function exportDataPegawai()
     {
-        return Excel::download(
-            new PegawaiPerBidangExport,
-            'DATA_PEGAWAI_PER_BIDANG.xlsx'
-        );
+        return Excel::download(new PegawaiPerBidangExport(), 'DATA_PEGAWAI_PER_BIDANG.xlsx');
     }
     public function cetakStrukturPegawaiPdf()
     {
-        $dataPegawai = ModelUser::select(
-            'sadarin_user.*',
-            'sadarin_jabatan.jabatan_nama',
-            'sadarin_bidang.bidang_nama',
-            'sadarin_golongan.golongan_nama',
-            'sadarin_golongan.golongan_pangkat'
-        )
-            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
-            ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
-            ->where('sadarin_user.user_status', 1)
-            ->get();
+        $dataPegawai = ModelUser::select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->where('sadarin_user.user_status', 1)->get();
 
-        $pdf = PDF::loadView('struktur.organisasi_pdf', compact('dataPegawai'))
-            ->setPaper('A4', 'landscape');
+        $pdf = PDF::loadView('struktur.organisasi_pdf', compact('dataPegawai'))->setPaper('A4', 'landscape');
 
         return $pdf->stream('struktur-organisasi.pdf');
     }

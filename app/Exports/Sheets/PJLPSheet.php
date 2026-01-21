@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class PnsSheet implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles
+class PJLPSheet implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithTitle, WithStyles
 {
     protected $data;
 
@@ -49,7 +49,7 @@ class PnsSheet implements FromCollection, WithHeadings, WithColumnFormatting, Sh
 
     public function title(): string
     {
-        return 'PNS';
+        return 'PJLP';
     }
 
     public function styles(Worksheet $sheet)

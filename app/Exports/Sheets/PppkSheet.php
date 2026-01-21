@@ -25,6 +25,7 @@ class PppkSheet implements FromCollection, WithHeadings, WithColumnFormatting, S
     {
         return collect($this->data)->map(fn($user) => [
             "'" . (string)$user->user_nip,
+            "'" . (string)$user->user_nik,
             $user->user_nama,
             $user->jabatan_nama,
             $user->bidang_nama,
@@ -35,13 +36,14 @@ class PppkSheet implements FromCollection, WithHeadings, WithColumnFormatting, S
 
     public function headings(): array
     {
-        return ['NIP', 'Nama', 'Jabatan', 'Bidang', 'Status Kumpul', 'Link File'];
+        return ['NIP', 'Nama', 'NIK', 'Jabatan', 'Bidang', 'Status Kumpul', 'Link File'];
     }
 
     public function columnFormats(): array
     {
         return [
             'A' => NumberFormat::FORMAT_TEXT,
+            'B' => NumberFormat::FORMAT_TEXT,
         ];
     }
 
