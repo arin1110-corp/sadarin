@@ -89,6 +89,9 @@ Route::middleware('admin.auth')->group(function () {
 // Dashboard kepegawaian
 Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/kepegawaian-dashboard', [KodeController::class, 'kepegawaianDashboard'])->name('kepegawaian.dashboard');
+    Route::get('/data-ktp/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.ktp');
+    Route::get('/data-npwp/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.npwp');
+    Route::get('/data-bukurekening/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.rekening');
     Route::get('/data-pakta-integritas/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.integritas');
     Route::get('/data-pakta-1desember/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.1desember');
     Route::get('/data-evkin-tw1/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.tw1');

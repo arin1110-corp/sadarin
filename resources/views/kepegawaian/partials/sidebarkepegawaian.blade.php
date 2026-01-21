@@ -34,6 +34,17 @@
             </li>
         @endforeach
 
+        {{-- Dropdown Data Diri--}}
+        <li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#dataDiriDropdown" role="button" aria-expanded="false" aria-controls="dataDiriDropdown">
+                <i class="bi bi-person-circle me-2"></i> Data Diri Pegawai
+            </a>
+            <div class="collapse ps-4" id="dataDiriDropdown">
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.ktp', ['id' => 'Data KTP']) }}">Data KTP</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.npwp', ['id' => 'Data NPWP']) }}">Data NPWP</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.rekening', ['id' => 'Data Buku Rekening']) }}">Data Buku Rekening</a>
+            </div>
+
         {{-- Dropdown Pakta Integritas --}}
         <li class="nav-item mb-1">
             <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#paktaDropdown" role="button" aria-expanded="false" aria-controls="evkinDropdown">
