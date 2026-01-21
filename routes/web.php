@@ -178,6 +178,9 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-skp-2025', [KodeController::class, 'uploadBerkas'])->name('tambah.skp.2025');
     Route::post('/tambah-model-c-2026', [KodeController::class, 'uploadBerkas'])->name('tambah.modelc2026');
     Route::post('/tambah-model-c-2025', [KodeController::class, 'uploadBerkas'])->name('tambah.modelc2025');
+    Route::post('/tambah-ktp', [KodeController::class, 'uploadBerkas'])->name('tambah.data.ktp');
+    Route::post('/tambah-npwp', [KodeController::class, 'uploadBerkas'])->name('tambah.data.npwp');
+    Route::post('/tambah-bukurekening', [KodeController::class, 'uploadBerkas'])->name('tambah.data.rekening');
 
 
     // Rute untuk halaman cek Subbag

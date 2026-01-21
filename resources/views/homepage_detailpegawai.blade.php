@@ -195,7 +195,6 @@
                             </div> -->
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
-
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -209,6 +208,29 @@
                                 </button>
                             </div>
                         </div>
+                        <hr>
+                        <div class="d-flex align-items-center justify-content-end mb-2">
+                            {{-- Tombol aksi di kanan --}}
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-warning open-upload-modal" data-title="Data KTP *pdf"
+                                    data-route="{{ route('tambah.data.ktp') }}" data-jenis="Data KTP"
+                                    data-jenisfile="dataktp">
+                                    <i class="bi bi-plus-lg"></i> KTP
+                                </button>
+                                <button class="btn btn-warning open-upload-modal" data-title="Data NPWP *pdf"
+                                    data-route="{{ route('tambah.data.npwp') }}" data-jenis="Data NPWP"
+                                    data-jenisfile="datanpwp">
+                                    <i class="bi bi-plus-lg"></i> NPWP
+                                </button>
+                                <button class="btn btn-warning open-upload-modal" data-title="Data Buku Rekening *pdf"
+                                    data-route="{{ route('tambah.data.rekening') }}" data-jenis="Data Buku Rekening"
+                                    data-jenisfile="databukurekening">
+                                    <i class="bi bi-plus-lg"></i> Buku Rekening
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <hr>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
                                 <button class="btn btn-primary open-upload-modal"
@@ -229,7 +251,8 @@
                                 <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan II"
                                     data-route="{{ route('tambah.evaluasi.tw2') }}"
-                                    data-jenis="Evaluasi Kinerja Triwulan II" data-jenisfile="evaluasikinerjatriwulan2">
+                                    data-jenis="Evaluasi Kinerja Triwulan II"
+                                    data-jenisfile="evaluasikinerjatriwulan2">
                                     <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan II
                                 </button>
                                 <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan II"
@@ -248,7 +271,8 @@
                                     data-jenisfile="evaluasikinerjatriwulan3">
                                     <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan III
                                 </button>
-                                <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan III"
+                                <button class="btn btn-primary open-upload-modal"
+                                    data-title="Umpan Balik Triwulan III"
                                     data-route="{{ route('tambah.umpanbalik.tw3') }}"
                                     data-jenis="Umpan Balik Triwulan III" data-jenisfile="umpanbaliktriwulan3">
                                     <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan III
@@ -288,7 +312,6 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-2">
-
                             <div class="d-flex gap-2">
                                 <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Tahunan 2025"
@@ -305,7 +328,6 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-2">
-
                             <div class="d-flex gap-2">
                                 <button class="btn btn-primary open-upload-modal" data-title="Model C 2025"
                                     data-route="{{ route('tambah.modelc2025') }}" data-jenis="Model C 2025"
@@ -417,6 +439,17 @@
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Alamat</div>
                             <div class="col-sm-8">{{ $user->user_alamat }}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Berkas</div>
+                            <div class="col-sm-8">
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Data KTP') }} showFiles"
+                                    data-jenis="Data KTP">KTP</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Data NPWP') }} showFiles"
+                                    data-jenis="Data NPWP">NPWP</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Data Buku Rekening') }} showFiles"
+                                    data-jenis="Data Buku Rekening">Buku Tab</button>
+                            </div>
                         </div>
                         <hr>
                         <div class="mb-4 text-center fw-bold">*** Data Pendidikan ***</div>
@@ -1004,6 +1037,6 @@
     </script>
 
 
-</body>
+    </body>
 
 </html>

@@ -157,6 +157,7 @@ class KodeController extends Controller
     {
         $pegawai = session('user_info')->user_nip;
         $pegawai1 = session('user_info')->user_nik;
+        $jeniskerjapeg = session('user_info')->user_jeniskerja;
         // Jika NIP tidak valid, anggap NIP = null agar tidak dipakai
         if ($pegawai == '-' || $pegawai == '' || $pegawai == null) {
             $pegawai = null;
@@ -193,7 +194,7 @@ class KodeController extends Controller
         $bidangs = ModelBidang::all();
         $golongans = ModelGolongan::all();
         $pendidikans = ModelPendidikan::all();
-        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas'));
+        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas', 'jeniskerjapeg'));
     }
     public function strukturOrganisasi()
     {
@@ -1983,6 +1984,24 @@ class KodeController extends Controller
                 '2' => 'assets/pakta2025/pppk',
                 '3' => 'assets/pakta2025/paruhwaktu',
                 '4' => 'assets/pakta2025/nonasn',
+            ],
+            'dataktp' => [
+                '1' => 'assets/dataktp/pns',
+                '2' => 'assets/dataktp/pppk',
+                '3' => 'assets/dataktp/paruhwaktu',
+                '4' => 'assets/dataktp/nonasn',
+            ],
+            'datanpwp' => [
+                '1' => 'assets/datanpwp/pns',
+                '2' => 'assets/datanpwp/pppk',
+                '3' => 'assets/datanpwp/paruhwaktu',
+                '4' => 'assets/datanpwp/nonasn',
+            ],
+            'databukurekening' => [
+                '1' => 'assets/databukurekening/pns',
+                '2' => 'assets/databukurekening/pppk',
+                '3' => 'assets/databukurekening/paruhwaktu',
+                '4' => 'assets/databukurekening/nonasn',
             ],
 
         ];
