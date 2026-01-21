@@ -584,6 +584,7 @@
                 <form id="formUploadBerkas" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                    <input type="hidden" name="user_nik" value="{{ $user->user_nik }}">
                     <input type="hidden" name="kumpulan_jenis" id="kumpulan_jenis">
                     <input type="hidden" name="jenisfile" id="jenisfile">
                     <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
