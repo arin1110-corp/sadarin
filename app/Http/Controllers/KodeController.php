@@ -1755,9 +1755,11 @@ class KodeController extends Controller
         // Statistik jumlah yang sudah kumpul
         $jumlahPnsKumpul = $dataPns->where('kumpulan_status', 1)->count();
         $jumlahPppkKumpul = $dataPppk->where('kumpulan_status', 1)->count();
+        $jumlahParuhWaktuKumpul = $dataParuhWaktu->where('kumpulan_status', 1)->count();
+        $jumlahPJLPKumpul = $dataNonASN->where('kumpulan_status', 1)->count();
 
         $jenis = $dataPegawai[0]->kumpulan_jenis;
-        return view('kepegawaian.paktaintegritas', compact('dataPegawai', 'dataPns', 'dataPppk', 'jumlahPnsKumpul', 'jumlahPppkKumpul', 'jenis', 'dataPns', 'dataPppk', 'dataParuhWaktu', 'dataNonASN'));
+        return view('kepegawaian.paktaintegritas', compact('dataPegawai', 'dataPns', 'dataPppk', 'jumlahPnsKumpul', 'jumlahPppkKumpul', 'jumlahParuhWaktuKumpul', 'jumlahPJLPKumpul',  'jenis', 'dataPns', 'dataPppk', 'dataParuhWaktu', 'dataNonASN'));
     }
     /// akhir Pakta Integritas
     /// lihat pakta

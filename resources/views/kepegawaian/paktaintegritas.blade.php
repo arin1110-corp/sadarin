@@ -39,7 +39,7 @@
 
                 {{-- Statistik --}}
                 <div class="row mb-4">
-                    <div class="col-md-3">
+                    <div class="col-md-12">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5>Total Pegawai</h5>
@@ -47,6 +47,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
@@ -64,6 +65,23 @@
                         </div>
                     </div>
                     <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5>PPPK Paruh Waktu Terkumpul</h5>
+                                <p class="display-6 text-danger">{{ $jumlahParuhWaktuKumpul }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5>PJLP Terkumpul</h5>
+                                <p class="display-6 text-secondary">{{ $jumlahPJLPKumpul }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col-md-12">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5>DOWNLOAD DATA</h5>
