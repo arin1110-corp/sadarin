@@ -39,14 +39,14 @@
 
                 {{-- Statistik --}}
                 <div class="row mb-4">
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5>Total Pegawai</h5>
+                                <h5>Total Pegawai Mengumpulkan</h5>
                                 <p class="display-6 text-warning">{{ $dataPegawai->count() }}</p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <hr>
                     <div class="col-md-3">
                         <div class="card text-center">
