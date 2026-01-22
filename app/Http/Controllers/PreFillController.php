@@ -389,4 +389,88 @@ class PreFillController extends Controller
 
         return back()->with('success', 'Prefill SKP 2025 berhasil ditambahkan.');
     }
+    public function prefillDataKTP()
+    {
+        $kumpulanJenisBaru = 'Data KTP';
+
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+            ]);
+        }
+
+        return back()->with('success', 'Prefill Data KTP berhasil ditambahkan.');
+    }
+    public function prefillDataNPWP()
+    {
+        $kumpulanJenisBaru = 'Data NPWP';
+
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+            ]);
+        }
+
+        return back()->with('success', 'Prefill Data NPWP berhasil ditambahkan.');
+    }
+    public function prefillDataBukuRekening()
+    {
+        $kumpulanJenisBaru = 'Data Buku Rekening';
+
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+            ]);
+        }
+
+        return back()->with('success', 'Prefill Data Buku Rekening berhasil ditambahkan.');
+    }
 }

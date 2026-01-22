@@ -37,6 +37,9 @@ Route::get('/model-c-2025', [PreFillController::class, 'prefillModelC2025']);
 Route::get('/syntax-c-2025', [PreFillController::class, 'prefillSyntaxC2025']);
 Route::get('/skp-2025', [PreFillController::class, 'prefillSKP2025']);
 Route::get('/model-c-2026', [PreFillController::class, 'prefillModelC2026']);
+Route::get('/data-ktp', [PreFillController::class, 'prefillDataKTP']);
+Route::get('/data-npwp', [PreFillController::class, 'prefillDataNPWP']);
+Route::get('/data-buku-rekening', [PreFillController::class, 'prefillDataBukuRekening']);
 
 
 // -------------------- Admin / Kepegawaian --------------------
