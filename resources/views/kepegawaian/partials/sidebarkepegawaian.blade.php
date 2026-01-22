@@ -95,7 +95,7 @@
         </li>
         {{-- Data SKP 2025 --}}
         <li class="nav-item mb-1">
-            <a class="nav-link d-flex align-items-center px-2 py-2 rounded text-white" data-bs-toggle="collapse" href="#SKPdropdown" role="button" aria-expanded="false" aria-controls="SKPDropdown">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#SKPdropdown" role="button" aria-expanded="false" aria-controls="SKPDropdown">
                 <i class="bi bi-file-earmark-text me-2"></i> Data SKP
             </a>
             <div class="collapse ps-4" id="SKPdropdown">

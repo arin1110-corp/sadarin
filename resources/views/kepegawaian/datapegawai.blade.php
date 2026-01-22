@@ -280,16 +280,17 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-info btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="detail">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-warning btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="ganti_status">
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-danger btn-modal"
+                                                        data-id="{{ $user->user_id }}"
+                                                        data-action="ganti_jenis_kerja">
                                                         <i class="bi bi-people-fill"></i>
                                                     </button>
                                                 </td>
@@ -328,16 +329,17 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-info btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="detail">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-warning btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="ganti_status">
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-danger btn-modal"
+                                                        data-id="{{ $user->user_id }}"
+                                                        data-action="ganti_jenis_kerja">
                                                         <i class="bi bi-people-fill"></i>
                                                     </button>
                                                 </td>
@@ -375,16 +377,17 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-info btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="detail">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-warning btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="ganti_status">
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-danger btn-modal"
+                                                        data-id="{{ $user->user_id }}"
+                                                        data-action="ganti_jenis_kerja">
                                                         <i class="bi bi-people-fill"></i>
                                                     </button>
                                                 </td>
@@ -424,16 +427,17 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-info btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="detail">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-warning btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="ganti_status">
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-danger btn-modal"
+                                                        data-id="{{ $user->user_id }}"
+                                                        data-action="ganti_jenis_kerja">
                                                         <i class="bi bi-people-fill"></i>
                                                     </button>
                                                 </td>
@@ -471,16 +475,17 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDetailAll{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-info btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="detail">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiStatusPegawai{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-warning btn-modal"
+                                                        data-id="{{ $user->user_id }}" data-action="ganti_status">
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#modalGantiJenisKerja{{ $user->user_id }}">
+                                                    <button class="btn btn-sm btn-danger btn-modal"
+                                                        data-id="{{ $user->user_id }}"
+                                                        data-action="ganti_jenis_kerja">
                                                         <i class="bi bi-people-fill"></i>
                                                     </button>
                                                 </td>
@@ -493,7 +498,24 @@
                     </div>
                 </div>
 
-                
+
+                <div class="modal fade" id="modalDetail" tabindex="-1">
+                    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Detail Pegawai</h5>
+                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body" id="modalContent">
+                                <div class="text-muted text-center p-4">
+                                    Memuat data...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 {{-- Footer --}}
                 @include('kepegawaian.partials.footerkepegawaian')
@@ -630,6 +652,19 @@
                 $('[data-bs-toggle="tooltip"]').tooltip();
             }, 800);
 
+        });
+    </script>
+    <script>
+        $(document).on('click', '.btn-modal', function() {
+            let id = $(this).data('id');
+            let action = $(this).data('action');
+
+            $('#modalContent').html('Loading...');
+            $('#modalDetail').modal('show');
+
+            $.get(`/kepegawaian/data/pegawai/${id}/${action}`, function(html) {
+                $('#modalContent').html(html);
+            });
         });
     </script>
 

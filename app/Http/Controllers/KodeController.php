@@ -1759,7 +1759,7 @@ class KodeController extends Controller
         $jumlahPJLPKumpul = $dataNonASN->where('kumpulan_status', 1)->count();
 
         $jenis = $dataPegawai[0]->kumpulan_jenis;
-        return view('kepegawaian.paktaintegritas', compact('dataPegawai', 'dataPns', 'dataPppk', 'jumlahPnsKumpul', 'jumlahPppkKumpul', 'jumlahParuhWaktuKumpul', 'jumlahPJLPKumpul',  'jenis', 'dataPns', 'dataPppk', 'dataParuhWaktu', 'dataNonASN'));
+        return view('kepegawaian.paktaintegritas', compact('dataPegawai', 'dataPns', 'dataPppk', 'jumlahPnsKumpul', 'jumlahPppkKumpul', 'jumlahParuhWaktuKumpul', 'jumlahPJLPKumpul', 'jenis', 'dataPns', 'dataPppk', 'dataParuhWaktu', 'dataNonASN'));
     }
     /// akhir Pakta Integritas
     /// lihat pakta
@@ -2056,5 +2056,30 @@ class KodeController extends Controller
         $pdf = PDF::loadView('struktur.organisasi_pdf', compact('dataPegawai'))->setPaper('A4', 'landscape');
 
         return $pdf->stream('struktur-organisasi.pdf');
+    }
+    /// Akhir Data Kepegawaian
+    /// MODAL DATA PEGAWAI
+    public function modalDataPegawai($id, $action)
+    {
+        $user = DB::table('sadarin_user')
+            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
+            ->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->where('sadarin_user.user_id', $id) // 🔥 INI KUNCI UTAMA
+            ->select('sadarin_user.*', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_eselon.eselon_nama', 'sadarin_pendidikan.pendidikan_jenjang', 'sadarin_pendidikan.pendidikan_jurusan')
+            ->first(); // 🔥 BUKAN get()
+
+        if (!$user) {
+            return response('<div class="alert alert-danger">Data pegawai tidak ditemukan</div>', 404);
+        }
+
+        return match ($action) {
+            'detail' => view('kepegawaian.partials.modal_detail_pegawai', compact('user')),
+            'ganti_status' => view('kepegawaian.partials.modal_edit_status_pegawai', compact('user')),
+            'ganti_jenis_kerja' => view('kepegawaian.partials.modal_ganti_jenis_kerja_pegawai', compact('user')),
+            default => abort(404),
+        };
     }
 }

@@ -41,7 +41,6 @@ Route::get('/data-ktp', [PreFillController::class, 'prefillDataKTP']);
 Route::get('/data-npwp', [PreFillController::class, 'prefillDataNPWP']);
 Route::get('/data-buku-rekening', [PreFillController::class, 'prefillDataBukuRekening']);
 
-
 // -------------------- Admin / Kepegawaian --------------------
 Route::get('/login', [KodeController::class, 'login'])->name('login'); // Form login admin/kepegawaian
 Route::post('/login-submit', [KodeController::class, 'loginSubmit'])->name('login.submit');
@@ -141,9 +140,9 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-kenaikanberkala', [KodeController::class, 'dataKGB'])->name('kepegawaian.data.berkala');
     Route::get('export-data-pegawai', [KodeController::class, 'exportDataPegawai'])->name('kepegawaian.export.data.pegawai');
     Route::post('/ganti-jenis-kerja', [KodeController::class, 'updateJenisKerja'])->name('kepegawaian.gantijeniskerjapegawai');
+    Route::get('/kepegawaian/data/pegawai/{id}/{action}', [KodeController::class, 'ModalDataPegawai'])->name('kepegawaian.data.pegawai.modal');
     // ... Tambahkan route kepegawaian lain di sini ...
 });
-
 
 // Halaman daftar bagian – hanya bisa diakses setelah sukses input kode akses
 Route::middleware('akses.kontrol')->group(function () {
@@ -187,7 +186,6 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-ktp', [KodeController::class, 'uploadBerkas'])->name('tambah.data.ktp');
     Route::post('/tambah-npwp', [KodeController::class, 'uploadBerkas'])->name('tambah.data.npwp');
     Route::post('/tambah-bukurekening', [KodeController::class, 'uploadBerkas'])->name('tambah.data.rekening');
-
 
     // Rute untuk halaman cek Subbag
 
