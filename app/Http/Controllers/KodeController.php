@@ -2070,6 +2070,7 @@ class KodeController extends Controller
             ->where('sadarin_user.user_id', $id) // 🔥 INI KUNCI UTAMA
             ->select('sadarin_user.*', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_eselon.eselon_nama', 'sadarin_pendidikan.pendidikan_jenjang', 'sadarin_pendidikan.pendidikan_jurusan')
             ->first(); // 🔥 BUKAN get()
+        $bidang = DB::table('sadarin_bidang')->get();
 
         if (!$user) {
             return response('<div class="alert alert-danger">Data pegawai tidak ditemukan</div>', 404);
@@ -2079,6 +2080,7 @@ class KodeController extends Controller
             'detail' => view('kepegawaian.partials.modal_detail_pegawai', compact('user')),
             'ganti_status' => view('kepegawaian.partials.modal_edit_status_pegawai', compact('user')),
             'ganti_jenis_kerja' => view('kepegawaian.partials.modal_ganti_jenis_kerja_pegawai', compact('user')),
+            'export_rekap_data' => view('kepegawaian.partials.modal_export_data_rekap', compact('bidang')),
             default => abort(404),
         };
     }

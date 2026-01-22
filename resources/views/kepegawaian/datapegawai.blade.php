@@ -140,65 +140,19 @@
                 <form method="POST" action="{{ route('kepegawaian.export.data.excel.pegawai') }}">
                     @csrf
                     <button type="submit" class="btn btn-success">
-                        Export Excel
+                        Export Pemuktahiran
                     </button>
                 </form>
+                <br />
+                <button class="btn btn-sm btn-success btn-modal" data-action="export_rekap_data">
+                    <i class="bi bi-file-earmark-excel"></i> Export Data
+                </button>
                 <!-- <button type="button" class="btn btn-success me-2" data-bs-toggle="modal"
                     data-bs-target="#modalTambahPegawai">
                     Tambah Data Pegawai
                 </button> -->
                 <br />
                 <br />
-
-                <!-- Modal -->
-                <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <form method="POST" action="{{ route('kepegawaian.export.data.pegawai') }}">
-                            @csrf
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exportModalLabel">
-                                        Pilih Kolom untuk Export
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    @php
-                                        $fields = [
-                                            'user_id' => 'ID',
-                                            'user_nip' => 'NIP',
-                                            'user_nama' => 'Nama',
-                                            'user_nik' => 'NIK',
-                                            'user_tgllahir' => 'Tanggal Lahir',
-                                            'user_jabatan' => 'Jabatan',
-                                            'jenis_kerja' => 'Jenis Kerja',
-                                        ];
-                                    @endphp
-                                    @foreach ($fields as $key => $label)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="fields[]"
-                                                value="{{ $key }}" id="field_{{ $key }}" checked />
-                                            <label class="form-check-label" for="field_{{ $key }}">
-                                                {{ $label }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                        Batal
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">
-                                        Export
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
 
                 {{-- Tabs Data Pegawai --}}
                 <div class="card shadow-sm border-0">
@@ -516,7 +470,6 @@
                     </div>
                 </div>
 
-
                 {{-- Footer --}}
                 @include('kepegawaian.partials.footerkepegawaian')
             </main>
@@ -667,7 +620,18 @@
             });
         });
     </script>
+    <script>
+        $('#exportType').on('change', function() {
+            $('#summaryOptions, #detailOptions').addClass('d-none');
 
+            if (this.value === 'summary') {
+                $('#summaryOptions').removeClass('d-none');
+            }
+            if (this.value === 'detail') {
+                $('#detailOptions').removeClass('d-none');
+            }
+        });
+    </script>
 
 </body>
 
