@@ -906,6 +906,7 @@ class KodeController extends Controller
                 ",
             )
             ->get();
+        $listBidang = ModelBidang::get();
 
         $listpegawaiPNS = ModelUser::where('user_jeniskerja', 1)->get();
         $listpegawaiPPPK = ModelUser::where('user_jeniskerja', 2)->get();
@@ -921,7 +922,7 @@ class KodeController extends Controller
         $datanonasn = ModelUser::where('user_status', 1)->where('user_jeniskerja', 4)->count();
         $totalPegawai = ModelUser::count();
 
-        return view('kepegawaian.datapegawai', compact('dataPegawai', 'listpegawaiNonASN', 'listpegawaiPNS', 'listpegawaiPPPK', 'listpegawaiPPPKParuhWaktu', 'totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'datapppkparuhwaktu', 'datanonasn', 'dataPegawaiaktif', 'dataPegawainonaktif'));
+        return view('kepegawaian.datapegawai', compact('dataPegawai', 'listBidang', 'listpegawaiNonASN', 'listpegawaiPNS', 'listpegawaiPPPK', 'listpegawaiPPPKParuhWaktu', 'totalPegawai', 'datapnspegawai', 'datapppkpegawai', 'datapppkparuhwaktu', 'datanonasn', 'dataPegawaiaktif', 'dataPegawainonaktif'));
     }
     public function updateStatusPegawai(Request $request)
     {

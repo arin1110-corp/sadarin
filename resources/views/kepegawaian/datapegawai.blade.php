@@ -144,9 +144,10 @@
                     </button>
                 </form>
                 <br />
-                <button class="btn btn-sm btn-success btn-modal" data-action="export_rekap_data">
+                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalExport">
                     <i class="bi bi-file-earmark-excel"></i> Export Data
                 </button>
+
                 <!-- <button type="button" class="btn btn-success me-2" data-bs-toggle="modal"
                     data-bs-target="#modalTambahPegawai">
                     Tambah Data Pegawai
@@ -470,6 +471,68 @@
                     </div>
                 </div>
 
+                <div class="modal fade" id="modalExport" tabindex="-1">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <form method="POST" action="{{ route('kepegawaian.export.data.rekap') }}"
+                            class="modal-content">
+                            @csrf
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="bi bi-file-earmark-excel"></i> Export Data Pegawai
+                                </h5>
+                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                {{-- JENIS EXPORT --}}
+                                <div class="mb-3">
+                                    <label class="fw-bold">Jenis Export</label>
+                                    <select name="export_mode" class="form-select" required>
+                                        <option value="summary">Summary / Rekap</option>
+                                        <option value="detail">Detail Pegawai</option>
+                                    </select>
+                                </div>
+
+                                {{-- FILTER --}}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="fw-bold">Bidang</label>
+                                        <select name="bidang[]" class="form-select" multiple>
+                                            @foreach ($listBidang as $b)
+                                                <option value="{{ $b->bidang_id }}">{{ $b->bidang_nama }}</option>
+                                            @endforeach
+                                        </select>
+                                        <small class="text-muted">Kosongkan = semua bidang</small>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="fw-bold">Jenis Kerja</label>
+                                        <select name="jenis_kerja[]" class="form-select" multiple>
+                                            <option value="1">PNS</option>
+                                            <option value="2">PPPK</option>
+                                            <option value="3">PPPK Paruh Waktu</option>
+                                            <option value="4">PJLP</option>
+                                        </select>
+                                        <small class="text-muted">Kosongkan = semua jenis</small>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button class="btn btn-success">
+                                    <i class="bi bi-download"></i> Export
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+
                 {{-- Footer --}}
                 @include('kepegawaian.partials.footerkepegawaian')
             </main>
@@ -484,56 +547,7 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
-    <!-- {{-- Inisialisasi DataTables --}}
-    <script>
-        $(document).ready(function() {
-            $("#tableAll").DataTable();
-            $("#tablePns").DataTable();
-            $("#tablePppk").DataTable();
-            $("#tablepjlp").DataTable();
-            $("#tablePppkParuhWaktu").DataTable();
-            $("#tableAll").DataTable({
-                deferRender: true,
-                pageLength: 10,
-                processing: true,
-                language: {
-                    processing: "Memuat data..."
-                }
-            });
-            $("#tablePns").DataTable({
-                deferRender: true,
-                pageLength: 10,
-                processing: true,
-                language: {
-                    processing: "Memuat data..."
-                }
-            });
-            $("#tablePppk").DataTable({
-                deferRender: true,
-                pageLength: 10,
-                processing: true,
-                language: {
-                    processing: "Memuat data..."
-                }
-            });
-            $("#tableNonAsn").DataTable({
-                deferRender: true,
-                pageLength: 10,
-                processing: true,
-                language: {
-                    processing: "Memuat data..."
-                }
-            });
-            $("#tablePppkParuhWaktu").DataTable({
-                deferRender: true,
-                pageLength: 10,
-                processing: true,
-                language: {
-                    processing: "Memuat data..."
-                }
-            });
-        });
-    </script> -->
+
     <script>
         $(document).ready(function() {
 
