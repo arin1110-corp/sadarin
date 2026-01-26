@@ -211,7 +211,7 @@
                         <hr>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             {{-- Tombol aksi di kanan --}}
-                            <div class="d-flex gap-2">
+                            <!-- <div class="d-flex gap-2">
                                 <button class="btn btn-warning open-upload-modal" data-title="Data KTP *pdf"
                                     data-route="{{ route('tambah.data.ktp') }}" data-jenis="Data KTP"
                                     data-jenisfile="dataktp">
@@ -227,7 +227,7 @@
                                     data-jenisfile="databukurekening">
                                     <i class="bi bi-plus-lg"></i> Buku Rekening
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
                         <hr>
                         <hr>
