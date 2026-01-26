@@ -22,15 +22,23 @@ class SyncBerkasCommand extends Command
 
         // Mapping jenis argumen ke nama berkas
         $mapJenis = [
-            'pakta'            => 'Pakta Integritas',
+            'pakta'                 => 'Pakta Integritas',
             'pakta_1_desember_2025' => 'Pakta Integritas 1 Desember 2025',
-            'modelc'           => 'Model C 2025',
-            'evkin_1'          => 'Evaluasi Kinerja Triwulan I',
-            'evkin_2'          => 'Evaluasi Kinerja Triwulan II',
-            'evkin_3'          => 'Evaluasi Kinerja Triwulan III',
-            'umpan_1'          => 'Umpan Balik Triwulan I',
-            'umpan_2'          => 'Umpan Balik Triwulan II',
-            'umpan_3'          => 'Umpan Balik Triwulan III',
+            'modelc'                => 'Model C 2025',
+            'evkin_1'               => 'Evaluasi Kinerja Triwulan I',
+            'evkin_2'               => 'Evaluasi Kinerja Triwulan II',
+            'evkin_3'               => 'Evaluasi Kinerja Triwulan III',
+            'evkin_4'               => 'Evaluasi Kinerja Triwulan IV',
+            'evkin_tahunan'         => 'Evaluasi Kinerja Tahunan 2025',
+            'umpan_1'               => 'Umpan Balik Triwulan I',
+            'umpan_2'               => 'Umpan Balik Triwulan II',
+            'umpan_3'               => 'Umpan Balik Triwulan III',
+            'umpan_4'               => 'Umpan Balik Triwulan IV',
+            'skp_2025'              => 'SKP 2025',
+            'data_ktp'              => 'Data KTP',
+            'data_npwp'             => 'Data NPWP',
+            'data_buku_rekening'    => 'Data Buku Rekening',
+            'modelc_2026'           => 'Model C 2026',
         ];
 
         if (!isset($mapJenis[$jenis])) {
