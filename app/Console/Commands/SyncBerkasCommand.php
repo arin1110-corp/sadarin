@@ -39,6 +39,7 @@ class SyncBerkasCommand extends Command
             'data_npwp'             => 'Data NPWP',
             'data_buku_rekening'    => 'Data Buku Rekening',
             'modelc_2026'           => 'Model C 2026',
+            'pakta_2025'            => 'Pakta Integritas',
         ];
 
         if (!isset($mapJenis[$jenis])) {
