@@ -202,6 +202,7 @@
                                         <tr class="text-center">
                                             <th>#</th>
                                             <th>NIP</th>
+                                            <th>NIK</th>
                                             <th>Nama</th>
                                             <th>Jenis Kerja</th>
                                             <th>Status</th>
@@ -215,6 +216,7 @@
                                                     {{ $no + 1 }}
                                                 </td>
                                                 <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nik }}</td>
                                                 <td>{{ $user->user_nama }}</td>
                                                 <td class="text-center">
                                                     @if ($user->user_jeniskerja == '1')
@@ -262,6 +264,7 @@
                                         <tr class="text-center">
                                             <th>#</th>
                                             <th>NIP</th>
+                                            <th>NIK</th>
                                             <th>Nama</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
@@ -275,6 +278,7 @@
                                                     {{ $no + 1 }}
                                                 </td>
                                                 <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nik }}</td>
                                                 <td>{{ $user->user_nama }}</td>
                                                 <td class="text-center">
                                                     @if ($user->user_status == '1')
@@ -311,6 +315,7 @@
                                         <tr class="text-center">
                                             <th>#</th>
                                             <th>NIP</th>
+                                            <th>NIK</th>
                                             <th>Nama</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
@@ -323,6 +328,7 @@
                                                     {{ $no + 1 }}
                                                 </td>
                                                 <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nik }}</td>
                                                 <td>{{ $user->user_nama }}</td>
                                                 <td class="text-center">
                                                     @if ($user->user_status == '1')
@@ -361,6 +367,7 @@
                                         <tr class="text-center">
                                             <th>#</th>
                                             <th>NIP</th>
+                                            <th>NIK</th>
                                             <th>Nama</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
@@ -373,6 +380,7 @@
                                                     {{ $no + 1 }}
                                                 </td>
                                                 <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nik }}</td>
                                                 <td>{{ $user->user_nama }}</td>
                                                 <td class="text-center">
                                                     @if ($user->user_status == '1')
@@ -409,6 +417,7 @@
                                         <tr class="text-center">
                                             <th>#</th>
                                             <th>NIP</th>
+                                            <th>NIK</th>
                                             <th>Nama</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
@@ -421,6 +430,7 @@
                                                     {{ $no + 1 }}
                                                 </td>
                                                 <td>{{ $user->user_nip }}</td>
+                                                <td>{{ $user->user_nik }}</td>
                                                 <td>{{ $user->user_nama }}</td>
                                                 <td class="text-center">
                                                     @if ($user->user_status == '1')
