@@ -43,6 +43,9 @@
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.ktp', ['id' => 'Data KTP']) }}">Data KTP</a>
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.npwp', ['id' => 'Data NPWP']) }}">Data NPWP</a>
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.rekening', ['id' => 'Data Buku Rekening']) }}">Data Buku Rekening</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.bpjs.kesehatan', ['id' => 'Data BPJS Kesehatan']) }}">Data BPJS Kesehatan</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.kartu.keluarga', ['id' => 'Data Kartu Keluarga']) }}">Data Kartu Keluarga</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.ijazah', ['id' => 'Data Ijazah']) }}">Data Ijazah</a>
             </div>
 
         {{-- Dropdown Pakta Integritas --}}
