@@ -473,4 +473,87 @@ class PreFillController extends Controller
 
         return back()->with('success', 'Prefill Data Buku Rekening berhasil ditambahkan.');
     }
+    public function prefillDataBPJSKesehatan()
+    {
+        $kumpulanJenisBaru = 'Data BPJS Kesehatan';
+
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+            ]);
+        }
+
+        return back()->with('success', 'Prefill Data BPJS Kesehatan berhasil ditambahkan.');
+    }
+    public function prefillDataKartuKeluarga()
+    {
+        $kumpulanJenisBaru = 'Data Kartu Keluarga';
+
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+            ]);
+        }
+
+        return back()->with('success', 'Prefill Data Kartu Keluarga berhasil ditambahkan.');
+    }
+    public function prefillDataIjazah()
+    {
+        $kumpulanJenisBaru = 'Data Ijazah Terakhir';
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+            ]);
+        }
+
+        return back()->with('success', 'Prefill Data Ijazah Terakhir berhasil ditambahkan.');
+    }
 }

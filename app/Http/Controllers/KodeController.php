@@ -2010,6 +2010,24 @@ class KodeController extends Controller
                 '3' => 'assets/databukurekening/paruhwaktu',
                 '4' => 'assets/databukurekening/nonasn',
             ],
+            'databpjskesehatan' => [
+                '1' => 'assets/databpjskesehatan/pns',
+                '2' => 'assets/databpjskesehatan/pppk',
+                '3' => 'assets/databpjskesehatan/paruhwaktu',
+                '4' => 'assets/databpjskesehatan/nonasn',
+            ],
+            'dataijazah' => [
+                '1' => 'assets/dataijazah/pns',
+                '2' => 'assets/dataijazah/pppk',
+                '3' => 'assets/dataijazah/paruhwaktu',
+                '4' => 'assets/dataijazah/nonasn',
+            ],
+            'datakartukeluarga' => [
+                '1' => 'assets/datakartukeluarga/pns',
+                '2' => 'assets/datakartukeluarga/pppk',
+                '3' => 'assets/datakartukeluarga/paruhwaktu',
+                '4' => 'assets/datakartukeluarga/nonasn',
+            ],
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {

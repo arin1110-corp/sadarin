@@ -40,6 +40,9 @@ Route::get('/model-c-2026', [PreFillController::class, 'prefillModelC2026']);
 Route::get('/data-ktp', [PreFillController::class, 'prefillDataKTP']);
 Route::get('/data-npwp', [PreFillController::class, 'prefillDataNPWP']);
 Route::get('/data-buku-rekening', [PreFillController::class, 'prefillDataBukuRekening']);
+Route::get('/data-bpjs-kesehatan', [PreFillController::class, 'prefillDataBPJSKesehatan']);
+Route::get('/data-kartu-keluarga', [PreFillController::class, 'prefillDataKartuKeluarga']);
+Route::get('/data-ijazah', [PreFillController::class, 'prefillDataIjazah']);
 
 // -------------------- Admin / Kepegawaian --------------------
 Route::get('/login', [KodeController::class, 'login'])->name('login'); // Form login admin/kepegawaian
@@ -94,6 +97,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-ktp/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.ktp');
     Route::get('/data-npwp/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.npwp');
     Route::get('/data-bukurekening/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.rekening');
+    Route::get('/data-bpjskesehatan/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.bpjskesehatan');
     Route::get('/data-pakta-integritas/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.integritas');
     Route::get('/data-pakta-1desember/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.pakta.1desember');
     Route::get('/data-evkin-tw1/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.tw1');
@@ -187,6 +191,9 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-ktp', [KodeController::class, 'uploadBerkas'])->name('tambah.data.ktp');
     Route::post('/tambah-npwp', [KodeController::class, 'uploadBerkas'])->name('tambah.data.npwp');
     Route::post('/tambah-bukurekening', [KodeController::class, 'uploadBerkas'])->name('tambah.data.rekening');
+    Route::post('/tambah-bpjskesehatan', [KodeController::class, 'uploadBerkas'])->name('tambah.data.bpjs.kesehatan');
+    Route::post('/tambah-kartukeluarga', [KodeController::class, 'uploadBerkas'])->name('tambah.data.kartu.keluarga');
+    Route::post('/tambah-dataijazah', [KodeController::class, 'uploadBerkas'])->name('tambah.data.ijazah');
 
     // Rute untuk halaman cek Subbag
 

@@ -229,6 +229,26 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="d-flex align-items-center justify-content-end mb-2">
+                            {{-- Tombol aksi di kanan --}}
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-warning open-upload-modal" data-title="Data BPJS Kesehatan *pdf"
+                                    data-route="{{ route('tambah.data.bpjs.kesehatan') }}"
+                                    data-jenis="Data BPJS Kesehatan" data-jenisfile="databpjskesehatan">
+                                    <i class="bi bi-plus-lg"></i> BPJS Kesehatan
+                                </button>
+                                <button class="btn btn-warning open-upload-modal" data-title="Data Ijazah Terakhir *pdf"
+                                    data-route="{{ route('tambah.data.ijazah') }}" data-jenis="Data Ijazah Terakhir"
+                                    data-jenisfile="dataijazah">
+                                    <i class="bi bi-plus-lg"></i> Ijazah Terakhir
+                                </button>
+                                <button class="btn btn-warning open-upload-modal" data-title="Data Kartu Keluarga *pdf"
+                                    data-route="{{ route('tambah.data.kartu.keluarga') }}"
+                                    data-jenis="Data Kartu Keluarga" data-jenisfile="datakartukeluarga">
+                                    <i class="bi bi-plus-lg"></i> Kartu Keluarga
+                                </button>
+                            </div>
+                        </div>
                         <hr>
                         <hr>
                         <div class="d-flex align-items-center justify-content-end mb-2">
@@ -236,7 +256,8 @@
                                 <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan I"
                                     data-route="{{ route('tambah.evaluasi.tw1') }}"
-                                    data-jenis="Evaluasi Kinerja Triwulan I" data-jenisfile="evaluasikinerjatriwulan1">
+                                    data-jenis="Evaluasi Kinerja Triwulan I"
+                                    data-jenisfile="evaluasikinerjatriwulan1">
                                     <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan I
                                 </button>
                                 <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan I"
@@ -450,6 +471,16 @@
                                 <button class="btn btn-{{ cekBerkas($berkas, 'Data Buku Rekening') }} showFiles"
                                     data-jenis="Data Buku Rekening">Buku Tab</button>
                             </div>
+                            <div class="col-sm-4 fw-bold"></div>
+                            <div class="col-sm-8">
+                            <br>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Data BPJS Kesehatan') }} showFiles"
+                                    data-jenis="Data BPJS Kesehatan">BPJS Kesehatan</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Data Ijazah Terakhir') }} showFiles"
+                                    data-jenis="Data Ijazah Terakhir">Ijazah</button>
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Data Kartu Keluarga') }} showFiles"
+                                    data-jenis="Data Kartu Keluarga">Kartu Keluarga</button>
+                            </div>
                         </div>
                         <hr>
                         <div class="mb-4 text-center fw-bold">*** Data Pendidikan ***</div>
@@ -477,7 +508,7 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Nomor NPWP</div>
-                            <div class="col-sm-8">{{ $user->user_npwp }}</div>
+                            <div class="col-sm-8">{{ $user->user_npwp }} </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Nomor BPJS Kesehatan</div>
