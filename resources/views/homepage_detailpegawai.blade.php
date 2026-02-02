@@ -212,7 +212,7 @@
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
-                                <button class="btn btn-warning open-upload-modal" data-title="Data KTP *pdf"
+                                <!-- <button class="btn btn-warning open-upload-modal" data-title="Data KTP *pdf"
                                     data-route="{{ route('tambah.data.ktp') }}" data-jenis="Data KTP"
                                     data-jenisfile="dataktp">
                                     <i class="bi bi-plus-lg"></i> KTP
@@ -226,13 +226,13 @@
                                     data-route="{{ route('tambah.data.rekening') }}" data-jenis="Data Buku Rekening"
                                     data-jenisfile="databukurekening">
                                     <i class="bi bi-plus-lg"></i> Buku Rekening
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
-                                <button class="btn btn-warning open-upload-modal" data-title="Data BPJS Kesehatan *pdf"
+                                <!-- <button class="btn btn-warning open-upload-modal" data-title="Data BPJS Kesehatan *pdf"
                                     data-route="{{ route('tambah.data.bpjs.kesehatan') }}"
                                     data-jenis="Data BPJS Kesehatan" data-jenisfile="databpjskesehatan">
                                     <i class="bi bi-plus-lg"></i> BPJS Kesehatan
@@ -246,14 +246,14 @@
                                     data-route="{{ route('tambah.data.kartu.keluarga') }}"
                                     data-jenis="Data Kartu Keluarga" data-jenisfile="datakartukeluarga">
                                     <i class="bi bi-plus-lg"></i> Kartu Keluarga
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <hr>
                         <hr>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal"
+                                <!-- <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan I"
                                     data-route="{{ route('tambah.evaluasi.tw1') }}"
                                     data-jenis="Evaluasi Kinerja Triwulan I"
@@ -264,12 +264,12 @@
                                     data-route="{{ route('tambah.umpanbalik.tw1') }}"
                                     data-jenis="Umpan Balik Triwulan I" data-jenisfile="umpanbaliktriwulan1">
                                     <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan I
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal"
+                                <!-- <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan II"
                                     data-route="{{ route('tambah.evaluasi.tw2') }}"
                                     data-jenis="Evaluasi Kinerja Triwulan II"
@@ -280,12 +280,12 @@
                                     data-route="{{ route('tambah.umpanbalik.tw2') }}"
                                     data-jenis="Umpan Balik Triwulan II" data-jenisfile="umpanbaliktriwulan2">
                                     <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan II
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class='d-flex align-items-center justify-content-end mb-2'>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal"
+                                <!-- <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan III"
                                     data-route="{{ route('tambah.evaluasi.tw3') }}"
                                     data-jenis="Evaluasi Kinerja Triwulan III"
@@ -297,12 +297,12 @@
                                     data-route="{{ route('tambah.umpanbalik.tw3') }}"
                                     data-jenis="Umpan Balik Triwulan III" data-jenisfile="umpanbaliktriwulan3">
                                     <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan III
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal" data-title="Pakta Integritas 2025"
+                                <!-- <button class="btn btn-primary open-upload-modal" data-title="Pakta Integritas 2025"
                                     data-route="{{ route('tambah.pakta.2025') }}" data-jenis="Pakta Integritas"
                                     data-jenisfile="paktaintegritas">
                                     <i class="bi bi-plus-lg"></i> Pakta Integritas 2025
@@ -312,13 +312,13 @@
                                     data-route="{{ route('tambah.pakta.1desember') }}"
                                     data-jenis="Pakta Integritas 1 Desember 2025" data-jenisfile="pakta1desember">
                                     <i class="bi bi-plus-lg"></i> Pakta Integritas Desember 2025
-                                </button>
+                                </button> -->
 
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal"
+                                <!-- <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan IV"
                                     data-route="{{ route('tambah.evaluasi.tw4') }}"
                                     data-jenis="Evaluasi Kinerja Triwulan IV"
@@ -329,12 +329,12 @@
                                     data-route="{{ route('tambah.umpanbalik.tw4') }}"
                                     data-jenis="Umpan Balik Triwulan IV" data-jenisfile="umpanbaliktriwulan4">
                                     <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan IV
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal"
+                                <!-- <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Tahunan 2025"
                                     data-route="{{ route('tambah.evaluasi.tahunan') }}"
                                     data-jenis="Evaluasi Kinerja Tahunan 2025"
@@ -345,12 +345,12 @@
                                     data-route="{{ route('tambah.skp.2025') }}" data-jenis="SKP 2025"
                                     data-jenisfile="skp2025">
                                     <i class="bi bi-plus-lg"></i> SKP 2025
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal" data-title="Model C 2025"
+                                <!-- <button class="btn btn-primary open-upload-modal" data-title="Model C 2025"
                                     data-route="{{ route('tambah.modelc2025') }}" data-jenis="Model C 2025"
                                     data-jenisfile="modelc2025">
                                     <i class="bi bi-plus-lg"></i> Model C 2025
@@ -359,7 +359,7 @@
                                     data-route="{{ route('tambah.modelc2026') }}" data-jenis="Model C 2026"
                                     data-jenisfile="modelc2026">
                                     <i class="bi bi-plus-lg"></i> Model C 2026
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <hr>
