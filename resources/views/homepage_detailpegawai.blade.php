@@ -212,7 +212,7 @@
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-warning open-upload-modal" data-title="Data KTP *pdf"
+                                <button class="btn btn-warning open-upload-modal" data-title="Data KTP *pdf"
                                     data-route="{{ route('tambah.data.ktp') }}" data-jenis="Data KTP"
                                     data-jenisfile="dataktp">
                                     <i class="bi bi-plus-lg"></i> KTP
@@ -226,13 +226,13 @@
                                     data-route="{{ route('tambah.data.rekening') }}" data-jenis="Data Buku Rekening"
                                     data-jenisfile="databukurekening">
                                     <i class="bi bi-plus-lg"></i> Buku Rekening
-                                </button> -->
+                                </button>
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-warning open-upload-modal" data-title="Data BPJS Kesehatan *pdf"
+                                <button class="btn btn-warning open-upload-modal" data-title="Data BPJS Kesehatan *pdf"
                                     data-route="{{ route('tambah.data.bpjs.kesehatan') }}"
                                     data-jenis="Data BPJS Kesehatan" data-jenisfile="databpjskesehatan">
                                     <i class="bi bi-plus-lg"></i> BPJS Kesehatan
@@ -246,7 +246,7 @@
                                     data-route="{{ route('tambah.data.kartu.keluarga') }}"
                                     data-jenis="Data Kartu Keluarga" data-jenisfile="datakartukeluarga">
                                     <i class="bi bi-plus-lg"></i> Kartu Keluarga
-                                </button> -->
+                                </button>
                             </div>
                         </div>
                         <hr>
