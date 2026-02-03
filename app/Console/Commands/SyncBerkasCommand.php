@@ -38,6 +38,9 @@ class SyncBerkasCommand extends Command
             'data_ktp'              => 'Data KTP',
             'data_npwp'             => 'Data NPWP',
             'data_buku_rekening'    => 'Data Buku Rekening',
+            'data_bpjs_kesehatan'   => 'Data BPJS Kesehatan',
+            'data_ijazah'           => 'Data Ijazah Terakhir',
+            'data_kartu_keluarga'   => 'Data Kartu Keluarga',
             'modelc_2026'           => 'Model C 2026',
             'pakta_2025'            => 'Pakta Integritas',
         ];
