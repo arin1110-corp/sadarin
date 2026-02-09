@@ -89,9 +89,9 @@
                         @foreach($detail['pendidikan_jenjang'] ?? [] as $jenjang => $jk)
                         <tr>
                             <td>{{ $jenjang }}</td>
-                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
-                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
+                            <td>{{ $jk['L'] ?? 0 }}</td>
+                            <td>{{ $jk['P'] ?? 0 }}</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -135,9 +135,9 @@
                         @foreach($detail['jabatan'] ?? [] as $nama => $jk)
                         <tr>
                             <td>{{ $nama }}</td>
-                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
-                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
+                            <td>{{ $jk['L'] ?? 0 }}</td>
+                            <td>{{ $jk['P'] ?? 0 }}</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -157,10 +157,10 @@
                     <tbody>
                         @foreach($detail['golongan'] ?? [] as $nama => $jk)
                         <tr>
-                            <td>{{ $nama ?? '-' }} Orang</td>
-                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
-                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
+                            <td>{{ $nama ?? '-' }}</td>
+                            <td>{{ $jk['L'] ?? 0 }}</td>
+                            <td>{{ $jk['P'] ?? 0 }}</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -181,9 +181,9 @@
                         @foreach($detail['pendidikan_detail'] ?? [] as $nama => $jk)
                         <tr>
                             <td>{{ $nama }}</td>
-                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
-                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
+                            <td>{{ $jk['L'] ?? 0 }}</td>
+                            <td>{{ $jk['P'] ?? 0 }}</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
