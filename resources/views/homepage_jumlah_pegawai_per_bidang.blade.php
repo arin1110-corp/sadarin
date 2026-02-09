@@ -112,9 +112,9 @@
                         @foreach($detail['jabatan_kategori'] ?? [] as $kategori => $jk)
                         <tr>
                             <td>{{ $kategori }}</td>
-                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
-                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
+                            <td>{{ $jk['L'] ?? 0 }}</td>
+                            <td>{{ $jk['P'] ?? 0 }}</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
