@@ -114,27 +114,7 @@
         @endforeach
 
 
-        {{-- 🔥 JABATAN → JENIS KELAMIN --}}
-        <h4 class="mt-5">Rekap Pegawai per Jabatan & Jenis Kelamin</h4>
-
-        @php
-            $jabatanJK = $dataRekap['jabatan_jk']->groupBy('jabatan');
-        @endphp
-
-        @foreach ($jabatanJK as $jabatan => $items)
-            <div class="card mb-3">
-                <div class="card-header fw-bold">
-                    {{ $jabatan }}
-                </div>
-                <div class="card-body">
-                    <ul class="mb-0">
-                        @foreach ($items as $row)
-                            <li>{{ jk($row->jk) }} : {{ $row->jumlah }} Orang</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endforeach
+        
 
     </div>
 </body>
