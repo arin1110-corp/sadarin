@@ -80,7 +80,7 @@
 
         <div class="search-wrapper">
             <i class="bi bi-search"></i>
-            <input type="text" id="menuSearch" placeholder="Cari bidang, layanan, atau menu..." autocomplete="off">
+            <input type="text" id="menuSearch" placeholder="Cari Menu Arsip" autocomplete="off">
         </div>
 
         <div class="grid-menu-center mt-3">
