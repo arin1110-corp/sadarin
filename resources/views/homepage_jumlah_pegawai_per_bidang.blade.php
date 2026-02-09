@@ -74,6 +74,52 @@
 
             <div class="card-body">
 
+                {{-- ================= PENDIDIKAN TERAKHIR ================= --}}
+                <h5 class="mb-3">Pendidikan Terakhir</h5>
+                <table class="table table-bordered table-sm mb-4">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Jenjang</th>
+                            <th width="120">L</th>
+                            <th width="120">P</th>
+                            <th width="120">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($detail['pendidikan_jenjang'] ?? [] as $jenjang => $jk)
+                        <tr>
+                            <td>{{ $jenjang }}</td>
+                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
+                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                {{-- ================= KATEGORI JABATAN ================= --}}
+                <h5 class="mb-3">Rekap per Kategori Jabatan</h5>
+                <table class="table table-bordered table-sm mb-4">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Kategori Jabatan</th>
+                            <th width="120">L</th>
+                            <th width="120">P</th>
+                            <th width="120">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($detail['jabatan_kategori'] ?? [] as $kategori => $jk)
+                        <tr>
+                            <td>{{ $kategori }}</td>
+                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
+                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
                 {{-- ================= JABATAN ================= --}}
                 <h5 class="mb-3">Rekap per Jabatan</h5>
                 <table class="table table-bordered table-sm mb-4">
@@ -89,9 +135,9 @@
                         @foreach($detail['jabatan'] ?? [] as $nama => $jk)
                         <tr>
                             <td>{{ $nama }}</td>
-                            <td>{{ $jk['L'] ?? 0 }}</td>
-                            <td>{{ $jk['P'] ?? 0 }}</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
+                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
+                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -111,33 +157,10 @@
                     <tbody>
                         @foreach($detail['golongan'] ?? [] as $nama => $jk)
                         <tr>
-                            <td>{{ $nama ?? '-' }}</td>
-                            <td>{{ $jk['L'] ?? 0 }}</td>
-                            <td>{{ $jk['P'] ?? 0 }}</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                {{-- ================= PENDIDIKAN TERAKHIR ================= --}}
-                <h5 class="mb-3">Pendidikan Terakhir</h5>
-                <table class="table table-bordered table-sm mb-4">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Jenjang</th>
-                            <th width="120">L</th>
-                            <th width="120">P</th>
-                            <th width="120">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($detail['pendidikan_jenjang'] ?? [] as $jenjang => $jk)
-                        <tr>
-                            <td>{{ $jenjang }}</td>
-                            <td>{{ $jk['L'] ?? 0 }}</td>
-                            <td>{{ $jk['P'] ?? 0 }}</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
+                            <td>{{ $nama ?? '-' }} Orang</td>
+                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
+                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -158,9 +181,9 @@
                         @foreach($detail['pendidikan_detail'] ?? [] as $nama => $jk)
                         <tr>
                             <td>{{ $nama }}</td>
-                            <td>{{ $jk['L'] ?? 0 }}</td>
-                            <td>{{ $jk['P'] ?? 0 }}</td>
-                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }}</td>
+                            <td>{{ $jk['L'] ?? 0 }} Orang</td>
+                            <td>{{ $jk['P'] ?? 0 }} Orang</td>
+                            <td>{{ ($jk['L'] ?? 0) + ($jk['P'] ?? 0) }} Orang</td>
                         </tr>
                         @endforeach
                     </tbody>

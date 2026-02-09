@@ -72,6 +72,15 @@
                 return $v == 'L' ? 'Laki-laki' : 'Perempuan';
             }
         @endphp
+        @php
+            $mapJenisKerja = [
+                1 => 'PNS',
+                2 => 'PPPK',
+                3 => 'Paruh Waktu',
+                4 => 'PJLP',
+            ];
+        @endphp
+
 
         {{-- LOOP SEMUA REKAP UMUM --}}
         @foreach ([
@@ -81,13 +90,20 @@
         'eselon' => 'Eselon',
         'kategori_jabatan' => 'Kategori Jabatan',
         'pendidikan' => 'Pendidikan',
-    ] as $key => $judul)
+        ] as $key => $judul)
             <h4 class="mt-5">Rekap Pegawai per {{ $judul }}</h4>
+
             <div class="row g-3">
                 @forelse($dataRekap[$key] as $row)
                     <div class="col-md-3">
-                        <div class="card p-3">
-                            <div class="fw-bold">{{ $row->nama ?? '-' }}</div>
+                        <div class="card p-3 h-100">
+                            <div class="fw-bold">
+                                @if ($key === 'jenis_kerja')
+                                    {{ $mapJenisKerja[$row->nama] ?? 'Tidak Diketahui' }}
+                                @else
+                                    {{ $row->nama ?? '-' }}
+                                @endif
+                            </div>
                             <div>{{ $row->jumlah }} Orang</div>
                         </div>
                     </div>
@@ -96,6 +112,7 @@
                 @endforelse
             </div>
         @endforeach
+
 
         {{-- 🔥 JABATAN → JENIS KELAMIN --}}
         <h4 class="mt-5">Rekap Pegawai per Jabatan & Jenis Kelamin</h4>
