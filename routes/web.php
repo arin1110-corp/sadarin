@@ -209,5 +209,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/bendahara-pengeluaran', [KodeController::class, 'bendaharaPengeluaran'])->name('bendahara.pengeluaran');
     Route::get('/data-pegawaipns', [KodeController::class, 'dataPegawaipns'])->name('data.pegawaiPNS');
     Route::get('/data-pegawai-pppk', [KodeController::class, 'dataPegawaiPPPK'])->name('data.pegawaiPPPK');
+    Route::get('/data-pegawai-rekap', [KodeController::class, 'dataPegawaiRekap'])->name('data.rekappegawai');
+    Route::get('/data-pegawai-per-bidang', [KodeController::class, 'dataPegawaiRekapPerBidang'])->name('data.perbidangpegawai');
     Route::get('/data-pegawai-rincian', [KodeController::class, 'dataPegawaiRincian'])->name('data.rincianpegawai');
 });
