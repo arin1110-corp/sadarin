@@ -596,8 +596,38 @@ class KodeController extends Controller
 
             $bidangRekap[$key]['pendidikan_detail'][$namaPendidikan][$jk] = ($bidangRekap[$key]['pendidikan_detail'][$namaPendidikan][$jk] ?? 0) + $row->jumlah;
         }
+        // ================= HITUNG TOTAL DINAS DAN UPTD =================
+        $totalPerUnit = [];
 
-        return view('homepage_jumlah_pegawai_per_bidang', compact('totalPegawai', 'jumlahLaki', 'jumlahPerempuan', 'bidangRekap'));
+        foreach ($bidangRekap as $unit => $data) {
+            $jumlahL = 0;
+            $jumlahP = 0;
+
+            // Hitung total semua kategori dari unit (bisa dari pendidikan, jabatan, atau golongan, pilih salah satu)
+            foreach ($data['pendidikan_jenjang'] ?? [] as $jenjang => $jk) {
+                $jumlahL += $jk['L'] ?? 0;
+                $jumlahP += $jk['P'] ?? 0;
+            }
+
+            $totalPerUnit[$unit] = [
+                'L' => $jumlahL,
+                'P' => $jumlahP,
+                'total' => $jumlahL + $jumlahP,
+            ];
+        }
+
+        // Total DINAS saja
+        $totalDinas = $totalPerUnit['DINAS KEBUDAYAAN PROVINSI BALI']['total'] ?? 0;
+
+        // Total UPTD (loop dan pilih unit selain DINAS)
+        $totalUPTD = [];
+        foreach ($totalPerUnit as $unit => $tot) {
+            if ($unit !== 'DINAS KEBUDAYAAN PROVINSI BALI') {
+                $totalUPTD[$unit] = $tot['total'];
+            }
+        }
+
+        return view('homepage_jumlah_pegawai_per_bidang', compact('totalPegawai', 'jumlahLaki', 'jumlahPerempuan', 'bidangRekap', 'totalDinas', 'totalUPTD'));
     }
     public function dataPegawaiPPPK()
     {
