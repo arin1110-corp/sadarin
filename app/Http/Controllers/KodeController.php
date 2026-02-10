@@ -454,85 +454,6 @@ class KodeController extends Controller
     }
     public function dataPegawaiRekap()
     {
-        $base = ModelUser::query()->join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->where('sadarin_user.user_status', 1);
-
-        /* ===============================
-         * STATISTIK UTAMA
-         * =============================== */
-        $totalPegawai = (clone $base)->count();
-
-        $jumlahLaki = (clone $base)->where('sadarin_user.user_jk', 'L')->count();
-
-        $jumlahPerempuan = (clone $base)->where('sadarin_user.user_jk', 'P')->count();
-
-        /* ===============================
-         * REKAP DATA
-         * =============================== */
-        $dataRekap = [
-            // 1️⃣ JENIS KERJA
-            'jenis_kerja' => (clone $base)->selectRaw('sadarin_user.user_jeniskerja as nama, COUNT(*) as jumlah')->groupBy('sadarin_user.user_jeniskerja')->orderBy('sadarin_user.user_jeniskerja')->get(),
-
-            // 2️⃣ JABATAN
-            'jabatan' => (clone $base)->selectRaw('sadarin_jabatan.jabatan_nama as nama, COUNT(*) as jumlah')->groupBy('sadarin_jabatan.jabatan_nama')->orderBy('sadarin_jabatan.jabatan_nama')->get(),
-
-            // 3️⃣ JENIS KELAMIN
-            'jenis_kelamin' => (clone $base)->selectRaw('sadarin_user.user_jk as nama, COUNT(*) as jumlah')->groupBy('sadarin_user.user_jk')->get(),
-
-            // 4️⃣ GOLONGAN ✅ FIX BENAR
-            'golongan' => (clone $base)
-                ->selectRaw(
-                    '
-                    CONCAT(
-                        sadarin_golongan.golongan_nama,
-                        " (", sadarin_golongan.golongan_pangkat, ")"
-                    ) as nama,
-                        COUNT(*) as jumlah
-                    ',
-                )
-                ->groupBy('sadarin_golongan.golongan_id', 'sadarin_golongan.golongan_pangkat', 'sadarin_golongan.golongan_nama')
-                ->orderBy('sadarin_golongan.golongan_id')
-                ->get(),
-
-            // 5️⃣ ESELON
-            'eselon' => (clone $base)->selectRaw('sadarin_eselon.eselon_nama as nama, COUNT(*) as jumlah')->groupBy('sadarin_eselon.eselon_nama')->orderBy('sadarin_eselon.eselon_nama')->get(),
-
-            // 6️⃣ FUNGSIONAL / STRUKTURAL
-            'kategori_jabatan' => (clone $base)->selectRaw('sadarin_jabatan.jabatan_kategori as nama, COUNT(*) as jumlah')->groupBy('sadarin_jabatan.jabatan_kategori')->get(),
-
-            // 7️⃣ PENDIDIKAN ✅ FIX BENAR
-            'pendidikan' => (clone $base)
-                ->selectRaw(
-                    "
-                    CONCAT(
-                        sadarin_pendidikan.pendidikan_jenjang,
-                        ' - ',
-                        sadarin_pendidikan.pendidikan_jurusan
-                    ) as nama,
-                    COUNT(*) as jumlah
-                ",
-                )
-                ->groupBy('sadarin_pendidikan.pendidikan_id', 'sadarin_pendidikan.pendidikan_jenjang', 'sadarin_pendidikan.pendidikan_jurusan')
-                ->orderBy('sadarin_pendidikan.pendidikan_jenjang')
-                ->get(),
-
-            // 🔥 8️⃣ JABATAN → JENIS KELAMIN
-            'jabatan_jk' => (clone $base)
-                ->selectRaw(
-                    '
-            sadarin_jabatan.jabatan_nama as jabatan,
-            sadarin_user.user_jk as jk,
-            COUNT(*) as jumlah
-        ',
-                )
-                ->groupBy('sadarin_jabatan.jabatan_nama', 'sadarin_user.user_jk')
-                ->orderBy('sadarin_jabatan.jabatan_nama')
-                ->get(),
-        ];
-
-        return view('homepage_jumlah_pegawai', compact('totalPegawai', 'jumlahLaki', 'jumlahPerempuan', 'dataRekap'));
-    }
-    public function dataPegawaiRekapPerBidang()
-    {
         $base = ModelUser::query()->join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->where('sadarin_user.user_status', 1);
 
         /* ================= TOTAL ================= */
@@ -576,6 +497,99 @@ class KodeController extends Controller
                 // UPTD tetap berdiri sendiri
                 $key = $row->bidang;
             }
+
+            $jk = $row->jk;
+
+            /* ================= PENDIDIKAN TERAKHIR ================= */
+            $bidangRekap[$key]['pendidikan_jenjang'][$row->jenjang][$jk] = ($bidangRekap[$key]['pendidikan_jenjang'][$row->jenjang][$jk] ?? 0) + $row->jumlah;
+
+            /* ================= KATEGORI JABATAN ================= */
+            $bidangRekap[$key]['jabatan_kategori'][$row->jabatan_kategori][$jk] = ($bidangRekap[$key]['jabatan_kategori'][$row->jabatan_kategori][$jk] ?? 0) + $row->jumlah;
+
+            /* ================= JABATAN ================= */
+            $bidangRekap[$key]['jabatan'][$row->jabatan][$jk] = ($bidangRekap[$key]['jabatan'][$row->jabatan][$jk] ?? 0) + $row->jumlah;
+
+            /* ================= GOLONGAN ================= */
+            $bidangRekap[$key]['golongan'][$row->golongan][$jk] = ($bidangRekap[$key]['golongan'][$row->golongan][$jk] ?? 0) + $row->jumlah;
+
+            /* ================= DETAIL PENDIDIKAN ================= */
+            $namaPendidikan = trim($row->jenjang . ' - ' . $row->jurusan);
+
+            $bidangRekap[$key]['pendidikan_detail'][$namaPendidikan][$jk] = ($bidangRekap[$key]['pendidikan_detail'][$namaPendidikan][$jk] ?? 0) + $row->jumlah;
+        }
+        // ================= HITUNG TOTAL DINAS DAN UPTD =================
+        $totalPerUnit = [];
+
+        foreach ($bidangRekap as $unit => $data) {
+            $jumlahL = 0;
+            $jumlahP = 0;
+
+            // Hitung total semua kategori dari unit (bisa dari pendidikan, jabatan, atau golongan, pilih salah satu)
+            foreach ($data['pendidikan_jenjang'] ?? [] as $jenjang => $jk) {
+                $jumlahL += $jk['L'] ?? 0;
+                $jumlahP += $jk['P'] ?? 0;
+            }
+
+            $totalPerUnit[$unit] = [
+                'L' => $jumlahL,
+                'P' => $jumlahP,
+                'total' => $jumlahL + $jumlahP,
+            ];
+        }
+
+        // Total DINAS saja
+        $totalDinas = $totalPerUnit['DINAS KEBUDAYAAN PROVINSI BALI']['total'] ?? 0;
+
+        // Total UPTD (loop dan pilih unit selain DINAS)
+        $totalUPTD = [];
+        foreach ($totalPerUnit as $unit => $tot) {
+            if ($unit !== 'DINAS KEBUDAYAAN PROVINSI BALI') {
+                $totalUPTD[$unit] = $tot['total'];
+            }
+        }
+
+        return view('homepage_jumlah_pegawai', compact('totalPegawai', 'jumlahLaki', 'jumlahPerempuan', 'bidangRekap', 'totalDinas', 'totalUPTD'));
+    }
+    public function dataPegawaiRekapPerBidang()
+    {
+        $base = ModelUser::query()->join('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->join('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->where('sadarin_user.user_status', 1);
+
+        /* ================= TOTAL ================= */
+        $totalPegawai = (clone $base)->count();
+        $jumlahLaki = (clone $base)->where('sadarin_user.user_jk', 'L')->count();
+        $jumlahPerempuan = (clone $base)->where('sadarin_user.user_jk', 'P')->count();
+
+        /* ================= DETAIL ================= */
+        $rekapBidangDetail = (clone $base)
+            ->selectRaw(
+                '
+        sadarin_bidang.bidang_nama as bidang,
+        sadarin_jabatan.jabatan_nama as jabatan,
+        sadarin_jabatan.jabatan_kategori as jabatan_kategori,
+        CONCAT(
+            sadarin_golongan.golongan_nama,
+            " (",
+            sadarin_golongan.golongan_pangkat,
+            ")"
+        ) as golongan,
+        sadarin_pendidikan.pendidikan_jenjang as jenjang,
+        sadarin_pendidikan.pendidikan_jurusan as jurusan,
+        sadarin_user.user_jk as jk,
+        COUNT(*) as jumlah
+    ',
+            )
+            ->groupBy('sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_jabatan.jabatan_kategori', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_pendidikan.pendidikan_jenjang', 'sadarin_pendidikan.pendidikan_jurusan', 'sadarin_user.user_jk')
+            ->orderBy('sadarin_bidang.bidang_nama')
+            ->orderBy('sadarin_jabatan.jabatan_kategori')
+            ->orderBy('sadarin_jabatan.jabatan_nama')
+            ->get();
+
+        /* ================= REKAP ARRAY ================= */
+        $bidangRekap = [];
+
+        foreach ($rekapBidangDetail as $row) {
+            // 🔑 LOGIKA GABUNG DINAS
+            $key = $row->bidang;
 
             $jk = $row->jk;
 

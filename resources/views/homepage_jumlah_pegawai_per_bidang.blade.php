@@ -70,13 +70,6 @@
         {{-- JUDUL --}}
         <h4 class="fw-bold mb-3">Rekapitulasi Pegawai</h4>
         <div class="row g-3 mb-5">
-            <div class="col-md-3">
-                <div class="card p-3 text-center">
-                    <i class="bi bi-building fs-1"></i>
-                    <h6>Total Pegawai Dinas</h6>
-                    <strong>{{ $totalDinas }} Orang</strong>
-                </div>
-            </div>
             @foreach ($totalUPTD as $uptd => $jumlah)
                 <div class="col-md-3">
                     <div class="card p-3 text-center">
