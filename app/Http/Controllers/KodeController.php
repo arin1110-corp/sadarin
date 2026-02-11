@@ -2226,7 +2226,7 @@ class KodeController extends Controller
                 '1' => 'assets/coretax2026/pns',
                 '2' => 'assets/coretax2026/pppk',
                 '3' => 'assets/coretax2026/paruhwaktu',
-                '4' => 'assets/coretax2026/nonasn',
+                '4' => 'assets/coretax2026/pjlp',
             ],
         ];
 
