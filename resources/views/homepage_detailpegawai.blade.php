@@ -253,6 +253,15 @@
                         <hr>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
+                                <button class="btn btn-primary open-upload-modal" data-title="Laporan Bulanan PJLP Januari 2025"
+                                    data-route="{{ route('tambah.laporan.pjlp.januari') }}"
+                                    data-jenis="Laporan Bulanan PJLP Januari 2025" data-jenisfile="laporanpjlpjanuari2025">
+                                    <i class="bi bi-plus-lg"></i> Laporan PJLP Januari 2025
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end mb-2">
+                            <div class="d-flex gap-2">
                                 <!-- <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan I"
                                     data-route="{{ route('tambah.evaluasi.tw1') }}"

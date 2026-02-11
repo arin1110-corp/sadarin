@@ -196,6 +196,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-bpjskesehatan', [KodeController::class, 'uploadBerkas'])->name('tambah.data.bpjs.kesehatan');
     Route::post('/tambah-kartukeluarga', [KodeController::class, 'uploadBerkas'])->name('tambah.data.kartu.keluarga');
     Route::post('/tambah-dataijazah', [KodeController::class, 'uploadBerkas'])->name('tambah.data.ijazah');
+    Route::post('/tambah-pjlp-januari', [KodeController::class, 'uploadBerkasDrive'])->name('tambah.laporan.pjlp.januari');
 
     // Rute untuk halaman cek Subbag
 

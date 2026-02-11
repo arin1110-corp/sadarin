@@ -27,12 +27,12 @@ use App\Models\ModelAdmin;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Exports\PegawaiPerBidangExport;
-use Google\Model;
-// ✅ Google API Client
-use Google_Client;
-use Google_Service_Drive;
-use Google_Service_Drive_DriveFile;
 use PDF;
+
+use Google\Client;
+use Google\Service\Drive;
+use Google\Service\Drive\DriveFile;
+use Google\Service\Drive\Permission;
 
 class KodeController extends Controller
 {
@@ -2255,6 +2255,125 @@ class KodeController extends Controller
             ->with('success', 'File ' . $jenis . ' berhasil diupload.')
             ->with('file_url', $url);
     }
+    public function uploadBerkasDrive(Request $request)
+    {
+        $request->validate([
+            'user_nip' => 'required|string',
+            'file' => 'required|mimes:pdf|max:10240',
+            'kumpulan_jenis' => 'required|string',
+            'jenisfile' => 'required|string',
+            'user_jeniskerja' => 'required|string',
+        ]);
+
+        $nip = $request->user_nip;
+        $nik = $request->user_nik;
+        $jenis = $request->kumpulan_jenis;
+        $jenisfile = $request->jenisfile;
+        $jeniskerja = $request->user_jeniskerja;
+
+        $finalId = ($nip == '-' || empty($nip)) ? $nik : $nip;
+        $filename = $finalId . '_' . str_replace(' ', '_', $jenis) . '.pdf';
+
+        /* ================= FOLDER MAPPING ================= */
+
+        $folderMapDrive = [
+            'evaluasikinerjatriwulan1' => [
+                '1' => env('DRIVE_EVKIN_TW1_PNS'),
+                '2' => env('DRIVE_EVKIN_TW1_PPPK'),
+            ],
+            'umpanbaliktriwulan1' => [
+                '1' => env('DRIVE_UMPANBALIK_TW1_PNS'),
+                '2' => env('DRIVE_UMPANBALIK_TW1_PPPK'),
+            ],
+            'evaluasikinerjatahunan2025' => [
+                '1' => env('DRIVE_EVKIN_2025_PNS'),
+                '2' => env('DRIVE_EVKIN_2025_PPPK'),
+            ],
+            'skp2025' => [
+                '1' => env('DRIVE_SKP_2025_PNS'),
+                '2' => env('DRIVE_SKP_2025_PPPK'),
+            ],
+            'laporanpjlpjanuari2025' => [
+                '1' => env('GOOGLE_DRIVE_FOLDER_BULANAN_PJLP_JANUARI_2025'),
+            ],
+        ];
+
+        if (!isset($folderMapDrive[$jenisfile][$jeniskerja])) {
+            return back()->with('error', 'Folder Drive belum disetting.');
+        }
+
+        $folderId = $folderMapDrive[$jenisfile][$jeniskerja];
+
+        if (empty($folderId)) {
+            return back()->with('error', 'Folder ID kosong di ENV.');
+        }
+
+        try {
+
+            /* ================= GOOGLE CLIENT ================= */
+
+            $client = new Client();
+            $client->setAuthConfig(
+                storage_path(env('GOOGLE_APPLICATION_PJLP_CREDENTIALS'))
+            );
+            $client->addScope(Drive::DRIVE);
+
+            $driveService = new Drive($client);
+
+            /* ================= META FILE ================= */
+
+            $fileMetadata = new DriveFile([
+                'name' => $filename,
+                'parents' => [$folderId],
+            ]);
+
+            /* ================= UPLOAD ================= */
+
+
+            $uploadedFile = $driveService->files->create($fileMetadata, [
+                'data' => file_get_contents($request->file('file')->getRealPath()),
+                'mimeType' => 'application/pdf',
+                'uploadType' => 'multipart',
+                'fields' => 'id',
+                'supportsAllDrives' => true,
+            ]);
+            dd($uploadedFile);
+
+            $fileId = $uploadedFile->getId();
+
+            /* ================= SET PUBLIC ACCESS ================= */
+
+            $permission = new Permission([
+                'type' => 'anyone',
+                'role' => 'reader',
+            ]);
+
+            $driveService->permissions->create($fileId, $permission, [
+                'supportsAllDrives' => true,
+            ]);
+
+            $url = "https://drive.google.com/file/d/{$fileId}/view";
+
+            /* ================= SIMPAN DB ================= */
+
+            ModelPengumpulanBerkas::updateOrCreate(
+                [
+                    'kumpulan_user' => $finalId,
+                    'kumpulan_jenis' => $jenis,
+                ],
+                [
+                    'kumpulan_file' => $url,
+                    'kumpulan_status' => 1,
+                ]
+            );
+
+            return back()->with('success', 'File berhasil diupload ke Google Drive.');
+        } catch (\Exception $e) {
+
+            return back()->with('error', 'Upload gagal: ' . $e->getMessage());
+        }
+    }
+
     public function exportDataPegawai()
     {
         return Excel::download(new PegawaiPerBidangExport(), 'DATA_PEGAWAI_PER_BIDANG.xlsx');
