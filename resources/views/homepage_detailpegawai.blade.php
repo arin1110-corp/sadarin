@@ -622,6 +622,27 @@
                                     data-jenis="SKP 2025">2025</button>
                             </div>
                         </div>
+
+                        {{-- Coretax --}}
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fw-bold">Data Coretax</div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Coretax 2026') }} showFiles"
+                                    data-jenis="Coretax 2026">2026</button>
+                            </div>
+                        </div>
+
+                        {{-- Laporan Bulanan PJLP --}}
+                        @if ($user->user_jeniskerja == 4)
+                            <div class="row mb-2">
+                                <div class="col-sm-6 fw-bold">Laporan Bulanan PJLP</div>
+                                <div class="col-sm-6">
+                                    <button
+                                        class="btn btn-{{ cekBerkas($berkas, 'Laporan Bulanan PJLP Januari 2025') }} showFiles"
+                                        data-jenis="Laporan Bulanan PJLP Januari 2025">Januari 2025</button>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
 

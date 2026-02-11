@@ -43,6 +43,8 @@ Route::get('/data-buku-rekening', [PreFillController::class, 'prefillDataBukuRek
 Route::get('/data-bpjs-kesehatan', [PreFillController::class, 'prefillDataBPJSKesehatan']);
 Route::get('/data-kartu-keluarga', [PreFillController::class, 'prefillDataKartuKeluarga']);
 Route::get('/data-ijazah', [PreFillController::class, 'prefillDataIjazah']);
+Route::get('/data-laporan-pjlp-januari-2025', [PreFillController::class, 'prefillLaporanPJLPJanuari2025']);
+Route::get('/data-coretax-2026', [PreFillController::class, 'prefillCoretax2026']);
 
 // -------------------- Admin / Kepegawaian --------------------
 Route::get('/login', [KodeController::class, 'login'])->name('login'); // Form login admin/kepegawaian
