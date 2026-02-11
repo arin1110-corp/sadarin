@@ -55,10 +55,10 @@ class ParuhWaktuSheet implements FromCollection, WithHeadings, WithColumnFormatt
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:H1')->getFont()->setBold(true);
 
         // Border semua sel
-        $sheet->getStyle('A1:F' . ($this->data->count() + 1))
+        $sheet->getStyle('A1:H' . ($this->data->count() + 1))
             ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
     }
 }
