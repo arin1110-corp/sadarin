@@ -47,6 +47,7 @@
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.kartu.keluarga', ['id' => 'Data Kartu Keluarga']) }}">Data Kartu Keluarga</a>
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.ijazah', ['id' => 'Data Ijazah Terakhir']) }}">Data Ijazah</a>
             </div>
+        </li>
 
         {{-- Dropdown Pakta Integritas --}}
         <li class="nav-item mb-1">
@@ -58,6 +59,17 @@
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.pakta.1desember', ['id' => 'Pakta Integritas 1 Desember 2025']) }}">Pakta Integritas 1 Desember 2025</a>
             </div>
         </li>
+
+        {{-- Dropdown Laporan PJLP Januari 2025 --}}
+        <li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#pjlpDropdown" role="button" aria-expanded="false" aria-controls="pjlpDropdown">
+                <i class="bi bi-file-earmark-text me-2"></i> Laporan Bulanan PJLP
+            </a>
+            <div class="collapse ps-4" id="pjlpDropdown">
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.laporan.pjlp.januari.2025', ['id' => 'Laporan Bulanan PJLP Januari 2025']) }}">Januari 2025</a>
+            </div>
+        </li>
+        
 
         {{-- Dropdown Evaluasi Kinerja --}}
         <li class="nav-item mb-1">
@@ -103,6 +115,16 @@
             </a>
             <div class="collapse ps-4" id="SKPdropdown">
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.skp.2025', ['id' => 'SKP 2025']) }}">2025</a>
+            </div>
+        </li>
+
+        {{-- Dropwdown Data Coretax 2026 --}}
+        <li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#coretaxDropdown" role="button" aria-expanded="false" aria-controls="coretaxDropdown">
+                <i class="bi bi-file-earmark-text me-2"></i> Data Coretax
+            </a>
+            <div class="collapse ps-4" id="coretaxDropdown">
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.coretax.2026', ['id' => 'Coretax 2026']) }}">2026</a>
             </div>
         </li>
     </ul>
