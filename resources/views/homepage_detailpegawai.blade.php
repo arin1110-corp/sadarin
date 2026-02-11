@@ -262,7 +262,7 @@
                             </div>
                         </div>
                         @endif
-                        <div class="d-flex align-items-center justify-content-end mb-2">
+                        <!-- <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
                                 <button class="btn btn-primary open-upload-modal" data-title="Coretax 2026"
                                     data-route="{{ route('tambah.coretax.2026') }}" data-jenis="Coretax 2026"
@@ -270,7 +270,7 @@
                                     <i class="bi bi-plus-lg"></i> Coretax 2026
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
                                 <!-- <button class="btn btn-primary open-upload-modal"
@@ -666,6 +666,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
+                    <div class="mb-3" id="tanggalMelaporWrapper" style="display:none;">
+                        <label class="form-label">Tanggal Melapor</label>
+                        <input type="date" name="tanggal_melapor" id="tanggal_melapor" class="form-control">
+                    </div>
                     <div class="modal-body">
                         <div class="mb-3">
                             <label id="labelFile" class="form-label">File</label>
