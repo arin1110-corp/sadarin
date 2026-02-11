@@ -2047,10 +2047,11 @@ class KodeController extends Controller
         $dataPegawai = DB::table('sadarin_user')
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->leftJoin('sadarin_pengumpulanberkas', function ($join) {
                 $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
             })
-            ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_keterangan', 'sadarin_pengumpulanberkas.kumpulan_file')
+            ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_bidang.bidang_nama', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_keterangan', 'sadarin_pengumpulanberkas.kumpulan_file')
             ->where('sadarin_user.user_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $id)
             ->orderByRaw(

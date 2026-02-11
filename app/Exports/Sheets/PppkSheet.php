@@ -29,6 +29,7 @@ class PppkSheet implements FromCollection, WithHeadings, WithColumnFormatting, S
             $user->user_nama,
             $user->jabatan_nama,
             $user->bidang_nama,
+            $user->golongan_nama . ' (' . $user->golongan_pangkat . ')',
             $user->kumpulan_status == 1 ? 'Terkumpul' : 'Belum',
             $user->kumpulan_file ?? '-',
             $user->kumpulan_keterangan
@@ -37,7 +38,7 @@ class PppkSheet implements FromCollection, WithHeadings, WithColumnFormatting, S
 
     public function headings(): array
     {
-        return ['NIP', 'Nama', 'NIK', 'Jabatan', 'Bidang', 'Status Kumpul', 'Link File', 'Keterangan'];
+        return ['NIP', 'Nama', 'NIK', 'Jabatan', 'Bidang', 'Golongan', 'Status Kumpul', 'Link File', 'Keterangan'];
     }
 
     public function columnFormats(): array
@@ -55,9 +56,9 @@ class PppkSheet implements FromCollection, WithHeadings, WithColumnFormatting, S
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:H1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:I1')->getFont()->setBold(true);
 
-        $sheet->getStyle('A1:H' . ($this->data->count() + 1))
+        $sheet->getStyle('A1:I' . ($this->data->count() + 1))
             ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
     }
 }
