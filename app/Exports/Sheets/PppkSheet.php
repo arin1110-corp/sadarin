@@ -30,13 +30,14 @@ class PppkSheet implements FromCollection, WithHeadings, WithColumnFormatting, S
             $user->jabatan_nama,
             $user->bidang_nama,
             $user->kumpulan_status == 1 ? 'Terkumpul' : 'Belum',
-            $user->kumpulan_file ?? '-'
+            $user->kumpulan_file ?? '-',
+            $user->kumpulan_keterangan
         ]);
     }
 
     public function headings(): array
     {
-        return ['NIP', 'Nama', 'NIK', 'Jabatan', 'Bidang', 'Status Kumpul', 'Link File'];
+        return ['NIP', 'Nama', 'NIK', 'Jabatan', 'Bidang', 'Status Kumpul', 'Link File', 'Keterangan'];
     }
 
     public function columnFormats(): array

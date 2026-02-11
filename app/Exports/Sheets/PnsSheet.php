@@ -30,13 +30,14 @@ class PnsSheet implements FromCollection, WithHeadings, WithColumnFormatting, Sh
             $user->jabatan_nama,
             $user->bidang_nama,
             $user->kumpulan_status == 1 ? 'Terkumpul' : 'Belum',
-            $user->kumpulan_file ?? '-'
+            $user->kumpulan_file ?? '-',
+            $user->kumpulan_keterangan
         ]);
     }
 
     public function headings(): array
     {
-        return ['NIP', 'NIK', 'Nama', 'Jabatan', 'Bidang', 'Status Kumpul', 'Link File'];
+        return ['NIP', 'NIK', 'Nama', 'Jabatan', 'Bidang', 'Status Kumpul', 'Link File', 'Keterangan'];
     }
 
     public function columnFormats(): array
