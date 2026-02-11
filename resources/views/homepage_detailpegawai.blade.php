@@ -252,17 +252,19 @@
                         <hr>
                         <hr>
                         @if ($user->user_jeniskerja == 4)
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal" data-title="Laporan Bulanan PJLP Januari 2025"
-                                    data-route="{{ route('tambah.laporan.pjlp.januari') }}"
-                                    data-jenis="Laporan Bulanan PJLP Januari 2025" data-jenisfile="laporanpjlpjanuari2025">
-                                    <i class="bi bi-plus-lg"></i> Laporan PJLP Januari 2025
-                                </button>
+                            <div class="d-flex align-items-center justify-content-end mb-2">
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary open-upload-modal"
+                                        data-title="Laporan Bulanan PJLP Januari 2025"
+                                        data-route="{{ route('tambah.laporan.pjlp.januari') }}"
+                                        data-jenis="Laporan Bulanan PJLP Januari 2025"
+                                        data-jenisfile="laporanpjlpjanuari2025">
+                                        <i class="bi bi-plus-lg"></i> Laporan PJLP Januari 2025
+                                    </button>
+                                </div>
                             </div>
-                        </div>
                         @endif
-                        <!-- <div class="d-flex align-items-center justify-content-end mb-2">
+                        <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
                                 <button class="btn btn-primary open-upload-modal" data-title="Coretax 2026"
                                     data-route="{{ route('tambah.coretax.2026') }}" data-jenis="Coretax 2026"
@@ -270,7 +272,7 @@
                                     <i class="bi bi-plus-lg"></i> Coretax 2026
                                 </button>
                             </div>
-                        </div> -->
+                        </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
                                 <!-- <button class="btn btn-primary open-upload-modal"
@@ -493,7 +495,7 @@
                             </div>
                             <div class="col-sm-4 fw-bold"></div>
                             <div class="col-sm-8">
-                            <br>
+                                <br>
                                 <button class="btn btn-{{ cekBerkas($berkas, 'Data BPJS Kesehatan') }} showFiles"
                                     data-jenis="Data BPJS Kesehatan">BPJS Kesehatan</button>
                                 <button class="btn btn-{{ cekBerkas($berkas, 'Data Ijazah Terakhir') }} showFiles"
@@ -666,8 +668,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="mb-3" id="tanggalMelaporWrapper" style="display:none;">
-                        <label class="form-label">Tanggal Melapor</label>
+                    <div class="modal-header" id="tanggalMelaporWrapper" style="display:none;">
+                        <label class="form-label">Tanggal Melapor Pajak</label>
+                        <label class="form-label text-danger fw-bold">(Bukan Tanggal Upload Bukti)</label>
                         <input type="date" name="tanggal_melapor" id="tanggal_melapor" class="form-control">
                     </div>
                     <div class="modal-body">
@@ -1037,6 +1040,38 @@
 
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+document.querySelectorAll('.open-upload-modal').forEach(btn => {
+    btn.addEventListener('click', function () {
+
+        const title = this.dataset.title;
+        const route = this.dataset.route;
+        const jenis = this.dataset.jenis;
+        const jenisfile = this.dataset.jenisfile;
+
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('formUploadBerkas').action = route;
+        document.getElementById('kumpulan_jenis').value = jenis;
+        document.getElementById('jenisfile').value = jenisfile;
+
+        // ==============================
+        // TAMBAHAN KHUSUS CORETAX
+        // ==============================
+        const tanggalWrapper = document.getElementById('tanggalMelaporWrapper');
+        const tanggalInput = document.getElementById('tanggal_melapor');
+
+        if (jenisfile === 'coretax2026') {
+            tanggalWrapper.style.display = 'block';
+            tanggalInput.required = true;
+        } else {
+            tanggalWrapper.style.display = 'none';
+            tanggalInput.required = false;
+            tanggalInput.value = '';
+        }
+
+    });
+});
+</script>
 
     <script>
         $(document).ready(function() {
@@ -1114,6 +1149,6 @@
     </script>
 
 
-    </body>
+</body>
 
 </html>

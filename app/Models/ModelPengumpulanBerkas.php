@@ -16,6 +16,7 @@ class ModelPengumpulanBerkas extends Model
         'kumpulan_jenis',
         'kumpulan_status',
         'kumpulan_sync',
+        'kumpulan_keterangan',
     ];
     public $timestamps = false;
 }

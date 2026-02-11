@@ -2248,6 +2248,11 @@ class KodeController extends Controller
         // Path file yang bisa diakses via asset()
         $url = asset($folder . '/' . $filename);
 
+        $keterangan = 'Mengupload berkas ' . $jenis . ' melalui sistem.';
+
+        if ($request->filled('tanggal_melapor')) {
+            $keterangan = 'Tanggal Melapor ' . \Carbon\Carbon::parse($request->tanggal_melapor)->translatedFormat('d F Y');
+        }
         // Simpan ke DB
         ModelPengumpulanBerkas::updateOrCreate(
             [
@@ -2258,6 +2263,7 @@ class KodeController extends Controller
                 'kumpulan_file' => $url,
                 'kumpulan_status' => 1,
                 'kumpulan_sync' => 0,
+                'kumpulan_keterangan' => $keterangan,
             ],
         );
 
@@ -2281,7 +2287,7 @@ class KodeController extends Controller
         $jenisfile = $request->jenisfile;
         $jeniskerja = $request->user_jeniskerja;
 
-        $finalId = ($nip == '-' || empty($nip)) ? $nik : $nip;
+        $finalId = $nip == '-' || empty($nip) ? $nik : $nip;
         $filename = $finalId . '_' . str_replace(' ', '_', $jenis) . '.pdf';
 
         $folderMapDrive = [
@@ -2301,12 +2307,9 @@ class KodeController extends Controller
         }
 
         try {
-
             // ✅ 1. INIT CLIENT
             $client = new Client();
-            $client->setAuthConfig(
-                storage_path(env('GOOGLE_APPLICATION_PJLP_CREDENTIALS'))
-            );
+            $client->setAuthConfig(storage_path(env('GOOGLE_APPLICATION_PJLP_CREDENTIALS')));
             $client->addScope(Drive::DRIVE);
             $client->setAccessType('offline');
 
