@@ -2219,6 +2219,15 @@ class KodeController extends Controller
                 '3' => 'assets/datakartukeluarga/paruhwaktu',
                 '4' => 'assets/datakartukeluarga/nonasn',
             ],
+            'laporanpjlpjanuari2025' => [
+                '4' => 'assets/laporanpjlpjanuari2025/pjlp',
+            ],
+            'coretax2026' => [
+                '1' => 'assets/coretax2026/pns',
+                '2' => 'assets/coretax2026/pppk',
+                '3' => 'assets/coretax2026/paruhwaktu',
+                '4' => 'assets/coretax2026/nonasn',
+            ],
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {
@@ -2248,6 +2257,7 @@ class KodeController extends Controller
             [
                 'kumpulan_file' => $url,
                 'kumpulan_status' => 1,
+                'kumpulan_sync' => 0,
             ],
         );
 
@@ -2274,25 +2284,7 @@ class KodeController extends Controller
         $finalId = ($nip == '-' || empty($nip)) ? $nik : $nip;
         $filename = $finalId . '_' . str_replace(' ', '_', $jenis) . '.pdf';
 
-        /* ================= FOLDER MAPPING ================= */
-
         $folderMapDrive = [
-            'evaluasikinerjatriwulan1' => [
-                '1' => env('DRIVE_EVKIN_TW1_PNS'),
-                '2' => env('DRIVE_EVKIN_TW1_PPPK'),
-            ],
-            'umpanbaliktriwulan1' => [
-                '1' => env('DRIVE_UMPANBALIK_TW1_PNS'),
-                '2' => env('DRIVE_UMPANBALIK_TW1_PPPK'),
-            ],
-            'evaluasikinerjatahunan2025' => [
-                '1' => env('DRIVE_EVKIN_2025_PNS'),
-                '2' => env('DRIVE_EVKIN_2025_PPPK'),
-            ],
-            'skp2025' => [
-                '1' => env('DRIVE_SKP_2025_PNS'),
-                '2' => env('DRIVE_SKP_2025_PPPK'),
-            ],
             'laporanpjlpjanuari2025' => [
                 '1' => env('GOOGLE_DRIVE_FOLDER_BULANAN_PJLP_JANUARI_2025'),
             ],
@@ -2310,26 +2302,24 @@ class KodeController extends Controller
 
         try {
 
-            /* ================= GOOGLE CLIENT ================= */
-
+            // ✅ 1. INIT CLIENT
             $client = new Client();
             $client->setAuthConfig(
                 storage_path(env('GOOGLE_APPLICATION_PJLP_CREDENTIALS'))
             );
             $client->addScope(Drive::DRIVE);
+            $client->setAccessType('offline');
 
+            // ✅ 2. INIT DRIVE SERVICE
             $driveService = new Drive($client);
 
-            /* ================= META FILE ================= */
-
+            // ✅ 3. FILE METADATA
             $fileMetadata = new DriveFile([
                 'name' => $filename,
                 'parents' => [$folderId],
             ]);
 
-            /* ================= UPLOAD ================= */
-
-
+            // ✅ 4. UPLOAD
             $uploadedFile = $driveService->files->create($fileMetadata, [
                 'data' => file_get_contents($request->file('file')->getRealPath()),
                 'mimeType' => 'application/pdf',
@@ -2337,40 +2327,12 @@ class KodeController extends Controller
                 'fields' => 'id',
                 'supportsAllDrives' => true,
             ]);
-            dd($uploadedFile);
 
-            $fileId = $uploadedFile->getId();
-
-            /* ================= SET PUBLIC ACCESS ================= */
-
-            $permission = new Permission([
-                'type' => 'anyone',
-                'role' => 'reader',
-            ]);
-
-            $driveService->permissions->create($fileId, $permission, [
-                'supportsAllDrives' => true,
-            ]);
-
-            $url = "https://drive.google.com/file/d/{$fileId}/view";
-
-            /* ================= SIMPAN DB ================= */
-
-            ModelPengumpulanBerkas::updateOrCreate(
-                [
-                    'kumpulan_user' => $finalId,
-                    'kumpulan_jenis' => $jenis,
-                ],
-                [
-                    'kumpulan_file' => $url,
-                    'kumpulan_status' => 1,
-                ]
-            );
-
-            return back()->with('success', 'File berhasil diupload ke Google Drive.');
+            dd($uploadedFile->getId());
+        } catch (\Google\Service\Exception $e) {
+            dd($e->getErrors());
         } catch (\Exception $e) {
-
-            return back()->with('error', 'Upload gagal: ' . $e->getMessage());
+            dd($e->getMessage());
         }
     }
 

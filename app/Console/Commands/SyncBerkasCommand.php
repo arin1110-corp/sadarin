@@ -43,6 +43,7 @@ class SyncBerkasCommand extends Command
             'data_kartu_keluarga'   => 'Data Kartu Keluarga',
             'modelc_2026'           => 'Model C 2026',
             'pakta_2025'            => 'Pakta Integritas',
+            'laporanpjlpjanuari2025' => 'Laporan Bulanan PJLP Januari 2025',
         ];
 
         if (!isset($mapJenis[$jenis])) {

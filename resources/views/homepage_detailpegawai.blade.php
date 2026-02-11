@@ -153,7 +153,7 @@
     </style>
 </head>
 
-<d>
+<body>
     <!-- Fullscreen Tengah -->
     <div class="flex-grow-1 d-flex justify-content-center align-items-center">
         <div class="container text-center">
@@ -251,12 +251,23 @@
                         </div>
                         <hr>
                         <hr>
+                        @if ($user->user_jeniskerja == 4)
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
                                 <button class="btn btn-primary open-upload-modal" data-title="Laporan Bulanan PJLP Januari 2025"
                                     data-route="{{ route('tambah.laporan.pjlp.januari') }}"
                                     data-jenis="Laporan Bulanan PJLP Januari 2025" data-jenisfile="laporanpjlpjanuari2025">
                                     <i class="bi bi-plus-lg"></i> Laporan PJLP Januari 2025
+                                </button>
+                            </div>
+                        </div>
+                        @endif
+                        <div class="d-flex align-items-center justify-content-end mb-2">
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary open-upload-modal" data-title="Coretax 2026"
+                                    data-route="{{ route('tambah.coretax.2026') }}" data-jenis="Coretax 2026"
+                                    data-jenisfile="coretax2026">
+                                    <i class="bi bi-plus-lg"></i> Coretax 2026
                                 </button>
                             </div>
                         </div>
