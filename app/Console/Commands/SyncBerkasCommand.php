@@ -96,6 +96,8 @@ class SyncBerkasCommand extends Command
                     $mapJenis[$jenis]
                 );
 
+                $oldFile = $row->kumpulan_file; // simpan file lama VPS
+
                 $row->update([
                     'kumpulan_file'   => $result['file_url'] ?? null,
                         'kumpulan_status' => $result['status'] ?? 0,
@@ -103,15 +105,12 @@ class SyncBerkasCommand extends Command
 
                 if (($result['status'] ?? 0) == 1) {
 
-                    if (!empty($row->kumpulan_file)) {
+                    if (!empty($oldFile)) {
 
-                        // Ambil path tanpa domain
-                        $relativePath = parse_url($row->kumpulan_file, PHP_URL_PATH);
+                        $relativePath = parse_url($oldFile, PHP_URL_PATH);
                         $relativePath = ltrim($relativePath, '/');
 
-                        // Ambil root domain VPS
                         $documentRoot = $_SERVER['DOCUMENT_ROOT'] ?? public_path();
-
                         $localPath = rtrim($documentRoot, '/') . '/' . $relativePath;
 
                         $this->warn("PATH CEK: " . $localPath);
@@ -133,7 +132,8 @@ class SyncBerkasCommand extends Command
                     ]);
                 }
 
-                    $this->info("{$identitas} → Sinkron selesai");
+
+                $this->info("{$identitas} → Sinkron selesai");
                 }
             });
 
