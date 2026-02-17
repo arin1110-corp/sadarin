@@ -42,6 +42,7 @@ class SyncBerkasCommand extends Command
             'data_kartu_keluarga'   => 'Data Kartu Keluarga',
         ];
 
+
         if (!isset($mapJenis[$jenis])) {
             $this->error("Jenis berkas tidak dikenal!");
             return Command::FAILURE;
@@ -51,7 +52,7 @@ class SyncBerkasCommand extends Command
 
         $this->info("Mulai sinkronisasi {$labelJenis}...");
 
-        ModelPengumpulanBerkas::with('user')
+        ModelPengumpulanBerkas::with('sadarin_user')
             ->where('kumpulan_jenis', $labelJenis)
             ->where('kumpulan_status', 1)
             ->where('kumpulan_sync', 0)
