@@ -119,9 +119,9 @@ class SyncBerkasCommand extends Command
                     $record->kumpulan_sync == 0
                 ) {
 
-                    if (!empty($record->kumpulan_path)) {
+                    if (!empty($record->kumpulan_file)) {
 
-                        $localPath = storage_path('app/public/' . $record->kumpulan_path);
+                        $localPath = storage_path($record->kumpulan_file);
 
                         if (file_exists($localPath)) {
 
