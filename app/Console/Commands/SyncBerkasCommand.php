@@ -9,7 +9,7 @@ use App\Services\GoogleDriveService;
 class SyncBerkasCommand extends Command
 {
     protected $signature = 'sync:berkas {jenis}';
-    protected $description = 'Sinkronisasi berkas hanya untuk yang status=1 dan sync=0';
+    protected $description = 'Sinkronisasi berkas hanya untuk status=1 dan sync=0 per jenis kerja';
 
     public function handle(GoogleDriveService $googleDrive)
     {
@@ -21,6 +21,7 @@ class SyncBerkasCommand extends Command
         $mapJenis = [
             'pakta'                 => 'Pakta Integritas',
             'pakta_1_desember_2025' => 'Pakta Integritas 1 Desember 2025',
+            'pakta_2025'            => 'Pakta Integritas',
             'model_c_2025'          => 'Model C 2025',
             'model_c_2026'          => 'Model C 2026',
             'evkin_1'               => 'Evaluasi Kinerja Triwulan I',
@@ -39,7 +40,6 @@ class SyncBerkasCommand extends Command
             'data_bpjs_kesehatan'   => 'Data BPJS Kesehatan',
             'data_ijazah'           => 'Data Ijazah Terakhir',
             'data_kartu_keluarga'   => 'Data Kartu Keluarga',
-            'pakta_2025'            => 'Pakta Integritas',
         ];
 
         if (!isset($mapJenis[$jenis])) {
@@ -51,39 +51,53 @@ class SyncBerkasCommand extends Command
 
         $this->info("Mulai sinkronisasi {$labelJenis}...");
 
-        ModelPengumpulanBerkas::where('kumpulan_jenis', $labelJenis)
+        ModelPengumpulanBerkas::with('user')
+            ->where('kumpulan_jenis', $labelJenis)
             ->where('kumpulan_status', 1)
             ->where('kumpulan_sync', 0)
             ->chunk(100, function ($records) use ($googleDrive, $jenis, $labelJenis) {
 
             foreach ($records as $record) {
 
-                $identitas = $record->kumpulan_user;
+                if (!$record->user) {
+                    continue;
+                }
 
-                // Ambil folder dari env
-                $folderKey = 'GOOGLE_DRIVE_FOLDER_' . strtoupper($jenis);
-                $folderId  = env($folderKey);
+                $user = $record->user;
+
+                $folderMap = [
+                    1 => 'GOOGLE_DRIVE_FOLDER_PNS_',
+                    2 => 'GOOGLE_DRIVE_FOLDER_PPPK_',
+                    3 => 'GOOGLE_DRIVE_FOLDER_PARUHWAKTU_',
+                    4 => 'GOOGLE_DRIVE_FOLDER_NONASN_',
+                ];
+
+                if (!isset($folderMap[$user->user_jeniskerja])) {
+                    continue;
+                }
+
+                $envKey   = $folderMap[$user->user_jeniskerja] . strtoupper($jenis);
+                $folderId = env($envKey);
 
                 if (!$folderId) {
                     continue;
                 }
 
-                // Cek ulang ke Drive
+                // Cek ke Google Drive
                 $result = $googleDrive->findFileByNip(
-                    $identitas,
+                    $record->kumpulan_user,
                     $folderId,
                     $labelJenis
                 );
 
                 if ($result['status'] == 1) {
 
-                    // Update link jika perlu
                     $record->update([
                         'kumpulan_file' => $result['file_url'],
                         'kumpulan_sync' => 1,
                     ]);
 
-                    $this->info("{$identitas} → Sync selesai");
+                    $this->info("{$record->kumpulan_user} → Sync selesai");
                 }
                 }
             });
