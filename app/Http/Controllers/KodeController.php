@@ -2078,14 +2078,20 @@ class KodeController extends Controller
 
         return Excel::download(new PegawaiExport($dataPns, $dataPppk, $dataPJLP, $dataParuhWaktu), $id . 'Disbud.xlsx');
     }
-    public function Pegawaisync($jenis){
-        $process = Process::fromShellCommandline("php artisan sync:berkas {$jenis}");
+    public function Pegawaisync($jenis)
+    {
+        // ubah label jadi slug
+        $slug = strtolower(str_replace(' ', '_', $jenis));
+        $slug = str_replace('/', '', $slug);
+
+        $process = \Symfony\Component\Process\Process::fromShellCommandline("php artisan sync:berkas {$slug}");
+
         $process->setTimeout(null);
         $process->run();
 
         return response()->json([
             'status' => true,
-            'message' => 'Sinkronisasi selesai'
+            'message' => 'Sinkronisasi selesai',
         ]);
     }
     public function uploadBerkas(Request $request)

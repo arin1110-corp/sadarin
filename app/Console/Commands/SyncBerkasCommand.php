@@ -23,7 +23,7 @@ class SyncBerkasCommand extends Command
         $mapJenis = [
             'pakta'                 => 'Pakta Integritas',
             'pakta_1_desember_2025' => 'Pakta Integritas 1 Desember 2025',
-            'modelc'                => 'Model C 2025',
+            'model_c_2025'                => 'Model C 2025',
             'evkin_1'               => 'Evaluasi Kinerja Triwulan I',
             'evkin_2'               => 'Evaluasi Kinerja Triwulan II',
             'evkin_3'               => 'Evaluasi Kinerja Triwulan III',
@@ -40,7 +40,7 @@ class SyncBerkasCommand extends Command
             'data_bpjs_kesehatan'   => 'Data BPJS Kesehatan',
             'data_ijazah'           => 'Data Ijazah Terakhir',
             'data_kartu_keluarga'   => 'Data Kartu Keluarga',
-            'modelc_2026'           => 'Model C 2026',
+            'model_c_2026'           => 'Model C 2026',
             'pakta_2025'            => 'Pakta Integritas',
         ];
 
