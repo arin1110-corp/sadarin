@@ -135,7 +135,7 @@ class SyncBerkasCommand extends Command
                     // kalau TIDAK ada di Drive:
                     // jangan ubah kumpulan_file
                     $row->update([
-                        'kumpulan_status' => 0
+                        'kumpulan_status' => 1
                     ]);
                 }
 
