@@ -110,8 +110,7 @@ class SyncBerkasCommand extends Command
                         $relativePath = parse_url($oldFile, PHP_URL_PATH);
                         $relativePath = ltrim($relativePath, '/');
 
-                        $documentRoot = $_SERVER['DOCUMENT_ROOT'] ?? public_path();
-                        $localPath = rtrim($documentRoot, '/') . '/' . $relativePath;
+                        $localPath = public_path($relativePath);
 
                         $this->warn("PATH CEK: " . $localPath);
 
