@@ -94,7 +94,7 @@ class SyncBerkasCommand extends Command
                 $result = $googleDrive->findFileByNip(
                     $identitas,
                     $folderId,
-                    $mapJenis[$jenis]
+                    $jenis
                 );
 
                 $oldFile = $row->kumpulan_file; // simpan file lama VPS
