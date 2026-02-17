@@ -98,12 +98,13 @@ class SyncBerkasCommand extends Command
 
                 $oldFile = $row->kumpulan_file; // simpan file lama VPS
 
-                $row->update([
-                    'kumpulan_file'   => $result['file_url'] ?? null,
-                        'kumpulan_status' => $result['status'] ?? 0,
-                ]);
-
                 if (($result['status'] ?? 0) == 1) {
+
+                    // update hanya jika file ADA di Drive
+                    $row->update([
+                        'kumpulan_file'   => $result['file_url'],
+                        'kumpulan_status' => 1,
+                    ]);
 
                     if (!empty($oldFile)) {
 
@@ -129,8 +130,14 @@ class SyncBerkasCommand extends Command
                     $row->update([
                         'kumpulan_sync' => 1
                     ]);
-                }
+                } else {
 
+                    // kalau TIDAK ada di Drive:
+                    // jangan ubah kumpulan_file
+                    $row->update([
+                        'kumpulan_status' => 0
+                    ]);
+                }
 
                 $this->info("{$identitas} → Sinkron selesai");
                 }
