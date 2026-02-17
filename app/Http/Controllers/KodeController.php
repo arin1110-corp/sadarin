@@ -2089,10 +2089,8 @@ class KodeController extends Controller
         $process->setTimeout(null);
         $process->run();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Sinkronisasi selesai',
-        ]);
+        return back()
+            ->with('success', 'File ' . $jenis . ' berhasil di Sinkronanisasi.');
     }
     public function uploadBerkas(Request $request)
     {
