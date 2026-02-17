@@ -2078,35 +2078,35 @@ class KodeController extends Controller
 
         return Excel::download(new PegawaiExport($dataPns, $dataPppk, $dataPJLP, $dataParuhWaktu), $id . 'Disbud.xlsx');
     }
-    public function Pegawaisync($jenis)
+    public function Pegawaisync($id)
     {
         // ubah label jadi slug aman
-    $slug = strtolower($jenis);
-    $slug = str_replace(' ', '_', $slug);
-    $slug = str_replace('/', '', $slug);
+        $slug = strtolower($id);
+        $slug = str_replace(' ', '_', $slug);
+        $slug = str_replace('/', '', $slug);
 
-    // jalankan artisan dengan cara aman
-    $process = new Process([
-        'php',
-        'artisan',
-        'sync:berkas',
-        $slug
-    ]);
+        // jalankan artisan dengan cara aman
+        $process = new Process([
+            'php',
+            'artisan',
+            'sync:berkas',
+            $slug
+        ]);
 
-    $process->setTimeout(null);
-    $process->run();
+        $process->setTimeout(null);
+        $process->run();
 
-    if (!$process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sinkronisasi gagal'
+            ], 500);
+        }
+
         return response()->json([
-            'status' => false,
-            'message' => 'Sinkronisasi gagal'
-        ], 500);
-    }
-
-    return response()->json([
-        'status' => true,
-        'message' => 'Sinkronisasi berhasil'
-    ]);
+            'status' => true,
+            'message' => 'Sinkronisasi berhasil'
+        ]);
     }
     public function uploadBerkas(Request $request)
     {
