@@ -24,7 +24,8 @@
                     <div class="d-flex align-items-center">
                         <input class="form-control me-3" type="text" placeholder="Cari...">
                         <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                            <a href="#"
+                                class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
                                 data-bs-toggle="dropdown">
                                 <i class="rounded-circle me-2 bi bi-people"></i>
                                 Admin
@@ -84,12 +85,34 @@
                     <div class="col-md-12">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5>DOWNLOAD DATA</h5>
-                                <a href="{{ route('kepegawaian.export', ['id' => $jenis]) }}"
-                                    class="btn btn-warning">Export Excel</a>
+                                <h5>DOWNLOAD & SINKRONISASI</h5>
+
+                                <div class="d-flex justify-content-center gap-3 mb-3">
+                                    <a href="{{ route('kepegawaian.export', ['id' => $jenis]) }}"
+                                        class="btn btn-warning">
+                                        Export Excel
+                                    </a>
+
+                                    <button id="btnSync" class="btn btn-success">
+                                        Sinkronkan
+                                    </button>
+                                </div>
+
+                                {{-- Progress Bar --}}
+                                <div class="progress d-none" id="syncProgressWrapper" style="height: 25px;">
+                                    <div id="syncProgress"
+                                        class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar" style="width: 0%">
+                                        0%
+                                    </div>
+                                </div>
+
+                                <small id="syncStatus" class="text-muted d-block mt-2"></small>
+
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 {{-- Tabs --}}
@@ -99,20 +122,22 @@
                             type="button" role="tab" aria-controls="all" aria-selected="true">Semua</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pns-tab" data-bs-toggle="tab" data-bs-target="#pns" type="button"
-                            role="tab" aria-controls="pns" aria-selected="false">PNS</button>
+                        <button class="nav-link" id="pns-tab" data-bs-toggle="tab" data-bs-target="#pns"
+                            type="button" role="tab" aria-controls="pns" aria-selected="false">PNS</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pppk-tab" data-bs-toggle="tab" data-bs-target="#pppk" type="button"
-                            role="tab" aria-controls="pppk" aria-selected="false">PPPK</button>
+                        <button class="nav-link" id="pppk-tab" data-bs-toggle="tab" data-bs-target="#pppk"
+                            type="button" role="tab" aria-controls="pppk" aria-selected="false">PPPK</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="paruhwaktu-tab" data-bs-toggle="tab" data-bs-target="#paruhwaktu" type="button"
-                            role="tab" aria-controls="paruhwaktu" aria-selected="false">PPPK Paruh Waktu</button>
+                        <button class="nav-link" id="paruhwaktu-tab" data-bs-toggle="tab" data-bs-target="#paruhwaktu"
+                            type="button" role="tab" aria-controls="paruhwaktu" aria-selected="false">PPPK Paruh
+                            Waktu</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="nonasn-tab" data-bs-toggle="tab" data-bs-target="#nonasn" type="button"
-                            role="tab" aria-controls="nonasn" aria-selected="false">Non ASN</button>
+                        <button class="nav-link" id="nonasn-tab" data-bs-toggle="tab" data-bs-target="#nonasn"
+                            type="button" role="tab" aria-controls="nonasn" aria-selected="false">Non
+                            ASN</button>
                     </li>
                 </ul>
 
@@ -133,43 +158,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($dataPegawai as $no => $user)
-
-                                <tr>
-                                    <td>{{ $no + 1 }}</td>
-                                    <td>{{ $user->user_nip }}</td>
-                                    <td>{{ $user->user_nama }}</td>
-                                    <td>{{ $user->jabatan_nama }}</td>
-                                    <td>{{ $user->bidang_nama }}</td>
-                                    <td>
-                                        @if($user->user_jeniskerja == '1')
-                                        <span class="badge bg-success">PNS</span>
-                                        @elseif($user->user_jeniskerja == '2')
-                                        <span class="badge bg-primary">PPPK</span>
-                                        @elseif($user->user_jeniskerja == '3')
-                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
-                                        @elseif($user->user_jeniskerja == '4')
-                                        <span class="badge bg-secondary">Non ASN</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1)
-                                        <span class="text-success fw-bold">Terkumpul</span>
-                                        @else
-                                        <span class="text-danger fw-bold">Belum</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
-                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
-                                            class="btn btn-sm btn-primary">
-                                            Lihat File
-                                        </a>
-                                        @else
-                                        <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                </tr>
+                                @foreach ($dataPegawai as $no => $user)
+                                    <tr>
+                                        <td>{{ $no + 1 }}</td>
+                                        <td>{{ $user->user_nip }}</td>
+                                        <td>{{ $user->user_nama }}</td>
+                                        <td>{{ $user->jabatan_nama }}</td>
+                                        <td>{{ $user->bidang_nama }}</td>
+                                        <td>
+                                            @if ($user->user_jeniskerja == '1')
+                                                <span class="badge bg-success">PNS</span>
+                                            @elseif($user->user_jeniskerja == '2')
+                                                <span class="badge bg-primary">PPPK</span>
+                                            @elseif($user->user_jeniskerja == '3')
+                                                <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                            @elseif($user->user_jeniskerja == '4')
+                                                <span class="badge bg-secondary">Non ASN</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1)
+                                                <span class="text-success fw-bold">Terkumpul</span>
+                                            @else
+                                                <span class="text-danger fw-bold">Belum</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                                <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                                    class="btn btn-sm btn-primary">
+                                                    Lihat File
+                                                </a>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -191,42 +215,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($dataPns as $no => $user)
-                                <tr>
-                                    <td>{{ $no + 1 }}</td>
-                                    <td>{{ $user->user_nip }}</td>
-                                    <td>{{ $user->user_nama }}</td>
-                                    <td>{{ $user->jabatan_nama }}</td>
-                                    <td>{{ $user->bidang_nama }}</td>
-                                    <td>
-                                        @if($user->user_jeniskerja == '1')
-                                        <span class="badge bg-success">PNS</span>
-                                        @elseif($user->user_jeniskerja == '2')
-                                        <span class="badge bg-primary">PPPK</span>
-                                        @elseif($user->user_jeniskerja == '3')
-                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
-                                        @elseif($user->user_jeniskerja == '4')
-                                        <span class="badge bg-secondary">Non ASN</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1)
-                                        <span class="text-success fw-bold">Terkumpul</span>
-                                        @else
-                                        <span class="text-danger fw-bold">Belum</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
-                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
-                                            class="btn btn-sm btn-primary">
-                                            Lihat File
-                                        </a>
-                                        @else
-                                        <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                </tr>
+                                @foreach ($dataPns as $no => $user)
+                                    <tr>
+                                        <td>{{ $no + 1 }}</td>
+                                        <td>{{ $user->user_nip }}</td>
+                                        <td>{{ $user->user_nama }}</td>
+                                        <td>{{ $user->jabatan_nama }}</td>
+                                        <td>{{ $user->bidang_nama }}</td>
+                                        <td>
+                                            @if ($user->user_jeniskerja == '1')
+                                                <span class="badge bg-success">PNS</span>
+                                            @elseif($user->user_jeniskerja == '2')
+                                                <span class="badge bg-primary">PPPK</span>
+                                            @elseif($user->user_jeniskerja == '3')
+                                                <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                            @elseif($user->user_jeniskerja == '4')
+                                                <span class="badge bg-secondary">Non ASN</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1)
+                                                <span class="text-success fw-bold">Terkumpul</span>
+                                            @else
+                                                <span class="text-danger fw-bold">Belum</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                                <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                                    class="btn btn-sm btn-primary">
+                                                    Lihat File
+                                                </a>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -248,43 +272,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($dataPppk as $no => $user)
-
-                                <tr>
-                                    <td>{{ $no + 1 }}</td>
-                                    <td>{{ $user->user_nip }}</td>
-                                    <td>{{ $user->user_nama }}</td>
-                                    <td>{{ $user->jabatan_nama }}</td>
-                                    <td>{{ $user->bidang_nama }}</td>
-                                    <td>
-                                        @if($user->user_jeniskerja == '1')
-                                        <span class="badge bg-success">PNS</span>
-                                        @elseif($user->user_jeniskerja == '2')
-                                        <span class="badge bg-primary">PPPK</span>
-                                        @elseif($user->user_jeniskerja == '3')
-                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
-                                        @elseif($user->user_jeniskerja == '4')
-                                        <span class="badge bg-secondary">Non ASN</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1)
-                                        <span class="text-success fw-bold">Terkumpul</span>
-                                        @else
-                                        <span class="text-danger fw-bold">Belum</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
-                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
-                                            class="btn btn-sm btn-primary">
-                                            Lihat File
-                                        </a>
-                                        @else
-                                        <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                </tr>
+                                @foreach ($dataPppk as $no => $user)
+                                    <tr>
+                                        <td>{{ $no + 1 }}</td>
+                                        <td>{{ $user->user_nip }}</td>
+                                        <td>{{ $user->user_nama }}</td>
+                                        <td>{{ $user->jabatan_nama }}</td>
+                                        <td>{{ $user->bidang_nama }}</td>
+                                        <td>
+                                            @if ($user->user_jeniskerja == '1')
+                                                <span class="badge bg-success">PNS</span>
+                                            @elseif($user->user_jeniskerja == '2')
+                                                <span class="badge bg-primary">PPPK</span>
+                                            @elseif($user->user_jeniskerja == '3')
+                                                <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                            @elseif($user->user_jeniskerja == '4')
+                                                <span class="badge bg-secondary">Non ASN</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1)
+                                                <span class="text-success fw-bold">Terkumpul</span>
+                                            @else
+                                                <span class="text-danger fw-bold">Belum</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                                <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                                    class="btn btn-sm btn-primary">
+                                                    Lihat File
+                                                </a>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -306,43 +329,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($dataParuhWaktu as $no => $user)
-
-                                <tr>
-                                    <td>{{ $no + 1 }}</td>
-                                    <td>{{ $user->user_nik }}</td>
-                                    <td>{{ $user->user_nama }}</td>
-                                    <td>{{ $user->jabatan_nama }}</td>
-                                    <td>{{ $user->bidang_nama }}</td>
-                                    <td>
-                                        @if($user->user_jeniskerja == '1')
-                                        <span class="badge bg-success">PNS</span>
-                                        @elseif($user->user_jeniskerja == '2')
-                                        <span class="badge bg-primary">PPPK</span>
-                                        @elseif($user->user_jeniskerja == '3')
-                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
-                                        @elseif($user->user_jeniskerja == '4')
-                                        <span class="badge bg-secondary">Non ASN</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1)
-                                        <span class="text-success fw-bold">Terkumpul</span>
-                                        @else
-                                        <span class="text-danger fw-bold">Belum</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
-                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
-                                            class="btn btn-sm btn-primary">
-                                            Lihat File
-                                        </a>
-                                        @else
-                                        <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                </tr>
+                                @foreach ($dataParuhWaktu as $no => $user)
+                                    <tr>
+                                        <td>{{ $no + 1 }}</td>
+                                        <td>{{ $user->user_nik }}</td>
+                                        <td>{{ $user->user_nama }}</td>
+                                        <td>{{ $user->jabatan_nama }}</td>
+                                        <td>{{ $user->bidang_nama }}</td>
+                                        <td>
+                                            @if ($user->user_jeniskerja == '1')
+                                                <span class="badge bg-success">PNS</span>
+                                            @elseif($user->user_jeniskerja == '2')
+                                                <span class="badge bg-primary">PPPK</span>
+                                            @elseif($user->user_jeniskerja == '3')
+                                                <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                            @elseif($user->user_jeniskerja == '4')
+                                                <span class="badge bg-secondary">Non ASN</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1)
+                                                <span class="text-success fw-bold">Terkumpul</span>
+                                            @else
+                                                <span class="text-danger fw-bold">Belum</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                                <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                                    class="btn btn-sm btn-primary">
+                                                    Lihat File
+                                                </a>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -364,43 +386,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($dataNonASN as $no => $user)
-
-                                <tr>
-                                    <td>{{ $no + 1 }}</td>
-                                    <td>{{ $user->user_nik }}</td>
-                                    <td>{{ $user->user_nama }}</td>
-                                    <td>{{ $user->jabatan_nama }}</td>
-                                    <td>{{ $user->bidang_nama }}</td>
-                                    <td>
-                                        @if($user->user_jeniskerja == '1')
-                                        <span class="badge bg-success">PNS</span>
-                                        @elseif($user->user_jeniskerja == '2')
-                                        <span class="badge bg-primary">PPPK</span>
-                                        @elseif($user->user_jeniskerja == '3')
-                                        <span class="badge bg-danger">PPPK Paruh Waktu</span>
-                                        @elseif($user->user_jeniskerja == '4')
-                                        <span class="badge bg-secondary">Non ASN</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1)
-                                        <span class="text-success fw-bold">Terkumpul</span>
-                                        @else
-                                        <span class="text-danger fw-bold">Belum</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($user->kumpulan_status == 1 && $user->kumpulan_file)
-                                        <a href="{{ $user->kumpulan_file }}" target="_blank"
-                                            class="btn btn-sm btn-primary">
-                                            Lihat File
-                                        </a>
-                                        @else
-                                        <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                </tr>
+                                @foreach ($dataNonASN as $no => $user)
+                                    <tr>
+                                        <td>{{ $no + 1 }}</td>
+                                        <td>{{ $user->user_nik }}</td>
+                                        <td>{{ $user->user_nama }}</td>
+                                        <td>{{ $user->jabatan_nama }}</td>
+                                        <td>{{ $user->bidang_nama }}</td>
+                                        <td>
+                                            @if ($user->user_jeniskerja == '1')
+                                                <span class="badge bg-success">PNS</span>
+                                            @elseif($user->user_jeniskerja == '2')
+                                                <span class="badge bg-primary">PPPK</span>
+                                            @elseif($user->user_jeniskerja == '3')
+                                                <span class="badge bg-danger">PPPK Paruh Waktu</span>
+                                            @elseif($user->user_jeniskerja == '4')
+                                                <span class="badge bg-secondary">Non ASN</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1)
+                                                <span class="text-success fw-bold">Terkumpul</span>
+                                            @else
+                                                <span class="text-danger fw-bold">Belum</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->kumpulan_status == 1 && $user->kumpulan_file)
+                                                <a href="{{ $user->kumpulan_file }}" target="_blank"
+                                                    class="btn btn-sm btn-primary">
+                                                    Lihat File
+                                                </a>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -433,6 +454,62 @@
             $('#tableNonASN').DataTable();
         });
     </script>
+    <script>
+        $('#btnSync').click(function() {
+
+            let btn = $(this);
+            btn.prop('disabled', true);
+
+            $('#syncProgressWrapper').removeClass('d-none');
+            $('#syncStatus').text('Memulai sinkronisasi...');
+
+            let progress = 0;
+
+            // Simulasi progress visual (karena artisan tidak real-time)
+            let interval = setInterval(function() {
+
+                if (progress < 90) {
+                    progress += 5;
+                    $('#syncProgress')
+                        .css('width', progress + '%')
+                        .text(progress + '%');
+                }
+
+            }, 500);
+
+            $.ajax({
+                url: "{{ route('kepegawaian.sync', $jenis) }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(res) {
+
+                    clearInterval(interval);
+
+                    $('#syncProgress')
+                        .css('width', '100%')
+                        .text('100%');
+
+                    $('#syncStatus')
+                        .text('Sinkronisasi selesai ✅');
+
+                    btn.prop('disabled', false);
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                },
+                error: function() {
+                    clearInterval(interval);
+                    btn.prop('disabled', false);
+                    $('#syncStatus').text('Terjadi kesalahan ❌');
+                }
+            });
+
+        });
+    </script>
+
 </body>
 
 </html>

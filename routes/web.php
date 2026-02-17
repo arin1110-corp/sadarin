@@ -154,6 +154,8 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::post('/ganti-jenis-kerja', [KodeController::class, 'updateJenisKerja'])->name('kepegawaian.gantijeniskerjapegawai');
     Route::get('/kepegawaian/data/pegawai/{id}/{action}', [KodeController::class, 'ModalDataPegawai'])->name('kepegawaian.data.pegawai.modal');
     Route::post('/kepegawaian/data/export/rekap', [KodeController::class, 'exportDataRekap'])->name('kepegawaian.export.data.rekap');
+    Route::post('/kepegawaian/sync/{jenis}', [KodeController::class, 'Pegawaisync'])->name('kepegawaian.sync');
+
     // ... Tambahkan route kepegawaian lain di sini ...
 });
 

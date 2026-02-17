@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Exports\PegawaiPerBidangExport;
 use PDF;
+use Symfony\Component\Process\Process;
 
 use Google\Client;
 use Google\Service\Drive;
@@ -2076,6 +2077,16 @@ class KodeController extends Controller
         $dataPJLP = $dataPegawai->where('user_jeniskerja', '4');
 
         return Excel::download(new PegawaiExport($dataPns, $dataPppk, $dataPJLP, $dataParuhWaktu), $id . 'Disbud.xlsx');
+    }
+    public function Pegawaisync($jenis){
+        $process = Process::fromShellCommandline("php artisan sync:berkas {$jenis}");
+        $process->setTimeout(null);
+        $process->run();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Sinkronisasi selesai'
+        ]);
     }
     public function uploadBerkas(Request $request)
     {
