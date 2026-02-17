@@ -109,12 +109,15 @@ class SyncBerkasCommand extends Command
                         $relativePath = parse_url($row->kumpulan_file, PHP_URL_PATH);
                         $relativePath = ltrim($relativePath, '/');
 
-                        $localPath = public_path($relativePath);
+                        // Ambil root domain VPS
+                        $documentRoot = $_SERVER['DOCUMENT_ROOT'] ?? public_path();
 
-                        if (
-                            parse_url($row->kumpulan_file, PHP_URL_HOST) === 'sadarin.site'
-                            && file_exists($localPath)
-                        ) {
+                        $localPath = rtrim($documentRoot, '/') . '/' . $relativePath;
+
+                        $this->warn("PATH CEK: " . $localPath);
+
+                        if (file_exists($localPath)) {
+
                             if (unlink($localPath)) {
                                 $this->info("{$identitas} → File VPS berhasil dihapus");
                             } else {
