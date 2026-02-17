@@ -50,12 +50,12 @@ class SyncBerkasCommand extends Command
         }
 
         ModelPengumpulanBerkas::query()
-            ->select('model_pengumpulan_berkas.*', 'model_user.user_nip', 'model_user.user_nik', 'model_user.user_jeniskerja')
-            ->leftJoin('model_user', function ($join) {
-                $join->on('model_pengumpulan_berkas.kumpulan_user', '=', 'model_user.user_nip')->orOn('model_pengumpulan_berkas.kumpulan_user', '=', 'model_user.user_nik');
+            ->select('sadarin_pengumpulanberkas.*', 'sadarin_user.user_nip', 'sadarin_user.user_nik', 'sadarin_user.user_jeniskerja')
+            ->leftJoin('sadarin_user', function ($join) {
+                $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
             })
-            ->where('model_pengumpulan_berkas.kumpulan_jenis', $mapJenis[$jenis])
-            ->where('model_pengumpulan_berkas.kumpulan_sync', 0)
+            ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $mapJenis[$jenis])
+            ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
             ->chunk(100, function ($rows) use ($googleDrive, $jenis, $mapJenis) {
                 foreach ($rows as $row) {
                     $identitas = $row->kumpulan_user;
