@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Exports\PegawaiPerBidangExport;
 use PDF;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Artisan;
 
 use Google\Client;
 use Google\Service\Drive;
@@ -2080,25 +2080,23 @@ class KodeController extends Controller
     }
     public function Pegawaisync($id)
     {
-        $process = new \Symfony\Component\Process\Process([
-            'php',
-            'artisan',
-            'sync:berkas',
-            $id
+        try {
+
+            Artisan::call('sync:berkas', [
+                'jenis' => $id
         ]);
 
-        $process->setTimeout(null);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
             return response()->json([
-                'error' => $process->getErrorOutput()
+                'status' => true,
+                'message' => 'Sinkron berhasil'
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'error'  => $e->getMessage()
             ], 500);
         }
-
-        return response()->json([
-            'status' => true
-        ]);
     }
     public function uploadBerkas(Request $request)
     {
