@@ -49,12 +49,39 @@ class GoogleDriveService
         $client = new \Google_Client();
         $client->setScopes([\Google_Service_Drive::DRIVE_READONLY]);
 
-        // Tentukan credential berdasarkan jenis berkas
-        if (in_array(strtolower($jenis), ['pakta', 'foto'])) {
-            $client->setAuthConfig(storage_path('app/google/sadarin-drive.json'));
-        } else {
-            $client->setAuthConfig(storage_path('app/google/sadarin-kinerja.json'));
+        // mapping jenis → file json
+        $jsonMap = [
+            // JSON 1
+            'data_ktp' => 'sadarin-kinerja.json',
+            'data_npwp' => 'sadarin-kinerja.json',
+            'data_bpjs_kesehatan' => 'sadarin-kinerja.json',
+            'data_kartu_keluarga' => 'sadarin-kinerja.json',
+            'data_buku_rekening' => 'sadarin-kinerja.json',
+            'data_ijazah' => 'sadarin-kinerja.json',
+            'model_c_2025' => 'sadarin-kinerja.json',
+            'model_c_2026' => 'sadarin-kinerja.json',
+            'evkin_1' => 'sadarin-kinerja.json',
+            'evkin_2' => 'sadarin-kinerja.json',
+            'evkin_3' => 'sadarin-kinerja.json',
+            'evkin_4' => 'sadarin-kinerja.json',
+            'evkin_tahunan' => 'sadarin-kinerja.json',
+            'umpan_1' => 'sadarin-kinerja.json',
+            'umpan_2' => 'sadarin-kinerja.json',
+            'umpan_3' => 'sadarin-kinerja.json',
+            'umpan_4' => 'sadarin-kinerja.json',
+            'skp_2025' => 'sadarin-kinerja.json',
+            'pakta_integritas' => 'sadarin-kinerja.json',
+            'pakta_1_desember_2025' => 'sadarin-kinerja.json',
+
+            // JSON 2
+            'coretax_2026' => 'sadarin-kinerja-2.json',
+        ];
+
+        if (!isset($jsonMap[$jenis])) {
+            throw new \Exception("JSON credential untuk jenis {$jenis} tidak ditemukan.");
         }
+
+        $client->setAuthConfig(storage_path('app/google/' . $jsonMap[$jenis]));
 
         return new \Google_Service_Drive($client);
     }

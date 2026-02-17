@@ -41,6 +41,7 @@ class SyncBerkasCommand extends Command
             'data_ijazah' => 'Data Ijazah Terakhir',
             'data_kartu_keluarga' => 'Data Kartu Keluarga',
             'pakta_2025' => 'Pakta Integritas',
+            'coretax_2026' => 'Coretax 2026',
         ];
 
         if (!isset($mapJenis[$jenis])) {
