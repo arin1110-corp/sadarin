@@ -20,7 +20,7 @@ class SyncBerkasCommand extends Command
         $this->info("Mulai sinkronisasi {$jenis}...");
 
         $mapJenis = [
-            'pakta' => 'Pakta Integritas',
+            'pakta_integritas' => 'Pakta Integritas',
             'pakta_1_desember_2025' => 'Pakta Integritas 1 Desember 2025',
             'model_c_2025' => 'Model C 2025',
             'model_c_2026' => 'Model C 2026',
