@@ -93,16 +93,15 @@
                                         Export Excel
                                     </a>
 
-                                    <a href="{{ route('kepegawaian.sync', ['id' => $jenis]) }}"
-                                        class="btn btn-primary">
+                                    <button id="btnSync" class="btn btn-primary">
                                         Sinkronisasi
-                                    </a>
-                                    @if (session()->has('message'))
-                                        <div class="alert alert-success">
-                                            {{ session()->get('message') }}
-                                        </div>
-                                    @endif
+                                    </button>
                                 </div>
+                                @if (session('success'))
+                                    <div class="alert alert-success mt-3">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
 
                                 {{-- Progress Bar --}}
                                 <div class="progress d-none" id="syncProgressWrapper" style="height: 25px;">
@@ -471,7 +470,6 @@
 
             let progress = 0;
 
-            // Simulasi progress visual (karena artisan tidak real-time)
             let interval = setInterval(function() {
 
                 if (progress < 90) {
@@ -484,7 +482,7 @@
             }, 500);
 
             $.ajax({
-                url: "{{ route('kepegawaian.sync', $jenis) }}",
+                url: "{{ route('kepegawaian.sync', ['id' => $jenis]) }}",
                 method: "POST",
                 data: {
                     _token: "{{ csrf_token() }}"
@@ -507,9 +505,13 @@
                     }, 1500);
                 },
                 error: function() {
+
                     clearInterval(interval);
                     btn.prop('disabled', false);
-                    $('#syncStatus').text('Terjadi kesalahan ❌');
+
+                    $('#syncStatus')
+                        .text('Terjadi kesalahan ❌');
+
                 }
             });
 

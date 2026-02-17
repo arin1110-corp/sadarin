@@ -2080,17 +2080,33 @@ class KodeController extends Controller
     }
     public function Pegawaisync($jenis)
     {
-        // ubah label jadi slug
-        $slug = strtolower(str_replace(' ', '_', $jenis));
-        $slug = str_replace('/', '', $slug);
+        // ubah label jadi slug aman
+    $slug = strtolower($jenis);
+    $slug = str_replace(' ', '_', $slug);
+    $slug = str_replace('/', '', $slug);
 
-        $process = \Symfony\Component\Process\Process::fromShellCommandline("php artisan sync:berkas {$slug}");
+    // jalankan artisan dengan cara aman
+    $process = new Process([
+        'php',
+        'artisan',
+        'sync:berkas',
+        $slug
+    ]);
 
-        $process->setTimeout(null);
-        $process->run();
+    $process->setTimeout(null);
+    $process->run();
 
-        return back()
-            ->with('success', 'File ' . $jenis . ' berhasil di Sinkronanisasi.');
+    if (!$process->isSuccessful()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Sinkronisasi gagal'
+        ], 500);
+    }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Sinkronisasi berhasil'
+    ]);
     }
     public function uploadBerkas(Request $request)
     {
