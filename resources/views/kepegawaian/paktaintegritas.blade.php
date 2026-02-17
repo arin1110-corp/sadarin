@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Str; @endphp
 <!DOCTYPE html>
 <html lang="id">
 
@@ -93,9 +94,11 @@
                                         Export Excel
                                     </a>
 
-                                    <button id="btnSync" class="btn btn-primary">
+                                    <button id="btnSync" data-slug="{{ Str::slug($jenis, '_') }}"
+                                        class="btn btn-primary">
                                         Sinkronisasi
                                     </button>
+
                                 </div>
                                 @if (session('success'))
                                     <div class="alert alert-success mt-3">
@@ -136,7 +139,8 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="paruhwaktu-tab" data-bs-toggle="tab" data-bs-target="#paruhwaktu"
-                            type="button" role="tab" aria-controls="paruhwaktu" aria-selected="false">PPPK Paruh
+                            type="button" role="tab" aria-controls="paruhwaktu" aria-selected="false">PPPK
+                            Paruh
                             Waktu</button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -460,63 +464,71 @@
         });
     </script>
     <script>
-        $('#btnSync').click(function() {
+        $(document).ready(function() {
 
-            let btn = $(this);
-            btn.prop('disabled', true);
+            $('#btnSync').click(function() {
 
-            $('#syncProgressWrapper').removeClass('d-none');
-            $('#syncStatus').text('Memulai sinkronisasi...');
+                let btn = $(this);
+                btn.prop('disabled', true);
 
-            let progress = 0;
+                $('#syncProgressWrapper').removeClass('d-none');
+                $('#syncStatus').text('Memulai sinkronisasi...');
 
-            let interval = setInterval(function() {
+                let progress = 0;
 
-                if (progress < 90) {
-                    progress += 5;
-                    $('#syncProgress')
-                        .css('width', progress + '%')
-                        .text(progress + '%');
-                }
+                let interval = setInterval(function() {
 
-            }, 500);
+                    if (progress < 90) {
+                        progress += 5;
+                        $('#syncProgress')
+                            .css('width', progress + '%')
+                            .text(progress + '%');
+                    }
 
-            $.ajax({
-                url: "{{ route('kepegawaian.sync', ['id' => $jenis]) }}",
-                method: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}"
-                },
-                success: function(res) {
+                }, 500);
+                let slug = btn.data('slug');
 
-                    clearInterval(interval);
+                $.ajax({
+                    url: "/kepegawaian/sync/" + slug,
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(res) {
 
-                    $('#syncProgress')
-                        .css('width', '100%')
-                        .text('100%');
+                        clearInterval(interval);
 
-                    $('#syncStatus')
-                        .text('Sinkronisasi selesai ✅');
+                        $('#syncProgress')
+                            .css('width', '100%')
+                            .text('100%');
 
-                    btn.prop('disabled', false);
+                        $('#syncStatus')
+                            .text('Sinkronisasi selesai ✅');
 
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                },
-                error: function() {
+                        btn.prop('disabled', false);
 
-                    clearInterval(interval);
-                    btn.prop('disabled', false);
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: function(xhr) {
 
-                    $('#syncStatus')
-                        .text('Terjadi kesalahan ❌');
+                        clearInterval(interval);
+                        btn.prop('disabled', false);
 
-                }
+                        console.log(xhr.responseText);
+
+                        $('#syncStatus')
+                            .text('Error ' + xhr.status + ' ❌');
+
+                    }
+                });
+
             });
 
         });
     </script>
+
 
 </body>
 
