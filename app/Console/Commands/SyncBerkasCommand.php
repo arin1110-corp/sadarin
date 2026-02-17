@@ -3,14 +3,13 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\ModelUser;
 use App\Models\ModelPengumpulanBerkas;
 use App\Services\GoogleDriveService;
 
 class SyncBerkasCommand extends Command
 {
     protected $signature = 'sync:berkas {jenis}';
-    protected $description = 'Sinkronisasi berkas + hapus file lokal jika sudah ada di Google Drive';
+    protected $description = 'Sinkronisasi berkas hanya untuk yang status=1 dan sync=0';
 
     public function handle(GoogleDriveService $googleDrive)
     {
@@ -18,12 +17,12 @@ class SyncBerkasCommand extends Command
         set_time_limit(0);
 
         $jenis = strtolower($this->argument('jenis'));
-        $this->info("Mulai sinkronisasi {$jenis}...");
 
         $mapJenis = [
             'pakta'                 => 'Pakta Integritas',
             'pakta_1_desember_2025' => 'Pakta Integritas 1 Desember 2025',
-            'model_c_2025'                => 'Model C 2025',
+            'model_c_2025'          => 'Model C 2025',
+            'model_c_2026'          => 'Model C 2026',
             'evkin_1'               => 'Evaluasi Kinerja Triwulan I',
             'evkin_2'               => 'Evaluasi Kinerja Triwulan II',
             'evkin_3'               => 'Evaluasi Kinerja Triwulan III',
@@ -40,7 +39,6 @@ class SyncBerkasCommand extends Command
             'data_bpjs_kesehatan'   => 'Data BPJS Kesehatan',
             'data_ijazah'           => 'Data Ijazah Terakhir',
             'data_kartu_keluarga'   => 'Data Kartu Keluarga',
-            'model_c_2026'           => 'Model C 2026',
             'pakta_2025'            => 'Pakta Integritas',
         ];
 
@@ -49,101 +47,48 @@ class SyncBerkasCommand extends Command
             return Command::FAILURE;
         }
 
-        ModelUser::chunk(100, function ($users) use ($googleDrive, $jenis, $mapJenis) {
+        $labelJenis = $mapJenis[$jenis];
 
-            foreach ($users as $user) {
+        $this->info("Mulai sinkronisasi {$labelJenis}...");
 
-                // ==============================
-                // Ambil NIP / NIK
-                // ==============================
-                $identitas = ($user->user_nip && $user->user_nip !== '-')
-                    ? $user->user_nip
-                    : $user->user_nik;
+        ModelPengumpulanBerkas::where('kumpulan_jenis', $labelJenis)
+            ->where('kumpulan_status', 1)
+            ->where('kumpulan_sync', 0)
+            ->chunk(100, function ($records) use ($googleDrive, $jenis, $labelJenis) {
 
-                if (!$identitas) {
-                    continue;
-                }
+            foreach ($records as $record) {
 
-                // ==============================
-                // Tentukan folder berdasarkan jenis kerja
-                // ==============================
-                $folderMap = [
-                    1 => 'GOOGLE_DRIVE_FOLDER_PNS_',
-                    2 => 'GOOGLE_DRIVE_FOLDER_PPPK_',
-                    3 => 'GOOGLE_DRIVE_FOLDER_PARUHWAKTU_',
-                    4 => 'GOOGLE_DRIVE_FOLDER_NONASN_',
-                ];
+                $identitas = $record->kumpulan_user;
 
-                if (!isset($folderMap[$user->user_jeniskerja])) {
-                    continue;
-                }
-
-                $envKey   = $folderMap[$user->user_jeniskerja] . strtoupper($jenis);
-                $folderId = env($envKey);
+                // Ambil folder dari env
+                $folderKey = 'GOOGLE_DRIVE_FOLDER_' . strtoupper($jenis);
+                $folderId  = env($folderKey);
 
                 if (!$folderId) {
                     continue;
                 }
 
-                // Jeda kecil biar aman dari limit API
-                usleep(300000);
-
-                // ==============================
-                // Cek file di Google Drive
-                // ==============================
+                // Cek ulang ke Drive
                 $result = $googleDrive->findFileByNip(
                     $identitas,
                     $folderId,
-                    $mapJenis[$jenis]
+                    $labelJenis
                 );
 
-                // ==============================
-                // Update atau create record
-                // ==============================
-                $record = ModelPengumpulanBerkas::updateOrCreate(
-                    [
-                        'kumpulan_user'  => $identitas,
-                        'kumpulan_jenis' => $mapJenis[$jenis],
-                    ],
-                    [
-                        'kumpulan_file'   => $result['file_url'] ?? null,
-                        'kumpulan_status' => $result['status'] ?? 0,
-                    ]
-                );
+                if ($result['status'] == 1) {
 
-                // ==============================
-                // HAPUS FILE LOKAL JIKA SUDAH SYNC
-                // ==============================
-                if (
-                    $record->kumpulan_status == 1 &&
-                    $record->kumpulan_sync == 0
-                ) {
-
-                    if (!empty($record->kumpulan_file)) {
-
-                        $localPath = storage_path($record->kumpulan_file);
-
-                        if (file_exists($localPath)) {
-
-                            unlink($localPath);
-
-                            $this->info("{$identitas} → File lokal dihapus");
-                        } else {
-                            $this->warn("{$identitas} → File lokal tidak ditemukan");
-                        }
-                    }
-
-                    // Set sync jadi 1
+                    // Update link jika perlu
                     $record->update([
-                        'kumpulan_sync' => 1
+                        'kumpulan_file' => $result['file_url'],
+                        'kumpulan_sync' => 1,
                     ]);
+
+                    $this->info("{$identitas} → Sync selesai");
                 }
+                }
+            });
 
-                $this->info("{$identitas} → Sinkron selesai");
-            }
-        });
-
-        $this->info("Sinkronisasi {$jenis} selesai!");
+        $this->info("Sinkronisasi selesai ✅");
         return Command::SUCCESS;
     }
 }
