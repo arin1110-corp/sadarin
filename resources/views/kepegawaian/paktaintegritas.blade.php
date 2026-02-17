@@ -93,9 +93,15 @@
                                         Export Excel
                                     </a>
 
-                                    <button id="btnSync" class="btn btn-success">
-                                        Sinkronkan
-                                    </button>
+                                    <a href="{{ route('kepegawaian.sync', ['id' => $jenis]) }}"
+                                        class="btn btn-primary">
+                                        Sinkronisasi
+                                    </a>
+                                    @if (session()->has('message'))
+                                        <div class="alert alert-success">
+                                            {{ session()->get('message') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 {{-- Progress Bar --}}
