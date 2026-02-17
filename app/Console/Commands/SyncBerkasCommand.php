@@ -55,6 +55,7 @@ class SyncBerkasCommand extends Command
                 $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
             })
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $mapJenis[$jenis])
+            ->where('sadarin_pengumpulanberkas.kumpulan_status', '1')
             ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
             ->chunk(100, function ($rows) use ($googleDrive, $jenis, $mapJenis) {
                 foreach ($rows as $row) {
