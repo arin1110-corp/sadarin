@@ -120,7 +120,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/model-c-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.model.c.2025');
     Route::get('/coretax-2026/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.coretax.2026');
     Route::get('/data-laporan-pjlp-januari-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.laporan.pjlp.januari.2025');
-    Route::get('/data-laporan-ikd/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.laporan.ikd');
+    Route::get('/data-laporan-ikd/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.laporan.ikd');
 
 
     Route::get('/data-kepegawaian', [KodeController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
