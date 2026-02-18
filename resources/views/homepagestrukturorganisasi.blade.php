@@ -173,7 +173,7 @@
             @endphp
             @if($kadis)
             <div class="org-node mx-auto">
-                <h4 class="fw-bold">PLT. Kepala Dinas</h4>
+                <h4 class="fw-bold">Kepala Dinas</h4>
                 <h6 class="fw-bold">Dinas Kebudayaan Provinsi Bali</h6>
                 <br>
                 <img src="{{ $kadis->user_foto && $kadis->user_foto != '-' ? asset($kadis->user_foto) : asset('assets/image/pemprov.png') }}"
