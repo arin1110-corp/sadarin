@@ -643,6 +643,15 @@
                             </div>
                         </div>
 
+                        {{ Laporan IKD --}}
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fw-bold">Data Laporan IKD</div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Laporan IKD') }} showFiles"
+                                    data-jenis="Laporan IKD">IKD</button>
+                            </div>
+                        </div>
+
                         {{-- Laporan Bulanan PJLP --}}
                         @if ($user->user_jeniskerja == 4)
                             <div class="row mb-2">

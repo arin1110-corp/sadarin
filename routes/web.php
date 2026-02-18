@@ -120,6 +120,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/model-c-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.model.c.2025');
     Route::get('/coretax-2026/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.coretax.2026');
     Route::get('/data-laporan-pjlp-januari-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.laporan.pjlp.januari.2025');
+    Route::get('/data-laporan-ikd/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.laporan.ikd');
 
 
     Route::get('/data-kepegawaian', [KodeController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
@@ -156,6 +157,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/kepegawaian/data/pegawai/{id}/{action}', [KodeController::class, 'ModalDataPegawai'])->name('kepegawaian.data.pegawai.modal');
     Route::post('/kepegawaian/data/export/rekap', [KodeController::class, 'exportDataRekap'])->name('kepegawaian.export.data.rekap');
     Route::post('/kepegawaian/sync/{id}', [KodeController::class, 'Pegawaisync'])->name('kepegawaian.sync');
+
 
     // ... Tambahkan route kepegawaian lain di sini ...
 });
@@ -208,7 +210,6 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-coretax-2026', [KodeController::class, 'uploadBerkas'])->name('tambah.coretax.2026');
     Route::post('/tambah-laporan-ikd', [KodeController::class, 'uploadBerkas'])->name('tambah.laporan.ikd');
     Route::post('/tambah-pjlp-januari', [KodeController::class, 'uploadBerkas'])->name('tambah.laporan.pjlp.januari');
-
 
 
     // Rute untuk halaman cek Subbag
