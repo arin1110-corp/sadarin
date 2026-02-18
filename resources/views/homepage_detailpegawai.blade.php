@@ -643,7 +643,7 @@
                             </div>
                         </div>
 
-                        {{ Laporan IKD --}}
+                        {{-- Laporan IKD --}}
                         <div class="row mb-2">
                             <div class="col-sm-6 fw-bold">Data Laporan IKD</div>
                             <div class="col-sm-6">
