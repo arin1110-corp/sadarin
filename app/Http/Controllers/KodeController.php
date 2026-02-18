@@ -2250,6 +2250,12 @@ class KodeController extends Controller
                 '3' => 'assets/coretax2026/paruhwaktu',
                 '4' => 'assets/coretax2026/pjlp',
             ],
+            'laporanikd' => [
+                '1' => 'assets/laporanikd/pns',
+                '2' => 'assets/laporanikd/pppk',
+                '3' => 'assets/laporanikd/paruhwaktu',
+                '4' => 'assets/laporanikd/nonasn',
+            ]
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {

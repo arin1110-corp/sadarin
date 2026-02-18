@@ -275,6 +275,15 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
+                                <button class="btn btn-primary open-upload-modal" data-title="Laporan IKD"
+                                    data-route="{{ route('tambah.laporan.ikd') }}" data-jenis="Laporan IKD"
+                                    data-jenisfile="laporanikd">
+                                    <i class="bi bi-plus-lg"></i> Laporan IKD
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end mb-2">
+                            <div class="d-flex gap-2">
                                 <!-- <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan I"
                                     data-route="{{ route('tambah.evaluasi.tw1') }}"

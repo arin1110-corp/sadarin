@@ -45,6 +45,7 @@ Route::get('/data-kartu-keluarga', [PreFillController::class, 'prefillDataKartuK
 Route::get('/data-ijazah', [PreFillController::class, 'prefillDataIjazah']);
 Route::get('/data-laporan-pjlp-januari-2025', [PreFillController::class, 'prefillLaporanPJLPJanuari2025']);
 Route::get('/data-coretax-2026', [PreFillController::class, 'prefillCoretax2026']);
+Route::get('/data-laporan-ikd', [PreFillController::class, 'prefillLaporanIKD']);
 
 // -------------------- Admin / Kepegawaian --------------------
 Route::get('/login', [KodeController::class, 'login'])->name('login'); // Form login admin/kepegawaian
@@ -205,7 +206,9 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-kartukeluarga', [KodeController::class, 'uploadBerkas'])->name('tambah.data.kartu.keluarga');
     Route::post('/tambah-dataijazah', [KodeController::class, 'uploadBerkas'])->name('tambah.data.ijazah');
     Route::post('/tambah-coretax-2026', [KodeController::class, 'uploadBerkas'])->name('tambah.coretax.2026');
+    Route::post('/tambah-laporan-ikd', [KodeController::class, 'uploadBerkas'])->name('tambah.laporan.ikd');
     Route::post('/tambah-pjlp-januari', [KodeController::class, 'uploadBerkas'])->name('tambah.laporan.pjlp.januari');
+
 
 
     // Rute untuk halaman cek Subbag
