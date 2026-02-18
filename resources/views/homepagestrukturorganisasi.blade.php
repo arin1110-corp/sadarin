@@ -286,6 +286,38 @@
             @endif
 
 
+            <!-- Baris 2: Kabid 4-7 -->
+            <div class="org-children">
+
+                @php
+                $dataKauptd = $dataPegawai->where('user_jabatan', 74); // Kepala UPTD
+                @endphp
+
+                @foreach($dataKauptd as $kauptd)<div class="org-node">
+                    <!-- Kepala UPTD -->
+                    <h4 class="fw-bold">{{ $kauptd->jabatan_nama }}</h4>
+                    <h6 class="fw-bold">{{ $kauptd->bidang_nama }}</h6>
+                    <br>
+                    <img src="{{ $kauptd->user_foto && $kauptd->user_foto != '-' ? asset($kauptd->user_foto) : asset('assets/image/pemprov.png') }}"
+                        alt="Foto">
+                    <h6 class="fw-bold" style="font-size: 15px;">
+                        {{ $kauptd->user_gelardepan && $kauptd->user_gelardepan != '-' ? $kauptd->user_gelardepan . ' ' : '' }}
+                        {{ $kauptd->user_nama }}
+                        {{ $kauptd->user_gelarbelakang && $kauptd->user_gelarbelakang != '-' ? ',' . $kauptd->user_gelarbelakang : '' }}
+                    </h6>
+                    <h6 class="fw-bold" style="font-size: 13px;">NIP. {{ $kauptd->user_nip }}</h6>
+                    <h6 class="fw-bold" style="font-size: 13px;">
+                        {{ $kauptd->golongan_nama. ' - ' . $kauptd->golongan_pangkat}}
+                    </h6>
+                    <div>
+                        <a href="{{ route('lihat.jajaran', ['id' => $kauptd->user_bidang]) }}">
+                            <button class="btn btn-sm btn-success mt-2">Lihat Jajaran</button>
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
 
             <!-- Baris 2: Kabid 4-7 -->
             <div class="org-children">
