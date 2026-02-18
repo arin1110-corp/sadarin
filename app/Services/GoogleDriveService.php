@@ -75,6 +75,7 @@ class GoogleDriveService
 
             // JSON 2
             'coretax_2026' => 'sadarin-kinerja-2.json',
+            'laporan_ikd' => 'sadarin-kinerja-2.json',
         ];
 
         if (!isset($jsonMap[$jenis])) {
