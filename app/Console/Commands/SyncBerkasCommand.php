@@ -44,6 +44,7 @@ class SyncBerkasCommand extends Command
             'coretax_2026' => 'Coretax 2026',
             'laporan_pjlp_januari_2025' => 'Laporan PJLP Januari 2025',
             'laporan_ikd' => 'Laporan IKD',
+            'perjanjian_kinerja_2026' => 'Perjanjian Kinerja 2026',
         ];
 
         if (!isset($mapJenis[$jenis])) {
