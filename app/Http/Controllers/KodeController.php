@@ -2263,7 +2263,13 @@ class KodeController extends Controller
                 '2' => 'assets/laporanikd/pppk',
                 '3' => 'assets/laporanikd/paruhwaktu',
                 '4' => 'assets/laporanikd/nonasn',
-            ]
+            ],
+            'perjanjiankinerja2026' => [
+                '1' => 'assets/perjanjiankinerja2026/pns',
+                '2' => 'assets/perjanjiankinerja2026/pppk',
+                '3' => 'assets/perjanjiankinerja2026/paruhwaktu',
+                '4' => 'assets/perjanjiankinerja2026/nonasn',
+            ],
         ];
 
         if (!isset($folderMap[$jenisfile][$jeniskerja])) {

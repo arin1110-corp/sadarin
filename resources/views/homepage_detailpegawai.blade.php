@@ -284,6 +284,15 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             <div class="d-flex gap-2">
+                                <button class="btn btn-primary open-upload-modal" data-title="Perjanjian Kinerja 2026"
+                                    data-route="{{ route('tambah.perjanjian.kinerja.2026') }}"
+                                    data-jenis="Perjanjian Kinerja 2026" data-jenisfile="perjanjiankinerja2026">
+                                    <i class="bi bi-plus-lg"></i> Perjanjian Kinerja 2026
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end mb-2">
+                            <div class="d-flex gap-2">
                                 <!-- <button class="btn btn-primary open-upload-modal"
                                     data-title="Evaluasi Kinerja Triwulan I"
                                     data-route="{{ route('tambah.evaluasi.tw1') }}"
@@ -649,6 +658,15 @@
                             <div class="col-sm-6">
                                 <button class="btn btn-{{ cekBerkas($berkas, 'Laporan IKD') }} showFiles"
                                     data-jenis="Laporan IKD">IKD</button>
+                            </div>
+                        </div>
+
+                        {{-- Perjanjian Kinerja --}}
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fw-bold">Data Perjanjian Kinerja</div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-{{ cekBerkas($berkas, 'Perjanjian Kinerja 2026') }} showFiles"
+                                    data-jenis="Perjanjian Kinerja 2026">2026</button>
                             </div>
                         </div>
 

@@ -128,5 +128,15 @@
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.coretax.2026', ['id' => 'Coretax 2026']) }}">2026</a>
             </div>
         </li>
+
+        {{-- Dropdown Data Perjanjian Kinerja 2026 --}}
+        <li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#perjanjianKinerjaDropdown" role="button" aria-expanded="false" aria-controls="perjanjianKinerjaDropdown">
+                <i class="bi bi-file-earmark-text me-2"></i> Data Perjanjian Kinerja
+            </a>
+            <div class="collapse ps-4" id="perjanjianKinerjaDropdown">
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.data.perjanjian.kinerja.2026', ['id' => 'Perjanjian Kinerja 2026']) }}">2026</a>
+            </div>
+        </li>
     </ul>
 </nav>

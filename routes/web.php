@@ -46,6 +46,7 @@ Route::get('/data-ijazah', [PreFillController::class, 'prefillDataIjazah']);
 Route::get('/data-laporan-pjlp-januari-2025', [PreFillController::class, 'prefillLaporanPJLPJanuari2025']);
 Route::get('/data-coretax-2026', [PreFillController::class, 'prefillCoretax2026']);
 Route::get('/data-laporan-ikd', [PreFillController::class, 'prefillLaporanIKD']);
+Route::get('/data-perjanjian-kinerja-2026', [PreFillController::class, 'prefillPerjanjianKinerja2026']);
 
 // -------------------- Admin / Kepegawaian --------------------
 Route::get('/login', [KodeController::class, 'login'])->name('login'); // Form login admin/kepegawaian
@@ -121,6 +122,8 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/coretax-2026/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.coretax.2026');
     Route::get('/data-laporan-pjlp-januari-2025/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.laporan.pjlp.januari.2025');
     Route::get('/data-laporan-ikd/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.laporan.ikd');
+    Route::get('/data-perjanjian-kinerja-2026/{id}', [KodeController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.perjanjian.kinerja.2026');
+
 
 
     Route::get('/data-kepegawaian', [KodeController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
@@ -209,6 +212,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-dataijazah', [KodeController::class, 'uploadBerkas'])->name('tambah.data.ijazah');
     Route::post('/tambah-coretax-2026', [KodeController::class, 'uploadBerkas'])->name('tambah.coretax.2026');
     Route::post('/tambah-laporan-ikd', [KodeController::class, 'uploadBerkas'])->name('tambah.laporan.ikd');
+    Route::post('/tambah-perjanjian-kinerja-2026', [KodeController::class, 'uploadBerkas'])->name('tambah.perjanjian.kinerja.2026');
     Route::post('/tambah-pjlp-januari', [KodeController::class, 'uploadBerkas'])->name('tambah.laporan.pjlp.januari');
 
 
