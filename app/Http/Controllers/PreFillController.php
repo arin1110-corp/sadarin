@@ -667,6 +667,7 @@ class PreFillController extends Controller
                 'kumpulan_status' => 0,
                 'kumpulan_file' => 'null',
                 'kumpulan_sync' => 0,
+                'kumpulan_keterangan' => 'Prefill Perjanjian Kinerja 2026',
             ]);
         }
 
