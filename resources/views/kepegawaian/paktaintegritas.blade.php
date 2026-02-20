@@ -90,27 +90,21 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5>DOWNLOAD & SINKRONISASI</h5>
-
                                 <div class="d-flex justify-content-center gap-3 mb-3">
                                     <a href="{{ route('kepegawaian.export', ['id' => $jenis]) }}"
                                         class="btn btn-warning">
                                         Export Excel
                                     </a>
-
                                     <button id="btnSync" data-slug="{{ Str::slug($jenis, '_') }}"
                                         class="btn btn-primary">
                                         Sinkronisasi
                                     </button>
-
-                                    <div class="text-muted">Jumlah Data Belum Sinkron: {{ $dataBelumSinkron }}</div>
-
                                 </div>
                                 @if (session('success'))
                                     <div class="alert alert-success mt-3">
                                         {{ session('success') }}
                                     </div>
                                 @endif
-
                                 {{-- Progress Bar --}}
                                 <div class="progress d-none" id="syncProgressWrapper" style="height: 25px;">
                                     <div id="syncProgress"
@@ -119,9 +113,9 @@
                                         0%
                                     </div>
                                 </div>
-
                                 <small id="syncStatus" class="text-muted d-block mt-2"></small>
 
+                                <div class="text-muted">Jumlah Data Belum Sinkron: {{ $dataBelumSinkron }}</div>
                             </div>
                         </div>
                     </div>
@@ -143,8 +137,9 @@
                             type="button" role="tab" aria-controls="pppk" aria-selected="false">PPPK</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="paruhwaktu-tab" data-bs-toggle="tab" data-bs-target="#paruhwaktu"
-                            type="button" role="tab" aria-controls="paruhwaktu" aria-selected="false">PPPK
+                        <button class="nav-link" id="paruhwaktu-tab" data-bs-toggle="tab"
+                            data-bs-target="#paruhwaktu" type="button" role="tab" aria-controls="paruhwaktu"
+                            aria-selected="false">PPPK
                             Paruh
                             Waktu</button>
                     </li>

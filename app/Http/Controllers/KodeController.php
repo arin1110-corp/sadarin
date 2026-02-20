@@ -1920,7 +1920,7 @@ class KodeController extends Controller
             ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
             ->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-            ->select('sadarin_user.*', 'sadarin_pengumpulanberkas.kumpulan_id', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_file', 'sadarin_pengumpulanberkas.kumpulan_jenis', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_golongan.*', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
+            ->select('sadarin_user.*', 'sadarin_pengumpulanberkas.kumpulan_id', 'sadarin_pengumpulanberkas.kumpulan_status', 'sadarin_pengumpulanberkas.kumpulan_sync', 'sadarin_pengumpulanberkas.kumpulan_file', 'sadarin_pengumpulanberkas.kumpulan_jenis', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_golongan.*', 'sadarin_eselon.*', 'sadarin_pendidikan.*')
             ->where('sadarin_user.user_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $id)
             ->orderByRaw(
