@@ -10,7 +10,6 @@
 </head>
 
 <body>
-
     <div class="container-fluid">
         <div class="row">
             {{-- Sidebar --}}
@@ -55,6 +54,7 @@
                             <div class="card-body">
                                 <h5>PNS Terkumpul</h5>
                                 <p class="display-6 text-success">{{ $jumlahPnsKumpul }}</p>
+                                <div class="text-muted">Jumlah Belum Terkumpul: {{ $jumlahPnsBelumKumpul }}</div>
                             </div>
                         </div>
                     </div>
@@ -63,6 +63,7 @@
                             <div class="card-body">
                                 <h5>PPPK Terkumpul</h5>
                                 <p class="display-6 text-primary">{{ $jumlahPppkKumpul }}</p>
+                                <div class="text-muted">Jumlah Belum Terkumpul: {{ $jumlahPppkBelumKumpul }}</div>
                             </div>
                         </div>
                     </div>
@@ -71,6 +72,7 @@
                             <div class="card-body">
                                 <h5>PPPK Paruh Waktu Terkumpul</h5>
                                 <p class="display-6 text-danger">{{ $jumlahParuhWaktuKumpul }}</p>
+                                <div class="text-muted">Jumlah Belum Terkumpul: {{ $jumlahParuhWaktuBelumKumpul }}</div>
                             </div>
                         </div>
                     </div>
@@ -79,6 +81,7 @@
                             <div class="card-body">
                                 <h5>PJLP Terkumpul</h5>
                                 <p class="display-6 text-secondary">{{ $jumlahPJLPKumpul }}</p>
+                                <div class="text-muted">Jumlah Belum Terkumpul: {{ $jumlahPJLPBelumKumpul }}</div>
                             </div>
                         </div>
                     </div>
@@ -98,6 +101,8 @@
                                         class="btn btn-primary">
                                         Sinkronisasi
                                     </button>
+
+                                    <div class="text-muted">Jumlah Data Belum Sinkron: {{ $dataBelumSinkron }}</div>
 
                                 </div>
                                 @if (session('success'))

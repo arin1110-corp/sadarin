@@ -1939,6 +1939,8 @@ class KodeController extends Controller
             )
             ->get();
 
+        $dataBelumSinkron = $dataPegawai->where('kumpulan_status', 1)->where('kumpulan_sync', 0)->count();
+
         // Filter PNS dan PPPK
         $dataPns = $dataPegawai->where('user_jeniskerja', '1');
         $dataPppk = $dataPegawai->where('user_jeniskerja', '2');
@@ -1951,8 +1953,14 @@ class KodeController extends Controller
         $jumlahParuhWaktuKumpul = $dataParuhWaktu->where('kumpulan_status', 1)->count();
         $jumlahPJLPKumpul = $dataNonASN->where('kumpulan_status', 1)->count();
 
+        // Statistik belum kumpul
+        $jumlahPnsBelumKumpul = $dataPns->where('kumpulan_status', 0)->count();
+        $jumlahPppkBelumKumpul = $dataPppk->where('kumpulan_status', 0)->count();
+        $jumlahParuhWaktuBelumKumpul = $dataParuhWaktu->where('kumpulan_status', 0)->count();
+        $jumlahPJLPBelumKumpul = $dataNonASN->where('kumpulan_status', 0)->count();
+
         $jenis = $dataPegawai[0]->kumpulan_jenis;
-        return view('kepegawaian.paktaintegritas', compact('dataPegawai', 'dataPns', 'dataPppk', 'jumlahPnsKumpul', 'jumlahPppkKumpul', 'jumlahParuhWaktuKumpul', 'jumlahPJLPKumpul', 'jenis', 'dataPns', 'dataPppk', 'dataParuhWaktu', 'dataNonASN'));
+        return view('kepegawaian.paktaintegritas', compact('dataBelumSinkron', 'jumlahPnsBelumKumpul', 'jumlahPppkBelumKumpul', 'jumlahParuhWaktuBelumKumpul', 'jumlahPJLPBelumKumpul', 'dataPegawai', 'dataPns', 'dataPppk', 'jumlahPnsKumpul', 'jumlahPppkKumpul', 'jumlahParuhWaktuKumpul', 'jumlahPJLPKumpul', 'jenis', 'dataPns', 'dataPppk', 'dataParuhWaktu', 'dataNonASN'));
     }
     /// akhir Pakta Integritas
     /// lihat pakta
