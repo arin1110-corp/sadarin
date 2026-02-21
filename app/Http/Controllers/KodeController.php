@@ -2387,11 +2387,9 @@ class KodeController extends Controller
     }
     public function cetakStrukturPegawaiPdf()
     {
-        $dataPegawai = ModelUser::select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->where('sadarin_user.user_status', 1)->get();
+        $path = public_path('file/Struktur-Organisasi-Dinas-Kebudayaan-Provinsi-Bali.pdf');
 
-        $pdf = PDF::loadView('struktur.organisasi_pdf', compact('dataPegawai'))->setPaper('A4', 'landscape');
-
-        return $pdf->stream('struktur-organisasi.pdf');
+        return response()->file($path);
     }
     /// Akhir Data Kepegawaian
     /// MODAL DATA PEGAWAI
