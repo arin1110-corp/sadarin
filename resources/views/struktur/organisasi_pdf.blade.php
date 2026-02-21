@@ -67,7 +67,7 @@
             <tr>
                 <td>
                     <div class="box" style="width:320px;">
-                        <strong>PLT. KEPALA DINAS</strong><br>
+                        <strong>KEPALA DINAS</strong><br>
                         <small>Dinas Kebudayaan Provinsi Bali</small><br><br>
 
                         @php
@@ -127,7 +127,30 @@
     {{-- ================= 3. KEPALA BIDANG ================= --}}
     <table>
         <tr>
-            @foreach ($dataPegawai->where('user_jabatan', 19) as $kabid)
+            @foreach ($dataPegawai->where('user_jabatan', 74) as $kabid)
+                <td width="25%">
+                    <div class="box">
+                        <strong>{{ $kabid->jabatan_nama }}</strong><br>
+                        <small>{{ $kabid->bidang_nama }}</small><br><br>
+
+                        @php
+                            $foto =
+                                $kabid->user_foto && $kabid->user_foto != '-'
+                                    ? public_path($kabid->user_foto)
+                                    : public_path('assets/image/pemprov.png');
+                        @endphp
+                        <img src="{{ $foto }}" class="foto"><br>
+
+                        <strong>{{ $kabid->user_nama }}</strong><br>
+                        {{ $kabid->golongan_nama }} - {{ $kabid->golongan_pangkat }}
+                    </div>
+                </td>
+            @endforeach
+        </tr>
+    </table>
+    <table>
+        <tr>
+            @foreach ($dataPegawai->where('user_jabatan', 21) as $kabid)
                 <td width="25%">
                     <div class="box">
                         <strong>{{ $kabid->jabatan_nama }}</strong><br>
