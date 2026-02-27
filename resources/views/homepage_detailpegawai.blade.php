@@ -1076,38 +1076,38 @@
 
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-document.querySelectorAll('.open-upload-modal').forEach(btn => {
-    btn.addEventListener('click', function () {
+    <script>
+        document.querySelectorAll('.open-upload-modal').forEach(btn => {
+            btn.addEventListener('click', function() {
 
-        const title = this.dataset.title;
-        const route = this.dataset.route;
-        const jenis = this.dataset.jenis;
-        const jenisfile = this.dataset.jenisfile;
+                const title = this.dataset.title;
+                const route = this.dataset.route;
+                const jenis = this.dataset.jenis;
+                const jenisfile = this.dataset.jenisfile;
 
-        document.getElementById('modalTitle').innerText = title;
-        document.getElementById('formUploadBerkas').action = route;
-        document.getElementById('kumpulan_jenis').value = jenis;
-        document.getElementById('jenisfile').value = jenisfile;
+                document.getElementById('modalTitle').innerText = title;
+                document.getElementById('formUploadBerkas').action = route;
+                document.getElementById('kumpulan_jenis').value = jenis;
+                document.getElementById('jenisfile').value = jenisfile;
 
-        // ==============================
-        // TAMBAHAN KHUSUS CORETAX
-        // ==============================
-        const tanggalWrapper = document.getElementById('tanggalMelaporWrapper');
-        const tanggalInput = document.getElementById('tanggal_melapor');
+                // ==============================
+                // TAMBAHAN KHUSUS CORETAX
+                // ==============================
+                const tanggalWrapper = document.getElementById('tanggalMelaporWrapper');
+                const tanggalInput = document.getElementById('tanggal_melapor');
 
-        if (jenisfile === 'coretax2026') {
-            tanggalWrapper.style.display = 'block';
-            tanggalInput.required = true;
-        } else {
-            tanggalWrapper.style.display = 'none';
-            tanggalInput.required = false;
-            tanggalInput.value = '';
-        }
+                if (jenisfile === 'coretax2026') {
+                    tanggalWrapper.style.display = 'block';
+                    tanggalInput.required = true;
+                } else {
+                    tanggalWrapper.style.display = 'none';
+                    tanggalInput.required = false;
+                    tanggalInput.value = '';
+                }
 
-    });
-});
-</script>
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -1143,27 +1143,33 @@ document.querySelectorAll('.open-upload-modal').forEach(btn => {
         });
     </script>
     <script>
+        const allowOpenFile = false; // 🔒 sementara dimatikan
+
         const allFiles = @json($berkas);
 
         document.querySelectorAll('.showFiles').forEach(btn => {
             btn.addEventListener('click', function() {
                 const jenis = this.dataset.jenis;
 
-                // cari file yang cocok dengan jenis tombol
                 const filtered = allFiles.filter(f =>
                     f.kumpulan_jenis.toLowerCase().trim() === jenis.toLowerCase().trim()
                 );
 
-                if (filtered.length === 0) {
-                    alert('Tidak ada file ditemukan untuk ' + jenis);
-                    return;
-                }
+                if (filtered.length > 0) {
+                    this.classList.remove('btn-secondary', 'btn-danger');
+                    this.classList.add('btn-success');
 
-                // kalau ada lebih dari 1 file, buka semuanya di tab baru
-                filtered.forEach(file => {
-                    const fileUrl = file.kumpulan_file;
-                    window.open(fileUrl, '_blank');
-                });
+                    // Kalau nanti mau aktif lagi
+                    if (allowOpenFile) {
+                        filtered.forEach(file => {
+                            window.open(file.kumpulan_file, '_blank');
+                        });
+                    }
+
+                } else {
+                    this.classList.remove('btn-secondary', 'btn-success');
+                    this.classList.add('btn-danger');
+                }
             });
         });
     </script>
