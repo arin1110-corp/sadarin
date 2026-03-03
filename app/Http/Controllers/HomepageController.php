@@ -102,10 +102,20 @@ class HomepageController extends Controller
     }
 
     // Logout
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget(['admin_id', 'admin_role', 'admin_nip']);
-        return redirect()->route('akses.form');
+        // Hapus semua data session
+        $request->session()->flush();
+
+        // Invalidate session
+        $request->session()->invalidate();
+
+        // Regenerate CSRF token
+        $request->session()->regenerateToken();
+
+        return redirect()
+            ->route('akses.form')
+            ->withErrors(['kode_akses' => 'Anda logout.']);
     }
     public function form()
     {

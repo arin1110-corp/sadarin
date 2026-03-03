@@ -116,7 +116,7 @@
                     </span>
                 </a>
 
-                @if (empty($user->user_password))
+                <!-- @if (empty($user->user_password))
                     <a href="#" class="menu-box bg-warning text-dark d-flex align-items-center gap-2"
                         data-bs-toggle="modal" data-bs-target="#setPasswordModal">
                         <i class="bi bi-shield-lock fs-1"></i>
@@ -128,14 +128,19 @@
                         <i class="bi bi-key fs-1"></i>
                         <span>UBAH PASSWORD</span>
                     </a>
-                @endif
+                @endif -->
 
             @endif
 
             <a href="{{ route('arsip.disbud') }}"
                 class="menu-box bg-success text-white d-flex align-items-center gap-2">
                 <i class="bi bi-archive-fill fs-1"></i>
-                <span>LIHAT ARSIP DISBUD</span>
+                <span>LIHAT DOKUMEN</span>
+            </a>
+            <a href="{{ route('logout') }}"
+                class="menu-box bg-danger text-white d-flex align-items-center gap-2">
+                <i class="bi bi-box-arrow-right fs-1"></i>
+                <span>KELUAR</span>
             </a>
 
         </div>
