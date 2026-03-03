@@ -90,6 +90,14 @@
             <h1>SADAR<span class="in">IN</span> <br></h1>
             <div style="font-size: 30px; color:#666;">Sistem Aplikasi Data dan Arsip Internal Dinas Kebudayaan</div>
         </div>
+        @php
+            $user = session('user_info');
+        @endphp
+        @if (session('error'))
+            <div class="alert alert-danger text-center">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <div class="grid-menu-center mt-3">
 
@@ -99,17 +107,16 @@
                     class="menu-box d-flex flex-column align-items-center justify-content-center text-center"
                     data-bs-toggle="modal" data-bs-target="#passwordConfirmModal">
 
-                    <i class="bi bi-person-circle fs-1 mb-2"></i>
+                    <i class="bi bi-person-circle fs-1"></i>
 
                     <span class="fw-bold">PROFIL</span>
 
                     <span class="small text-muted mt-1">
                         {{ $user->user_nama }}
                     </span>
-
                 </a>
 
-                @if (empty($user->password))
+                @if (empty($user->user_password))
                     <a href="#" class="menu-box bg-warning text-dark d-flex align-items-center gap-2"
                         data-bs-toggle="modal" data-bs-target="#setPasswordModal">
                         <i class="bi bi-shield-lock fs-1"></i>
@@ -133,28 +140,89 @@
 
         </div>
 
-        <div class="modal fade" id="passwordConfirmModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form method="POST" action="{{ route('akses.cek.profil') }}">
-                        @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title">Masukkan Password</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        {{-- ================================================= --}}
+        {{-- MODAL PASSWORD --}}
+        {{-- ================================================= --}}
+        @if ($user)
+            <div class="modal fade" id="passwordConfirmModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content rounded-4 border-0 shadow">
+
+                        <div class="modal-header text-white" style="background-color: tomato;">
+                            <h5 class="modal-title">
+                                Verifikasi Password
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
 
-                        <div class="modal-body">
-                            <input type="password" name="password" class="form-control"
-                                placeholder="Masukkan Password Anda" required>
-                        </div>
+                        <div class="modal-body p-4">
 
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Masuk Profil</button>
+                            {{-- ========================= --}}
+                            {{-- PASSWORD BELUM DISET --}}
+                            {{-- ========================= --}}
+                            @if (!$user->user_password)
+                                <div class="text-center">
+
+                                    <i class="bi bi-envelope-paper-fill" style="font-size:60px; color:tomato"></i>
+
+                                    <h5 class="mt-3">
+                                        Password Belum Diset
+                                    </h5>
+
+                                    <p class="text-muted">
+                                        Password akan dikirim ke email Anda.
+                                    </p>
+
+                                    <form method="POST" action="{{ route('password.kirim.email') }}">
+                                        @csrf
+                                        <button type="submit" class="btn w-100"
+                                            style="background-color: tomato; color:white;">
+                                            Kirim Password ke Email
+                                        </button>
+                                    </form>
+
+                                </div>
+
+                                {{-- ========================= --}}
+                                {{-- PASSWORD SUDAH ADA --}}
+                                {{-- ========================= --}}
+                            @else
+                                <form method="POST" action="{{ route('akses.cek.profil') }}">
+                                    @csrf
+
+                                    <div class="text-center mb-3">
+                                        <i class="bi bi-shield-lock fs-1 text-primary"></i>
+                                        <h6 class="mt-2">
+                                            {{ $user->user_nama }}
+                                        </h6>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            Masukkan Password
+                                        </label>
+                                        <input type="password" name="password" class="form-control" required>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        Masuk
+                                    </button>
+
+                                    <div class="text-center mt-3">
+                                        <a href="{{ route('akses.reset.password') }}"
+                                            class="small text-danger text-decoration-none">
+                                            Reset Password
+                                        </a>
+                                    </div>
+
+                                </form>
+                            @endif
+
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
 
         <div class="modal fade" id="setPasswordModal" tabindex="-1">
             <div class="modal-dialog">

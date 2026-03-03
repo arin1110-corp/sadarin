@@ -56,6 +56,12 @@ Route::get('/akses-kode', [HomepageController::class, 'akses_kode'])->name('akse
 Route::get('/login', [HomepageController::class, 'login'])->name('login'); // Form login admin/kepegawaian
 Route::post('/login-submit', [HomepageController::class, 'loginSubmit'])->name('login.submit');
 Route::get('/logout', [HomepageController::class, 'logout'])->name('logout'); // Logout admin/kepegawaian
+Route::get('/cek-kode', function () {
+    return view('homepage_awal');
+})->name('akses.depan');
+Route::get('/homepage-menuawal', function () {
+    return view('homepage_menuawal');
+})->name('homepage.menuawal');
 
 // Dashboard admin
 Route::middleware('admin.auth')->group(function () {
@@ -128,8 +134,6 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-laporan-ikd/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.laporan.ikd');
     Route::get('/data-perjanjian-kinerja-2026/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.perjanjian.kinerja.2026');
 
-
-
     Route::get('/data-kepegawaian', [KepegawaianController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
     Route::get('/import-paktaintegritas', [KepegawaianController::class, 'syncPaktaIntegritas'])->name('kepegawaian.import.paktaintegritas');
     Route::get('/export/{id}', [KepegawaianController::class, 'exportPaktaIntegritas'])->name('kepegawaian.export');
@@ -165,7 +169,6 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::post('/kepegawaian/data/export/rekap', [KepegawaianController::class, 'exportDataRekap'])->name('kepegawaian.export.data.rekap');
     Route::post('/kepegawaian/sync/{id}', [KepegawaianController::class, 'Pegawaisync'])->name('kepegawaian.sync');
 
-
     // ... Tambahkan route kepegawaian lain di sini ...
 });
 
@@ -174,7 +177,6 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/daftar-bagian', [AksesController::class, 'daftarBagian'])->name('daftar.bagian');
     // Tambahkan rute lain yang memerlukan akses di sini
     Route::get('/pk-bidang', [AksesController::class, 'pkbidang'])->name('pk.bidang');
-    Route::get('/detail-pegawai', [AksesController::class, 'detailpegawai'])->name('detail.pegawai');
     Route::get('/data-upload', [AksesController::class, 'dataupload'])->name('data.upload');
     Route::get('/umpan-balik', [AksesController::class, 'umpanbalik'])->name('umpan.balik');
     Route::get('/evaluasi-kinerja', [AksesController::class, 'evaluasikinerja'])->name('evaluasi.kinerja');
@@ -190,9 +192,29 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/struktur-organisasi', [AksesController::class, 'strukturOrganisasi'])->name('struktur.organisasi');
     Route::get('/struktur-organisasi/pdf', [AksesController::class, 'cetakStrukturPegawaiPdf'])->name('struktur.pdf');
     route::get('/lihat-jajaran', [AksesController::class, 'lihatjajaran'])->name('lihat.jajaran');
-    Route::post('/pegawai-update', [AksesController::class, 'pegawaiUpdate'])->name('pegawai.update');
-    Route::post('/pemuktahiran-update', [AksesController::class, 'updateDataPegawai'])->name('pemuktahiran.update');
-    Route::post('/pemuktahiran-update-pasfoto', [AksesController::class, 'updatePasFoto'])->name('pemuktahiran.update.pasfoto');
+
+    // Rute untuk halaman cek Subbag
+
+    Route::get('/data-ppep', [AksesController::class, 'datappep'])->name('data.ppep');
+    Route::get('/data-keuangan', [AksesController::class, 'datakeuangan'])->name('data.keuangan');
+    Route::get('/data-umpeg', [AksesController::class, 'dataumpeg'])->name('data.umpeg');
+    Route::get('/data-senirupa', [AksesController::class, 'datasenirupa'])->name('data.senirupa');
+    Route::get('/data-dppa2025', [AksesController::class, 'datadppa2025'])->name('data.dppa2025');
+    Route::get('/data-rak2025', [AksesController::class, 'datarak2025'])->name('data.rak2025');
+    Route::get('/bendahara-penerima', [AksesController::class, 'bendaharaPenerima'])->name('bendahara.penerima');
+    Route::get('/bendahara-pengeluaran', [AksesController::class, 'bendaharaPengeluaran'])->name('bendahara.pengeluaran');
+    Route::get('/data-pegawaipns', [AksesController::class, 'dataPegawaipns'])->name('data.pegawaiPNS');
+    Route::get('/data-pegawai-pppk', [AksesController::class, 'dataPegawaiPPPK'])->name('data.pegawaiPPPK');
+    Route::get('/data-pegawai-rekap', [AksesController::class, 'dataPegawaiRekap'])->name('data.rekappegawai');
+    Route::get('/data-pegawai-per-bidang', [AksesController::class, 'dataPegawaiRekapPerBidang'])->name('data.perbidangpegawai');
+    Route::get('/data-pegawai-rincian', [AksesController::class, 'dataPegawaiRincian'])->name('data.rincianpegawai');
+    Route::get('arsip-disbud', [AksesController::class, 'arsipDisbud'])->name('arsip.disbud');
+
+    Route::post('/profil-check', [AksesController::class, 'profilCekPassword'])->name('akses.cek.profil');
+    Route::post('/password-kirim-email', [AksesController::class, 'sendPasswordResetEmail'])->name('password.kirim.email');
+    Route::post('/reset-password', [AksesController::class, 'resetPassword'])->name('akses.reset.password');
+    Route::post('/send-password-link', [AksesController::class, 'sendPasswordLink'])->name('password.send.link');
+
     Route::post('/tambah-evaluasi-tw1', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw1');
     Route::post('/tambah-evaluasi-tw2', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw2');
     Route::post('/tambah-evaluasi-tw3', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw3');
@@ -218,25 +240,17 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-laporan-ikd', [AksesController::class, 'uploadBerkas'])->name('tambah.laporan.ikd');
     Route::post('/tambah-perjanjian-kinerja-2026', [AksesController::class, 'uploadBerkas'])->name('tambah.perjanjian.kinerja.2026');
     Route::post('/tambah-pjlp-januari', [AksesController::class, 'uploadBerkas'])->name('tambah.laporan.pjlp.januari');
+});
+Route::middleware(['akses.kontrol', 'sudah.nip'])->group(function () {
+    Route::get('/detail-pegawai', [AksesController::class, 'detailpegawai'])->name('detail.pegawai');
 
+    // Rute untuk halaman profil pengguna, hanya bisa diakses jika sudah memiliki NIP
+    // Input Data
 
-    // Rute untuk halaman cek Subbag
+    Route::post('/pegawai-update', [AksesController::class, 'pegawaiUpdate'])->name('pegawai.update');
+    Route::post('/pemuktahiran-update', [AksesController::class, 'updateDataPegawai'])->name('pemuktahiran.update');
+    Route::post('/pemuktahiran-update-pasfoto', [AksesController::class, 'updatePasFoto'])->name('pemuktahiran.update.pasfoto');
 
-    Route::get('/data-ppep', [AksesController::class, 'datappep'])->name('data.ppep');
-    Route::get('/data-keuangan', [AksesController::class, 'datakeuangan'])->name('data.keuangan');
-    Route::get('/data-umpeg', [AksesController::class, 'dataumpeg'])->name('data.umpeg');
-    Route::get('/data-senirupa', [AksesController::class, 'datasenirupa'])->name('data.senirupa');
-    Route::get('/data-dppa2025', [AksesController::class, 'datadppa2025'])->name('data.dppa2025');
-    Route::get('/data-rak2025', [AksesController::class, 'datarak2025'])->name('data.rak2025');
-    Route::get('/bendahara-penerima', [AksesController::class, 'bendaharaPenerima'])->name('bendahara.penerima');
-    Route::get('/bendahara-pengeluaran', [AksesController::class, 'bendaharaPengeluaran'])->name('bendahara.pengeluaran');
-    Route::get('/data-pegawaipns', [AksesController::class, 'dataPegawaipns'])->name('data.pegawaiPNS');
-    Route::get('/data-pegawai-pppk', [AksesController::class, 'dataPegawaiPPPK'])->name('data.pegawaiPPPK');
-    Route::get('/data-pegawai-rekap', [AksesController::class, 'dataPegawaiRekap'])->name('data.rekappegawai');
-    Route::get('/data-pegawai-per-bidang', [AksesController::class, 'dataPegawaiRekapPerBidang'])->name('data.perbidangpegawai');
-    Route::get('/data-pegawai-rincian', [AksesController::class, 'dataPegawaiRincian'])->name('data.rincianpegawai');
-    Route::get('arsip-disbud', [AksesController::class, 'arsipDisbud'])->name('arsip.disbud');
-    Route::post('/profil-check', [AksesController::class, 'profilCekPassword'])->name('akses.cek.profil');
-    Route::post('/send-password-link', [AksesController::class, 'sendPasswordLink'])->name('password.send.link');
-    Route::get('/arsip-disbud', [AksesController::class, 'index'])->name('arsip.disbud');
+    // Rute untuk halaman reset password, hanya bisa diakses jika sudah memiliki NIP
+    // Tambahkan rute lain yang memerlukan pengguna sudah memiliki NIP di sini
 });

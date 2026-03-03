@@ -638,11 +638,34 @@ class AksesController extends Controller
     }
     public function profilCekPassword(Request $request)
     {
-        $user = auth()->user();
+        $request->validate([
+            'password' => 'required',
+        ]);
 
-        if (!Hash::check($request->password, $user->password)) {
+        $userSession = session('user_info');
+
+        if (!$userSession) {
+            return redirect()->route('akses.depan')->with('error', 'Session habis, silakan login ulang');
+        }
+
+        $user = ModelUser::where('user_nip', $userSession->user_nip)->orWhere('user_nik', $userSession->user_nik)->first();
+
+        if (!$user) {
+            return redirect()->route('akses.depan')->with('error', 'User tidak ditemukan');
+        }
+
+        if (!$user->user_password) {
+            return back()->with('error', 'Password belum diset');
+        }
+
+        if (!Hash::check($request->password, $user->user_password)) {
             return back()->with('error', 'Password salah');
         }
+
+        // ✅ Password benar
+        session([
+            'password_verified' => true,
+        ]);
 
         return redirect()->route('detail.pegawai');
     }

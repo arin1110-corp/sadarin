@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class AksesKontrol
+class SudahNIP
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,11 @@ class AksesKontrol
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!session()->has('kode_akses_valid')) {
+        if (!session()->has('password_verified')) {
             return redirect()
-                ->route('akses.depan')
-                ->withErrors(['kode_akses' => 'Silakan masukkan kode akses terlebih dahulu.']);
+                ->route('homepage.menuawal') // route homepage_menuawal
+                ->with('error', 'Silakan login password terlebih dahulu.');
         }
-
         return $next($request);
     }
 }
