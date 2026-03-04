@@ -669,4 +669,222 @@ class AksesController extends Controller
 
         return redirect()->route('detail.pegawai');
     }
+    public function uploadBerkas(Request $request)
+    {
+        $user = session('user_info');
+        $request->validate([
+            'file' => 'required|mimes:pdf,jpeg,jpg,png,gif,bmp,webp', // PDF + gambar
+            'kumpulan_jenis' => 'required|string',
+            'jenisfile' => 'required|string',
+        ]);
+
+        $nip = $user->user_nip;
+        $nik = $user->user_nik;
+        $jeniskerja = $user->user_jeniskerja;
+        $jenis = $request->kumpulan_jenis;
+        $jenisfile = $request->jenisfile;
+
+        // Gunakan NIP atau NIK
+        $finalId = $nip == '-' || $nip == null || $nip == '' ? $nik : $nip;
+
+        $file = $request->file('file');
+        $ext = $file->getClientOriginalExtension(); // ambil ekstensi asli
+        $filename = $finalId . '_' . str_replace(' ', '_', $jenis) . '.' . $ext; // tetap namanya sama tapi sesuai ekstensi
+
+        // Mapping folder seperti sebelumnya
+        $folderMap = [
+            'evaluasikinerjatriwulan1' => [
+                '1' => 'assets/evkintw1/pns',
+                '2' => 'assets/evkintw1/pppk',
+                '3' => 'assets/evkintw1/paruhwaktu',
+                '4' => 'assets/evkintw1/nonasn',
+            ],
+            'umpanbaliktriwulan1' => [
+                '1' => 'assets/umpanbaliktw1/pns',
+                '2' => 'assets/umpanbaliktw1/pppk',
+                '3' => 'assets/umpanbaliktw1/paruhwaktu',
+                '4' => 'assets/umpanbaliktw1/nonasn',
+            ],
+            'evaluasikinerjatriwulan2' => [
+                '1' => 'assets/evkintw2/pns',
+                '2' => 'assets/evkintw2/pppk',
+                '3' => 'assets/evkintw2/paruhwaktu',
+                '4' => 'assets/evkintw2/nonasn',
+            ],
+            'umpanbaliktriwulan2' => [
+                '1' => 'assets/umpanbaliktw2/pns',
+                '2' => 'assets/umpanbaliktw2/pppk',
+                '3' => 'assets/umpanbaliktw2/paruhwaktu',
+                '4' => 'assets/umpanbaliktw2/nonasn',
+            ],
+            'evaluasikinerjatriwulan3' => [
+                '1' => 'assets/evkintw3/pns',
+                '2' => 'assets/evkintw3/pppk',
+                '3' => 'assets/evkintw3/paruhwaktu',
+                '4' => 'assets/evkintw3/nonasn',
+            ],
+            'umpanbaliktriwulan3' => [
+                '1' => 'assets/umpanbaliktw3/pns',
+                '2' => 'assets/umpanbaliktw3/pppk',
+                '3' => 'assets/umpanbaliktw3/paruhwaktu',
+                '4' => 'assets/umpanbaliktw3/nonasn',
+            ],
+            'evaluasikinerjatriwulan4' => [
+                '1' => 'assets/evkin/pns',
+                '2' => 'assets/evkin/pppk',
+                '3' => 'assets/evkin/paruhwaktu',
+                '4' => 'assets/evkin/nonasn',
+            ],
+            'umpanbaliktriwulan4' => [
+                '1' => 'assets/umpanbalik/pns',
+                '2' => 'assets/umpanbalik/pppk',
+                '3' => 'assets/umpanbalik/paruhwaktu',
+                '4' => 'assets/umpanbalik/nonasn',
+            ],
+            'evaluasikinerjatahunan2025' => [
+                '1' => 'assets/evkin2025/pns',
+                '2' => 'assets/evkin2025/pppk',
+                '3' => 'assets/evkin2025/paruhwaktu',
+                '4' => 'assets/evkin2025/nonasn',
+            ],
+            'pakta1desember' => [
+                '1' => 'assets/pakta1desember/pns',
+                '2' => 'assets/pakta1desember/pppk',
+                '3' => 'assets/pakta1desember/paruhwaktu',
+                '4' => 'assets/pakta1desember/nonasn',
+            ],
+            'skp2025' => [
+                '1' => 'assets/skp2025/pns',
+                '2' => 'assets/skp2025/pppk',
+                '3' => 'assets/skp2025/paruhwaktu',
+                '4' => 'assets/skp2025/nonasn',
+            ],
+            'modelc2026' => [
+                '1' => 'assets/modelc2026/pns',
+                '2' => 'assets/modelc2026/pppk',
+                '3' => 'assets/modelc2026/paruhwaktu',
+                '4' => 'assets/modelc2026/nonasn',
+            ],
+            'modelc2025' => [
+                '1' => 'assets/modelc2025/pns',
+                '2' => 'assets/modelc2025/pppk',
+                '3' => 'assets/modelc2025/paruhwaktu',
+                '4' => 'assets/modelc2025/nonasn',
+            ],
+            'paktaintegritas' => [
+                '1' => 'assets/pakta2025/pns',
+                '2' => 'assets/pakta2025/pppk',
+                '3' => 'assets/pakta2025/paruhwaktu',
+                '4' => 'assets/pakta2025/nonasn',
+            ],
+            'dataktp' => [
+                '1' => 'assets/dataktp/pns',
+                '2' => 'assets/dataktp/pppk',
+                '3' => 'assets/dataktp/paruhwaktu',
+                '4' => 'assets/dataktp/nonasn',
+            ],
+            'datanpwp' => [
+                '1' => 'assets/datanpwp/pns',
+                '2' => 'assets/datanpwp/pppk',
+                '3' => 'assets/datanpwp/paruhwaktu',
+                '4' => 'assets/datanpwp/nonasn',
+            ],
+            'databukurekening' => [
+                '1' => 'assets/databukurekening/pns',
+                '2' => 'assets/databukurekening/pppk',
+                '3' => 'assets/databukurekening/paruhwaktu',
+                '4' => 'assets/databukurekening/nonasn',
+            ],
+            'databpjskesehatan' => [
+                '1' => 'assets/databpjskesehatan/pns',
+                '2' => 'assets/databpjskesehatan/pppk',
+                '3' => 'assets/databpjskesehatan/paruhwaktu',
+                '4' => 'assets/databpjskesehatan/nonasn',
+            ],
+            'dataijazah' => [
+                '1' => 'assets/dataijazah/pns',
+                '2' => 'assets/dataijazah/pppk',
+                '3' => 'assets/dataijazah/paruhwaktu',
+                '4' => 'assets/dataijazah/nonasn',
+            ],
+            'datakartukeluarga' => [
+                '1' => 'assets/datakartukeluarga/pns',
+                '2' => 'assets/datakartukeluarga/pppk',
+                '3' => 'assets/datakartukeluarga/paruhwaktu',
+                '4' => 'assets/datakartukeluarga/nonasn',
+            ],
+            'laporanpjlpjanuari2025' => [
+                '4' => 'assets/laporanpjlpjanuari2025/pjlp',
+            ],
+            'coretax2026' => [
+                '1' => 'assets/coretax2026/pns',
+                '2' => 'assets/coretax2026/pppk',
+                '3' => 'assets/coretax2026/paruhwaktu',
+                '4' => 'assets/coretax2026/pjlp',
+            ],
+            'laporanikd' => [
+                '1' => 'assets/laporanikd/pns',
+                '2' => 'assets/laporanikd/pppk',
+                '3' => 'assets/laporanikd/paruhwaktu',
+                '4' => 'assets/laporanikd/nonasn',
+            ],
+            'perjanjiankinerja2026' => [
+                '1' => 'assets/perjanjiankinerja2026/pns',
+                '2' => 'assets/perjanjiankinerja2026/pppk',
+                '3' => 'assets/perjanjiankinerja2026/paruhwaktu',
+                '4' => 'assets/perjanjiankinerja2026/nonasn',
+            ],
+        ];
+
+        if (!isset($folderMap[$jenisfile][$jeniskerja])) {
+            return back()->with('error', 'Folder untuk jenis file ini belum disiapkan.');
+        }
+
+
+        $folder = $folderMap[$jenisfile][$jeniskerja];
+        // Hapus file lama (jika ada, ekstensi apa pun)
+        $baseName = $finalId . '_' . str_replace(' ', '_', $jenis);
+        $oldFiles = glob(public_path($folder . '/' . $baseName . '.*'));
+
+        if ($oldFiles) {
+            foreach ($oldFiles as $old) {
+                if (file_exists($old)) {
+                    unlink($old);
+                }
+            }
+        }
+        // Buat folder jika belum ada
+        if (!file_exists(public_path($folder))) {
+            mkdir(public_path($folder), 0755, true);
+        }
+
+        // Upload file
+        $file->move(public_path($folder), $filename);
+
+        $url = asset($folder . '/' . $filename);
+
+        $keterangan = 'Mengupload berkas ' . $jenis . ' melalui sistem.';
+        if ($request->filled('tanggal_melapor')) {
+            $keterangan = 'Tanggal Melapor ' . \Carbon\Carbon::parse($request->tanggal_melapor)->translatedFormat('d F Y');
+        }
+
+        // Simpan / update di DB
+        ModelPengumpulanBerkas::updateOrCreate(
+            [
+                'kumpulan_user' => $finalId,
+                'kumpulan_jenis' => $jenis,
+            ],
+            [
+                'kumpulan_file' => $url,
+                'kumpulan_status' => 1,
+                'kumpulan_sync' => 0,
+                'kumpulan_keterangan' => $keterangan,
+            ],
+        );
+
+        return redirect()
+            ->route('homepage.menuawal')
+            ->with('success', 'File ' . $jenis . ' berhasil diupload.')
+            ->with('open_modal', $jenisfile); // kirim info modal mana yang harus dibuka
+    }
 }

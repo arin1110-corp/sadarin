@@ -1143,7 +1143,7 @@
         });
     </script>
     <script>
-        const allowOpenFile = false; // 🔒 sementara dimatikan
+        const allowOpenFile = true; // 🔒 sementara dimatikan
 
         const allFiles = @json($berkas);
 

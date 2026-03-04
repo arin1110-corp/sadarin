@@ -147,9 +147,8 @@ class HomepageController extends Controller
                     ->where('user_nip', $request->kode_akses)
                     ->orWhere('user_nik', $request->kode_akses);
             })
-            ->select('sadarin_user.user_nip', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_user.user_password', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_user.user_nik')
+            ->select('sadarin_user.user_nip', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_user.user_password', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_user.user_jeniskerja', 'sadarin_user.user_nik')
             ->first();
-
         if ($user) {
             session([
                 'kode_akses_valid' => true,

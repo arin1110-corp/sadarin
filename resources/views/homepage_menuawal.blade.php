@@ -98,11 +98,44 @@
                 {{ session('error') }}
             </div>
         @endif
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
 
         <div class="grid-menu-center mt-3">
+            <!-- Coretax 2026 -->
+            <button
+                class="btn btn-primary open-upload-modal menu-box d-flex flex-column align-items-center justify-content-center text-center"
+                data-title="Coretax 2026" data-route="{{ route('tambah.coretax.2026') }}" data-jenis="Coretax 2026"
+                data-jenisfile="coretax2026">
+                <i class="bi bi-file-earmark-text fs-1"></i>
+                <span>Coretax 2026</span>
+            </button>
 
+            <!-- Laporan IKD -->
+            <button
+                class="btn btn-primary open-upload-modal menu-box d-flex flex-column align-items-center justify-content-center text-center"
+                data-title="Laporan IKD" data-route="{{ route('tambah.laporan.ikd') }}" data-jenis="Laporan IKD"
+                data-jenisfile="laporanikd">
+                <i class="bi bi-file-bar-graph fs-1"></i>
+                <span>Laporan IKD</span>
+            </button>
+
+            <!-- Perjanjian Kinerja 2026 -->
+            <button
+                class="btn btn-primary open-upload-modal menu-box d-flex flex-column align-items-center justify-content-center text-center"
+                data-title="Perjanjian Kinerja 2026" data-route="{{ route('tambah.perjanjian.kinerja.2026') }}"
+                data-jenis="Perjanjian Kinerja 2026" data-jenisfile="perjanjiankinerja2026">
+                <i class="bi bi-file-check fs-1"></i>
+                <span>Perjanjian Kinerja 2026</span>
+            </button>
+        </div>
+
+        <div class="grid-menu-center mt-3">
             @if (!empty($user))
-
                 <a href="#"
                     class="menu-box d-flex flex-column align-items-center justify-content-center text-center"
                     data-bs-toggle="modal" data-bs-target="#passwordConfirmModal">
@@ -117,28 +150,26 @@
                 </a>
 
                 <!-- @if (empty($user->user_password))
-                    <a href="#" class="menu-box bg-warning text-dark d-flex align-items-center gap-2"
+<a href="#" class="menu-box bg-warning text-dark d-flex align-items-center gap-2"
                         data-bs-toggle="modal" data-bs-target="#setPasswordModal">
                         <i class="bi bi-shield-lock fs-1"></i>
                         <span>SET PASSWORD</span>
                     </a>
-                @else
-                    <a href="#" class="menu-box bg-info text-white d-flex align-items-center gap-2"
+@else
+<a href="#" class="menu-box bg-info text-white d-flex align-items-center gap-2"
                         data-bs-toggle="modal" data-bs-target="#setPasswordModal">
                         <i class="bi bi-key fs-1"></i>
                         <span>UBAH PASSWORD</span>
                     </a>
-                @endif -->
-
+@endif -->
             @endif
 
             <a href="{{ route('arsip.disbud') }}"
                 class="menu-box bg-success text-white d-flex align-items-center gap-2">
                 <i class="bi bi-archive-fill fs-1"></i>
-                <span>LIHAT DOKUMEN</span>
+                <span>KE SADARIN</span>
             </a>
-            <a href="{{ route('logout') }}"
-                class="menu-box bg-danger text-white d-flex align-items-center gap-2">
+            <a href="{{ route('logout') }}" class="menu-box bg-danger text-white d-flex align-items-center gap-2">
                 <i class="bi bi-box-arrow-right fs-1"></i>
                 <span>KELUAR</span>
             </a>
@@ -213,9 +244,9 @@
                                         Masuk
                                     </button>
 
-                                    <div class="text-center mt-3">
+                                    <div class="text-center mt-3 btn btn-primary w-100" style="background-color: tomato; border:none;">
                                         <a href="{{ route('akses.reset.password') }}"
-                                            class="small text-danger text-decoration-none">
+                                            class="small text-white text-decoration-none">
                                             Reset Password
                                         </a>
                                     </div>
@@ -257,6 +288,44 @@
             </div>
         </div>
 
+        <!-- MODAL UNIVERSAL UPLOAD BERKAS -->
+        <div class="modal fade" id="modalUploadBerkas" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form id="formUploadBerkas" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="user_nip" value="{{ $user->user_nip }}">
+                        <input type="hidden" name="user_nik" value="{{ $user->user_nik }}">
+                        <input type="hidden" name="kumpulan_jenis" id="kumpulan_jenis">
+                        <input type="hidden" name="jenisfile" id="jenisfile">
+                        <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Upload Berkas</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-header" id="tanggalMelaporWrapper" style="display:none;">
+                            <label class="form-label">Tanggal Melapor Pajak</label>
+                            <label class="form-label text-danger fw-bold">(Bukan Tanggal Upload Bukti)</label>
+                            <input type="date" name="tanggal_melapor" id="tanggal_melapor" class="form-control">
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label id="labelFile" class="form-label">File</label>
+                                <input type="file" name="file" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <footer class="text-center mt-4 py-3">
             <div>
                 &copy; {{ date('Y') }} <strong>Dinas Kebudayaan Provinsi Bali</strong> —
@@ -269,8 +338,28 @@
             </div>
         </footer>
     </div>
+    @if (session('open_modal'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var modal = new bootstrap.Modal(document.getElementById("modal-{{ session('open_modal') }}"));
+                modal.show();
+            });
+        </script>
+    @endif
 </body>
+<!-- Bootstrap Select CSS -->
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
 
+<!-- jQuery (wajib untuk bootstrap-select) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap Select JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+
+
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     const searchInput = document.getElementById('menuSearch');
     const menuItems = document.querySelectorAll('.menu-item');
@@ -289,6 +378,56 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // open-upload-modal
+        document.querySelectorAll('.open-upload-modal').forEach(btn => {
+            btn.addEventListener('click', function() {
 
+                const title = this.dataset.title;
+                const route = this.dataset.route;
+                const jenis = this.dataset.jenis;
+                const jenisfile = this.dataset.jenisfile;
+
+                document.getElementById('modalTitle').innerText = title;
+                document.getElementById('formUploadBerkas').action = route;
+                document.getElementById('kumpulan_jenis').value = jenis;
+                document.getElementById('jenisfile').value = jenisfile;
+
+                // ==============================
+                // TAMBAHAN KHUSUS CORETAX
+                // ==============================
+                const tanggalWrapper = document.getElementById('tanggalMelaporWrapper');
+                const tanggalInput = document.getElementById('tanggal_melapor');
+
+                if (jenisfile === 'coretax2026') {
+                    tanggalWrapper.style.display = 'block';
+                    tanggalInput.required = true;
+                } else {
+                    tanggalWrapper.style.display = 'none';
+                    tanggalInput.required = false;
+                    tanggalInput.value = '';
+                }
+
+            });
+        });
+    });
+</script>
+<script>
+    $(document).on('click', '.open-upload-modal', function() {
+        const title = $(this).data('title');
+        const route = $(this).data('route');
+        const jenis = $(this).data('jenis');
+        const jenisfile = $(this).data('jenisfile');
+
+        $('#modalTitle').text(title);
+        $('#labelFile').text(title);
+        $('#kumpulan_jenis').val(jenis);
+        $('#jenisfile').val(jenisfile);
+        $('#formUploadBerkas').attr('action', route);
+
+        new bootstrap.Modal(document.getElementById('modalUploadBerkas')).show();
+    });
+</script>
 
 </html>
