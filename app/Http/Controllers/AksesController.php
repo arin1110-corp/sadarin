@@ -234,7 +234,7 @@ class AksesController extends Controller
             ->where('navigasisekre_subbag', 3)
             ->get();
 
-        return view('homepage_data_subbag_sekretariat', compact('datasekretariat', 'subbagNama'));
+        return view('homepage_menunavigasi', compact('datasekretariat', 'subbagNama'));
     }
     public function datakeuangan()
     {
@@ -886,5 +886,10 @@ class AksesController extends Controller
             ->route('homepage.menuawal')
             ->with('success', 'File ' . $jenis . ' berhasil diupload.')
             ->with('open_modal', $jenisfile); // kirim info modal mana yang harus dibuka
+    }
+    public function arsipDisbud()
+    {
+        $bidang = ModelBidang::where('bidang_status', 1)->get();
+        return view('homepage_cekbidang', compact('bidang'));
     }
 }
