@@ -9,50 +9,50 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
-    body {
-        background: #f8f9fa;
-        font-family: 'Segoe UI', sans-serif;
-    }
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
 
-    .container {
-        max-width: 960px;
-        margin-top: 50px;
-        background: white;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        border-radius: 20px;
-        padding: 40px;
-    }
+        .container {
+            max-width: 960px;
+            margin-top: 50px;
+            background: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+        }
 
-    .title h1 {
-        font-weight: bold;
-        font-size: 50px;
-        line-height: 1.2;
-    }
+        .title h1 {
+            font-weight: bold;
+            font-size: 50px;
+            line-height: 1.2;
+        }
 
-    .title .in {
-        color: orangered;
-    }
+        .title .in {
+            color: orangered;
+        }
 
-    .form-access {
-        margin-top: 30px;
-        padding: 30px;
-        background: #f1f1f1;
-        border-radius: 15px;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-    }
+        .form-access {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f1f1f1;
+            border-radius: 15px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
 
-    .form-access input {
-        border-radius: 10px;
-        height: 45px;
-    }
+        .form-access input {
+            border-radius: 10px;
+            height: 45px;
+        }
 
-    .form-access button {
-        border-radius: 10px;
-    }
+        .form-access button {
+            border-radius: 10px;
+        }
 
-    footer {
-        font-size: 14px;
-    }
+        footer {
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -70,7 +70,8 @@
 
         <div class="form-access mt-5">
             <p class="mb-4" style="font-size: 16px; color: #555;">
-                Masukkan <strong>kode akses</strong> atau <strong>NIP</strong> atau <strong>NIK</strong> untuk masuk ke dalam sistem data dan
+                Masukkan <strong>kode akses</strong> atau <strong>NIP</strong> atau <strong>NIK</strong> untuk masuk ke
+                dalam sistem data dan
                 arsip internal:
             </p>
             <form method="POST" action="{{ route('akses.cek') }}">
@@ -81,9 +82,9 @@
                     </div>
                 </div>
                 @if ($errors->any())
-                <div style="color:red;">
-                    {{ $errors->first('kode_akses') }}
-                </div>
+                    <div style="color:red;">
+                        {{ $errors->first('kode_akses') }}
+                    </div>
                 @endif
                 <button type="submit" class="btn btn-danger px-5">Masuk Sistem</button>
             </form>
@@ -106,8 +107,52 @@
             </div>
         </footer>
     </div>
+    <div class="modal fade" id="videoTutorialModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Video Tutorial Penggunaan Sistem</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-0">
+
+                    <div class="ratio ratio-16x9">
+                        <iframe id="youtubeVideo" src="https://www.youtube.com/embed/VIDEO_ID" title="Video Tutorial"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const modal = new bootstrap.Modal(document.getElementById('videoTutorialModal'));
+            const iframe = document.getElementById("youtubeVideo");
+
+            // ganti VIDEO_ID dengan id youtube
+            const videoSrc = "https://www.youtube.com/embed/VIDEO_ID?autoplay=1";
+
+            // set video source
+            iframe.src = videoSrc;
+
+            // tampilkan popup
+            modal.show();
+
+            // stop video saat popup ditutup
+            document.getElementById('videoTutorialModal').addEventListener('hidden.bs.modal', function() {
+                iframe.src = "";
+            });
+
+        });
+    </script>
 </body>
 
 </html>
