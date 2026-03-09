@@ -49,7 +49,7 @@ Route::get('/data-laporan-ikd', [PreFillController::class, 'prefillLaporanIKD'])
 Route::get('/data-perjanjian-kinerja-2026', [PreFillController::class, 'prefillPerjanjianKinerja2026']);
 
 // -------------------- Homepage --------------------
-Route::get('/', [HomepageController::class, 'maintenance'])->name('akses.form');
+Route::get('/', [HomepageController::class, 'form'])->name('akses.form');
 Route::get('/halaman-utama', [HomepageController::class, 'form'])->name('halaman.utama');
 Route::post('/cek-kode', [HomepageController::class, 'cek'])->name('akses.cek');
 Route::get('/akses-kode', [HomepageController::class, 'akses_kode'])->name('akses.kode');
