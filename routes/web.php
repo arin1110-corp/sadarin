@@ -66,6 +66,11 @@ Route::get('/homepage-menuawal', function () {
 
 Route::get('/password/reset/{token}', [AksesController::class, 'formReset'])->name('password.reset.form');
 Route::post('/password/reset/save', [AksesController::class, 'savePassword'])->name('password.reset.save');
+Route::get('/preview-reset', function () {
+    return view('auth.reset_password', [
+        'token' => 'dummy-token'
+    ]);
+});
 
 // Dashboard admin
 Route::middleware('admin.auth')->group(function () {

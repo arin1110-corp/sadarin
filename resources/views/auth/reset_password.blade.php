@@ -12,7 +12,7 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #0d6efd, #4e73df);
+            background: linear-gradient(135deg, #7e2b16, #ff8138);
             height: 100vh;
             display: flex;
             align-items: center;
@@ -29,7 +29,10 @@
 
         .logo {
             font-weight: bold;
-            color: #0d6efd;
+            color: #000000;
+        }
+        .logo .in {
+            color: #ff8138;
         }
     </style>
 </head>
@@ -40,8 +43,12 @@
 
         <div class="card-body p-4">
 
+            <center><h5 class="mb-4">
+                <img src="{{ asset('assets/image/pemprov.png') }}" width="150">
+            </h5>
+            </center>
             <div class="text-center mb-3">
-                <h4 class="logo">SADARIN</h4>
+                <h4 class="logo">SADAR<span class="in">IN</span></h4>
                 <p class="text-muted mb-0">Atur Password Baru</p>
             </div>
 
@@ -95,7 +102,7 @@
                 <!-- Button -->
                 <div class="d-grid">
 
-                    <button class="btn btn-primary btn-lg">
+                    <button class="btn btn-success btn-lg">
                         Simpan Password
                     </button>
 
