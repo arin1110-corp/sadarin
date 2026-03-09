@@ -925,7 +925,7 @@ class AksesController extends Controller
             },
         );
 
-        return redirect()->route('cek')
+        return redirect()->route('akses.cek')
             ->with('success', 'Link reset password telah dikirim ke email');
     }
 
