@@ -661,7 +661,8 @@ class AksesController extends Controller
         }
 
         if (!Hash::check($request->password, $user->user_password)) {
-            return back()->with('error', 'Password salah');
+            return redirect()->route('homepage.menuawal')
+                ->with('error', 'Password salah, silakan coba lagi');
         }
 
         // ✅ Password benar
