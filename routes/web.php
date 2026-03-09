@@ -243,6 +243,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/profil-check', [AksesController::class, 'profilCekPassword'])->name('akses.cek.profil');
 
     Route::post('/password/send-link', [AksesController::class, 'sendResetLink'])->name('password.send.link');
+    Route::get('/password/reset', [AksesController::class, 'sendResetLink'])->name('password.reset');
 });
 Route::middleware(['akses.kontrol', 'sudah.nip'])->group(function () {
     Route::get('/detail-pegawai', [AksesController::class, 'detailpegawai'])->name('detail.pegawai');

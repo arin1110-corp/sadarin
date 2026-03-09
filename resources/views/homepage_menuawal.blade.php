@@ -249,13 +249,10 @@
 
                                     <div class="text-center mt-3 btn btn-primary w-100"
                                         style="background-color: tomato; border:none;">
-                                        <form method="POST" action="{{ route('password.send.link') }}">
-                                        @csrf
-                                        <button type="submit" class="btn w-100"
-                                            style="background-color: tomato; color:white;">
-                                            Reset Password ke Email
-                                        </button>
-                                    </form>
+                                        <a href="{{ route('password.reset') }}"
+                                            class="small text-white text-decoration-none">
+                                            Reset Password
+                                        </a>
                                     </div>
 
                                 </form>
