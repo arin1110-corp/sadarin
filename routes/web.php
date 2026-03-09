@@ -63,6 +63,10 @@ Route::get('/homepage-menuawal', function () {
     return view('homepage_menuawal');
 })->name('homepage.menuawal');
 
+
+Route::get('/password/reset/{token}', [AksesController::class, 'formReset'])->name('password.reset.form');
+Route::post('/password/reset/save', [AksesController::class, 'savePassword'])->name('password.reset.save');
+
 // Dashboard admin
 Route::middleware('admin.auth')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'admin'])->name('dashboard');
@@ -239,8 +243,6 @@ Route::middleware('akses.kontrol')->group(function () {
 
 
     Route::post('/password/send-link', [AksesController::class, 'sendResetLink'])->name('password.send.link');
-    Route::get('/password/reset/{token}', [AksesController::class, 'formReset'])->name('password.reset.form');
-    Route::post('/password/reset/save', [AksesController::class, 'savePassword'])->name('password.reset.save');
 });
 Route::middleware(['akses.kontrol', 'sudah.nip'])->group(function () {
     Route::get('/detail-pegawai', [AksesController::class, 'detailpegawai'])->name('detail.pegawai');
