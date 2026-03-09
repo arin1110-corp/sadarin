@@ -49,7 +49,7 @@ Route::get('/data-laporan-ikd', [PreFillController::class, 'prefillLaporanIKD'])
 Route::get('/data-perjanjian-kinerja-2026', [PreFillController::class, 'prefillPerjanjianKinerja2026']);
 
 // -------------------- Homepage --------------------
-Route::get('/', [HomepageController::class, 'form'])->name('akses.form');
+Route::get('/', [HomepageController::class, 'maintenance'])->name('akses.form');
 Route::get('/halaman-utama', [HomepageController::class, 'form'])->name('halaman.utama');
 Route::post('/cek-kode', [HomepageController::class, 'cek'])->name('akses.cek');
 Route::get('/akses-kode', [HomepageController::class, 'akses_kode'])->name('akses.kode');
@@ -210,11 +210,6 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-pegawai-rincian', [AksesController::class, 'dataPegawaiRincian'])->name('data.rincianpegawai');
     Route::get('arsip-disbud', [AksesController::class, 'arsipDisbud'])->name('arsip.disbud');
 
-    Route::post('/profil-check', [AksesController::class, 'profilCekPassword'])->name('akses.cek.profil');
-    Route::post('/password-kirim-email', [AksesController::class, 'sendPasswordResetEmail'])->name('password.kirim.email');
-    Route::post('/reset-password', [AksesController::class, 'resetPassword'])->name('akses.reset.password');
-    Route::post('/send-password-link', [AksesController::class, 'sendPasswordLink'])->name('password.send.link');
-
     Route::post('/tambah-evaluasi-tw1', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw1');
     Route::post('/tambah-evaluasi-tw2', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw2');
     Route::post('/tambah-evaluasi-tw3', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw3');
@@ -240,6 +235,12 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-laporan-ikd', [AksesController::class, 'uploadBerkas'])->name('tambah.laporan.ikd');
     Route::post('/tambah-perjanjian-kinerja-2026', [AksesController::class, 'uploadBerkas'])->name('tambah.perjanjian.kinerja.2026');
     Route::post('/tambah-pjlp-januari', [AksesController::class, 'uploadBerkas'])->name('tambah.laporan.pjlp.januari');
+
+
+
+    Route::post('/password/send-link', [AksesController::class, 'sendResetLink'])->name('password.send.link');
+    Route::get('/password/reset/{token}', [AksesController::class, 'formReset'])->name('password.reset.form');
+    Route::post('/password/reset/save', [AksesController::class, 'savePassword'])->name('password.reset.save');
 });
 Route::middleware(['akses.kontrol', 'sudah.nip'])->group(function () {
     Route::get('/detail-pegawai', [AksesController::class, 'detailpegawai'])->name('detail.pegawai');

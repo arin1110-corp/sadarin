@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Exports\PegawaiPerBidangExport;
 use PDF;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 use Google\Client;
 use Google\Service\Drive;
@@ -840,7 +842,6 @@ class AksesController extends Controller
             return back()->with('error', 'Folder untuk jenis file ini belum disiapkan.');
         }
 
-
         $folder = $folderMap[$jenisfile][$jeniskerja];
         // Hapus file lama (jika ada, ekstensi apa pun)
         $baseName = $finalId . '_' . str_replace(' ', '_', $jenis);
@@ -891,5 +892,86 @@ class AksesController extends Controller
     {
         $bidang = ModelBidang::where('bidang_status', 1)->get();
         return view('homepage_cekbidang', compact('bidang'));
+    }
+    // ==============================
+    // 1. Kirim link reset password
+    // ==============================
+    public function sendResetLink(Request $request)
+    {
+        $user = session('user_info');
+
+        if (!$user) {
+            return back()->with('error', 'User tidak ditemukan');
+        }
+
+        $token = Str::random(64);
+
+        ModelUser::where('user_nip', $user->user_nip)->update([
+            'user_reset_token' => $token,
+            'user_reset_expired' => now()->addMinutes(30),
+        ]);
+
+        $link = url('/password/reset/' . $token);
+
+        Mail::send(
+            'auth.email_reset_password',
+            [
+                'link' => $link,
+                'user' => $user,
+            ],
+            function ($mail) use ($user) {
+                $mail->to($user->user_email);
+                $mail->subject('Reset Password SADARIN');
+            },
+        );
+
+        return back()->with('success', 'Link reset password telah dikirim ke email');
+    }
+
+    // ==============================
+    // 2. Form reset password
+    // ==============================
+    public function formReset($token)
+    {
+        $user = ModelUser::where('user_reset_token', $token)->first();
+
+        if (!$user) {
+            abort(404);
+        }
+
+        if ($user->user_reset_expired < now()) {
+            return redirect('/')->with('error', 'Link reset sudah kadaluarsa');
+        }
+
+        return view('auth.reset_password', [
+            'token' => $token,
+        ]);
+    }
+
+    // ==============================
+    // 3. Simpan password baru
+    // ==============================
+    public function savePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = ModelUser::where('user_reset_token', $request->token)->first();
+
+        if (!$user) {
+            abort(404);
+        }
+
+        if ($user->user_reset_expired < now()) {
+            return redirect('/')->with('error', 'Link reset sudah kadaluarsa');
+        }
+
+        $user->user_password = bcrypt($request->password);
+        $user->user_reset_token = null;
+        $user->user_reset_expired = null;
+        $user->save();
+
+        return redirect('/')->with('success', 'Password berhasil diperbarui');
     }
 }

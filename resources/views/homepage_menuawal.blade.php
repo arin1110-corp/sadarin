@@ -166,8 +166,8 @@
 
             <a href="{{ route('arsip.disbud') }}"
                 class="menu-box bg-success text-white d-flex align-items-center gap-2">
-                <i class="bi bi-archive-fill fs-1"></i>
-                <span>KE SADARIN</span>
+                <i class="bi bi-file-earmark-text fs-1 fw-bold"></i>
+                <h1><span class="fw-bold">SADAR<span class="text-warning">IN</span></span></h1>
             </a>
             <a href="{{ route('logout') }}" class="menu-box bg-danger text-white d-flex align-items-center gap-2">
                 <i class="bi bi-box-arrow-right fs-1"></i>
@@ -205,11 +205,14 @@
                                         Password Belum Diset
                                     </h5>
 
-                                    <p class="text-muted">
-                                        Password akan dikirim ke email Anda.
+                                    <p>
+                                        Link reset password akan dikirim ke:
+
+                                    <strong>{{ $user->user_email }}</strong>
+                                    
                                     </p>
 
-                                    <form method="POST" action="{{ route('password.kirim.email') }}">
+                                    <form method="POST" action="{{ route('password.send.link') }}">
                                         @csrf
                                         <button type="submit" class="btn w-100"
                                             style="background-color: tomato; color:white;">
@@ -244,7 +247,8 @@
                                         Masuk
                                     </button>
 
-                                    <div class="text-center mt-3 btn btn-primary w-100" style="background-color: tomato; border:none;">
+                                    <div class="text-center mt-3 btn btn-primary w-100"
+                                        style="background-color: tomato; border:none;">
                                         <a href="{{ route('akses.reset.password') }}"
                                             class="small text-white text-decoration-none">
                                             Reset Password
@@ -263,27 +267,43 @@
         <div class="modal fade" id="setPasswordModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
+
                     <form method="POST" action="{{ route('password.send.link') }}">
                         @csrf
+
                         <div class="modal-header">
                             <h5 class="modal-title">Pengaturan Password</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
                         <div class="modal-body text-center">
+
                             <p>
                                 Link pengaturan password akan dikirim ke email Anda:
                                 <br>
                                 <strong>{{ $user->user_email ?? '-' }}</strong>
                             </p>
+
+                            <small class="text-muted">
+                                Link berlaku selama 30 menit.
+                            </small>
+
                         </div>
 
                         <div class="modal-footer">
+
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Batal
+                            </button>
+
                             <button type="submit" class="btn btn-success">
                                 Kirim Link ke Email
                             </button>
+
                         </div>
+
                     </form>
+
                 </div>
             </div>
         </div>

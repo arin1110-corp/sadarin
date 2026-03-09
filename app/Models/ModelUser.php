@@ -29,6 +29,21 @@ class ModelUser extends Model
         'user_jabatan',
         'user_kelasjabatan',
         'user_status',
+        'user_jeniskerja',
+        'user_tgllahir',
+        'user_tmt',
+        'user_spmt',
+        'user_pendidikan',
+        'user_password',
+        'user_tempatlahir',
+        'user_nip',
+        'user_eselon',
+        'user_pangkat',
+        'user_norek',
+        'user_reset_token',
+        'user_reset_expired',
+        'user_bpjs',
+        'user_jmltanggungan'
     ];
     public function bidang()
     {

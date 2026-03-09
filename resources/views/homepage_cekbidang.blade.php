@@ -104,12 +104,6 @@
             @endif
         </div>
         <br>
-        <div class="grid-menu-center mt-3">
-            <a href="https://drive.google.com/drive/folders/1o_3gTGKUyaWOKNvxzZ80KB7hqXSRoMTQ" class="menu-box"
-                target="_blank">
-                UPLOAD DATA
-            </a>
-        </div>
 
         <footer class="text-center mt-4 py-3">
             <div>
