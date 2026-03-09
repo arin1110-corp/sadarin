@@ -249,10 +249,13 @@
 
                                     <div class="text-center mt-3 btn btn-primary w-100"
                                         style="background-color: tomato; border:none;">
-                                        <a href="{{ route('password.send.link') }}"
-                                            class="small text-white text-decoration-none">
-                                            Reset Password
-                                        </a>
+                                        <form method="POST" action="{{ route('password.send.link') }}">
+                                        @csrf
+                                        <button type="submit" class="btn w-100"
+                                            style="background-color: tomato; color:white;">
+                                            Reset Password ke Email
+                                        </button>
+                                    </form>
                                     </div>
 
                                 </form>
@@ -264,49 +267,6 @@
             </div>
         @endif
 
-        <div class="modal fade" id="setPasswordModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <form method="POST" action="{{ route('password.send.link') }}">
-                        @csrf
-
-                        <div class="modal-header">
-                            <h5 class="modal-title">Pengaturan Password</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <div class="modal-body text-center">
-
-                            <p>
-                                Link pengaturan password akan dikirim ke email Anda:
-                                <br>
-                                <strong>{{ $user->user_email ?? '-' }}</strong>
-                            </p>
-
-                            <small class="text-muted">
-                                Link berlaku selama 30 menit.
-                            </small>
-
-                        </div>
-
-                        <div class="modal-footer">
-
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                Batal
-                            </button>
-
-                            <button type="submit" class="btn btn-success">
-                                Kirim Link ke Email
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </div>
-            </div>
-        </div>
 
         <!-- MODAL UNIVERSAL UPLOAD BERKAS -->
         <div class="modal fade" id="modalUploadBerkas" tabindex="-1">
