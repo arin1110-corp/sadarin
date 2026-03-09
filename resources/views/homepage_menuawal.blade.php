@@ -249,7 +249,7 @@
 
                                     <div class="text-center mt-3 btn btn-primary w-100"
                                         style="background-color: tomato; border:none;">
-                                        <a href="{{ route('akses.reset.password') }}"
+                                        <a href="{{ route('password.send.link') }}"
                                             class="small text-white text-decoration-none">
                                             Reset Password
                                         </a>

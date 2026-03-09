@@ -239,6 +239,7 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::post('/tambah-laporan-ikd', [AksesController::class, 'uploadBerkas'])->name('tambah.laporan.ikd');
     Route::post('/tambah-perjanjian-kinerja-2026', [AksesController::class, 'uploadBerkas'])->name('tambah.perjanjian.kinerja.2026');
     Route::post('/tambah-pjlp-januari', [AksesController::class, 'uploadBerkas'])->name('tambah.laporan.pjlp.januari');
+
     Route::post('/profil-check', [AksesController::class, 'profilCekPassword'])->name('akses.cek.profil');
 
     Route::post('/password/send-link', [AksesController::class, 'sendResetLink'])->name('password.send.link');
