@@ -112,15 +112,15 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Video Tutorial Penggunaan Sistem</h5>
+                    <h5 class="modal-title">SISTEM SADARIN</h5>
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body p-0">
 
                     <div class="ratio ratio-16x9">
-                        <iframe id="youtubeVideo" src="https://www.youtube.com/embed/VIDEO_ID" title="Video Tutorial"
-                            allowfullscreen>
+                        <iframe id="youtubeVideo" src="https://www.youtube.com/embed/LKJH6b33ic4?autoplay=1&mute=1"
+                            allow="autoplay; encrypted-media" title="Video Tutorial" allowfullscreen>
                         </iframe>
                     </div>
 
@@ -137,18 +137,12 @@
             const modal = new bootstrap.Modal(document.getElementById('videoTutorialModal'));
             const iframe = document.getElementById("youtubeVideo");
 
-            // ganti VIDEO_ID dengan id youtube
-            const videoSrc = "https://www.youtube.com/embed/VIDEO_ID?autoplay=1";
-
-            // set video source
-            iframe.src = videoSrc;
-
-            // tampilkan popup
+            // tampilkan popup saat halaman dibuka
             modal.show();
 
             // stop video saat popup ditutup
             document.getElementById('videoTutorialModal').addEventListener('hidden.bs.modal', function() {
-                iframe.src = "";
+                iframe.src = iframe.src;
             });
 
         });
