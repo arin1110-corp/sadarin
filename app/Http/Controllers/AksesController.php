@@ -976,4 +976,61 @@ class AksesController extends Controller
 
         return redirect('/')->with('success', 'Password berhasil diperbarui');
     }
+    public function updateDataPegawai(Request $request)
+    {
+        // Cari user berdasarkan ID
+        $user = ModelUser::find($request->user_id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User tidak ditemukan.');
+        }
+
+        // Validasi semua field kecuali foto
+        $request->validate([
+            'user_nama' => 'required|string|max:100',
+            'user_nik' => 'required|string|max:100',
+            'user_nip' => 'required|string|max:100',
+            'user_email' => 'nullable|email|max:100',
+            'user_notelp' => 'nullable|string|max:15',
+            'user_npwp' => 'nullable|string|max:150',
+            'user_bpjs' => 'nullable|string|max:150',
+            'user_norek' => 'nullable|string|max:150',
+            'user_jmltanggungan' => 'nullable|string|max:10',
+            'user_tgllahir' => 'required|date',
+            'user_tmt' => 'required|date',
+            'user_spmt' => 'required|date',
+            // jangan validasi user_foto di sini
+        ]);
+
+        // Update semua field dari form
+        $user->user_gelardepan = $request->user_gelardepan;
+        $user->user_gelarbelakang = $request->user_gelarbelakang;
+        $user->user_nama = $request->user_nama;
+        $user->user_jk = $request->user_jk;
+        $user->user_nip = $request->user_nip;
+        $user->user_nik = $request->user_nik;
+        $user->user_jabatan = $request->jabatan_id;
+        $user->user_bidang = $request->bidang_id;
+        $user->user_email = $request->user_email;
+        $user->user_notelp = $request->user_notelp;
+        $user->user_norek = $request->user_norek;
+        $user->user_jmltanggungan = $request->user_jmltanggungan;
+        $user->user_npwp = $request->user_npwp;
+        $user->user_bpjs = $request->user_bpjs;
+        $user->user_alamat = $request->user_alamat;
+        $user->user_golongan = $request->user_golongan;
+        $user->user_kelasjabatan = $request->user_kelasjabatan;
+        $user->user_eselon = $request->user_eselon;
+        $user->user_tmt = $request->user_tmt;
+        $user->user_spmt = $request->user_spmt;
+        $user->user_tempatlahir = $request->user_tempatlahir;
+        $user->user_tgllahir = $request->user_tgllahir;
+        $user->user_pendidikan = $request->user_pendidikan;
+        $user->user_jeniskerja = $request->user_jeniskerja;
+        $user->user_lokasikerja = $request->user_lokasikerja;
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Data pegawai berhasil diupdate.');
+    }
 }
