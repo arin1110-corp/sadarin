@@ -661,8 +661,7 @@ class AksesController extends Controller
         }
 
         if (!Hash::check($request->password, $user->user_password)) {
-            return redirect()->route('homepage.menuawal')
-                ->with('error', 'Password salah, silakan coba lagi');
+            return redirect()->route('homepage.menuawal')->with('error', 'Password salah, silakan coba lagi');
         }
 
         // ✅ Password benar
@@ -914,20 +913,27 @@ class AksesController extends Controller
 
         $link = url('/password/reset/' . $token);
 
-        Mail::send(
-            'auth.email_reset_password',
-            [
-                'link' => $link,
-                'user' => $user,
-            ],
-            function ($mail) use ($user) {
-                $mail->to($user->user_email);
-                $mail->subject('Reset Password SADARIN');
-            },
-        );
+        try {
+            Mail::send(
+                'auth.email_reset_password',
+                [
+                    'link' => $link,
+                    'user' => $user,
+                ],
+                function ($mail) use ($user) {
+                    $mail->to($user->user_email);
+                    $mail->subject('Reset Password SADARIN');
+                },
+            );
+        } catch (\Exception $e) {
+            if (str_contains($e->getMessage(), 'Daily user sending limit exceeded')) {
+                return redirect()->route('homepage.menuawal')->with('error', 'Batas pengiriman email hari ini sudah tercapai. Silakan coba kembali besok.');
+            }
 
-        return redirect()->route('homepage.menuawal')
-            ->with('success', 'Link reset password telah dikirim ke email');
+            return redirect()->route('homepage.menuawal')->with('error', 'Gagal mengirim email. Silakan coba lagi nanti.');
+        }
+
+        return redirect()->route('homepage.menuawal')->with('success', 'Link reset password telah dikirim ke email');
     }
 
     // ==============================

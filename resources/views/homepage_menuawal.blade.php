@@ -105,8 +105,8 @@
             </div>
         @endif
 
-        <div class="grid-menu-center mt-3">
-            <!-- Coretax 2026 -->
+        <!-- <div class="grid-menu-center mt-3">
+            
             <button
                 class="btn btn-primary open-upload-modal menu-box d-flex flex-column align-items-center justify-content-center text-center"
                 data-title="Coretax 2026" data-route="{{ route('tambah.coretax.2026') }}" data-jenis="Coretax 2026"
@@ -115,7 +115,6 @@
                 <span>Coretax 2026</span>
             </button>
 
-            <!-- Laporan IKD -->
             <button
                 class="btn btn-primary open-upload-modal menu-box d-flex flex-column align-items-center justify-content-center text-center"
                 data-title="Laporan IKD" data-route="{{ route('tambah.laporan.ikd') }}" data-jenis="Laporan IKD"
@@ -124,7 +123,6 @@
                 <span>Laporan IKD</span>
             </button>
 
-            <!-- Perjanjian Kinerja 2026 -->
             <button
                 class="btn btn-primary open-upload-modal menu-box d-flex flex-column align-items-center justify-content-center text-center"
                 data-title="Perjanjian Kinerja 2026" data-route="{{ route('tambah.perjanjian.kinerja.2026') }}"
@@ -132,7 +130,7 @@
                 <i class="bi bi-file-check fs-1"></i>
                 <span>Perjanjian Kinerja 2026</span>
             </button>
-        </div>
+        </div> -->
 
         <div class="grid-menu-center mt-3">
             @if (!empty($user))
