@@ -449,6 +449,12 @@
                             </div>
                         </div>
                         <div class="row mb-2">
+                            <div class="col-sm-4 fw-bold">Lokasi Tempat Kerja</div>
+                            <div class="col-sm-8">
+                                {{ $user->user_lokasikerja }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
                             <div class="col-sm-4 fw-bold">Jenis Kerja</div>
                             <div class="col-sm-8">
                                 @php
@@ -818,6 +824,31 @@
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Lokasi Tempat Kerja -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Lokasi Tempat Kerja</label>
+                                <select name="user_lokasikerja" class="form-select">
+                                    <option value="{{ $user->user_lokasikerja }}" selected>
+                                        {{ $user->user_lokasikerja }}
+                                    </option>
+                                    <option value="Kantor UPTD Museum Bali">Kantor UPTD Museum Bali</option>
+                                    <option value="Kantor UPTD Taman Budaya">Kantor UPTD Taman Budaya</option>
+                                    <option value="Kantor UPTD Monumen Perjuangan Rakyat Bali">Kantor UPTD Monumen Perjuangan Rakyat Bali</option>
+                                    <option value="Kota Denpasar">Kota Denpasar</option>
+                                    <option value="Kabupaten Badung">Kabupaten Badung</option>
+                                    <option value="Kabupaten Gianyar">Kabupaten Gianyar</option>
+                                    <option value="Kabupaten Karangasem">Kabupaten Karangasem</option>
+                                    <option value="Kabupaten Tabanan">Kabupaten Tabanan</option>
+                                    <option value="Kabupaten Bangli">Kabupaten Bangli</option>
+                                    <option value="Kabupaten Klungkung">Kabupaten Klungkung</option>
+                                    <option value="Kabupaten Buleleng">Kabupaten Buleleng</option>
+                                    <option value="Kabupaten Jembrana">Kabupaten Jembrana</option>
+                                </select>
+                            </div>
+                        </div>
+
 
                         <!-- Pendidikan -->
                         <div class="row mb-3">
