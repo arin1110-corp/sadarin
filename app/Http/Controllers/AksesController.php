@@ -916,11 +916,16 @@ class AksesController extends Controller
                 ->with('error', 'Reset password hanya dapat dilakukan setiap 4 jam. Silakan coba lagi dalam ' . $sisa . ' menit.');
         }
 
+        // validasi format email dulu
+        if (!filter_var($dbUser->user_email, FILTER_VALIDATE_EMAIL)) {
+            return redirect()->route('homepage.menuawal')->with('error', 'Email tidak valid. Silakan hubungi admin.');
+        }
+
         $token = Str::random(64);
 
         ModelUser::where('user_nip', $user->user_nip)->update([
             'user_reset_token' => $token,
-            'user_reset_expired' => now()->addHours(4), // cooldown 4 jam
+            'user_reset_expired' => now()->addHours(4),
         ]);
 
         $link = url('/password/reset/' . $token);
@@ -938,14 +943,22 @@ class AksesController extends Controller
                 },
             );
         } catch (\Exception $e) {
-            if (str_contains($e->getMessage(), 'Daily user sending limit exceeded')) {
+            $msg = $e->getMessage();
+
+            // limit gmail
+            if (str_contains($msg, 'Daily user sending limit exceeded')) {
                 return redirect()->route('homepage.menuawal')->with('error', 'Batas pengiriman email hari ini sudah tercapai. Silakan coba kembali besok.');
             }
 
-            return redirect()->route('homepage.menuawal')->with('error', 'Gagal mengirim email. Silakan coba lagi nanti.');
+            // email tidak ada / tidak aktif
+            if (str_contains($msg, '550') || str_contains($msg, 'mailbox unavailable') || str_contains($msg, 'recipient address rejected')) {
+                return redirect()->route('homepage.menuawal')->with('error', 'Email tidak aktif atau tidak ditemukan. Silakan hubungi admin.');
+            }
+
+            return redirect()->route('homepage.menuawal')->with('error', 'Gagal mengirim email. Jika email tidak aktif, silakan hubungi admin.');
         }
 
-        return redirect()->route('homepage.menuawal')->with('success', 'Link reset password telah dikirim ke email');
+        return redirect()->route('homepage.menuawal')->with('success', 'Link reset password telah dikirim ke email.');
     }
 
     // ==============================
