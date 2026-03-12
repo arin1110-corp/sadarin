@@ -904,11 +904,23 @@ class AksesController extends Controller
             return back()->with('error', 'User tidak ditemukan');
         }
 
+        // ambil data user terbaru dari database
+        $dbUser = ModelUser::where('user_nip', $user->user_nip)->first();
+
+        // cek cooldown reset 4 jam
+        if ($dbUser->user_reset_expired && now()->lt($dbUser->user_reset_expired)) {
+            $sisa = now()->diffInMinutes($dbUser->user_reset_expired);
+
+            return redirect()
+                ->route('homepage.menuawal')
+                ->with('error', 'Reset password hanya dapat dilakukan setiap 4 jam. Silakan coba lagi dalam ' . $sisa . ' menit.');
+        }
+
         $token = Str::random(64);
 
         ModelUser::where('user_nip', $user->user_nip)->update([
             'user_reset_token' => $token,
-            'user_reset_expired' => now()->addMinutes(30),
+            'user_reset_expired' => now()->addHours(4), // cooldown 4 jam
         ]);
 
         $link = url('/password/reset/' . $token);
