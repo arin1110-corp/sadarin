@@ -62,6 +62,15 @@ Route::get('/cek-kode', function () {
 Route::get('/homepage-menuawal', function () {
     return view('homepage_menuawal');
 })->name('homepage.menuawal');
+Route::get('/test-email', function () {
+
+    Mail::raw('Test Email Brevo Laravel', function ($mail) {
+        $mail->to('indraardika@gmail.com')
+            ->subject('Test SMTP Brevo');
+    });
+
+    return 'Email terkirim';
+});
 
 
 Route::get('/password/reset/{token}', [AksesController::class, 'formReset'])->name('password.reset.form');
