@@ -901,33 +901,40 @@ class AksesController extends Controller
         $user = session('user_info');
 
         if (!$user) {
-            return back()->with('error', 'User tidak ditemukan');
+            return redirect()->route('homepage.menuawal')->with('error', 'User tidak ditemukan.');
         }
 
-        // ambil data user terbaru dari database
+        // ambil data user terbaru
         $dbUser = ModelUser::where('user_nip', $user->user_nip)->first();
 
-        // cek cooldown reset 4 jam
+        if (!$dbUser) {
+            return redirect()->route('homepage.menuawal')->with('error', 'Data user tidak ditemukan.');
+        }
+
+        // cek cooldown reset password (4 jam)
         if ($dbUser->user_reset_expired && now()->lt($dbUser->user_reset_expired)) {
-            $sisa = now()->diffInMinutes($dbUser->user_reset_expired);
+            $sisaMenit = now()->diffInMinutes($dbUser->user_reset_expired);
 
             return redirect()
                 ->route('homepage.menuawal')
-                ->with('error', 'Reset password hanya dapat dilakukan setiap 4 jam. Silakan coba lagi dalam ' . $sisa . ' menit.');
+                ->with('error', 'Reset password hanya dapat dilakukan setiap 4 jam. Silakan coba lagi dalam ' . $sisaMenit . ' menit.');
         }
 
-        // validasi format email dulu
+        // validasi email
         if (!filter_var($dbUser->user_email, FILTER_VALIDATE_EMAIL)) {
             return redirect()->route('homepage.menuawal')->with('error', 'Email tidak valid. Silakan hubungi admin.');
         }
 
+        // generate token
         $token = Str::random(64);
 
-        ModelUser::where('user_nip', $user->user_nip)->update([
+        // simpan token dan expired
+        $dbUser->update([
             'user_reset_token' => $token,
             'user_reset_expired' => now()->addHours(4),
         ]);
 
+        // link reset password
         $link = url('/password/reset/' . $token);
 
         try {
@@ -935,27 +942,27 @@ class AksesController extends Controller
                 'auth.email_reset_password',
                 [
                     'link' => $link,
-                    'user' => $user,
+                    'user' => $dbUser,
                 ],
-                function ($mail) use ($user) {
-                    $mail->to($user->user_email);
+                function ($mail) use ($dbUser) {
+                    $mail->to($dbUser->user_email);
                     $mail->subject('Reset Password SADARIN');
                 },
             );
         } catch (\Exception $e) {
-            $msg = $e->getMessage();
+            $msg = strtolower($e->getMessage());
 
-            // limit gmail
-            if (str_contains($msg, 'Daily user sending limit exceeded')) {
-                return redirect()->route('homepage.menuawal')->with('error', 'Batas pengiriman email hari ini sudah tercapai. Silakan coba kembali besok.');
+            // batas pengiriman email
+            if (str_contains($msg, 'limit') || str_contains($msg, 'quota')) {
+                return redirect()->route('homepage.menuawal')->with('error', 'Batas pengiriman email tercapai. Silakan coba lagi nanti.');
             }
 
-            // email tidak ada / tidak aktif
+            // email tidak valid
             if (str_contains($msg, '550') || str_contains($msg, 'mailbox unavailable') || str_contains($msg, 'recipient address rejected')) {
                 return redirect()->route('homepage.menuawal')->with('error', 'Email tidak aktif atau tidak ditemukan. Silakan hubungi admin.');
             }
 
-            return redirect()->route('homepage.menuawal')->with('error', 'Gagal mengirim email. Jika email tidak aktif, silakan hubungi admin.');
+            return redirect()->route('homepage.menuawal')->with('error', 'Gagal mengirim email. Silakan hubungi admin.');
         }
 
         return redirect()->route('homepage.menuawal')->with('success', 'Link reset password telah dikirim ke email.');
