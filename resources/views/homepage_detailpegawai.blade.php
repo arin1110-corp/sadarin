@@ -833,6 +833,7 @@
                                     <option value="{{ $user->user_lokasikerja }}" selected>
                                         {{ $user->user_lokasikerja }}
                                     </option>
+                                    <option value="Kantor Dinas Kebudayaan Provinsi Bali">Kantor Dinas Kebudayaan Provinsi Bali</option>
                                     <option value="Kantor UPTD Museum Bali">Kantor UPTD Museum Bali</option>
                                     <option value="Kantor UPTD Taman Budaya">Kantor UPTD Taman Budaya</option>
                                     <option value="Kantor UPTD Monumen Perjuangan Rakyat Bali">Kantor UPTD Monumen Perjuangan Rakyat Bali</option>
