@@ -164,8 +164,10 @@
 
             <a href="{{ route('arsip.disbud') }}"
                 class="menu-box bg-success text-white d-flex align-items-center gap-2">
-                <i class="bi bi-file-earmark-text fs-1 fw-bold"></i>
                 <h1><span class="fw-bold">SADAR<span class="text-warning">IN</span></span></h1>
+            </a>
+            <a href="https://www.simontorin.site" class="menu-box text-white d-flex align-items-center gap-2" style="background-color: #04265a;">
+                <h1><span class="fw-bold">SIMONTOR<span class="text-success">IN</span></span></h1>
             </a>
             <a href="{{ route('logout') }}" class="menu-box bg-danger text-white d-flex align-items-center gap-2">
                 <i class="bi bi-box-arrow-right fs-1"></i>
