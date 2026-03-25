@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('timkerja_bidang');
             $table->string('timkerja_nama', 100);
             $table->unsignedBigInteger('timkerja_ketuatim');
+            $table->text('timkerja_uraian');
+            $table->boolean('timkerja_status')->default(true);
             $table->timestamps();
         });
     }
