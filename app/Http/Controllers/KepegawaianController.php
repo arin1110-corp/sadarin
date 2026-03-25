@@ -18,6 +18,8 @@ use App\Models\ModelEselon;
 use App\Models\ModelJabatan;
 use App\Models\ModelGolongan;
 use App\Models\ModelPendidikan;
+use App\Models\ModelTimkerja;
+use App\Models\ModelTimkerjaDetail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Services\GoogleDriveService;
 use App\Models\ModelPengumpulanBerkas;
@@ -128,6 +130,49 @@ class KepegawaianController extends Controller
         } else {
             return redirect()->route('kepegawaian.data.pegawai')->with('error', 'Pegawai tidak ditemukan.');
         }
+    }
+    public function timkerja()
+    {
+        $timkerja = DB::table('sadarin_timkerja')
+            // Join bidang
+            ->leftJoin('sadarin_bidang', 'sadarin_timkerja.timkerja_bidang', '=', 'sadarin_bidang.bidang_id')
+
+            // Ketua tim (dari timkerja_ketua)
+            ->leftJoin('sadarin_user', 'sadarin_timkerja.timkerja_ketuatim', '=', 'sadarin_user.user_id')
+
+            // Kepala Bidang
+            ->leftJoin('sadarin_user as kepala_bidang', function ($join) {
+                $join->on('kepala_bidang.user_bidang', '=', 'sadarin_bidang.bidang_id')
+
+                    ->where('kepala_bidang.user_jabatan', 19);
+            })
+
+            ->select(
+                'sadarin_timkerja.timkerja_id',
+                'sadarin_timkerja.timkerja_nama',
+                'sadarin_bidang.bidang_nama',
+                'kepala_bidang.user_nama as kepala_bidang',
+                'sadarin_user.user_nama as ketua_tim'
+            )
+            ->get();
+        $bidang = ModelBidang::all();
+        $users = ModelUser::all();
+
+        return view('kepegawaian.timkerja', compact('timkerja', 'bidang', 'users'));
+    }
+    public function getKepalaBidang($bidangId)
+    {
+        $kepala = DB::table('sadarin_user')
+            ->where('user_bidang', $bidangId)
+            ->where(function ($query) {
+                $query->where('user_jabatan', 19)
+                    ->orWhere('user_jabatan', 29)
+                    ->orWhere('user_jabatan', 54);
+            })
+            ->where('user_status', 1)
+            ->first();
+
+        return response()->json($kepala ?? []);
     }
     public function pemuktahiranData()
     {

@@ -186,6 +186,10 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/kepegawaian/data/pegawai/{id}/{action}', [KepegawaianController::class, 'ModalDataPegawai'])->name('kepegawaian.data.pegawai.modal');
     Route::post('/kepegawaian/data/export/rekap', [KepegawaianController::class, 'exportDataRekap'])->name('kepegawaian.export.data.rekap');
     Route::post('/kepegawaian/sync/{id}', [KepegawaianController::class, 'Pegawaisync'])->name('kepegawaian.sync');
+    Route::get('/kepegawaian/timkerja/', [KepegawaianController::class, 'timkerja'])->name('kepegawaian.data.timkerja');
+    Route::post('/kepegawaian/timkerja/input', [KepegawaianController::class, 'inputTimkerja'])->name('kepegawaian.tambah.timkerja');
+    Route::get('/get-kepala-bidang/{bidang}', [KepegawaianController::class, 'getKepalaBidang']);
+
 
     // ... Tambahkan route kepegawaian lain di sini ...
 });

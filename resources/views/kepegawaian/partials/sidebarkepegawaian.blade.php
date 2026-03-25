@@ -10,6 +10,7 @@
         $menuItems = [
             ['route' => 'kepegawaian.dashboard', 'icon' => 'bi-speedometer2', 'label' => 'Dashboard'],
             ['route' => 'kepegawaian.data.pegawai', 'icon' => 'bi-people', 'label' => 'Data Pegawai'],
+            ['route' => 'kepegawaian.data.timkerja', 'icon' => 'bi-people-fill', 'label' => 'Data Tim Kerja'],
             ['route' => 'kepegawaian.data.berkala', 'icon' => 'bi-person-lines-fill', 'label' => 'Data Kenaikan Gaji Berkala'],
             ['route' => 'kepegawaian.data.naikpangkat', 'icon' => 'bi-person-fill-up', 'label' => 'Data Kenaikan Pangkat'],
             ['route' => 'kepegawaian.data.pensiun', 'icon' => 'bi-person-fill-slash', 'label' => 'Data Pensiun'],
