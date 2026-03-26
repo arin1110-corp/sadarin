@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('timkerja_nama', 100);
             $table->unsignedBigInteger('timkerja_ketuatim');
             $table->text('timkerja_uraian');
-            $table->boolean('timkerja_status')->default(true);
+            $table->enum('timkerja_status', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->timestamps();
         });
     }

@@ -118,7 +118,7 @@
                                     <!-- Uraian Tim Kerja -->
                                     <div class="mb-3">
                                         <label for="uraian_tim" class="form-label">Uraian Tim Kerja</label>
-                                        <textarea id="timkerja_uraian" class="form-control" rows="5"></textarea>
+                                        <textarea id="timkerja_uraian" class="form-control" rows="5" name="timkerja_uraian"></textarea>
                                     </div>
                                 </div>
 
