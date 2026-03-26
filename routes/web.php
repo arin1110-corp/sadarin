@@ -186,6 +186,8 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/kepegawaian/timkerja/', [KepegawaianController::class, 'timkerja'])->name('kepegawaian.data.timkerja');
     Route::post('/kepegawaian/timkerja/input', [KepegawaianController::class, 'inputTimkerja'])->name('kepegawaian.tambah.timkerja');
     Route::get('/get-kepala-bidang/{bidang}', [KepegawaianController::class, 'getKepalaBidang']);
+    Route::post('/kepegawaian/timkerja/', [KepegawaianController::class, 'editTimkerja'])->name('kepegawaian.edit.timkerja');
+
 
     // ... Tambahkan route kepegawaian lain di sini ...
 });
