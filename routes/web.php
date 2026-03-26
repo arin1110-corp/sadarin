@@ -63,21 +63,18 @@ Route::get('/homepage-menuawal', function () {
     return view('homepage_menuawal');
 })->name('homepage.menuawal');
 Route::get('/test-email', function () {
-
     Mail::raw('Test Email Brevo Laravel', function ($mail) {
-        $mail->to('indraardika@gmail.com')
-            ->subject('Test SMTP Brevo');
+        $mail->to('indraardika@gmail.com')->subject('Test SMTP Brevo');
     });
 
     return 'Email terkirim';
 });
 
-
 Route::get('/password/reset/{token}', [AksesController::class, 'formReset'])->name('password.reset.form');
 Route::post('/password/reset/save', [AksesController::class, 'savePassword'])->name('password.reset.save');
 Route::get('/preview-reset', function () {
     return view('auth.reset_password', [
-        'token' => 'dummy-token'
+        'token' => 'dummy-token',
     ]);
 });
 
@@ -190,7 +187,6 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::post('/kepegawaian/timkerja/input', [KepegawaianController::class, 'inputTimkerja'])->name('kepegawaian.tambah.timkerja');
     Route::get('/get-kepala-bidang/{bidang}', [KepegawaianController::class, 'getKepalaBidang']);
 
-
     // ... Tambahkan route kepegawaian lain di sini ...
 });
 
@@ -233,6 +229,8 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('arsip-disbud', [AksesController::class, 'arsipDisbud'])->name('arsip.disbud');
     Route::get('/timkerja-modal/{id}', [AksesController::class, 'timKerjaModal'])->name('timkerja.modal'); // web.php
     Route::put('/timkerja/{id}/update-uraian', [AksesController::class, 'updateUraian'])->name('timkerja.update_uraian');
+    Route::post('/timkerja/{id}/tambah-anggota', [AksesController::class, 'tambahAnggota'])->name('timkerja.tambah_anggota');
+    Route::get('/timkerja/{id}/pegawai-ajax', [AksesController::class, 'getPegawaiAjax'])->name('timkerja.pegawai_ajax');
 
     Route::post('/tambah-evaluasi-tw1', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw1');
     Route::post('/tambah-evaluasi-tw2', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw2');

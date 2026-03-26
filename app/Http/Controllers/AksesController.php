@@ -1097,8 +1097,16 @@ class AksesController extends Controller
 
             ->select('sadarin_timkerja.timkerja_id', 'sadarin_timkerja.timkerja_uraian', 'sadarin_timkerja.timkerja_nama', 'sadarin_bidang.bidang_nama', 'kepala_bidang.user_nama as kepala_bidang', 'sadarin_user.user_nama as ketua_tim', 'sadarin_user.user_foto as foto_ketua')
             ->first();
+        $anggota = DB::table('sadarin_timkerja_detail')->leftJoin('sadarin_user', 'sadarin_timkerja_detail.timkerja_detail_anggota', '=', 'sadarin_user.user_id')->leftJoin('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')->leftJoin('sadarin_bidang', 'sadarin_timkerja.timkerja_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->select('sadarin_timkerja_detail.*', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_eselon.eselon_nama', 'sadarin_eselon.eselon_nama')->where('timkerja_id', $id)->get();
         $timkerja = ModelTimKerja::where('timkerja_id', $id)->first();
-        return view('homepage_timkerja', compact('timkerja', 'timkerja_data'));
+
+        $users = DB::table('sadarin_user')->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->select('sadarin_user.*', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_eselon.eselon_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_golongan.golongan_nama')->where('user_status', 1)->get();
+
+        // Ambil semua anggota tim beserta nama timnya
+        $anggotaMapping = DB::table('sadarin_timkerja_detail')->join('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')->pluck('sadarin_timkerja.timkerja_nama', 'timkerja_detail_anggota'); // user_id => timkerja_nama
+
+        $anggotaIds = DB::table('sadarin_timkerja_detail')->where('timkerja_detail_timkerja', $id)->pluck('timkerja_detail_anggota')->toArray();
+        return view('homepage_timkerja', compact('timkerja', 'timkerja_data', 'anggota', 'users', 'anggotaIds', 'anggotaMapping'));
     }
     public function updateUraian(Request $request, $id)
     {
@@ -1115,5 +1123,22 @@ class AksesController extends Controller
         $timkerja->save();
 
         return redirect()->back()->with('success', 'Uraian berhasil diperbarui!');
+    }
+    public function tambahAnggota(Request $request, $timkerja_id)
+    {
+        $request->validate([
+            'pegawai_id' => 'required',
+        ]);
+
+        foreach ($request->pegawai_id as $pegawaiId) {
+            // Cek dulu agar tidak duplikat
+
+            ModelTimKerjaDetail::create([
+                'timkerja_detail_timkerja' => $timkerja_id,
+                'timkerja_detail_anggota' => $pegawaiId,
+            ]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }
