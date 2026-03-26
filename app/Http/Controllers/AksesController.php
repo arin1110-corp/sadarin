@@ -18,6 +18,8 @@ use App\Models\ModelEselon;
 use App\Models\ModelJabatan;
 use App\Models\ModelGolongan;
 use App\Models\ModelPendidikan;
+use App\Models\ModelTimkerja;
+use App\Models\ModelTimkerjaDetail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Services\GoogleDriveService;
 use App\Models\ModelPengumpulanBerkas;
@@ -1074,5 +1076,43 @@ class AksesController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Data pegawai berhasil diupdate.');
+    }
+    public function timKerjaModal($id)
+    {
+        $timkerja_data = DB::table('sadarin_timkerja')
+            // Join bidang
+            ->leftJoin('sadarin_bidang', 'sadarin_timkerja.timkerja_bidang', '=', 'sadarin_bidang.bidang_id')
+
+            // Ketua tim (dari timkerja_ketua)
+            ->leftJoin('sadarin_user', 'sadarin_timkerja.timkerja_ketuatim', '=', 'sadarin_user.user_id')
+
+            // Kepala Bidang
+            ->leftJoin('sadarin_user as kepala_bidang', function ($join) {
+                $join
+                    ->on('kepala_bidang.user_bidang', '=', 'sadarin_bidang.bidang_id')
+                    ->whereIn('kepala_bidang.user_jabatan', [19, 29, 54])
+                    ->where('kepala_bidang.user_status', 1);
+            })
+
+            ->select('sadarin_timkerja.timkerja_id', 'sadarin_timkerja.timkerja_uraian', 'sadarin_timkerja.timkerja_nama', 'sadarin_bidang.bidang_nama', 'kepala_bidang.user_nama as kepala_bidang', 'sadarin_user.user_nama as ketua_tim', 'sadarin_user.user_foto as foto_ketua')
+            ->first();
+        $timkerja = ModelTimKerja::where('timkerja_id', $id)->first();
+        return view('homepage_timkerja', compact('timkerja', 'timkerja_data'));
+    }
+    public function updateUraian(Request $request, $id)
+    {
+        $request->validate([
+            'uraian' => 'required',
+            'uraian.*' => 'required',
+        ]);
+
+        $timkerja = ModelTimKerja::findOrFail($id);
+
+        // Simpan dengan pembatas unik |||
+        $timkerja->timkerja_uraian = implode('|||', array_map('trim', $request->uraian));
+
+        $timkerja->save();
+
+        return redirect()->back()->with('success', 'Uraian berhasil diperbarui!');
     }
 }

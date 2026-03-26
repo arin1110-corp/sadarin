@@ -18,6 +18,7 @@ use App\Models\ModelEselon;
 use App\Models\ModelJabatan;
 use App\Models\ModelGolongan;
 use App\Models\ModelPendidikan;
+use App\Models\ModelTimkerja;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Services\GoogleDriveService;
 use App\Models\ModelPengumpulanBerkas;
@@ -131,6 +132,8 @@ class HomepageController extends Controller
         $request->validate([
             'kode_akses' => ['required', 'string', 'min:5'],
         ]);
+        // Reset session lama
+        session()->forget(['kode_akses_valid', 'akses_full', 'user_info']);
 
         if (in_array($request->kode_akses, $this->kodeValid)) {
             session([
@@ -151,7 +154,7 @@ class HomepageController extends Controller
                     ->where('user_nip', $request->kode_akses)
                     ->orWhere('user_nik', $request->kode_akses);
             })
-            ->select('sadarin_user.user_nip', 'sadarin_user.user_nama', 'sadarin_user.user_email', 'sadarin_user.user_foto', 'sadarin_user.user_password', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_user.user_jeniskerja', 'sadarin_user.user_nik')
+            ->select('sadarin_user.user_nip', 'user_id', 'sadarin_user.user_nama', 'sadarin_user.user_email', 'sadarin_user.user_foto', 'sadarin_user.user_password', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_user.user_jeniskerja', 'sadarin_user.user_nik')
             ->first();
         if ($user) {
             session([
@@ -161,8 +164,9 @@ class HomepageController extends Controller
             ]);
 
             $bidang = ModelBidang::where('bidang_status', 1)->get();
+            $tim = ModelTimKerja::where('timkerja_ketuatim', $user->user_id)->first();
 
-            return view('homepage_menuawal', compact('bidang', 'user'));
+            return view('homepage_menuawal', compact('bidang', 'user', 'tim'));
         }
 
         return back()

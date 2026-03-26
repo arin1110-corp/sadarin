@@ -11,5 +11,5 @@ class ModelTimkerja extends Model
 
     protected $table = 'sadarin_timkerja';
     protected $primaryKey = 'timkerja_id';
-    public $fillable = ['timkerja_bidang', 'timkerja_nama', 'timkerja_ketuatim'];
+    public $fillable = ['timkerja_bidang', 'timkerja_nama', 'timkerja_ketuatim', 'timkerja_uraian'];
 }

@@ -161,7 +161,13 @@
                     </a>
 @endif -->
             @endif
-
+            @if(!empty($tim))
+            <a href="{{ route('timkerja.modal', ['id' => $tim->timkerja_id]) }}"
+                class="menu-box bg-primary text-white d-flex align-items-center gap-2">
+                <i class="bi bi-file-earmark-text fs-1"></i>
+                <span>TIMKERJA</span>
+            </a>
+            @endif
             <a href="{{ route('arsip.disbud') }}"
                 class="menu-box bg-success text-white d-flex align-items-center gap-2">
                 <h1><span class="fw-bold">SADAR<span class="text-warning">IN</span></span></h1>

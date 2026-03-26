@@ -142,7 +142,10 @@ class KepegawaianController extends Controller
 
             // Kepala Bidang
             ->leftJoin('sadarin_user as kepala_bidang', function ($join) {
-            $join->on('kepala_bidang.user_bidang', '=', 'sadarin_bidang.bidang_id')->whereIn('kepala_bidang.user_jabatan', [19, 29, 54])->where('kepala_bidang.user_status', 1);
+            $join
+                ->on('kepala_bidang.user_bidang', '=', 'sadarin_bidang.bidang_id')
+                ->whereIn('kepala_bidang.user_jabatan', [19, 29, 54])
+                ->where('kepala_bidang.user_status', 1);
             })
 
             ->select('sadarin_timkerja.timkerja_id', 'sadarin_timkerja.timkerja_nama', 'sadarin_bidang.bidang_nama', 'kepala_bidang.user_nama as kepala_bidang', 'sadarin_user.user_nama as ketua_tim')
@@ -170,14 +173,17 @@ class KepegawaianController extends Controller
             'timkerja_bidang' => 'required',
             'timkerja_nama' => 'required',
             'timkerja_ketuatim' => 'required',
-            'timkerja_uraian' => 'required',
+            'uraian' => 'required',
         ]);
+
+        // Gabungkan uraian menjadi satu string dengan pembatas unik
+        $uraianString = implode('|||', array_map('trim', $request->uraian));
 
         DB::table('sadarin_timkerja')->insert([
             'timkerja_bidang' => $request->timkerja_bidang,
             'timkerja_nama' => $request->timkerja_nama,
             'timkerja_ketuatim' => $request->timkerja_ketuatim,
-            'timkerja_uraian' => $request->timkerja_uraian,
+            'timkerja_uraian' => $uraianString,
         ]);
 
         return redirect()->route('kepegawaian.data.timkerja')->with('success', 'Tim Kerja berhasil ditambahkan.');

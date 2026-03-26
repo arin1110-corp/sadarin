@@ -231,6 +231,8 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/data-pegawai-per-bidang', [AksesController::class, 'dataPegawaiRekapPerBidang'])->name('data.perbidangpegawai');
     Route::get('/data-pegawai-rincian', [AksesController::class, 'dataPegawaiRincian'])->name('data.rincianpegawai');
     Route::get('arsip-disbud', [AksesController::class, 'arsipDisbud'])->name('arsip.disbud');
+    Route::get('/timkerja-modal/{id}', [AksesController::class, 'timKerjaModal'])->name('timkerja.modal'); // web.php
+    Route::put('/timkerja/{id}/update-uraian', [AksesController::class, 'updateUraian'])->name('timkerja.update_uraian');
 
     Route::post('/tambah-evaluasi-tw1', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw1');
     Route::post('/tambah-evaluasi-tw2', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw2');

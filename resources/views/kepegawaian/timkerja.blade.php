@@ -91,7 +91,7 @@
 
                                     <!-- Kepala Bidang (otomatis dari JS) -->
                                     <div class="mb-3">
-                                        <label for="kepala_bidang" class="form-label">Kepala Bidang</label>
+                                        <label for="kepala_bidang" class="form-label">Kepala</label>
                                         <input type="text" id="kepala_bidang" class="form-control" readonly>
                                         <input type="hidden" name="kepala_bidang_id" id="kepala_bidang_id">
                                     </div>
@@ -116,9 +116,19 @@
                                     </div>
 
                                     <!-- Uraian Tim Kerja -->
+                                    <!-- Uraian Tim Kerja -->
                                     <div class="mb-3">
-                                        <label for="uraian_tim" class="form-label">Uraian Tim Kerja</label>
-                                        <textarea id="timkerja_uraian" class="form-control" rows="5" name="timkerja_uraian"></textarea>
+                                        <label class="form-label">Uraian Tim Kerja</label>
+                                        <ol id="uraian-list">
+                                            <li class="mb-2">
+                                                <input type="text" name="uraian[]" class="form-control"
+                                                    placeholder="Uraian ke-1" required>
+                                            </li>
+                                        </ol>
+                                        <button type="button" class="btn btn-sm btn-secondary mt-2"
+                                            id="tambah-uraian">
+                                            <i class="bi bi-plus-lg"></i> Tambah Uraian
+                                        </button>
                                     </div>
                                 </div>
 
@@ -139,7 +149,7 @@
                                 <tr class="text-center">
                                     <th>#</th>
                                     <th>Nama Bidang</th>
-                                    <th>Nama Kepala Bidang</th>
+                                    <th>Nama Kepala</th>
                                     <th>Nama Tim Kerja</th>
                                     <th>Ketua Tim Kerja</th>
                                     <th>Aksi</th>
@@ -147,7 +157,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($timkerja as $index => $tim)
-                                    <tr class="text-center">
+                                    <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $tim->bidang_nama }}</td>
                                         <td>{{ $tim->kepala_bidang ?? '-' }}</td>
@@ -240,6 +250,36 @@
                 this.value += "\n" + nextNumber + ". ";
             }
         });
+    </script>
+    <script>
+        document.getElementById('tambah-uraian').addEventListener('click', function() {
+            const list = document.getElementById('uraian-list');
+            const index = list.children.length + 1;
+
+            const li = document.createElement('li');
+            li.className = 'mb-2 d-flex gap-2';
+
+            li.innerHTML = `
+            <input type="text" name="uraian[]" class="form-control" placeholder="Uraian ke-${index}" required>
+            <button type="button" class="btn btn-danger btn-sm btn-hapus-uraian"><i class="bi bi-trash"></i></button>
+        `;
+
+            list.appendChild(li);
+
+            // Event hapus untuk button baru
+            li.querySelector('.btn-hapus-uraian').addEventListener('click', function() {
+                li.remove();
+                updatePlaceholders();
+            });
+        });
+
+        // Update placeholder setelah hapus
+        function updatePlaceholders() {
+            const items = document.querySelectorAll('#uraian-list input[name="uraian[]"]');
+            items.forEach((input, idx) => {
+                input.placeholder = `Uraian ke-${idx + 1}`;
+            });
+        }
     </script>
 </body>
 
