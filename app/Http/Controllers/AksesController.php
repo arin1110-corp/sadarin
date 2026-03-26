@@ -1093,6 +1093,7 @@ class AksesController extends Controller
                     ->whereIn('kepala_bidang.user_jabatan', [19, 29, 54])
                     ->where('kepala_bidang.user_status', 1);
             })
+            ->where('sadarin_timkerja.timkerja_id', $id)
 
             ->select('sadarin_timkerja.timkerja_id', 'sadarin_timkerja.timkerja_uraian', 'sadarin_timkerja.timkerja_nama', 'sadarin_bidang.bidang_nama', 'kepala_bidang.user_nama as kepala_bidang', 'sadarin_user.user_nama as ketua_tim', 'sadarin_user.user_foto as foto_ketua')
             ->first();
