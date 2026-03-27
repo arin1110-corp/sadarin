@@ -148,7 +148,7 @@ class KepegawaianController extends Controller
                 ->where('kepala_bidang.user_status', 1);
             })
 
-            ->select('sadarin_timkerja.timkerja_id', 'sadarin_timkerja.timkerja_nama', 'sadarin_bidang.bidang_nama', 'kepala_bidang.user_nama as kepala_bidang', 'sadarin_user.user_nama as ketua_tim')
+            ->select('sadarin_timkerja.timkerja_id', 'sadarin_timkerja.timkerja_ketuatim as ketua_tim_id', 'sadarin_timkerja.timkerja_uraian', 'sadarin_bidang.bidang_id', 'sadarin_timkerja.timkerja_nama', 'sadarin_bidang.bidang_nama', 'kepala_bidang.user_nama as kepala_bidang', 'sadarin_user.user_nama as ketua_tim')
             ->get();
         $bidang = ModelBidang::all();
         $users = ModelUser::all();
@@ -187,6 +187,30 @@ class KepegawaianController extends Controller
         ]);
 
         return redirect()->route('kepegawaian.data.timkerja')->with('success', 'Tim Kerja berhasil ditambahkan.');
+    }
+    public function updateTimkerja(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+
+            DB::table('sadarin_timkerja')
+                ->where('timkerja_id', $id)
+                ->update([
+                    'timkerja_bidang' => $request->timkerja_bidang,
+                    'timkerja_nama' => $request->timkerja_nama,
+                    'timkerja_ketuatim' => $request->timkerja_ketuatim,
+                    'timkerja_uraian' => implode('|||', $request->uraian),
+                    'updated_at' => now(),
+                ]);
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Data berhasil diupdate!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Gagal update data!');
+        }
     }
     public function pemuktahiranData()
     {

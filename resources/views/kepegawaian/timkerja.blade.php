@@ -44,7 +44,7 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
                         <h5 class="mb-0"><i class="bi bi-briefcase me-2"></i> Data Tim Kerja</h5>
-                        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahTim">
+                        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTim">
                             <i class="bi bi-plus-lg me-1"></i> Tambah Data
                         </button>
                     </div>
@@ -66,17 +66,18 @@
                     {{-- end notifikasi --}}
                 </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="modalTambahTim" tabindex="-1">
+                <!-- Modal Tambah/Edit -->
+                <div class="modal fade" id="modalTim" tabindex="-1" aria-labelledby="modalTimLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-                            <form action="{{ route('kepegawaian.tambah.timkerja') }}" method="POST">
+                            <form id="formTim" action="{{ route('kepegawaian.tambah.timkerja') }}" method="POST">
                                 @csrf
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Tambah Tim Kerja</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    <h5 class="modal-title" id="modalTimLabel">Tambah Tim Kerja</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-
                                 <div class="modal-body">
                                     <!-- Pilih Bidang -->
                                     <div class="mb-3">
@@ -89,7 +90,7 @@
                                         </select>
                                     </div>
 
-                                    <!-- Kepala Bidang (otomatis dari JS) -->
+                                    <!-- Kepala Bidang -->
                                     <div class="mb-3">
                                         <label for="kepala_bidang" class="form-label">Kepala</label>
                                         <input type="text" id="kepala_bidang" class="form-control" readonly>
@@ -103,7 +104,7 @@
                                             class="form-control" required>
                                     </div>
 
-                                    <!-- Ketua Tim (select searchable) -->
+                                    <!-- Ketua Tim -->
                                     <div class="mb-3">
                                         <label for="ketua_tim" class="form-label">Ketua Tim</label>
                                         <select id="ketua_tim" name="timkerja_ketuatim" class="form-select select2"
@@ -115,7 +116,6 @@
                                         </select>
                                     </div>
 
-                                    <!-- Uraian Tim Kerja -->
                                     <!-- Uraian Tim Kerja -->
                                     <div class="mb-3">
                                         <label class="form-label">Uraian Tim Kerja</label>
@@ -131,9 +131,8 @@
                                         </button>
                                     </div>
                                 </div>
-
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                    <button type="submit" class="btn btn-success" id="submitBtn">Simpan</button>
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Batal</button>
                                 </div>
@@ -141,6 +140,8 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="card-body">
                     {{-- Tab Semua --}}
                     <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
@@ -164,8 +165,13 @@
                                         <td>{{ $tim->timkerja_nama }}</td>
                                         <td>{{ $tim->ketua_tim ?? '-' }}</td>
                                         <td>
-                                            <button class="btn btn-info btn-sm">
-                                                Detail
+                                            <button class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#modalTim" data-tim-id="{{ $tim->timkerja_id }}"
+                                                data-bidang-id="{{ $tim->bidang_id }}"
+                                                data-tim-nama="{{ $tim->timkerja_nama }}"
+                                                data-ketua-id="{{ $tim->ketua_tim_id }}"
+                                                data-uraian="{{ implode('|||', is_array($tim->timkerja_uraian) ? $tim->timkerja_uraian : explode('|||', $tim->timkerja_uraian)) }}">
+                                                Edit
                                             </button>
                                         </td>
                                     </tr>
@@ -196,90 +202,108 @@
     <script>
         $(document).ready(function() {
             $('#tableAll').DataTable();
-            $('#tablePns').DataTable();
-            $('#tablePppk').DataTable();
         });
     </script>
     <script>
         $(document).ready(function() {
-            // Inisialisasi select2
+
+            // select2
             $('#ketua_tim').select2({
-                dropdownParent: $('#modalTambahTim'),
+                dropdownParent: $('#modalTim'),
                 width: '100%',
                 placeholder: "-- Pilih Ketua Tim --"
             });
 
-            // Event change bidang
+            $('#modalTim').on('show.bs.modal', function(event) {
+                let button = $(event.relatedTarget);
+                let timId = button.data('tim-id');
+
+                // reset form
+                $('#formTim')[0].reset();
+                $('#uraian-list').html(`
+            <li class="mb-2 d-flex gap-2">
+                <input type="text" name="uraian[]" class="form-control" placeholder="Uraian ke-1" required>
+            </li>
+        `);
+
+                // default (mode tambah)
+                $('#modalTimLabel').text('Tambah Tim Kerja');
+                $('#submitBtn').text('Simpan');
+                $('#formTim').attr('action', '{{ route('kepegawaian.tambah.timkerja') }}');
+
+                $('#ketua_tim').val(null).trigger('change');
+
+                // ================= EDIT MODE =================
+                if (timId) {
+                    $('#modalTimLabel').text('Edit Tim Kerja');
+                    $('#submitBtn').text('Update');
+                    $('#formTim').attr('action', '/kepegawaian/timkerja/update/' + timId);
+
+                    let bidangId = button.data('bidang-id');
+                    let timNama = button.data('tim-nama');
+                    let ketuaId = button.data('ketua-id');
+                    let uraian = button.data('uraian').split('|||');
+
+                    $('#bidang_id').val(bidangId);
+                    $('#timkerja_nama').val(timNama);
+                    $('#ketua_tim').val(ketuaId).trigger('change');
+
+                    // ambil kepala bidang
+                    $.get('/get-kepala-bidang/' + bidangId, function(data) {
+                        $('#kepala_bidang').val(data.user_nama);
+                        $('#kepala_bidang_id').val(data.user_id);
+                    });
+
+                    // isi uraian
+                    $('#uraian-list').empty();
+                    uraian.forEach((u, i) => {
+                        $('#uraian-list').append(`
+                    <li class="mb-2 d-flex gap-2">
+                        <input type="text" name="uraian[]" class="form-control" value="${u}" required>
+                        <button type="button" class="btn btn-danger btn-sm btn-hapus-uraian">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </li>
+                `);
+                    });
+                }
+            });
+
+            // tambah uraian
+            $('#tambah-uraian').on('click', function() {
+                let index = $('#uraian-list li').length + 1;
+
+                $('#uraian-list').append(`
+            <li class="mb-2 d-flex gap-2">
+                <input type="text" name="uraian[]" class="form-control" placeholder="Uraian ke-${index}" required>
+                <button type="button" class="btn btn-danger btn-sm btn-hapus-uraian">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </li>
+        `);
+            });
+
+            // hapus uraian (delegasi event biar aman)
+            $(document).on('click', '.btn-hapus-uraian', function() {
+                $(this).closest('li').remove();
+            });
+
+            // change bidang → auto kepala
             $('#bidang_id').on('change', function() {
                 let bidangId = $(this).val();
+
                 if (bidangId) {
-                    $.ajax({
-                        url: '/get-kepala-bidang/' + bidangId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            $('#kepala_bidang').val(data.user_nama);
-                            $('#kepala_bidang_id').val(data.user_id);
-                        }
+                    $.get('/get-kepala-bidang/' + bidangId, function(data) {
+                        $('#kepala_bidang').val(data.user_nama);
+                        $('#kepala_bidang_id').val(data.user_id);
                     });
                 } else {
                     $('#kepala_bidang').val('');
                     $('#kepala_bidang_id').val('');
                 }
             });
+
         });
-    </script>
-    <script>
-        const textarea = document.getElementById("timkerja_uraian");
-
-        // Saat pertama kali user ketik
-        textarea.addEventListener("input", function() {
-            if (this.value.length === 1 && !this.value.startsWith("1. ")) {
-                this.value = "1. " + this.value;
-            }
-        });
-
-        // Saat tekan Enter
-        textarea.addEventListener("keydown", function(e) {
-            if (e.key === "Enter") {
-                e.preventDefault();
-
-                let lines = this.value.split("\n").filter(l => l.trim() !== "");
-                let nextNumber = lines.length + 1;
-
-                this.value += "\n" + nextNumber + ". ";
-            }
-        });
-    </script>
-    <script>
-        document.getElementById('tambah-uraian').addEventListener('click', function() {
-            const list = document.getElementById('uraian-list');
-            const index = list.children.length + 1;
-
-            const li = document.createElement('li');
-            li.className = 'mb-2 d-flex gap-2';
-
-            li.innerHTML = `
-            <input type="text" name="uraian[]" class="form-control" placeholder="Uraian ke-${index}" required>
-            <button type="button" class="btn btn-danger btn-sm btn-hapus-uraian"><i class="bi bi-trash"></i></button>
-        `;
-
-            list.appendChild(li);
-
-            // Event hapus untuk button baru
-            li.querySelector('.btn-hapus-uraian').addEventListener('click', function() {
-                li.remove();
-                updatePlaceholders();
-            });
-        });
-
-        // Update placeholder setelah hapus
-        function updatePlaceholders() {
-            const items = document.querySelectorAll('#uraian-list input[name="uraian[]"]');
-            items.forEach((input, idx) => {
-                input.placeholder = `Uraian ke-${idx + 1}`;
-            });
-        }
     </script>
 </body>
 
