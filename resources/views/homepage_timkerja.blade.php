@@ -16,7 +16,7 @@
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin-top: 40px;
             background: white;
             box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
@@ -24,35 +24,30 @@
             padding: 40px;
         }
 
+        /* ================= TITLE ================= */
         .title h1 {
             font-weight: bold;
-            font-size: 50px;
-            line-height: 1.2;
+            font-size: clamp(28px, 5vw, 50px);
         }
 
         .title .in {
             color: orangered;
         }
 
-        /* Struktur Organisasi */
+        /* ================= ORG ================= */
         .org-chart {
             margin-top: 60px;
-            position: relative;
         }
 
         .org-node {
-            width: 1100px;
-            min-height: 400px;
+            width: 100%;
+            max-width: 1100px;
             margin: 20px auto;
             border-radius: 15px;
             background: #fff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
             padding: 20px;
-        }
-
-        .org-node ol {
-            padding-left: 20px;
         }
 
         .org-node img {
@@ -66,44 +61,102 @@
             word-wrap: break-word;
         }
 
-        /* Garis vertikal dari induk ke anak */
-        .org-connector-vertical {
-            width: 2px;
-            height: 40px;
-            background: #ccc;
-            margin: 0 auto;
+        /* ================= CARD ================= */
+        .card {
+            transition: 0.2s;
+            border-radius: 12px;
         }
 
-        .org-children {
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-footer {
+            background: transparent;
+            border-top: none;
+        }
+
+        .card-footer .btn {
+            width: 100%;
+        }
+
+        /* ================= MODAL FIX ================= */
+        .modal-dialog {
+            margin: auto !important;
+            /* 🔥 fix biar center */
             display: flex;
-            justify-content: center;
-            gap: 60px;
-            flex-wrap: nowrap;
-            margin-top: 20px;
-            position: relative;
+            align-items: center;
+            min-height: calc(100% - 1rem);
         }
 
-        /* Garis horizontal penghubung antar anak */
-        .org-children::before {
-            content: "";
-            position: absolute;
-            top: -20px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #ccc;
+        .modal-content {
+            width: 100%;
+            border-radius: 12px;
         }
 
-        /* Garis kecil dari kotak ke garis horizontal */
-        .org-children .org-node::before {
-            content: "";
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 20px;
-            background: #ccc;
+        /* TABLE */
+        table {
+            width: 100% !important;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 768px) {
+
+            .container {
+                padding: 20px;
+                margin-top: 10px;
+            }
+
+            .title div {
+                font-size: 16px !important;
+            }
+
+            .org-node {
+                padding: 15px;
+            }
+
+            .org-node img {
+                width: 80px !important;
+                height: 100px !important;
+            }
+
+            .card img {
+                width: 100% !important;
+                height: 140px !important;
+            }
+
+            h5 {
+                font-size: 18px;
+            }
+
+            h6 {
+                font-size: 14px;
+            }
+
+            .card-body {
+                padding: 8px;
+            }
+
+            .btn {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            /* 🔥 modal full HP tetap aman */
+            .modal-dialog {
+                max-width: 100% !important;
+                margin: 0 !important;
+                height: 100%;
+            }
+
+            .modal-content {
+                height: 100%;
+                border-radius: 0;
+            }
         }
 
         footer {
@@ -190,7 +243,7 @@
                                         {{ $lokasi ?? 'Tanpa Lokasi Kerja' }}
                                     </h5>
 
-                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 mt-2">
+                                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mt-2">
                                         @foreach ($listAnggota as $a)
                                             <div class="col">
                                                 <div class="card text-center h-100 border-0 shadow-sm">
@@ -198,7 +251,8 @@
                                                     @if (!empty($a->user_foto))
                                                         <center>
                                                             <img src="{{ $a->user_foto != '-' ? asset($a->user_foto) : asset('assets/image/pemprov.png') }}"
-                                                                style="width: 100px; height: 200px; object-fit: cover;">
+                                                                class="img-fluid rounded"
+                                                                style="width:100%; height:160px; object-fit:cover;">
                                                         </center>
                                                     @else
                                                         <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
@@ -210,7 +264,7 @@
                                                     <div class="card-body p-2">
                                                         <h6 class="mb-0">{{ $a->user_nama }}</h6>
                                                         <small class="text-muted">{{ $a->jabatan_nama ?? '-' }}</small>
-                                                        
+
                                                     </div>
                                                     <div class="card-footer p-2">
                                                         <button class="btn btn-danger btn-sm mt-2 btnHapusAnggota"
@@ -241,33 +295,34 @@
             </div>
 
 
-            <div class="modal fade" id="modalTambahAnggota" tabindex="-1" aria-labelledby="modalTambahAnggotaLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-xl">
+            <div class="modal fade" id="modalTambahAnggota" tabindex="-1">
+                <div class="modal-dialog modal-xl modal-dialog-centered modal-fullscreen-md-down">
                     <div class="modal-content">
+
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalTambahAnggotaLabel">Tambah Anggota Tim</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <h5 class="modal-title">Tambah Anggota Tim</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
-                        <div class="modal-body">
-                            <table class="table table-bordered table-hover text-start" id="tablePegawaiModal">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nama</th>
-                                        <th>Jabatan</th>
-                                        <th>Bidang</th>
-                                        <th>Tim Kerja</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <div class="modal-body p-2">
 
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover text-start" id="tablePegawaiModal">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nama</th>
+                                            <th>Jabatan</th>
+                                            <th>Bidang</th>
+                                            <th>Tim Kerja</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -366,7 +421,14 @@
         table = $('#tablePegawaiModal').DataTable({
             processing: true,
             serverSide: true,
+            responsive: true,
+            scrollX: true,
+            autoWidth: false,
             ajax: "{{ route('timkerja.users.ajax', $timkerja->timkerja_id) }}",
+            columnDefs: [{
+                targets: [2, 3], // jabatan & bidang
+                className: 'd-none d-md-table-cell'
+            }],
             columns: [{
                     data: 'user_foto',
                     render: function(data) {
