@@ -153,6 +153,7 @@
                                     <th>Nama Kepala</th>
                                     <th>Nama Tim Kerja</th>
                                     <th>Ketua Tim Kerja</th>
+                                    <th>Anggota</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -164,6 +165,7 @@
                                         <td>{{ $tim->kepala_bidang ?? '-' }}</td>
                                         <td>{{ $tim->timkerja_nama }}</td>
                                         <td>{{ $tim->ketua_tim ?? '-' }}</td>
+                                        <td><a href="{{ route('kepegawaian.anggota.timkerja', $tim->timkerja_id) }}"><button class="btn btn-info btn-sm">Anggota</button></a></td>
                                         <td>
                                             <button class="btn btn-info btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#modalTim" data-tim-id="{{ $tim->timkerja_id }}"

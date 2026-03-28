@@ -184,12 +184,11 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::post('/kepegawaian/data/export/rekap', [KepegawaianController::class, 'exportDataRekap'])->name('kepegawaian.export.data.rekap');
     Route::post('/kepegawaian/sync/{id}', [KepegawaianController::class, 'Pegawaisync'])->name('kepegawaian.sync');
 
-
     Route::get('/kepegawaian/timkerja/', [KepegawaianController::class, 'timkerja'])->name('kepegawaian.data.timkerja');
     Route::post('/kepegawaian/timkerja/input', [KepegawaianController::class, 'inputTimkerja'])->name('kepegawaian.tambah.timkerja');
     Route::get('/get-kepala-bidang/{bidang}', [KepegawaianController::class, 'getKepalaBidang']);
     Route::post('/kepegawaian/timkerja/update/{id}', [KepegawaianController::class, 'updateTimkerja'])->name('kepegawaian.update.timkerja');
-
+    Route::get('/kepegawaian/timkerja/anggota/{id}', [KepegawaianController::class, 'timkerjaAnggota'])->name('kepegawaian.anggota.timkerja');
 
     // ... Tambahkan route kepegawaian lain di sini ...
 });
@@ -235,6 +234,8 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::put('/timkerja/{id}/update-uraian', [AksesController::class, 'updateUraian'])->name('timkerja.update_uraian');
     Route::post('/timkerja/{id}/tambah-anggota', [AksesController::class, 'tambahAnggota'])->name('timkerja.tambah_anggota');
     Route::get('/timkerja/{id}/pegawai-ajax', [AksesController::class, 'getPegawaiAjax'])->name('timkerja.pegawai_ajax');
+    Route::get('/timkerja/{id}/users', [AksesController::class, 'getUsersAjax'])->name('timkerja.users.ajax');
+    Route::delete('/timkerja/{id}/anggota/{userId}', [AksesController::class, 'hapusAnggota'])->name('timkerja.hapus_anggota');
 
     Route::post('/tambah-evaluasi-tw1', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw1');
     Route::post('/tambah-evaluasi-tw2', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw2');

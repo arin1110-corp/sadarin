@@ -181,32 +181,51 @@
                     <div class="text-start mt-4" style="width: 100%;">
                         <h6 class="mb-4">Anggota Tim:</h6>
 
-                        @if ($anggota->isNotEmpty())
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-                                @foreach ($anggota as $a)
-                                    <div class="col">
-                                        <div class="card text-center h-100 border-0">
-                                            @if (!empty($a->user_foto))
-                                                <center>
-                                                    <img src="{{ $a->user_foto && $a->user_foto != '-' ? asset($a->user_foto) : asset('assets/image/pemprov.png') }}"
-                                                        class="card-img-top"
-                                                        style="width: 100px; height: 200px; object-fit: cover;"
-                                                        alt="Foto {{ $a->user_nama }}">
-                                                </center>
-                                            @else
-                                                <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                                                    style="height: 200px;">
-                                                    No Image
+                        @if ($anggotaGrouped->isNotEmpty())
+
+                            @foreach ($anggotaGrouped as $lokasi => $listAnggota)
+                                <div class="mb-4">
+                                    <h5 class="text-primary">
+                                        <i class="bi bi-geo-alt"></i>
+                                        {{ $lokasi ?? 'Tanpa Lokasi Kerja' }}
+                                    </h5>
+
+                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 mt-2">
+                                        @foreach ($listAnggota as $a)
+                                            <div class="col">
+                                                <div class="card text-center h-100 border-0 shadow-sm">
+
+                                                    @if (!empty($a->user_foto))
+                                                        <center>
+                                                            <img src="{{ $a->user_foto != '-' ? asset($a->user_foto) : asset('assets/image/pemprov.png') }}"
+                                                                style="width: 100px; height: 200px; object-fit: cover;">
+                                                        </center>
+                                                    @else
+                                                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                                                            style="height: 200px;">
+                                                            No Image
+                                                        </div>
+                                                    @endif
+
+                                                    <div class="card-body p-2">
+                                                        <h6 class="mb-0">{{ $a->user_nama }}</h6>
+                                                        <small class="text-muted">{{ $a->jabatan_nama ?? '-' }}</small>
+                                                        
+                                                    </div>
+                                                    <div class="card-footer p-2">
+                                                        <button class="btn btn-danger btn-sm mt-2 btnHapusAnggota"
+                                                            data-id="{{ $a->user_id }}"
+                                                            data-nama="{{ $a->user_nama }}">
+                                                            <i class="bi bi-trash"></i> Hapus
+                                                        </button>
+                                                    </div>
+
                                                 </div>
-                                            @endif
-                                            <div class="card-body p-2">
-                                                <h6 class="card-title mb-0">{{ $a->user_nama ?? 'Tidak ada nama' }}</h6>
-                                                <small class="text-muted">{{ $a->jabatan_nama ?? '-' }}</small>
                                             </div>
-                                        </div>
+                                        @endforeach
                                     </div>
-                                @endforeach
-                            </div>
+                                </div>
+                            @endforeach
                         @else
                             <p class="text-muted">Belum ada anggota tim.</p>
                         @endif
@@ -245,35 +264,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $u)
-                                        <tr>
-                                            <td>
-                                                <img src="{{ $u->user_foto && $u->user_foto != '-' ? asset($u->user_foto) : asset('assets/image/pemprov.png') }}"
-                                                    alt="Foto {{ $u->user_nama }}" class="rounded"
-                                                    style="width: 50px; object-fit: cover;">
-                                            </td>
-                                            <td>{{ $u->user_nama }}</td>
-                                            <td>{{ $u->jabatan_nama ?? '-' }}</td>
-                                            <td>{{ $u->bidang_nama ?? '-' }}</td>
-                                            <td>
-                                                {{ $anggotaMapping[$u->user_id] ?? 'Belum Ada Tim Kerja' }}
-                                            </td>
-                                            <td>
-                                                @if (in_array($u->user_id, $anggotaIds))
-                                                    <button class="btn btn-secondary btn-sm" disabled>Sudah di Tim
-                                                        Ini</button>
-                                                @elseif(isset($anggotaMapping[$u->user_id]))
-                                                    <button class="btn btn-warning btn-sm" disabled>Sudah di Tim
-                                                        Lain</button>
-                                                @else
-                                                    <button class="btn btn-sm btn-primary pilihPegawaiBtn"
-                                                        data-id="{{ $u->user_id }}" data-nama="{{ $u->user_nama }}">
-                                                        Pilih
-                                                    </button>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>
@@ -364,93 +355,145 @@
     });
 </script>
 <script>
-    var table = $('#tablePegawaiModal').DataTable(); // simpan instance DataTable
+    let table;
+
+    $('#modalTambahAnggota').on('shown.bs.modal', function() {
+
+        if ($.fn.DataTable.isDataTable('#tablePegawaiModal')) {
+            return; // biar tidak double init
+        }
+
+        table = $('#tablePegawaiModal').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('timkerja.users.ajax', $timkerja->timkerja_id) }}",
+            columns: [{
+                    data: 'user_foto',
+                    render: function(data) {
+                        if (data && data !== '-') {
+                            return `<img src="/${data}" width="50">`;
+                        }
+                        return `<img src="/assets/image/pemprov.png" width="50">`;
+                    }
+                },
+                {
+                    data: 'user_nama'
+                },
+                {
+                    data: 'jabatan_nama'
+                },
+                {
+                    data: 'bidang_nama'
+                },
+                {
+                    data: 'tim_nama',
+                    render: function(data) {
+                        if (!data) {
+                            return `<span class="text-muted">Belum ada tim kerja</span>`;
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data, type, row) {
+
+                        if (row.status === 'ketua') {
+                            return `<button class="btn btn-dark btn-sm" disabled>
+                        Ketua Tim
+                    </button>`;
+                        }
+
+                        if (row.status === 'tim_ini') {
+                            return `<button class="btn btn-secondary btn-sm" disabled>
+                        Sudah di Tim Ini
+                    </button>`;
+                        }
+
+                        if (row.status === 'tim_lain') {
+                            return `<button class="btn btn-warning btn-sm" disabled>
+                        Sudah di Tim Lain
+                    </button>`;
+                        }
+
+                        return `<button class="btn btn-primary btn-sm pilihPegawaiBtn"
+                    data-id="${row.user_id}"
+                    data-nama="${row.user_nama}">
+                    Pilih
+                </button>`;
+                    }
+                },
+            ]
+        });
+
+    });
 
     $('#tablePegawaiModal').on('click', '.pilihPegawaiBtn', function(e) {
         e.preventDefault();
-        var btn = $(this);
-        var userId = btn.data('id');
-        var userName = btn.data('nama');
+
+        let btn = $(this);
+        let userId = btn.data('id');
+        let userName = btn.data('nama');
 
         Swal.fire({
             title: 'Konfirmasi',
-            text: "Apakah yakin ingin menambahkan " + userName + " ke tim?",
+            text: "Tambahkan " + userName + "?",
             icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, tambahkan',
-            cancelButtonText: 'Batal'
+            showCancelButton: true
         }).then((result) => {
             if (result.isConfirmed) {
-                $.ajax({
-                    url: "{{ route('timkerja.tambah_anggota', $timkerja->timkerja_id) }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        pegawai_id: [userId]
-                    },
-                    success: function(response) {
-                        Swal.fire('Berhasil!', userName + ' telah ditambahkan ke tim.',
-                            'success');
-
-                        // Disable tombol "Pilih" setelah ditambahkan
-                        btn.prop('disabled', true).text('Sudah di Tim Ini');
-
-                        // Jika mau update kolom "Tim Kerja" di DataTable
-                        table.cell(btn.closest('tr').find('td:eq(4)')).data(
-                            '{{ $timkerja->timkerja_nama }}').draw(false);
-
-                        // Opsional: update daftar anggota di halaman utama dengan AJAX atau reload
-                        // location.reload(); <-- jika ingin full reload
-                    },
-                    error: function(xhr) {
-                        Swal.fire('Error!', 'Gagal menambahkan anggota.', 'error');
-                    }
+                $.post("{{ route('timkerja.tambah_anggota', $timkerja->timkerja_id) }}", {
+                    _token: "{{ csrf_token() }}",
+                    pegawai_id: [userId]
+                }, function() {
+                    Swal.fire('Berhasil', '', 'success').then(() => {
+                        location.reload();
+                    });
                 });
             }
         });
     });
-</script>
-<script>
-    $('#tablePegawaiModal').on('click', '.pilihPegawaiBtn', function(e) {
-        e.preventDefault();
-        var btn = $(this); // tombol yang diklik
-        var row = btn.closest('tr'); // baris tabel
-        var userId = btn.data('id');
-        var userName = btn.data('nama');
+
+    $('.btnHapusAnggota').on('click', function() {
+
+        let btn = $(this);
+        let userId = btn.data('id');
+        let userName = btn.data('nama');
 
         Swal.fire({
-            title: 'Konfirmasi',
-            text: "Apakah yakin ingin menambahkan " + userName + " ke tim?",
-            icon: 'question',
+            title: 'Hapus Anggota?',
+            text: userName + ' akan dikeluarkan dari tim',
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Ya, tambahkan',
+            confirmButtonText: 'Ya, hapus',
             cancelButtonText: 'Batal'
         }).then((result) => {
+
             if (result.isConfirmed) {
+
                 $.ajax({
-                    url: "{{ route('timkerja.tambah_anggota', $timkerja->timkerja_id) }}",
-                    method: "POST",
+                    url: `/timkerja/{{ $timkerja->timkerja_id }}/anggota/${userId}`,
+                    method: 'DELETE',
                     data: {
-                        _token: "{{ csrf_token() }}",
-                        pegawai_id: [userId]
+                        _token: "{{ csrf_token() }}"
                     },
-                    success: function(response) {
-                        Swal.fire('Berhasil!', userName + ' telah ditambahkan ke tim.',
-                                'success')
+                    success: function() {
+
+                        Swal.fire('Berhasil', 'Anggota dihapus', 'success')
                             .then(() => {
-                                // Tutup modal
-                                $('#modalTambahAnggota').modal('hide');
-                                // Refresh halaman supaya semua update muncul
-                                location.reload();
+                                location.reload(); // 🔥 simple & aman
                             });
+
                     },
-                    error: function(xhr) {
-                        Swal.fire('Error!', 'Gagal menambahkan anggota.', 'error');
+                    error: function() {
+                        Swal.fire('Error', 'Gagal menghapus', 'error');
                     }
                 });
+
             }
         });
     });
 </script>
+
 
 </html>

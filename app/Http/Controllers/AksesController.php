@@ -1097,16 +1097,110 @@ class AksesController extends Controller
 
             ->select('sadarin_timkerja.timkerja_id', 'sadarin_timkerja.timkerja_uraian', 'sadarin_timkerja.timkerja_nama', 'sadarin_bidang.bidang_nama', 'kepala_bidang.user_nama as kepala_bidang', 'sadarin_user.user_nama as ketua_tim', 'sadarin_user.user_foto as foto_ketua')
             ->first();
-        $anggota = DB::table('sadarin_timkerja_detail')->leftJoin('sadarin_user', 'sadarin_timkerja_detail.timkerja_detail_anggota', '=', 'sadarin_user.user_id')->leftJoin('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')->leftJoin('sadarin_bidang', 'sadarin_timkerja.timkerja_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->select('sadarin_timkerja_detail.*', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_eselon.eselon_nama', 'sadarin_eselon.eselon_nama')->where('timkerja_id', $id)->get();
+        $anggota = DB::table('sadarin_timkerja_detail')->leftJoin('sadarin_user', 'sadarin_timkerja_detail.timkerja_detail_anggota', '=', 'sadarin_user.user_id')->leftJoin('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')->leftJoin('sadarin_bidang', 'sadarin_timkerja.timkerja_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->select('sadarin_user.user_id', 'sadarin_user.user_lokasikerja', 'sadarin_timkerja_detail.*', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_eselon.eselon_nama', 'sadarin_eselon.eselon_nama')->where('timkerja_id', $id)->get();
+
         $timkerja = ModelTimKerja::where('timkerja_id', $id)->first();
 
-        $users = DB::table('sadarin_user')->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->select('sadarin_user.*', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_eselon.eselon_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_golongan.golongan_nama')->where('user_status', 1)->get();
+        $anggotaGrouped = $anggota->groupBy('user_lokasikerja');
 
-        // Ambil semua anggota tim beserta nama timnya
-        $anggotaMapping = DB::table('sadarin_timkerja_detail')->join('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')->pluck('sadarin_timkerja.timkerja_nama', 'timkerja_detail_anggota'); // user_id => timkerja_nama
+        return view('homepage_timkerja', compact('timkerja', 'timkerja_data', 'anggota', 'anggotaGrouped'));
+    }
+    public function getUsersAjax(Request $request, $id)
+    {
+        // 🔥 mapping tim
+        $anggotaData = DB::table('sadarin_timkerja_detail')
+            ->join('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')
+            ->select(
+                'timkerja_detail_anggota',
+                'timkerja_detail_timkerja',
+                'sadarin_timkerja.timkerja_nama'
+            )
+            ->get();
+        $ketuaData = DB::table('sadarin_timkerja')
+            ->select('timkerja_id', 'timkerja_ketuatim', 'timkerja_nama')
+            ->get()
+            ->groupBy('timkerja_ketuatim'); // user_id jadi key
 
-        $anggotaIds = DB::table('sadarin_timkerja_detail')->where('timkerja_detail_timkerja', $id)->pluck('timkerja_detail_anggota')->toArray();
-        return view('homepage_timkerja', compact('timkerja', 'timkerja_data', 'anggota', 'users', 'anggotaIds', 'anggotaMapping'));
+        $anggotaMapping = $anggotaData->groupBy('timkerja_detail_anggota');
+
+        // 🔥 QUERY USERS (INI YANG KAMU KURANGIN)
+        $query = DB::table('sadarin_user')
+            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->select(
+                'sadarin_user.user_id',
+                'sadarin_user.user_nama',
+                'sadarin_user.user_foto',
+                'sadarin_bidang.bidang_nama',
+                'sadarin_jabatan.jabatan_nama'
+            )
+            ->where('sadarin_user.user_status', 1);
+
+        // 🔍 SEARCH
+        if ($request->search['value']) {
+            $search = $request->search['value'];
+            $query->where('sadarin_user.user_nama', 'like', "%$search%");
+        }
+
+        $total = $query->count();
+
+        // 🔥 PAGINATION
+        $users = $query
+            ->offset($request->start)
+            ->limit($request->length)
+            ->get();
+
+        // 🔥 MAP DATA
+        $data = $users->map(function ($u) use ($anggotaMapping, $ketuaData, $id) {
+
+            if (isset($ketuaData[$u->user_id])) {
+
+                $timList = $ketuaData[$u->user_id];
+                $namaTim = $timList->pluck('timkerja_nama')->implode(', ');
+
+                $isKetuaDiTimIni = $timList->contains('timkerja_id', $id);
+
+                $u->status = 'ketua';
+                $u->tim_nama = 'Ketua Tim: ' . $namaTim;
+            } elseif (isset($anggotaMapping[$u->user_id])) {
+
+                $timList = $anggotaMapping[$u->user_id];
+                $namaTim = $timList->pluck('timkerja_nama')->implode(', ');
+
+                $isTimIni = $timList->contains('timkerja_detail_timkerja', $id);
+
+                if ($isTimIni) {
+                    $u->status = 'tim_ini';
+                } else {
+                    $u->status = 'tim_lain';
+                }
+
+                $u->tim_nama = $namaTim;
+            } else {
+                $u->status = 'belum ';
+                $u->tim_nama = null;
+            }
+
+            return $u;
+        });
+
+        return response()->json([
+            "draw" => intval($request->draw),
+            "recordsTotal" => $total,
+            "recordsFiltered" => $total,
+            "data" => $data
+        ]);
+    }
+    public function hapusAnggota($id, $userId)
+    {
+        DB::table('sadarin_timkerja_detail')
+            ->where('timkerja_detail_timkerja', $id)
+            ->where('timkerja_detail_anggota', $userId)
+            ->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
     }
     public function updateUraian(Request $request, $id)
     {
