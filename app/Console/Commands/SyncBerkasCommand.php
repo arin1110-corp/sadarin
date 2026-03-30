@@ -5,11 +5,12 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\ModelPengumpulanBerkas;
 use App\Services\GoogleDriveService;
+use Illuminate\Support\Facades\DB;
 
 class SyncBerkasCommand extends Command
 {
     protected $signature = 'sync:berkas {jenis}';
-    protected $description = 'Sinkronisasi berkas + hapus file VPS jika sudah ada di Google Drive';
+    protected $description = 'Sinkronisasi berkas ke Google Drive';
 
     public function handle(GoogleDriveService $googleDrive)
     {
@@ -52,25 +53,41 @@ class SyncBerkasCommand extends Command
             return Command::FAILURE;
         }
 
+        $total = ModelPengumpulanBerkas::where('kumpulan_jenis', $mapJenis[$jenis])
+            ->where('kumpulan_status', 1)
+            ->where('kumpulan_sync', 0)
+            ->count();
+
+        $this->info("Total akan diproses: {$total}");
+
         ModelPengumpulanBerkas::query()
             ->select(
                 'sadarin_pengumpulanberkas.*',
-                'sadarin_user.user_jeniskerja'
+            DB::raw('COALESCE(u1.user_jeniskerja, u2.user_jeniskerja) as user_jeniskerja')
             )
-            ->leftJoin('sadarin_user', function ($join) {
-            $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')
-                ->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
-            })
+            ->leftJoin('sadarin_user as u1', 'sadarin_pengumpulanberkas.kumpulan_user', '=', 'u1.user_nip')
+            ->leftJoin('sadarin_user as u2', 'sadarin_pengumpulanberkas.kumpulan_user', '=', 'u2.user_nik')
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $mapJenis[$jenis])
             ->where('sadarin_pengumpulanberkas.kumpulan_status', 1)
-            ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
-            ->chunk(100, function ($rows) use ($googleDrive, $jenis, $mapJenis) {
+            ->where(function ($q) {
+                $q->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
+                    ->orWhereNull('sadarin_pengumpulanberkas.kumpulan_sync');
+            })
+            ->chunk(100, function ($rows) use ($googleDrive, $jenis) {
+
+                $this->info("Proses chunk: " . $rows->count());
 
             foreach ($rows as $row) {
 
-                $identitas = $row->kumpulan_user;
+                $identitas = trim($row->kumpulan_user);
 
-                if (!$identitas || !$row->user_jeniskerja) {
+                if (!$identitas) {
+                    $this->warn("SKIP: identitas kosong");
+                    continue;
+                }
+
+                if (!$row->user_jeniskerja) {
+                    $this->error("USER TIDAK DITEMUKAN: {$identitas}");
                     continue;
                 }
 
@@ -82,6 +99,7 @@ class SyncBerkasCommand extends Command
                 ];
 
                 if (!isset($folderMap[$row->user_jeniskerja])) {
+                    $this->warn("Jenis kerja tidak valid: {$identitas}");
                     continue;
                 }
 
@@ -89,40 +107,42 @@ class SyncBerkasCommand extends Command
                 $folderId = env($envKey);
 
                 if (!$folderId) {
+                    $this->error("ENV tidak ditemukan: {$envKey}");
                     continue;
                 }
 
-                usleep(300000);
+                try {
+                    $this->info("CEK DRIVE: {$identitas}");
 
-                $result = $googleDrive->findFileByNip(
-                    $identitas,
-                    $folderId,
-                    $jenis
-                );
+                    $result = $googleDrive->findFileByNip(
+                        $identitas,
+                        $folderId,
+                        $jenis
+                    );
+                } catch (\Exception $e) {
+                    $this->error("ERROR API: " . $e->getMessage());
+                    continue;
+                }
 
-                $oldFile = $row->kumpulan_file; // simpan file lama VPS
+                $oldFile = $row->kumpulan_file;
 
                 if (($result['status'] ?? 0) == 1) {
 
-                    // update hanya jika file ADA di Drive
                     $row->update([
-                        'kumpulan_file'   => $result['file_url'],
-                        'kumpulan_status' => 1,
+                        'kumpulan_file' => $result['file_url'],
+                        'kumpulan_sync' => 1
                     ]);
 
+                    // hapus file lama VPS
                     if (!empty($oldFile)) {
 
                         $relativePath = parse_url($oldFile, PHP_URL_PATH);
                         $relativePath = ltrim($relativePath, '/');
-
-                        $localPath = public_path($relativePath);
-
-                        $this->warn("PATH CEK: " . $localPath);
+                        $localPath    = public_path($relativePath);
 
                         if (file_exists($localPath)) {
-
                             if (unlink($localPath)) {
-                                $this->info("{$identitas} → File VPS berhasil dihapus");
+                                $this->info("{$identitas} → File VPS dihapus");
                             } else {
                                 $this->warn("{$identitas} → Gagal hapus file VPS");
                             }
@@ -131,19 +151,11 @@ class SyncBerkasCommand extends Command
                         }
                     }
 
-                    $row->update([
-                        'kumpulan_sync' => 1
-                    ]);
+                    $this->info("{$identitas} → SYNC BERHASIL");
                 } else {
 
-                    // kalau TIDAK ada di Drive:
-                    // jangan ubah kumpulan_file
-                    $row->update([
-                        'kumpulan_status' => 1
-                    ]);
+                    $this->warn("{$identitas} → FILE TIDAK ADA DI DRIVE");
                 }
-
-                $this->info("{$identitas} → Sinkron selesai");
                 }
             });
 
