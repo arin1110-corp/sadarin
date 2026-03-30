@@ -1105,6 +1105,43 @@ class AksesController extends Controller
 
         return view('homepage_timkerja', compact('timkerja', 'timkerja_data', 'anggota', 'anggotaGrouped'));
     }
+    public function updatePasfoto(Request $request)
+    {
+        $request->validate(
+            [
+                'user_foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            ],
+            [
+                'user_foto.image' => 'File yang diupload harus berupa gambar.',
+                'user_foto.mimes' => 'Format foto hanya boleh JPG atau PNG.',
+                'user_foto.max' => 'Ukuran foto maksimal 2MB.',
+            ],
+        );
+
+        $user = ModelUser::findOrFail($request->user_id);
+
+        if ($request->hasFile('user_foto')) {
+            $file = $request->file('user_foto');
+
+            // Ambil NIP & NIK (request → fallback ke data lama)
+            $nip = $request->user_nip ?? $user->user_nip;
+            $nik = $request->user_nik ?? $user->user_nik;
+
+            // Jika NIP adalah '-' maka gunakan NIK
+            $finalId = $nip == '-' || $nip == null || $nip == '' ? $nik : $nip;
+
+            $filename = "{$finalId}_Pasfoto." . $file->getClientOriginalExtension();
+
+            $destinationPath = public_path('assets/foto_pegawai');
+            $file->move($destinationPath, $filename);
+
+            $user->user_foto = "assets/foto_pegawai/{$filename}";
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Data pegawai berhasil diupdate.');
+    }
     public function getUsersAjax(Request $request, $id)
     {
         // 🔥 mapping tim
