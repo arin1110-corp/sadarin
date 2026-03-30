@@ -53,36 +53,27 @@ class SyncBerkasCommand extends Command
             return Command::FAILURE;
         }
 
-        $total = ModelPengumpulanBerkas::where('kumpulan_jenis', $mapJenis[$jenis])
-            ->where('kumpulan_status', 1)
-            ->where('kumpulan_sync', 0)
-            ->count();
+        $total = ModelPengumpulanBerkas::where('kumpulan_jenis', $mapJenis[$jenis])->where('kumpulan_status', 1)->where('kumpulan_sync', 0)->count();
 
         $this->info("Total akan diproses: {$total}");
 
         ModelPengumpulanBerkas::query()
-            ->select(
-                'sadarin_pengumpulanberkas.*',
-            DB::raw('COALESCE(u1.user_jeniskerja, u2.user_jeniskerja) as user_jeniskerja')
-            )
+            ->select('sadarin_pengumpulanberkas.*', DB::raw('COALESCE(u1.user_jeniskerja, u2.user_jeniskerja) as user_jeniskerja'))
             ->leftJoin('sadarin_user as u1', 'sadarin_pengumpulanberkas.kumpulan_user', '=', 'u1.user_nip')
             ->leftJoin('sadarin_user as u2', 'sadarin_pengumpulanberkas.kumpulan_user', '=', 'u2.user_nik')
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $mapJenis[$jenis])
             ->where('sadarin_pengumpulanberkas.kumpulan_status', 1)
             ->where(function ($q) {
-                $q->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
-                    ->orWhereNull('sadarin_pengumpulanberkas.kumpulan_sync');
+            $q->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)->orWhereNull('sadarin_pengumpulanberkas.kumpulan_sync');
             })
             ->chunk(100, function ($rows) use ($googleDrive, $jenis) {
-
-                $this->info("Proses chunk: " . $rows->count());
+            $this->info('Proses chunk: ' . $rows->count());
 
             foreach ($rows as $row) {
-
                 $identitas = trim($row->kumpulan_user);
 
                 if (!$identitas) {
-                    $this->warn("SKIP: identitas kosong");
+                    $this->warn('SKIP: identitas kosong');
                     continue;
                 }
 
@@ -103,8 +94,13 @@ class SyncBerkasCommand extends Command
                     continue;
                 }
 
-                $envKey   = $folderMap[$row->user_jeniskerja] . strtoupper($jenis);
-                $folderId = env($envKey);
+                $envKey = $folderMap[$row->user_jeniskerja] . strtoupper($jenis);
+
+                // buang prefix
+                $key = str_replace('GOOGLE_DRIVE_FOLDER_', '', $envKey);
+
+                // ambil dari config
+                $folderId = config("services.drive_folders.$key");
 
                 if (!$folderId) {
                     $this->error("ENV tidak ditemukan: {$envKey}");
@@ -114,31 +110,25 @@ class SyncBerkasCommand extends Command
                 try {
                     $this->info("CEK DRIVE: {$identitas}");
 
-                    $result = $googleDrive->findFileByNip(
-                        $identitas,
-                        $folderId,
-                        $jenis
-                    );
+                    $result = $googleDrive->findFileByNip($identitas, $folderId, $jenis);
                 } catch (\Exception $e) {
-                    $this->error("ERROR API: " . $e->getMessage());
+                    $this->error('ERROR API: ' . $e->getMessage());
                     continue;
                 }
 
                 $oldFile = $row->kumpulan_file;
 
                 if (($result['status'] ?? 0) == 1) {
-
                     $row->update([
                         'kumpulan_file' => $result['file_url'],
-                        'kumpulan_sync' => 1
+                        'kumpulan_sync' => 1,
                     ]);
 
                     // hapus file lama VPS
                     if (!empty($oldFile)) {
-
                         $relativePath = parse_url($oldFile, PHP_URL_PATH);
                         $relativePath = ltrim($relativePath, '/');
-                        $localPath    = public_path($relativePath);
+                        $localPath = public_path($relativePath);
 
                         if (file_exists($localPath)) {
                             if (unlink($localPath)) {
@@ -153,7 +143,6 @@ class SyncBerkasCommand extends Command
 
                     $this->info("{$identitas} → SYNC BERHASIL");
                 } else {
-
                     $this->warn("{$identitas} → FILE TIDAK ADA DI DRIVE");
                 }
                 }
