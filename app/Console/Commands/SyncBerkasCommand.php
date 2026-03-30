@@ -70,7 +70,7 @@ class SyncBerkasCommand extends Command
             return Command::SUCCESS;
         }
 
-        $query->orderBy('sadarin_pengumpulanberkas.id')
+        $query->orderBy('sadarin_pengumpulanberkas.kumpulan_id')
             ->chunkById(100, function ($rows) use ($googleDrive, $jenis) {
 
                 $this->info("Chunk jalan: " . count($rows));
