@@ -54,7 +54,7 @@ class SyncBerkasCommand extends Command
 
         $count = ModelPengumpulanBerkas::query()->where('kumpulan_jenis', $mapJenis[$jenis])->where('kumpulan_status', 1)->where('kumpulan_sync', 0)->count();
 
-        dd($count);
+        $this->info("Total data: " . $count);
 
         ModelPengumpulanBerkas::query()
             ->select('sadarin_pengumpulanberkas.*', 'sadarin_user.user_jeniskerja')
