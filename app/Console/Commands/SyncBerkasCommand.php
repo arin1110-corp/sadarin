@@ -148,7 +148,7 @@ class SyncBerkasCommand extends Command
 
                 $this->info("{$identitas} → OK");
                 }
-            }, 'sadarin_pengumpulanberkas.id');
+            }, 'sadarin_pengumpulanberkas.kumpulan_id');
 
         $this->info("Sinkronisasi {$jenis} selesai!");
         return Command::SUCCESS;
