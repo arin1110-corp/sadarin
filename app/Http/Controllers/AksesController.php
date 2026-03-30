@@ -1272,4 +1272,10 @@ class AksesController extends Controller
 
         return response()->json(['success' => true]);
     }
+    public function cetakStrukturPegawaiPdf()
+    {
+        $path = public_path('file/Struktur-Organisasi-Dinas-Kebudayaan-Provinsi-Bali.pdf');
+
+        return response()->file($path);
+    }
 }
