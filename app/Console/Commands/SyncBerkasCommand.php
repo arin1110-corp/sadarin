@@ -52,30 +52,21 @@ class SyncBerkasCommand extends Command
             return Command::FAILURE;
         }
 
-        $query = ModelPengumpulanBerkas::query()
-            ->select('sadarin_pengumpulanberkas.*', 'sadarin_user.user_jeniskerja')
+        ModelPengumpulanBerkas::query()
+            ->select(
+                'sadarin_pengumpulanberkas.*',
+                'sadarin_user.user_jeniskerja'
+            )
             ->leftJoin('sadarin_user', function ($join) {
-                $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')
-                    ->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
+            $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')
+                ->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
             })
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $mapJenis[$jenis])
             ->where('sadarin_pengumpulanberkas.kumpulan_status', 1)
-            ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0);
+            ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
+            ->chunk(100, function ($rows) use ($googleDrive, $jenis, $mapJenis) {
 
-        $count = (clone $query)->count();
-        $this->info("Total data: " . $count);
-
-        if ($count == 0) {
-            $this->warn("Tidak ada data.");
-            return Command::SUCCESS;
-        }
-
-        $query->orderBy('sadarin_pengumpulanberkas.kumpulan_id')
-            ->chunkById(100, function ($rows) use ($googleDrive, $jenis) {
-
-                $this->info("Chunk jalan: " . count($rows));
-
-                foreach ($rows as $row) {
+            foreach ($rows as $row) {
 
                 $identitas = $row->kumpulan_user;
 
@@ -94,13 +85,10 @@ class SyncBerkasCommand extends Command
                     continue;
                 }
 
-                // 🔥 ENV FIX (jangan pakai env() langsung di runtime Laravel cache)
-                $envKey = $folderMap[$row->user_jeniskerja] . strtoupper($jenis);
-
-                $folderId = $_ENV[$envKey] ?? getenv($envKey);
+                $envKey   = $folderMap[$row->user_jeniskerja] . strtoupper($jenis);
+                $folderId = env($envKey);
 
                 if (!$folderId) {
-                    $this->warn("ENV tidak ada: {$envKey}");
                     continue;
                 }
 
@@ -112,10 +100,11 @@ class SyncBerkasCommand extends Command
                     $jenis
                 );
 
-                $oldFile = $row->kumpulan_file;
+                $oldFile = $row->kumpulan_file; // simpan file lama VPS
 
                 if (($result['status'] ?? 0) == 1) {
 
+                    // update hanya jika file ADA di Drive
                     $row->update([
                         'kumpulan_file'   => $result['file_url'],
                         'kumpulan_status' => 1,
@@ -125,14 +114,20 @@ class SyncBerkasCommand extends Command
 
                         $relativePath = parse_url($oldFile, PHP_URL_PATH);
                         $relativePath = ltrim($relativePath, '/');
+
                         $localPath = public_path($relativePath);
 
+                        $this->warn("PATH CEK: " . $localPath);
+
                         if (file_exists($localPath)) {
+
                             if (unlink($localPath)) {
-                                $this->info("{$identitas} → VPS dihapus");
+                                $this->info("{$identitas} → File VPS berhasil dihapus");
                             } else {
-                                $this->warn("{$identitas} → gagal hapus");
+                                $this->warn("{$identitas} → Gagal hapus file VPS");
                             }
+                        } else {
+                            $this->warn("{$identitas} → File tidak ditemukan di VPS");
                         }
                     }
 
@@ -141,14 +136,16 @@ class SyncBerkasCommand extends Command
                     ]);
                 } else {
 
+                    // kalau TIDAK ada di Drive:
+                    // jangan ubah kumpulan_file
                     $row->update([
                         'kumpulan_status' => 1
                     ]);
                 }
 
-                $this->info("{$identitas} → OK");
+                $this->info("{$identitas} → Sinkron selesai");
                 }
-            }, 'sadarin_pengumpulanberkas.kumpulan_id');
+            });
 
         $this->info("Sinkronisasi {$jenis} selesai!");
         return Command::SUCCESS;
