@@ -52,22 +52,20 @@ class SyncBerkasCommand extends Command
             return Command::FAILURE;
         }
 
+        $count = ModelPengumpulanBerkas::query()->where('kumpulan_jenis', $mapJenis[$jenis])->where('kumpulan_status', 1)->where('kumpulan_sync', 0)->count();
+
+        dd($count);
+
         ModelPengumpulanBerkas::query()
-            ->select(
-                'sadarin_pengumpulanberkas.*',
-                'sadarin_user.user_jeniskerja'
-            )
+            ->select('sadarin_pengumpulanberkas.*', 'sadarin_user.user_jeniskerja')
             ->leftJoin('sadarin_user', function ($join) {
-                $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')
-                    ->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
+            $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
             })
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $mapJenis[$jenis])
             ->where('sadarin_pengumpulanberkas.kumpulan_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
             ->chunk(100, function ($rows) use ($googleDrive, $jenis, $mapJenis) {
-
             foreach ($rows as $row) {
-
                 $identitas = $row->kumpulan_user;
 
                 if (!$identitas || !$row->user_jeniskerja) {
@@ -85,7 +83,7 @@ class SyncBerkasCommand extends Command
                     continue;
                 }
 
-                $envKey   = $folderMap[$row->user_jeniskerja] . strtoupper($jenis);
+                $envKey = $folderMap[$row->user_jeniskerja] . strtoupper($jenis);
                 $folderId = env($envKey);
 
                 if (!$folderId) {
@@ -94,33 +92,26 @@ class SyncBerkasCommand extends Command
 
                 usleep(300000);
 
-                $result = $googleDrive->findFileByNip(
-                    $identitas,
-                    $folderId,
-                    $jenis
-                );
+                $result = $googleDrive->findFileByNip($identitas, $folderId, $jenis);
 
                 $oldFile = $row->kumpulan_file; // simpan file lama VPS
 
                 if (($result['status'] ?? 0) == 1) {
-
                     // update hanya jika file ADA di Drive
                     $row->update([
-                        'kumpulan_file'   => $result['file_url'],
+                        'kumpulan_file' => $result['file_url'],
                         'kumpulan_status' => 1,
                     ]);
 
                     if (!empty($oldFile)) {
-
                         $relativePath = parse_url($oldFile, PHP_URL_PATH);
                         $relativePath = ltrim($relativePath, '/');
 
                         $localPath = public_path($relativePath);
 
-                        $this->warn("PATH CEK: " . $localPath);
+                        $this->warn('PATH CEK: ' . $localPath);
 
                         if (file_exists($localPath)) {
-
                             if (unlink($localPath)) {
                                 $this->info("{$identitas} → File VPS berhasil dihapus");
                             } else {
@@ -132,14 +123,13 @@ class SyncBerkasCommand extends Command
                     }
 
                     $row->update([
-                        'kumpulan_sync' => 1
+                        'kumpulan_sync' => 1,
                     ]);
                 } else {
-
                     // kalau TIDAK ada di Drive:
                     // jangan ubah kumpulan_file
                     $row->update([
-                        'kumpulan_status' => 1
+                        'kumpulan_status' => 1,
                     ]);
                 }
 
