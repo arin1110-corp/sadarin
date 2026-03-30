@@ -64,7 +64,7 @@ class SyncBerkasCommand extends Command
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $mapJenis[$jenis])
             ->where('sadarin_pengumpulanberkas.kumpulan_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
-            ->orderBy('sadarin_pengumpulanberkas.id') // 🔥 WAJIB
+            ->orderBy('sadarin_pengumpulanberkas.kumpulan_id') // 🔥 WAJIB
             ->chunk(100, function ($rows) {
             foreach ($rows as $row) {
                 $identitas = $row->kumpulan_user;
