@@ -52,19 +52,20 @@ class SyncBerkasCommand extends Command
             return Command::FAILURE;
         }
 
-        $count = ModelPengumpulanBerkas::query()->where('kumpulan_jenis', $mapJenis[$jenis])->where('kumpulan_status', 1)->where('kumpulan_sync', 0)->count();
-
-        $this->info("Total data: " . $count);
-
         ModelPengumpulanBerkas::query()
-            ->select('sadarin_pengumpulanberkas.*', 'sadarin_user.user_jeniskerja')
+            ->select(
+                'sadarin_pengumpulanberkas.*',
+                'sadarin_user.user_jeniskerja'
+            )
             ->leftJoin('sadarin_user', function ($join) {
-            $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
+                $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')
+                    ->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
             })
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $mapJenis[$jenis])
             ->where('sadarin_pengumpulanberkas.kumpulan_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
-            ->chunk(100, function ($rows) use ($googleDrive, $jenis, $mapJenis) {
+            ->orderBy('sadarin_pengumpulanberkas.id') // 🔥 WAJIB
+            ->chunk(100, function ($rows) {
             foreach ($rows as $row) {
                 $identitas = $row->kumpulan_user;
 
