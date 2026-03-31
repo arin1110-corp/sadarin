@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class SyncBerkasViaDB extends Command
 {
-    protected $signature = 'sync:berkas {jenis}';
+    protected $signature = 'sync:berkas-db {jenis}';
     protected $description = 'Sinkronisasi berkas + hapus file VPS jika sudah ada di Google Drive';
 
     public function handle(GoogleDriveServiceDB $googleDrive)
