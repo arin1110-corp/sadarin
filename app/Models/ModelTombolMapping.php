@@ -14,5 +14,6 @@ class ModelTombolMapping extends Model
         'mapping_tombol',
         'mapping_jeniskerja',
         'mapping_folderid',
+        'mapping_folder',
     ];
 }

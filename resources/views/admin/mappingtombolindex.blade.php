@@ -55,6 +55,7 @@
                                     <th>Link JSON</th>
                                     <th>Jenis Kerja</th>
                                     <th>Link Drive</th>
+                                    <th>Folder</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -70,9 +71,12 @@
                                         @elseif($b->mapping_jeniskerja == 3) PPPK Paruh Waktu 
                                         @elseif($b->mapping_jeniskerja == 4) PJLP @endif</td>
                                     <td>{{ $b->mapping_folderid }}</td>
+                                    <td>{{ $b->mapping_folder }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->mapping_id }}" data-tombol="{{ $b->mapping_tombol}}"
-                                            data-jeniskerja="{{ $b->mapping_jeniskerja}}" data-folder="{{ $b->mapping_folderid }}">
+                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->mapping_id }}" 
+                                            data-tombol="{{ $b->mapping_tombol}}"
+                                            data-jeniskerja="{{ $b->mapping_jeniskerja}}" data-folderid="{{ $b->mapping_folderid }}" 
+                                            data-folder="{{ $b->mapping_folder }}">
                                             Edit
                                         </button>
                                         <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->mapping_id }}"
@@ -127,6 +131,10 @@
                             <label>ID Link Drive</label>
                             <input type="text" class="form-control" name="mapping_folderid" required>
                         </div>
+                        <div class="mb-3">
+                            <label>Folder</label>
+                            <input type="text" class="form-control" name="mapping_folder" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -170,7 +178,11 @@
                         </div>
                         <div class="mb-3">
                             <label>ID Link Drive</label>
-                            <input type="text" class="form-control" name="mapping_folderid" id="edit_folder" required>
+                            <input type="text" class="form-control" name="mapping_folderid" id="edit_folderid" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Folder</label>
+                            <input type="text" class="form-control" name="mapping_folder" id="edit_folder" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -229,10 +241,12 @@
             let tombol = $(this).data('tombol');
             let jeniskerja = $(this).data('jeniskerja');
             let folder = $(this).data('folder');
+            let folderid = $(this).data('folderid');
 
             $('#edit_tombol').val(tombol);
             $('#edit_jeniskerja').val(jeniskerja);
             $('#edit_folder').val(folder);
+            $('#edit_folderid').val(folderid);
             $('#formEdit').attr('action', '/admin/mapping-tombol/update/' + id);
             $('#modalEdit').modal('show');
         });

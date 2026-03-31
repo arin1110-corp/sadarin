@@ -390,12 +390,14 @@ class AdminController extends Controller
             'mapping_tombol' => 'required|integer',
             'mapping_jeniskerja' => 'required|integer',
             'mapping_folderid' => 'required|string|max:255',
+            'mapping_folder' => 'required|string|max:255',
         ]);
 
         ModelTombolMapping::create([
             'mapping_tombol' => $request->mapping_tombol,
             'mapping_jeniskerja' => $request->mapping_jeniskerja,
             'mapping_folderid' => $request->mapping_folderid,
+            'mapping_folder' => $request->mapping_folder,
         ]);
 
         return redirect()->route('admin.mappingtombol')->with('success', 'Mapping Tombol Berkas berhasil ditambahkan.');
@@ -406,6 +408,7 @@ class AdminController extends Controller
             'mapping_tombol' => 'required|integer',
             'mapping_jeniskerja' => 'required|integer',
             'mapping_folderid' => 'required|string|max:255',
+            'mapping_folder' => 'required|string|max:255',
         ]);
 
         $mapping = ModelTombolMapping::findOrFail($id);
@@ -413,6 +416,7 @@ class AdminController extends Controller
             'mapping_tombol' => $request->mapping_tombol,
             'mapping_jeniskerja' => $request->mapping_jeniskerja,
             'mapping_folderid' => $request->mapping_folderid,
+            'mapping_folder' => $request->mapping_folder,
         ]);
 
         return redirect()->route('admin.mappingtombol')->with('success', 'Mapping Tombol Berkas berhasil diperbarui.');
