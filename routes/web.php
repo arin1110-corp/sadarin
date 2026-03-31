@@ -117,6 +117,23 @@ Route::middleware('admin.auth')->group(function () {
     Route::put('/user-update/{id}', [AdminController::class, 'userUpdate'])->name('user.update');
     Route::delete('/user-hapus/{id}', [AdminController::class, 'userHapus'])->name('user.destroy');
 
+    Route::get('/admin-tombol-berkas', [AdminController::class, 'adminTombolBerkas'])->name('admin.tombolberkas');
+    Route::post('/admin/tombol-berkas-simpan', [AdminController::class, 'tombolBerkasSimpan'])->name('tombolberkas.simpan');
+    Route::put('/admin/tombol-berkas/update/{id}', [AdminController::class, 'tombolBerkasUpdate'])->name('tombolberkas.update');
+    Route::delete('/admin/tombol-berkas/hapus/{id}', [AdminController::class, 'tombolBerkasHapus'])->name('tombolberkas.destroy');
+
+    Route::get('/admin-mapping-tombol', [AdminController::class, 'adminMappingTombol'])->name('admin.mappingtombol');
+    Route::post('/admin/mapping-tombol/simpan', [AdminController::class, 'mappingTombolSimpan'])->name('mappingtombol.simpan');
+    Route::put('/admin/mapping-tombol/update/{id}', [AdminController::class, 'mappingTombolUpdate'])->name('mappingtombol.update');
+    Route::delete('/admin/mapping-tombol/hapus/{id}', [AdminController::class, 'mappingTombolHapus'])->name('mappingtombol.destroy');
+
+    Route::get('/admin-json', [AdminController::class, 'adminJson'])->name('admin.json');
+    Route::post('/admin/json-simpan', [AdminController::class, 'jsonSimpan'])->name('json.simpan');
+    Route::put('/admin/json-update/{id}', [AdminController::class, 'jsonUpdate'])->name('json.update');
+    Route::delete('/admin/json-hapus/{id}', [AdminController::class, 'jsonHapus'])->name('json.destroy');
+
+    // ... Tambahkan route admin lain di sini ...
+
     // ... Tambahkan route admin lain di sini ...
 });
 

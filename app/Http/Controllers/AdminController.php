@@ -18,6 +18,9 @@ use App\Models\ModelEselon;
 use App\Models\ModelJabatan;
 use App\Models\ModelGolongan;
 use App\Models\ModelPendidikan;
+use App\Models\ModelTombolBerkas;
+use App\Models\ModelJson;
+use App\Models\ModelTombolMapping;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Services\GoogleDriveService;
 use App\Models\ModelPengumpulanBerkas;
@@ -306,4 +309,143 @@ class AdminController extends Controller
     }
 
     /// Akhir User Management
+
+    public function adminTombolBerkas()
+    {
+        $tombols = DB::table('sadarin_tombolberkas')
+            ->leftJoin('sadarin_json', 'sadarin_tombolberkas.tombol_json', '=', 'sadarin_json.json_id')
+            ->select('sadarin_tombolberkas.*', 'sadarin_json.json_nama', 'sadarin_json.json_id')->get();
+        $jsons = ModelJson::get();
+        return view('admin.tombolberkasindex', compact('tombols', 'jsons'));
+    }
+    public function tombolBerkasSimpan()
+    {
+        $request = request();
+        $request->validate([
+            'tombol_nama' => 'required|string|max:255',
+            'tombol_prefix' => 'required|string|max:255',
+            'tombol_expired' => 'required|date',
+            'tombol_json_id' => 'required|integer',
+        ]);
+
+        ModelTombolBerkas::create([
+            'tombol_nama' => $request->tombol_nama,
+            'tombol_prefix' => $request->tombol_prefix,
+            'tombol_expired' => $request->tombol_expired,
+            'tombol_json' => $request->tombol_json_id,
+        ]);
+
+        return redirect()->route('admin.tombolberkas')->with('success', 'Tombol Berkas berhasil ditambahkan.');
+    }
+    public function tombolBerkasUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'tombol_nama' => 'required',
+            'tombol_prefix' => 'required',
+            'tombol_expired' => 'required',
+            'tombol_json_id' => 'required|integer',
+        ]);
+
+        $tombol = ModelTombolBerkas::findOrFail($id);
+        $tombol->update([
+            'tombol_nama' => $request->tombol_nama,
+            'tombol_prefix' => $request->tombol_prefix,
+            'tombol_expired' => $request->tombol_expired,
+            'tombol_json' => $request->tombol_json_id,
+        ]);
+
+        return redirect()->route('admin.tombolberkas')->with('success', 'Tombol Berkas berhasil diperbarui.');
+    }
+    public function tombolBerkasHapus($id)
+    {
+        $tombol = ModelTombolBerkas::findOrFail($id);
+        $tombol->delete();
+        return redirect()->route('admin.tombolberkas')->with('success', 'Tombol Berkas berhasil dihapus.');
+    }
+
+    public function adminMappingTombol()
+    {
+        $mappings = DB::table('sadarin_mappingtombol')
+            ->leftJoin('sadarin_tombolberkas', 'sadarin_mappingtombol.mapping_tombol', '=', 'sadarin_tombolberkas.tombol_id')
+            ->leftJoin('sadarin_json', 'sadarin_tombolberkas.tombol_json', '=', 'sadarin_json.json_id')
+            ->select(
+                'sadarin_mappingtombol.*',
+                'sadarin_tombolberkas.tombol_nama',
+                'sadarin_json.json_nama',
+                'sadarin_tombolberkas.tombol_prefix',
+                'sadarin_tombolberkas.tombol_expired'
+            )
+            ->get();
+        $tombols = ModelTombolBerkas::get();
+        return view('admin.mappingtombolindex', compact('mappings', 'tombols'));
+    }
+    public function mappingTombolSimpan()
+    {
+        $request = request();
+        $request->validate([
+            'mapping_tombol' => 'required|integer',
+            'mapping_jeniskerja' => 'required|integer',
+            'mapping_folderid' => 'required|string|max:255',
+        ]);
+
+        ModelTombolMapping::create([
+            'mapping_tombol' => $request->mapping_tombol,
+            'mapping_jeniskerja' => $request->mapping_jeniskerja,
+            'mapping_folderid' => $request->mapping_folderid,
+        ]);
+
+        return redirect()->route('admin.mappingtombol')->with('success', 'Mapping Tombol Berkas berhasil ditambahkan.');
+    }
+    public function mappingTombolUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'mapping_tombol' => 'required|integer',
+            'mapping_jeniskerja' => 'required|integer',
+            'mapping_folderid' => 'required|string|max:255',
+        ]);
+
+        $mapping = ModelTombolMapping::findOrFail($id);
+        $mapping->update([
+            'mapping_tombol' => $request->mapping_tombol,
+            'mapping_jeniskerja' => $request->mapping_jeniskerja,
+            'mapping_folderid' => $request->mapping_folderid,
+        ]);
+
+        return redirect()->route('admin.mappingtombol')->with('success', 'Mapping Tombol Berkas berhasil diperbarui.');
+    }
+    public function adminJson()
+    {
+        $jsons = ModelJson::get();
+        return view('admin.jsonindex', compact('jsons'));
+    }
+    public function jsonSimpan()
+    {
+        $request = request();
+        $request->validate([
+            'json_nama' => 'required|string|max:255|unique:sadarin_json,json_nama',
+            'json_link' => 'required|string|max:255',
+        ]);
+
+        ModelJson::create([
+            'json_nama' => $request->json_nama,
+            'json_file' => $request->json_link,
+        ]);
+
+        return redirect()->route('admin.json')->with('success', 'JSON berhasil ditambahkan.');
+    }
+    public function jsonUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'json_nama' => 'required|string|max:255|unique:sadarin_json,json_nama,' . $id . ',json_id',
+            'json_link' => 'required|string|max:255',
+        ]);
+
+        $json = ModelJson::findOrFail($id);
+        $json->update([
+            'json_nama' => $request->json_nama,
+            'json_file' => $request->json_link,
+        ]);
+
+        return redirect()->route('admin.json')->with('success', 'JSON berhasil diperbarui.');
+    }
 }
