@@ -686,6 +686,61 @@ class AksesController extends Controller
 
         return redirect()->route('detail.pegawai');
     }
+    public function uploadBerkasBaru(Request $request, $tombol_id)
+    {
+        $user = session('user_info');
+
+        $request->validate([
+            'file' => 'required|mimes:pdf,jpeg,jpg,png,gif,bmp,webp',
+        ]);
+
+        $tombolMapping = DB::table('sadarin_mappingtombol')
+            ->join('sadarin_tombolberkas', 'mapping_tombol', '=', 'tombol_id')
+            ->where('mapping_tombol', $tombol_id)
+            ->where('mapping_jeniskerja', $user->user_jeniskerja)
+            ->select('sadarin_mappingtombol.*', 'sadarin_tombolberkas.tombol_nama')
+            ->first();
+
+        if (!$tombolMapping) {
+            return back()->with('error', 'Mapping tombol belum tersedia.');
+        }
+
+        $finalId = $user->user_nip ?: $user->user_nik;
+        $file = $request->file('file');
+        $ext = $file->getClientOriginalExtension();
+        $filename = $finalId . '_' . str_replace(' ', '_', $tombolMapping->tombol_nama) . '.' . $ext;
+
+        $folderServer = $tombolMapping->mapping_folder; // path server
+        if (!file_exists(public_path($folderServer))) mkdir(public_path($folderServer), 0755, true);
+
+        // Hapus file lama
+        $baseName = $finalId . '_' . str_replace(' ', '_', $tombolMapping->tombol_nama);
+        foreach (glob(public_path($folderServer . '/' . $baseName . '.*')) as $old) {
+            if (file_exists($old)) unlink($old);
+        }
+
+        // Upload file
+        $file->move(public_path($folderServer), $filename);
+
+        $url = asset($folderServer . '/' . $filename);
+
+        ModelPengumpulanBerkas::updateOrCreate(
+            [
+                'kumpulan_user' => $finalId,
+                'kumpulan_jenis' => $tombolMapping->tombol_nama,
+            ],
+            [
+                'kumpulan_file' => $url,
+                'kumpulan_status' => 1,
+                'kumpulan_sync' => 0,
+                'kumpulan_keterangan' => 'Upload melalui sistem',
+            ]
+        );
+
+        return back()
+            ->with('success', 'File ' . $tombolMapping->tombol_nama . ' berhasil diupload.')
+            ->with('open_modal', $tombol_id); // modal tetap buka sesuai tombol
+    }
     public function uploadBerkas(Request $request)
     {
         $user = session('user_info');

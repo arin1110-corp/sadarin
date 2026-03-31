@@ -254,6 +254,12 @@ Route::middleware('akses.kontrol')->group(function () {
     Route::get('/timkerja/{id}/users', [AksesController::class, 'getUsersAjax'])->name('timkerja.users.ajax');
     Route::delete('/timkerja/{id}/anggota/{userId}', [AksesController::class, 'hapusAnggota'])->name('timkerja.hapus_anggota');
 
+    Route::post('/tambah/upload/berkas/{tombol_id}', [AksesController::class, 'uploadBerkasBaru'])
+        ->name('tambah.upload.berkas');
+
+
+
+
     Route::post('/tambah-evaluasi-tw1', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw1');
     Route::post('/tambah-evaluasi-tw2', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw2');
     Route::post('/tambah-evaluasi-tw3', [AksesController::class, 'uploadBerkas'])->name('tambah.evaluasi.tw3');

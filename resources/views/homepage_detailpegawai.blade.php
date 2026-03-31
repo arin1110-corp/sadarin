@@ -190,10 +190,10 @@
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
                                 @foreach ($tombols as $tombol)
-                                    <button class="btn btn-primary open-upload-modal"
+                                    <button class="btn btn-warning open-upload-modal"
                                         data-title="{{ $tombol->tombol_nama }} *pdf"
-                                        data-route="{{ $tombol->tombol_route }}"
-                                        data-jenis="{{ $tombol->tombol_nama }}"
+                                        data-route="{{ route('tambah.upload.berkas', ['tombol_id' => $tombol->tombol_id]) }}"
+                                        data-jenis="{{ $tombol->tombol_nama }}" data-tombol="{{ $tombol->tombol_id }}"
                                         data-jenisfile="{{ $tombol->tombol_jenisfile }}">
                                         <i class="bi bi-plus-lg"></i> {{ $tombol->tombol_nama }}
                                     </button>
@@ -502,6 +502,7 @@
                     <input type="hidden" name="kumpulan_jenis" id="kumpulan_jenis">
                     <input type="hidden" name="jenisfile" id="jenisfile">
                     <input type="hidden" name="user_jeniskerja" value="{{ $user->user_jeniskerja }}">
+                    <input type="hidden" name="tombol_id" id="tombol_id">
 
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalTitle">Upload Berkas</h5>
@@ -909,21 +910,26 @@
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        // 1️⃣ Buka modal upload
         document.querySelectorAll('.open-upload-modal').forEach(btn => {
             btn.addEventListener('click', function() {
 
-                const title = this.dataset.title;
-                const route = this.dataset.route;
-                const jenis = this.dataset.jenis;
-                const jenisfile = this.dataset.jenisfile;
+                const title = this.dataset.title; // Nama tombol / title modal
+                const route = this.dataset.route; // Route dinamis dari DB
+                const jenis = this.dataset.jenis; // Nama jenis (misal: "Data KTP")
+                const tombolId = this.dataset.tombol; // Tombol_id
+                const jenisfile = this.dataset.jenisfile || ''; // Optional: khusus coretax
 
+                // Update modal
                 document.getElementById('modalTitle').innerText = title;
+                document.getElementById('labelFile').innerText = title;
                 document.getElementById('formUploadBerkas').action = route;
                 document.getElementById('kumpulan_jenis').value = jenis;
+                document.getElementById('tombol_id').value = tombolId; // input hidden
                 document.getElementById('jenisfile').value = jenisfile;
 
                 // ==============================
-                // TAMBAHAN KHUSUS CORETAX
+                // KHUSUS TANGGAL CORETAX
                 // ==============================
                 const tanggalWrapper = document.getElementById('tanggalMelaporWrapper');
                 const tanggalInput = document.getElementById('tanggal_melapor');
@@ -937,46 +943,13 @@
                     tanggalInput.value = '';
                 }
 
+                // Tampilkan modal
+                new bootstrap.Modal(document.getElementById('modalUploadBerkas')).show();
             });
         });
-    </script>
 
-    <script>
-        $(document).ready(function() {
-            // Untuk Jabatan
-            $('select[name="jabatan_id"]').select2({
-                dropdownParent: $('#editPegawaiModal'),
-                width: '100%'
-            });
-
-            // Untuk Bidang
-            $('select[name="bidang_id"]').select2({
-                dropdownParent: $('#editPegawaiModal'),
-                width: '100%'
-            });
-
-            // Untuk Golongan
-            $('select[name="user_golongan"]').select2({
-                dropdownParent: $('#editPegawaiModal'),
-                width: '100%'
-            });
-
-            // Untuk Eselon
-            $('select[name="user_eselon"]').select2({
-                dropdownParent: $('#editPegawaiModal'),
-                width: '100%'
-            });
-
-            // Untuk Pendidikan
-            $('select[name="user_pendidikan"]').select2({
-                dropdownParent: $('#editPegawaiModal'),
-                width: '100%'
-            });
-        });
-    </script>
-    <script>
-        const allowOpenFile = true; // 🔒 sementara dimatikan
-
+        // 2️⃣ Preview / open file
+        const allowOpenFile = true; // 🔒 sementara
         const allFiles = @json($berkas);
 
         document.querySelectorAll('.showFiles').forEach(btn => {
@@ -991,38 +964,29 @@
                     this.classList.remove('btn-secondary', 'btn-danger');
                     this.classList.add('btn-success');
 
-                    // Kalau nanti mau aktif lagi
                     if (allowOpenFile) {
                         filtered.forEach(file => {
                             window.open(file.kumpulan_file, '_blank');
                         });
                     }
-
                 } else {
                     this.classList.remove('btn-secondary', 'btn-success');
                     this.classList.add('btn-danger');
                 }
             });
         });
-    </script>
-    <script>
-        $(document).on('click', '.open-upload-modal', function() {
-            const title = $(this).data('title');
-            const route = $(this).data('route');
-            const jenis = $(this).data('jenis');
-            const jenisfile = $(this).data('jenisfile');
 
-            $('#modalTitle').text(title);
-            $('#labelFile').text(title);
-            $('#kumpulan_jenis').val(jenis);
-            $('#jenisfile').val(jenisfile);
-            $('#formUploadBerkas').attr('action', route);
-
-            new bootstrap.Modal(document.getElementById('modalUploadBerkas')).show();
+        // 3️⃣ Select2 untuk modal editPegawai (tidak berubah)
+        $(document).ready(function() {
+            const selects = ['jabatan_id', 'bidang_id', 'user_golongan', 'user_eselon', 'user_pendidikan'];
+            selects.forEach(name => {
+                $(`select[name="${name}"]`).select2({
+                    dropdownParent: $('#editPegawaiModal'),
+                    width: '100%'
+                });
+            });
         });
     </script>
-
-
 </body>
 
 </html>
