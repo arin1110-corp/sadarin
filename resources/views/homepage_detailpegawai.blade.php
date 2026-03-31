@@ -190,7 +190,7 @@
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
                                 @foreach ($tombols as $tombol)
-                                    <button class="btn btn-warning open-upload-modal"
+                                    <button class="btn btn-primary open-upload-modal"
                                         data-title="{{ $tombol->tombol_nama }} *pdf"
                                         data-route="{{ route('tambah.upload.berkas', ['tombol_id' => $tombol->tombol_id]) }}"
                                         data-jenis="{{ $tombol->tombol_nama }}" data-tombol="{{ $tombol->tombol_id }}"
