@@ -60,7 +60,10 @@ class SyncBerkasViaDB extends Command
                     }
 
                 // 🔥 Ambil mapping folder dari DB
-                $mapping = DB::table('sadarin_mappingtombol')->where('mapping_tombol', $row->kumpulan_jenis)->where('mapping_jeniskerja', $row->user_jeniskerja)->first();
+                $mapping = DB::table('sadarin_mappingtombol')
+                    ->where('mapping_tombol', $tombol->tombol_id)
+                    ->where('mapping_jeniskerja', $row->user_jeniskerja)
+                    ->first();
 
                 if (!$mapping) {
                     $this->warn("Mapping tidak ditemukan untuk {$identitas}");
