@@ -327,6 +327,7 @@ class AdminController extends Controller
             'tombol_expired' => 'required|date',
             'tombol_json_id' => 'required|integer',
             'tombol_route' => 'required|string|max:255',
+            'tombol_jenisfile' => 'required|string|max:255',
         ]);
 
         ModelTombolBerkas::create([
@@ -335,6 +336,7 @@ class AdminController extends Controller
             'tombol_expired' => $request->tombol_expired,
             'tombol_json' => $request->tombol_json_id,
             'tombol_route' => $request->tombol_route,
+            'tombol_jenisfile' => $request->tombol_jenisfile,
         ]);
 
         return redirect()->route('admin.tombolberkas')->with('success', 'Tombol Berkas berhasil ditambahkan.');
@@ -347,6 +349,7 @@ class AdminController extends Controller
             'tombol_expired' => 'required',
             'tombol_json_id' => 'required|integer',
             'tombol_route' => 'required|string|max:255',
+            'tombol_jenisfile' => 'required|string|max:255',
         ]);
 
         $tombol = ModelTombolBerkas::findOrFail($id);
@@ -356,6 +359,7 @@ class AdminController extends Controller
             'tombol_expired' => $request->tombol_expired,
             'tombol_json' => $request->tombol_json_id,
             'tombol_route' => $request->tombol_route,
+            'tombol_jenisfile' => $request->tombol_jenisfile,
         ]);
 
         return redirect()->route('admin.tombolberkas')->with('success', 'Tombol Berkas berhasil diperbarui.');

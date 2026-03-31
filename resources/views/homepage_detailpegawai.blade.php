@@ -194,7 +194,7 @@
                                         data-title="{{ $tombol->tombol_nama }} *pdf"
                                         data-route="{{ $tombol->tombol_route }}"
                                         data-jenis="{{ $tombol->tombol_nama }}"
-                                        data-jenisfile="{{ $tombol->tombol_prefix }}">
+                                        data-jenisfile="{{ $tombol->tombol_jenisfile }}">
                                         <i class="bi bi-plus-lg"></i> {{ $tombol->tombol_nama }}
                                     </button>
                                 @endforeach
