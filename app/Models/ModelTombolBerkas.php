@@ -15,5 +15,6 @@ class ModelTombolBerkas extends Model
         'tombol_prefix',
         'tombol_json',
         'tombol_expired',
+        'tombol_route',
     ];
 }

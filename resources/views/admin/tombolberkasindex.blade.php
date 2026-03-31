@@ -54,6 +54,7 @@
                                     <th>Prefix</th>
                                     <th>JSON</th>
                                     <th>Expired</th>
+                                    <th>Route</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -65,11 +66,12 @@
                                     <td>{{ $b->tombol_prefix }}</td>
                                     <td>{{ $b->json_nama }}</td>
                                     <td>{{ $b->tombol_expired }}</td>
+                                    <td>{{ $b->tombol_route }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->tombol_id }}"
                                             data-json="{{ $b->tombol_json }}" data-nama="{{ $b->tombol_nama }}"
                                             data-prefix="{{ $b->tombol_prefix }}"
-                                            data-expired="{{ $b->tombol_expired }}">
+                                            data-expired="{{ $b->tombol_expired }}" data-route="{{ $b->tombol_route }}">
                                             Edit
                                         </button>
                                         <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->tombol_id }}"
@@ -114,6 +116,10 @@
                             <input type="date" class="form-control" name="tombol_expired" required>
                         </div>
                         <div class="mb-3">
+                            <label>Route</label>
+                            <input type="text" class="form-control" name="tombol_route" required>
+                        </div>
+                        <div class="mb-3">
                             <label>Link JSON</label>
                             <select class="form-select" name="tombol_json_id" required>
                                 <option value="">Pilih JSON</option>
@@ -155,6 +161,10 @@
                         <div class="mb-3">
                             <label>Expired</label>
                             <input type="date" class="form-control" name="tombol_expired" id="edit_expired" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Route</label>
+                            <input type="text" class="form-control" name="tombol_route" id="edit_route" required>
                         </div>
                         <div class="mb-3">
                             <label>Link JSON</label>
@@ -223,11 +233,14 @@
             let prefix = $(this).data('prefix');
             let expired = $(this).data('expired');
             let json = $(this).data('json');
+            let route = $(this).data('route');
+
 
             $('#edit_nama').val(nama);
             $('#edit_prefix').val(prefix);
             $('#edit_expired').val(expired);
             $('#edit_json').val(json);
+            $('#edit_route').val(route);
 
             $('#formEdit').attr('action', '/admin/tombol-berkas/update/' + id);
 
