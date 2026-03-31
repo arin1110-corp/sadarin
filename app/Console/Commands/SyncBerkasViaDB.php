@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\ModelPengumpulanBerkas;
-use App\Services\GoogleDriveService;
+use App\Services\GoogleDriveServiceDB; // versi DB
 use Illuminate\Support\Facades\DB;
 
 class SyncBerkasViaDB extends Command
@@ -12,7 +12,7 @@ class SyncBerkasViaDB extends Command
     protected $signature = 'sync:berkas {jenis}';
     protected $description = 'Sinkronisasi berkas + hapus file VPS jika sudah ada di Google Drive';
 
-    public function handle(GoogleDriveService $googleDrive)
+    public function handle(GoogleDriveServiceDB $googleDrive)
     {
         ini_set('memory_limit', '-1');
         set_time_limit(0);
@@ -20,7 +20,7 @@ class SyncBerkasViaDB extends Command
         $jenis = strtolower($this->argument('jenis'));
         $this->info("Mulai sinkronisasi {$jenis}...");
 
-        // 🔥 Ambil tombol berkas (MASTER)
+        // Ambil tombol berkas (MASTER)
         $tombol = DB::table('sadarin_tombolberkas')
             ->where('tombol_prefix', $jenis)
             ->first();
@@ -30,9 +30,9 @@ class SyncBerkasViaDB extends Command
             return Command::FAILURE;
         }
 
-        // 🔥 Ambil JSON config
+        // Ambil JSON config
         $json = DB::table('sadarin_json')
-            ->where('id', $tombol->tombol_json_id)
+            ->where('json_id', $tombol->tombol_json)
             ->first();
 
         if (!$json) {
@@ -62,21 +62,24 @@ class SyncBerkasViaDB extends Command
                         continue;
                     }
 
-                    // 🔥 Ambil folder dari DB (ganti ENV)
-                    $folder = DB::table('sadarin_prefixberkas')
+                // Ambil folder mapping dari DB
+                $folder = DB::table('sadarin_prefixberkas')
                         ->where('prefix', $jenis)
                         ->where('jenis_kerja', $row->user_jeniskerja)
                         ->first();
 
                     if (!$folder) {
+                    $this->warn("Folder mapping untuk {$identitas} tidak ditemukan.");
                         continue;
                     }
 
-                    $folderId = $folder->folder_id;
+                $folderId = $folder->folder_id;          // ID folder di Google Drive
+                $folderServer = $folder->mapping_folder; // path server VPS
 
-                    usleep(300000);
+                usleep(300000); // jeda supaya Drive tidak limit
 
-                    $result = $googleDrive->findFileByNip(
+                // Cari file di Google Drive
+                $result = $googleDrive->findFileByNip(
                         $identitas,
                         $folderId,
                         $json->json_file
@@ -86,39 +89,37 @@ class SyncBerkasViaDB extends Command
 
                     if (($result['status'] ?? 0) == 1) {
 
-                        DB::transaction(function () use ($row, $result, $oldFile, $identitas) {
+                    // File ditemukan di Drive → update DB & hapus file VPS
+                    DB::transaction(function () use ($row, $result, $oldFile, $identitas, $folderServer) {
 
-                            // update DB
-                            $row->update([
+                        // Update DB ke link Drive
+                        $row->update([
                                 'kumpulan_file'   => $result['file_url'],
                                 'kumpulan_status' => 1,
                                 'kumpulan_sync'   => 1
                             ]);
 
-                            // 🔥 hapus file VPS
-                            if (!empty($oldFile)) {
-
+                        // Hapus file VPS lama
+                        if (!empty($oldFile)) {
                                 $relativePath = parse_url($oldFile, PHP_URL_PATH);
-                                $relativePath = ltrim($relativePath, '/');
-
+                            $relativePath = ltrim($relativePath, '/');
                                 $localPath = public_path($relativePath);
 
                                 if (file_exists($localPath)) {
                                     if (unlink($localPath)) {
-                                        $this->info("{$identitas} → File VPS berhasil dihapus");
+                                    echo "{$identitas} → File VPS berhasil dihapus\n";
                                     } else {
-                                        $this->warn("{$identitas} → Gagal hapus file VPS");
+                                    echo "{$identitas} → Gagal hapus file VPS\n";
                                     }
                                 } else {
-                                    $this->warn("{$identitas} → File tidak ditemukan di VPS");
+                                echo "{$identitas} → File VPS tidak ditemukan\n";
                                 }
                             }
                         });
 
                     } else {
-
-                        // tidak ditemukan di drive
-                        $row->update([
+                    // File belum ada di Drive, tetap status 1 tapi sync 0
+                    $row->update([
                             'kumpulan_status' => 1
                         ]);
                     }
