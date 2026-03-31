@@ -190,13 +190,23 @@
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
                                 @foreach ($tombols as $tombol)
-                                    <button class="btn btn-primary open-upload-modal"
-                                        data-title="{{ $tombol->tombol_nama }} *pdf"
-                                        data-route="{{ route('tambah.upload.berkas', ['tombol_id' => $tombol->tombol_id]) }}"
-                                        data-jenis="{{ $tombol->tombol_nama }}" data-tombol="{{ $tombol->tombol_id }}"
-                                        data-jenisfile="{{ $tombol->tombol_jenisfile }}">
-                                        <i class="bi bi-plus-lg"></i> {{ $tombol->tombol_nama }}
-                                    </button>
+                                    @php
+                                        $today = \Carbon\Carbon::today();
+                                        $expired = $tombol->tombol_expired
+                                            ? \Carbon\Carbon::parse($tombol->tombol_expired)
+                                            : null;
+                                    @endphp
+
+                                    @if (!$expired || $today->lte($expired))
+                                        <button class="btn btn-primary open-upload-modal"
+                                            data-title="{{ $tombol->tombol_nama }} *pdf"
+                                            data-route="{{ route('tambah.upload.berkas', ['tombol_id' => $tombol->tombol_id]) }}"
+                                            data-jenis="{{ $tombol->tombol_nama }}"
+                                            data-tombol="{{ $tombol->tombol_id }}"
+                                            data-jenisfile="{{ $tombol->tombol_jenisfile }}">
+                                            <i class="bi bi-plus-lg"></i> {{ $tombol->tombol_nama }}
+                                        </button>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
