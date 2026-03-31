@@ -22,7 +22,9 @@ class SyncBerkasViaDB extends Command
         $this->info("Mulai sinkronisasi {$jenis}...");
 
         // 🔥 Ambil tombol
-        $tombol = DB::table('sadarin_tombolberkas')->where('tombol_prefix', $jenis)->first();
+        $tombol = DB::table('sadarin_tombolberkas')
+            ->where('tombol_prefix', $jenis)
+            ->first();
 
         if (!$tombol) {
             $this->error("Jenis '{$jenis}' tidak ditemukan!");
@@ -36,34 +38,45 @@ class SyncBerkasViaDB extends Command
         }
 
         // 🔥 Ambil JSON config
-        $json = DB::table('sadarin_json')->where('json_id', $tombol->tombol_json)->first();
+        $json = DB::table('sadarin_json')
+            ->where('json_id', $tombol->tombol_json)
+            ->first();
 
         if (!$json) {
             $this->error('JSON config tidak ditemukan!');
             return Command::FAILURE;
         }
 
+        // 🔥 Ambil mapping SEKALI (biar gak query di loop)
+        $mappingList = DB::table('sadarin_mappingtombol')
+            ->where('mapping_tombol', $tombol->tombol_id)
+            ->get()
+            ->keyBy('mapping_jeniskerja');
+
         ModelPengumpulanBerkas::query()
-            ->select('sadarin_pengumpulanberkas.*', 'sadarin_user.user_jeniskerja')
+            ->select(
+                'sadarin_pengumpulanberkas.*',
+                'sadarin_user.user_jeniskerja'
+            )
             ->leftJoin('sadarin_user', function ($join) {
-            $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
+                $join->on('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nip')
+                ->orOn('sadarin_pengumpulanberkas.kumpulan_user', '=', 'sadarin_user.user_nik');
             })
             ->where('sadarin_pengumpulanberkas.kumpulan_jenis', $tombol->tombol_nama)
             ->where('sadarin_pengumpulanberkas.kumpulan_status', 1)
             ->where('sadarin_pengumpulanberkas.kumpulan_sync', 0)
-            ->chunk(100, function ($rows) use ($googleDrive, $jenis, $json) {
-            foreach ($rows as $row) {
+            ->chunk(100, function ($rows) use ($googleDrive, $json, $mappingList, $tombol) {
+
+                foreach ($rows as $row) {
+
                     $identitas = $row->kumpulan_user;
 
                     if (!$identitas || !$row->user_jeniskerja) {
                         continue;
                     }
 
-                // 🔥 Ambil mapping folder dari DB
-                $mapping = DB::table('sadarin_mappingtombol')
-                    ->where('mapping_tombol', $tombol->tombol_id)
-                    ->where('mapping_jeniskerja', $row->user_jeniskerja)
-                    ->first();
+                // 🔥 Ambil mapping dari cache (tanpa query ulang)
+                $mapping = $mappingList[$row->user_jeniskerja] ?? null;
 
                 if (!$mapping) {
                     $this->warn("Mapping tidak ditemukan untuk {$identitas}");
@@ -75,22 +88,29 @@ class SyncBerkasViaDB extends Command
                 usleep(300000);
 
                 // 🔥 Cari file di Google Drive
-                $result = $googleDrive->findFileByNip($identitas, $folderId, $json->json_file);
+                $result = $googleDrive->findFileByNip(
+                        $identitas,
+                        $folderId,
+                        $json->json_file
+                    );
 
                     $oldFile = $row->kumpulan_file;
 
                     if (($result['status'] ?? 0) == 1) {
+
                     DB::transaction(function () use ($row, $result, $oldFile, $identitas) {
+
                         // ✅ Update ke link Google Drive
                         $row->update([
-                            'kumpulan_file' => $result['file_url'],
+                                'kumpulan_file'   => $result['file_url'],
                                 'kumpulan_status' => 1,
-                            'kumpulan_sync' => 1,
+                            'kumpulan_sync'   => 1,
                             ]);
 
                         // 🔥 Hapus file VPS lama
                         if (!empty($oldFile)) {
-                                $relativePath = parse_url($oldFile, PHP_URL_PATH);
+
+                            $relativePath = parse_url($oldFile, PHP_URL_PATH);
                             $relativePath = ltrim($relativePath, '/');
                                 $localPath = public_path($relativePath);
 
@@ -104,9 +124,11 @@ class SyncBerkasViaDB extends Command
                                 echo "{$identitas} → File VPS tidak ditemukan\n";
                                 }
                             }
-                    });
+                        });
+
                     } else {
-                    // ❌ Tidak ada di Drive
+
+                    // ❌ Tidak ditemukan di Drive
                     $row->update([
                         'kumpulan_status' => 1,
                         ]);
