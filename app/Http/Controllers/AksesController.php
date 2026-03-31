@@ -83,7 +83,20 @@ class AksesController extends Controller
         $bidangs = ModelBidang::all();
         $golongans = ModelGolongan::all();
         $pendidikans = ModelPendidikan::all();
-        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas', 'jeniskerjapeg'));
+        $tombols = DB::table('sadarin_tombolberkas')
+            ->leftJoin('sadarin_mappingtombol', function ($join) use ($jeniskerjapeg) {
+                $join->on('sadarin_tombolberkas.tombol_id', '=', 'sadarin_mappingtombol.mapping_tombol')
+                    ->where('sadarin_mappingtombol.mapping_jeniskerja', $jeniskerjapeg);
+            })
+            ->leftJoin('sadarin_json', 'sadarin_tombolberkas.tombol_json', '=', 'sadarin_json.json_id')
+            ->select(
+                'sadarin_tombolberkas.*',
+                'sadarin_mappingtombol.mapping_id',
+                'sadarin_mappingtombol.mapping_folderid',
+                'sadarin_mappingtombol.mapping_jeniskerja'
+            )
+            ->get();
+        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas', 'jeniskerjapeg', 'tombols'));
     }
     public function strukturOrganisasi()
     {

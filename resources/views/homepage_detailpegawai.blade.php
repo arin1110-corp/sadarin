@@ -185,221 +185,19 @@
                                 ← Kembali
                             </button>
                             &nbsp;
-
-                            <!-- <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#pemuktahiranPegawaiModal">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Ajukan Pemutakhiran Data
-                                </button>
-                            </div> -->
                         </div>
                         <div class="d-flex align-items-center justify-content-end mb-2">
                             {{-- Tombol aksi di kanan --}}
                             <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#editPegawaiModal">
-                                    <i class="bi bi-pencil-square"></i> Edit Data
-                                </button>
-
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#editPasFoto">
-                                    <i class="bi bi-pencil-square"></i> Edit Pas Foto
-                                </button>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            {{-- Tombol aksi di kanan --}}
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-warning open-upload-modal" data-title="Data KTP *pdf"
-                                    data-route="{{ route('tambah.data.ktp') }}" data-jenis="Data KTP"
-                                    data-jenisfile="dataktp">
-                                    <i class="bi bi-plus-lg"></i> KTP
-                                </button>
-                                <button class="btn btn-warning open-upload-modal" data-title="Data NPWP *pdf"
-                                    data-route="{{ route('tambah.data.npwp') }}" data-jenis="Data NPWP"
-                                    data-jenisfile="datanpwp">
-                                    <i class="bi bi-plus-lg"></i> NPWP
-                                </button>
-                                <button class="btn btn-warning open-upload-modal" data-title="Data Buku Rekening *pdf"
-                                    data-route="{{ route('tambah.data.rekening') }}" data-jenis="Data Buku Rekening"
-                                    data-jenisfile="databukurekening">
-                                    <i class="bi bi-plus-lg"></i> Buku Rekening
-                                </button>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            {{-- Tombol aksi di kanan --}}
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-warning open-upload-modal" data-title="Data BPJS Kesehatan *pdf"
-                                    data-route="{{ route('tambah.data.bpjs.kesehatan') }}"
-                                    data-jenis="Data BPJS Kesehatan" data-jenisfile="databpjskesehatan">
-                                    <i class="bi bi-plus-lg"></i> BPJS Kesehatan
-                                </button>
-                                <button class="btn btn-warning open-upload-modal" data-title="Data Ijazah Terakhir *pdf"
-                                    data-route="{{ route('tambah.data.ijazah') }}" data-jenis="Data Ijazah Terakhir"
-                                    data-jenisfile="dataijazah">
-                                    <i class="bi bi-plus-lg"></i> Ijazah Terakhir
-                                </button>
-                                <button class="btn btn-warning open-upload-modal" data-title="Data Kartu Keluarga *pdf"
-                                    data-route="{{ route('tambah.data.kartu.keluarga') }}"
-                                    data-jenis="Data Kartu Keluarga" data-jenisfile="datakartukeluarga">
-                                    <i class="bi bi-plus-lg"></i> Kartu Keluarga
-                                </button>
-                            </div>
-                        </div>
-                        <hr>
-                        <hr>
-                        @if ($user->user_jeniskerja == 4)
-                            <div class="d-flex align-items-center justify-content-end mb-2">
-                                <div class="d-flex gap-2">
+                                @foreach ($tombols as $tombol)
                                     <button class="btn btn-primary open-upload-modal"
-                                        data-title="Laporan Bulanan PJLP Januari 2025"
-                                        data-route="{{ route('tambah.laporan.pjlp.januari') }}"
-                                        data-jenis="Laporan Bulanan PJLP Januari 2025"
-                                        data-jenisfile="laporanpjlpjanuari2025">
-                                        <i class="bi bi-plus-lg"></i> Laporan PJLP Januari 2025
+                                        data-title="{{ $tombol->tombol_nama }} *pdf"
+                                        data-route="{{ $tombol->tombol_route }}"
+                                        data-jenis="{{ $tombol->tombol_nama }}"
+                                        data-jenisfile="{{ $tombol->tombol_prefix }}">
+                                        <i class="bi bi-plus-lg"></i> {{ $tombol->tombol_nama }}
                                     </button>
-                                </div>
-                            </div>
-                        @endif
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal" data-title="Coretax 2026"
-                                    data-route="{{ route('tambah.coretax.2026') }}" data-jenis="Coretax 2026"
-                                    data-jenisfile="coretax2026">
-                                    <i class="bi bi-plus-lg"></i> Coretax 2026
-                                </button>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal" data-title="Laporan IKD"
-                                    data-route="{{ route('tambah.laporan.ikd') }}" data-jenis="Laporan IKD"
-                                    data-jenisfile="laporanikd">
-                                    <i class="bi bi-plus-lg"></i> Laporan IKD
-                                </button>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary open-upload-modal" data-title="Perjanjian Kinerja 2026"
-                                    data-route="{{ route('tambah.perjanjian.kinerja.2026') }}"
-                                    data-jenis="Perjanjian Kinerja 2026" data-jenisfile="perjanjiankinerja2026">
-                                    <i class="bi bi-plus-lg"></i> Perjanjian Kinerja 2026
-                                </button>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-primary open-upload-modal"
-                                    data-title="Evaluasi Kinerja Triwulan I"
-                                    data-route="{{ route('tambah.evaluasi.tw1') }}"
-                                    data-jenis="Evaluasi Kinerja Triwulan I"
-                                    data-jenisfile="evaluasikinerjatriwulan1">
-                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan I
-                                </button>
-                                <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan I"
-                                    data-route="{{ route('tambah.umpanbalik.tw1') }}"
-                                    data-jenis="Umpan Balik Triwulan I" data-jenisfile="umpanbaliktriwulan1">
-                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan I
-                                </button> -->
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-primary open-upload-modal"
-                                    data-title="Evaluasi Kinerja Triwulan II"
-                                    data-route="{{ route('tambah.evaluasi.tw2') }}"
-                                    data-jenis="Evaluasi Kinerja Triwulan II"
-                                    data-jenisfile="evaluasikinerjatriwulan2">
-                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan II
-                                </button>
-                                <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan II"
-                                    data-route="{{ route('tambah.umpanbalik.tw2') }}"
-                                    data-jenis="Umpan Balik Triwulan II" data-jenisfile="umpanbaliktriwulan2">
-                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan II
-                                </button> -->
-                            </div>
-                        </div>
-                        <div class='d-flex align-items-center justify-content-end mb-2'>
-                            <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-primary open-upload-modal"
-                                    data-title="Evaluasi Kinerja Triwulan III"
-                                    data-route="{{ route('tambah.evaluasi.tw3') }}"
-                                    data-jenis="Evaluasi Kinerja Triwulan III"
-                                    data-jenisfile="evaluasikinerjatriwulan3">
-                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan III
-                                </button>
-                                <button class="btn btn-primary open-upload-modal"
-                                    data-title="Umpan Balik Triwulan III"
-                                    data-route="{{ route('tambah.umpanbalik.tw3') }}"
-                                    data-jenis="Umpan Balik Triwulan III" data-jenisfile="umpanbaliktriwulan3">
-                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan III
-                                </button> -->
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-primary open-upload-modal" data-title="Pakta Integritas 2025"
-                                    data-route="{{ route('tambah.pakta.2025') }}" data-jenis="Pakta Integritas"
-                                    data-jenisfile="paktaintegritas">
-                                    <i class="bi bi-plus-lg"></i> Pakta Integritas 2025
-                                </button>
-                                <button class="btn btn-primary open-upload-modal"
-                                    data-title="Pakta Integritas 1 Desember 2025"
-                                    data-route="{{ route('tambah.pakta.1desember') }}"
-                                    data-jenis="Pakta Integritas 1 Desember 2025" data-jenisfile="pakta1desember">
-                                    <i class="bi bi-plus-lg"></i> Pakta Integritas Desember 2025
-                                </button> -->
-
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-primary open-upload-modal"
-                                    data-title="Evaluasi Kinerja Triwulan IV"
-                                    data-route="{{ route('tambah.evaluasi.tw4') }}"
-                                    data-jenis="Evaluasi Kinerja Triwulan IV"
-                                    data-jenisfile="evaluasikinerjatriwulan4">
-                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Triwulan IV
-                                </button>
-                                <button class="btn btn-primary open-upload-modal" data-title="Umpan Balik Triwulan IV"
-                                    data-route="{{ route('tambah.umpanbalik.tw4') }}"
-                                    data-jenis="Umpan Balik Triwulan IV" data-jenisfile="umpanbaliktriwulan4">
-                                    <i class="bi bi-plus-lg"></i> Rekaman Umpan Balik Triwulan IV
-                                </button> -->
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-primary open-upload-modal"
-                                    data-title="Evaluasi Kinerja Tahunan 2025"
-                                    data-route="{{ route('tambah.evaluasi.tahunan') }}"
-                                    data-jenis="Evaluasi Kinerja Tahunan 2025"
-                                    data-jenisfile="evaluasikinerjatahunan2025">
-                                    <i class="bi bi-plus-lg"></i> Evaluasi Kinerja Tahunan 2025
-                                </button>
-                                <button class="btn btn-primary open-upload-modal" data-title="SKP 2025"
-                                    data-route="{{ route('tambah.skp.2025') }}" data-jenis="SKP 2025"
-                                    data-jenisfile="skp2025">
-                                    <i class="bi bi-plus-lg"></i> SKP 2025
-                                </button> -->
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            <div class="d-flex gap-2">
-                                <!-- <button class="btn btn-primary open-upload-modal" data-title="Model C 2025"
-                                    data-route="{{ route('tambah.modelc2025') }}" data-jenis="Model C 2025"
-                                    data-jenisfile="modelc2025">
-                                    <i class="bi bi-plus-lg"></i> Model C 2025
-                                </button>
-                                <button class="btn btn-primary open-upload-modal" data-title="Model C 2026"
-                                    data-route="{{ route('tambah.modelc2026') }}" data-jenis="Model C 2026"
-                                    data-jenisfile="modelc2026">
-                                    <i class="bi bi-plus-lg"></i> Model C 2026
-                                </button> -->
+                                @endforeach
                             </div>
                         </div>
                         <hr>
@@ -833,10 +631,12 @@
                                     <option value="{{ $user->user_lokasikerja }}" selected>
                                         {{ $user->user_lokasikerja }}
                                     </option>
-                                    <option value="Kantor Dinas Kebudayaan Provinsi Bali">Kantor Dinas Kebudayaan Provinsi Bali</option>
+                                    <option value="Kantor Dinas Kebudayaan Provinsi Bali">Kantor Dinas Kebudayaan
+                                        Provinsi Bali</option>
                                     <option value="Kantor UPTD Museum Bali">Kantor UPTD Museum Bali</option>
                                     <option value="Kantor UPTD Taman Budaya">Kantor UPTD Taman Budaya</option>
-                                    <option value="Kantor UPTD Monumen Perjuangan Rakyat Bali">Kantor UPTD Monumen Perjuangan Rakyat Bali</option>
+                                    <option value="Kantor UPTD Monumen Perjuangan Rakyat Bali">Kantor UPTD Monumen
+                                        Perjuangan Rakyat Bali</option>
                                     <option value="Kota Denpasar">Kota Denpasar</option>
                                     <option value="Kabupaten Badung">Kabupaten Badung</option>
                                     <option value="Kabupaten Gianyar">Kabupaten Gianyar</option>
