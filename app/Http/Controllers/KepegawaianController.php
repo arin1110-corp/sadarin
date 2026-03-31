@@ -1203,7 +1203,7 @@ class KepegawaianController extends Controller
     public function Pegawaisync($id)
     {
         try {
-            Artisan::call('sync:berkas', [
+            Artisan::call('sync:berkas-db', [
                 'jenis' => $id,
             ]);
 
