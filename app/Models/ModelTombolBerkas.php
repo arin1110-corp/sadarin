@@ -14,6 +14,8 @@ class ModelTombolBerkas extends Model
         'tombol_nama',
         'tombol_prefix',
         'tombol_json',
+        'tombol_title',
+        'tombol_isi',
         'tombol_expired',
         'tombol_route',
         'tombol_jenisfile',

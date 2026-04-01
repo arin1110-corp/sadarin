@@ -310,13 +310,51 @@ class AdminController extends Controller
 
     /// Akhir User Management
 
+    public function adminTombolTitle()
+    {
+        $titles = DB::table('sadarin_tomboltitle')->get();
+        return view('admin.tomboltitleindex', compact('titles'));
+    }
+    public function tombolTitleSimpan()
+    {
+        $request = request();
+        $request->validate([
+            'title_nama' => 'required|string|max:255',
+        ]);
+
+        DB::table('sadarin_tomboltitle')->insert([
+            'title_nama' => $request->title_nama,
+        ]);
+
+        return redirect()->route('admin.tomboltitle')->with('success', 'Tombol Title berhasil ditambahkan.');
+    }
+    public function tombolTitleUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'title_nama' => 'required|string|max:255',
+        ]);
+
+        DB::table('sadarin_tomboltitle')->where('title_id', $id)->update([
+            'title_nama' => $request->title_nama,
+        ]);
+
+        return redirect()->route('admin.tomboltitle')->with('success', 'Tombol Title berhasil diperbarui.');
+    }
+    public function tombolTitleHapus($id)
+    {
+        DB::table('sadarin_tomboltitle')->where('title_id', $id)->delete();
+        return redirect()->route('admin.tomboltitle')->with('success', 'Tombol Title berhasil dihapus.');
+    }
+
     public function adminTombolBerkas()
     {
         $tombols = DB::table('sadarin_tombolberkas')
             ->leftJoin('sadarin_json', 'sadarin_tombolberkas.tombol_json', '=', 'sadarin_json.json_id')
-            ->select('sadarin_tombolberkas.*', 'sadarin_json.json_nama', 'sadarin_json.json_id')->get();
+            ->leftJoin('sadarin_tomboltitle', 'sadarin_tombolberkas.tombol_title', '=', 'sadarin_tomboltitle.title_id')
+            ->select('sadarin_tombolberkas.*', 'sadarin_json.json_nama', 'sadarin_json.json_id', 'sadarin_tomboltitle.title_nama')->get();
         $jsons = ModelJson::get();
-        return view('admin.tombolberkasindex', compact('tombols', 'jsons'));
+        $titles = DB::table('sadarin_tomboltitle')->get();
+        return view('admin.tombolberkasindex', compact('tombols', 'jsons', 'titles'));
     }
     public function tombolBerkasSimpan()
     {
@@ -328,6 +366,8 @@ class AdminController extends Controller
             'tombol_json_id' => 'required|integer',
             'tombol_route' => 'required|string|max:255',
             'tombol_jenisfile' => 'required|string|max:255',
+            'tombol_isi' => 'required|string|max:255',
+            'tombol_title' => 'required|integer',
         ]);
 
         ModelTombolBerkas::create([
@@ -337,6 +377,8 @@ class AdminController extends Controller
             'tombol_json' => $request->tombol_json_id,
             'tombol_route' => $request->tombol_route,
             'tombol_jenisfile' => $request->tombol_jenisfile,
+            'tombol_isi' => $request->tombol_isi,
+            'tombol_title' => $request->tombol_title,
         ]);
 
         return redirect()->route('admin.tombolberkas')->with('success', 'Tombol Berkas berhasil ditambahkan.');
@@ -350,6 +392,8 @@ class AdminController extends Controller
             'tombol_json_id' => 'required|integer',
             'tombol_route' => 'required|string|max:255',
             'tombol_jenisfile' => 'required|string|max:255',
+            'tombol_isi' => 'required|string|max:255',
+            'tombol_title' => 'required|integer',
         ]);
 
         $tombol = ModelTombolBerkas::findOrFail($id);
@@ -360,6 +404,8 @@ class AdminController extends Controller
             'tombol_json' => $request->tombol_json_id,
             'tombol_route' => $request->tombol_route,
             'tombol_jenisfile' => $request->tombol_jenisfile,
+            'tombol_isi' => $request->tombol_isi,
+            'tombol_title' => $request->tombol_title,
         ]);
 
         return redirect()->route('admin.tombolberkas')->with('success', 'Tombol Berkas berhasil diperbarui.');

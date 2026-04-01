@@ -29,6 +29,9 @@
             <a class="nav-link" href="{{ route('admin.user') }}"><i class="bi bi-people-fill"></i> User</a>
         </li>
         <li class="nav-item mb-2">
+            <a class="nav-link" href="{{ route('admin.tomboltitle') }}"><i class="bi bi-folder-fill"></i> Tombol Title</a>
+        </li>
+        <li class="nav-item mb-2">
             <a class="nav-link" href="{{ route('admin.tombolberkas') }}"><i class="bi bi-folder-fill"></i> Tombol
                 Berkas</a>
         </li>

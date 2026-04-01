@@ -186,16 +186,17 @@
                             </button>
                             &nbsp;
                         </div>
-                        <div class="d-flex align-items-center justify-content-end mb-2">
-                            {{-- Tombol aksi di kanan --}}
-                            <div class="d-flex gap-2">
-                                @foreach ($tombols as $tombol)
-                                    @php
-                                        $today = \Carbon\Carbon::today();
-                                        $expired = $tombol->tombol_expired
-                                            ? \Carbon\Carbon::parse($tombol->tombol_expired)
-                                            : null;
-                                    @endphp
+
+                        @foreach ($tombols as $tombol)
+                            @php
+                                $today = \Carbon\Carbon::today();
+                                $expired = $tombol->tombol_expired
+                                    ? \Carbon\Carbon::parse($tombol->tombol_expired)
+                                    : null;
+                            @endphp
+                            <div class="d-flex align-items-center justify-content-end mb-2">
+                                {{-- Tombol aksi di kanan --}}
+                                <div class="d-flex gap-2">
 
                                     @if (!$expired || $today->lte($expired))
                                         <button class="btn btn-primary open-upload-modal"
@@ -207,9 +208,10 @@
                                             <i class="bi bi-plus-lg"></i> {{ $tombol->tombol_nama }}
                                         </button>
                                     @endif
-                                @endforeach
+
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                         <hr>
                         <div class="text-center mb-4">
                             <img src="{{ $user->user_foto && $user->user_foto != '-' ? asset($user->user_foto) : asset('assets/image/pemprov.png') }}"

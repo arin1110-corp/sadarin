@@ -50,7 +50,9 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Tombol Title</th>
                                     <th>Nama Tombol Berkas</th>
+                                    <th>Tombol Isi</th>
                                     <th>Prefix</th>
                                     <th>JSON</th>
                                     <th>Expired</th>
@@ -63,7 +65,9 @@
                                 @foreach ($tombols as $no => $b)
                                 <tr>
                                     <td>{{ $no+1 }}</td>
+                                    <td>{{ $b->title_nama }}</td>
                                     <td>{{ $b->tombol_nama }}</td>
+                                    <td>{{ $b->tombol_isi }}</td>
                                     <td>{{ $b->tombol_prefix }}</td>
                                     <td>{{ $b->json_nama }}</td>
                                     <td>{{ $b->tombol_expired }}</td>
@@ -74,7 +78,9 @@
                                             data-json="{{ $b->tombol_json }}" data-nama="{{ $b->tombol_nama }}"
                                             data-prefix="{{ $b->tombol_prefix }}"
                                             data-expired="{{ $b->tombol_expired }}" data-route="{{ $b->tombol_route }}" 
-                                            data-jenisfile="{{ $b->tombol_jenisfile }}">
+                                            data-jenisfile="{{ $b->tombol_jenisfile }}"
+                                            data-isi="{{ $b->tombol_isi }}"
+                                            data-title="{{ $b->tombol_title }}">
                                             Edit
                                         </button>
                                         <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->tombol_id }}"
@@ -106,6 +112,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Tombol Title</label>
+                            <select class="form-select" name="tombol_title" required>
+                                <option value="">Pilih Tombol Title</option>
+                                @foreach ($titles as $t)
+                                <option value="{{ $t->title_id }}">{{ $t->title_nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Tombol Isi</label>
+                            <input type="text" class="form-control" name="tombol_isi" required>
+                        </div>
                         <div class="mb-3">
                             <label>Nama Tombol Berkas</label>
                             <input type="text" class="form-control" name="tombol_nama" required>
@@ -157,6 +176,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Tombol Title</label>
+                            <select class="form-select" name="tombol_title" id="edit_title" required>
+                                <option value="">Pilih Tombol Title</option>
+                                @foreach ($titles as $t)
+                                <option value="{{ $t->title_id }}">{{ $t->title_nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Tombol Isi</label>
+                            <input type="text" class="form-control" name="tombol_isi" id="edit_isi" required>
+                        </div>
                         <div class="mb-3">
                             <label>Nama Tombol Berkas</label>
                             <input type="text" class="form-control" name="tombol_nama" id="edit_nama" required>
@@ -230,7 +262,7 @@
     <script>
     $(document).ready(function() {
         // Init DataTable
-        $('#tombolTombolBerkas').DataTable({
+        $('#tabelTombolBerkas').DataTable({
             responsive: true,
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
@@ -246,6 +278,8 @@
             let json = $(this).data('json');
             let route = $(this).data('route');
             let jenisfile = $(this).data('jenisfile');
+            let isi = $(this).data('isi');
+            let title = $(this).data('title');
 
 
             $('#edit_nama').val(nama);
@@ -254,6 +288,8 @@
             $('#edit_json').val(json);
             $('#edit_route').val(route);
             $('#edit_jenisfile').val(jenisfile);
+            $('#edit_isi').val(isi);
+            $('#edit_title').val(title);
 
             $('#formEdit').attr('action', '/admin/tombol-berkas/update/' + id);
 

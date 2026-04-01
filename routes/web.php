@@ -117,6 +117,11 @@ Route::middleware('admin.auth')->group(function () {
     Route::put('/user-update/{id}', [AdminController::class, 'userUpdate'])->name('user.update');
     Route::delete('/user-hapus/{id}', [AdminController::class, 'userHapus'])->name('user.destroy');
 
+    Route::get('/admin-tombol-title', [AdminController::class, 'adminTombolTitle'])->name('admin.tomboltitle');
+    Route::post('/admin/tombol-title-simpan', [AdminController::class, 'tombolTitleSimpan'])->name('tomboltitle.simpan');
+    Route::put('/admin/tombol-title/update/{id}', [AdminController::class, 'tombolTitleUpdate'])->name('tomboltitle.update');
+    Route::delete('/admin/tombol-title/hapus/{id}', [AdminController::class, 'tombolTitleHapus'])->name('tomboltitle.destroy');
+
     Route::get('/admin-tombol-berkas', [AdminController::class, 'adminTombolBerkas'])->name('admin.tombolberkas');
     Route::post('/admin/tombol-berkas-simpan', [AdminController::class, 'tombolBerkasSimpan'])->name('tombolberkas.simpan');
     Route::put('/admin/tombol-berkas/update/{id}', [AdminController::class, 'tombolBerkasUpdate'])->name('tombolberkas.update');
