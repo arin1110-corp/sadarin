@@ -187,7 +187,7 @@
                             &nbsp;
                         </div>
 
-                        @foreach ($tombols as $tombol)
+                        @foreach ($tombolsFlat as $tombol)
                             @php
                                 $today = \Carbon\Carbon::today();
                                 $expired = $tombol->tombol_expired
@@ -386,120 +386,23 @@
                         <div class="mb-4 text-center fw-bold">*** Berkas ***</div>
 
                         {{-- Evaluasi Kinerja --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Data Evaluasi Kinerja 2025</div>
-                            <div class="col-sm-6">
-                                <button
-                                    class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Triwulan I') }} showFiles"
-                                    data-jenis="Evaluasi Kinerja Triwulan I">TW I</button>
-                                <button
-                                    class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Triwulan II') }} showFiles"
-                                    data-jenis="Evaluasi Kinerja Triwulan II">TW II</button>
-                                <button
-                                    class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Triwulan III') }} showFiles"
-                                    data-jenis="Evaluasi Kinerja Triwulan III">TW III</button>
-                                <button
-                                    class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Triwulan IV') }} showFiles"
-                                    data-jenis="Evaluasi Kinerja Triwulan IV">TW IV</button>
-                            </div>
-                        </div>
 
-                        {{-- Rekaman Umpan Balik --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Data Rekaman Umpan Balik 2025</div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan I') }} showFiles"
-                                    data-jenis="Umpan Balik Triwulan I">TW I</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan II') }} showFiles"
-                                    data-jenis="Umpan Balik Triwulan II">TW II</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan III') }} showFiles"
-                                    data-jenis="Umpan Balik Triwulan III">TW III</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Umpan Balik Triwulan IV') }} showFiles"
-                                    data-jenis="Umpan Balik Triwulan IV">TW IV</button>
-                            </div>
-                        </div>
-                        {{-- Penilaian Kinerja --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Evaluasi Kinerja Tahunan</div>
-                            <div class="col-sm-6">
-                                <button
-                                    class="btn btn-{{ cekBerkas($berkas, 'Evaluasi Kinerja Tahunan 2025') }} showFiles"
-                                    data-jenis="Evaluasi Kinerja Tahunan 2025">2025</button>
-                            </div>
-                        </div>
-                        {{-- Pakta Integritas --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Data Pakta Integritas</div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Pakta Integritas') }} showFiles"
-                                    data-jenis="Pakta Integritas">2025</button>
-                                <button
-                                    class="btn btn-{{ cekBerkas($berkas, 'Pakta Integritas 1 Desember 2025') }} showFiles"
-                                    data-jenis="Pakta Integritas 1 Desember 2025">1 Desember 2025</button>
-                            </div>
-
-                        </div>
-
-                        {{-- Model C --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Data Model C</div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Model C 2025') }} showFiles"
-                                    data-jenis="Model C 2025">2025</button>
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Model C 2026') }} showFiles"
-                                    data-jenis="Model C 2026">2026</button>
-                            </div>
-                        </div>
-                        {{-- SKP --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Data SKP</div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-{{ cekBerkas($berkas, 'SKP 2025') }} showFiles"
-                                    data-jenis="SKP 2025">2025</button>
-                            </div>
-                        </div>
-
-                        {{-- Coretax --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Data Coretax</div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Coretax 2026') }} showFiles"
-                                    data-jenis="Coretax 2026">2026</button>
-                            </div>
-                        </div>
-
-                        {{-- Laporan IKD --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Data Laporan IKD</div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Laporan IKD') }} showFiles"
-                                    data-jenis="Laporan IKD">IKD</button>
-                            </div>
-                        </div>
-
-                        {{-- Perjanjian Kinerja --}}
-                        <div class="row mb-2">
-                            <div class="col-sm-6 fw-bold">Data Perjanjian Kinerja</div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-{{ cekBerkas($berkas, 'Perjanjian Kinerja 2026') }} showFiles"
-                                    data-jenis="Perjanjian Kinerja 2026">2026</button>
-                            </div>
-                        </div>
-
-                        {{-- Laporan Bulanan PJLP --}}
-                        @if ($user->user_jeniskerja == 4)
-                            <div class="row mb-2">
-                                <div class="col-sm-6 fw-bold">Laporan Bulanan PJLP</div>
-                                <div class="col-sm-6">
-                                    <button
-                                        class="btn btn-{{ cekBerkas($berkas, 'Laporan Bulanan PJLP Januari 2025') }} showFiles"
-                                        data-jenis="Laporan Bulanan PJLP Januari 2025">Januari 2025</button>
-                                </div>
-                            </div>
-                        @endif
+                        @foreach ($tombolsGroup as $title => $items)
+    <div class="row mb-2">
+        <div class="col-sm-6 fw-bold">{{ $title }}</div>
+        <div class="col-sm-6">
+            @foreach ($items as $tombol)
+                <button
+                    class="btn btn-{{ cekBerkas($berkas, $tombol->tombol_nama) }} showFiles"
+                    data-jenis="{{ $tombol->tombol_nama }}">
+                    {{ $tombol->tombol_isi }}
+                </button>
+            @endforeach
+        </div>
+    </div>
+@endforeach
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

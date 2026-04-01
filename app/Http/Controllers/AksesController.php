@@ -83,20 +83,31 @@ class AksesController extends Controller
         $bidangs = ModelBidang::all();
         $golongans = ModelGolongan::all();
         $pendidikans = ModelPendidikan::all();
-        $tombols = DB::table('sadarin_tombolberkas')
+        $dataTombol = DB::table('sadarin_tombolberkas')
             ->leftJoin('sadarin_mappingtombol', function ($join) use ($jeniskerjapeg) {
                 $join->on('sadarin_tombolberkas.tombol_id', '=', 'sadarin_mappingtombol.mapping_tombol')
                     ->where('sadarin_mappingtombol.mapping_jeniskerja', $jeniskerjapeg);
             })
             ->leftJoin('sadarin_json', 'sadarin_tombolberkas.tombol_json', '=', 'sadarin_json.json_id')
+            ->leftJoin('sadarin_tomboltitle', 'sadarin_tombolberkas.tombol_title', '=', 'sadarin_tomboltitle.title_id')
             ->select(
                 'sadarin_tombolberkas.*',
                 'sadarin_mappingtombol.mapping_id',
                 'sadarin_mappingtombol.mapping_folderid',
-                'sadarin_mappingtombol.mapping_jeniskerja'
-            )
+            'sadarin_mappingtombol.mapping_jeniskerja',
+            'sadarin_json.json_nama',
+            'sadarin_tomboltitle.title_nama'
+        )
+            ->whereNotNull('sadarin_mappingtombol.mapping_id')
             ->get();
-        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas', 'jeniskerjapeg', 'tombols'));
+
+        // 🔥 versi 1: flat (untuk atas)
+        $tombolsFlat = $dataTombol;
+
+        // 🔥 versi 2: grouped (untuk bawah)
+        $tombolsGroup = $dataTombol->groupBy('title_nama');
+
+        return view('homepage_detailpegawai', compact('user', 'jabatans', 'eselons', 'bidangs', 'golongans', 'pendidikans', 'berkas', 'jeniskerjapeg', 'tombolsFlat', 'tombolsGroup'));
     }
     public function strukturOrganisasi()
     {
@@ -694,12 +705,7 @@ class AksesController extends Controller
             'file' => 'required|mimes:pdf,jpeg,jpg,png,gif,bmp,webp',
         ]);
 
-        $tombolMapping = DB::table('sadarin_mappingtombol')
-            ->join('sadarin_tombolberkas', 'mapping_tombol', '=', 'tombol_id')
-            ->where('mapping_tombol', $tombol_id)
-            ->where('mapping_jeniskerja', $user->user_jeniskerja)
-            ->select('sadarin_mappingtombol.*', 'sadarin_tombolberkas.tombol_nama')
-            ->first();
+        $tombolMapping = DB::table('sadarin_mappingtombol')->join('sadarin_tombolberkas', 'mapping_tombol', '=', 'tombol_id')->where('mapping_tombol', $tombol_id)->where('mapping_jeniskerja', $user->user_jeniskerja)->select('sadarin_mappingtombol.*', 'sadarin_tombolberkas.tombol_nama')->first();
 
         if (!$tombolMapping) {
             return back()->with('error', 'Mapping tombol belum tersedia.');
@@ -711,12 +717,16 @@ class AksesController extends Controller
         $filename = $finalId . '_' . str_replace(' ', '_', $tombolMapping->tombol_nama) . '.' . $ext;
 
         $folderServer = $tombolMapping->mapping_folder; // path server
-        if (!file_exists(public_path($folderServer))) mkdir(public_path($folderServer), 0755, true);
+        if (!file_exists(public_path($folderServer))) {
+            mkdir(public_path($folderServer), 0755, true);
+        }
 
         // Hapus file lama
         $baseName = $finalId . '_' . str_replace(' ', '_', $tombolMapping->tombol_nama);
         foreach (glob(public_path($folderServer . '/' . $baseName . '.*')) as $old) {
-            if (file_exists($old)) unlink($old);
+            if (file_exists($old)) {
+                unlink($old);
+            }
         }
 
         // Upload file
@@ -734,7 +744,7 @@ class AksesController extends Controller
                 'kumpulan_status' => 1,
                 'kumpulan_sync' => 0,
                 'kumpulan_keterangan' => 'Upload melalui sistem',
-            ]
+            ],
         );
 
         return back()
@@ -1213,33 +1223,13 @@ class AksesController extends Controller
     public function getUsersAjax(Request $request, $id)
     {
         // 🔥 mapping tim
-        $anggotaData = DB::table('sadarin_timkerja_detail')
-            ->join('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')
-            ->select(
-                'timkerja_detail_anggota',
-                'timkerja_detail_timkerja',
-                'sadarin_timkerja.timkerja_nama'
-            )
-            ->get();
-        $ketuaData = DB::table('sadarin_timkerja')
-            ->select('timkerja_id', 'timkerja_ketuatim', 'timkerja_nama')
-            ->get()
-            ->groupBy('timkerja_ketuatim'); // user_id jadi key
+        $anggotaData = DB::table('sadarin_timkerja_detail')->join('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')->select('timkerja_detail_anggota', 'timkerja_detail_timkerja', 'sadarin_timkerja.timkerja_nama')->get();
+        $ketuaData = DB::table('sadarin_timkerja')->select('timkerja_id', 'timkerja_ketuatim', 'timkerja_nama')->get()->groupBy('timkerja_ketuatim'); // user_id jadi key
 
         $anggotaMapping = $anggotaData->groupBy('timkerja_detail_anggota');
 
         // 🔥 QUERY USERS (INI YANG KAMU KURANGIN)
-        $query = DB::table('sadarin_user')
-            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
-            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
-            ->select(
-                'sadarin_user.user_id',
-                'sadarin_user.user_nama',
-                'sadarin_user.user_foto',
-                'sadarin_bidang.bidang_nama',
-                'sadarin_jabatan.jabatan_nama'
-            )
-            ->where('sadarin_user.user_status', 1);
+        $query = DB::table('sadarin_user')->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->select('sadarin_user.user_id', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama')->where('sadarin_user.user_status', 1);
 
         // 🔍 SEARCH
         if ($request->search['value']) {
@@ -1250,16 +1240,11 @@ class AksesController extends Controller
         $total = $query->count();
 
         // 🔥 PAGINATION
-        $users = $query
-            ->offset($request->start)
-            ->limit($request->length)
-            ->get();
+        $users = $query->offset($request->start)->limit($request->length)->get();
 
         // 🔥 MAP DATA
         $data = $users->map(function ($u) use ($anggotaMapping, $ketuaData, $id) {
-
             if (isset($ketuaData[$u->user_id])) {
-
                 $timList = $ketuaData[$u->user_id];
                 $namaTim = $timList->pluck('timkerja_nama')->implode(', ');
 
@@ -1268,7 +1253,6 @@ class AksesController extends Controller
                 $u->status = 'ketua';
                 $u->tim_nama = 'Ketua Tim: ' . $namaTim;
             } elseif (isset($anggotaMapping[$u->user_id])) {
-
                 $timList = $anggotaMapping[$u->user_id];
                 $namaTim = $timList->pluck('timkerja_nama')->implode(', ');
 
@@ -1290,21 +1274,18 @@ class AksesController extends Controller
         });
 
         return response()->json([
-            "draw" => intval($request->draw),
-            "recordsTotal" => $total,
-            "recordsFiltered" => $total,
-            "data" => $data
+            'draw' => intval($request->draw),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $total,
+            'data' => $data,
         ]);
     }
     public function hapusAnggota($id, $userId)
     {
-        DB::table('sadarin_timkerja_detail')
-            ->where('timkerja_detail_timkerja', $id)
-            ->where('timkerja_detail_anggota', $userId)
-            ->delete();
+        DB::table('sadarin_timkerja_detail')->where('timkerja_detail_timkerja', $id)->where('timkerja_detail_anggota', $userId)->delete();
 
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
     public function updateUraian(Request $request, $id)
