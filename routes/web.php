@@ -47,6 +47,8 @@ Route::get('/data-laporan-pjlp-januari-2025', [PreFillController::class, 'prefil
 Route::get('/data-coretax-2026', [PreFillController::class, 'prefillCoretax2026']);
 Route::get('/data-laporan-ikd', [PreFillController::class, 'prefillLaporanIKD']);
 Route::get('/data-perjanjian-kinerja-2026', [PreFillController::class, 'prefillPerjanjianKinerja2026']);
+Route::get('/isi/data/evkin/2026/tw1', [PreFillController::class, 'prefillEvkin2026TW1']);
+Route::get('/isi/data/umbal/2026/tw1', [PreFillController::class, 'prefillUmbal2026TW1']);
 
 // -------------------- Homepage --------------------
 Route::get('/', [HomepageController::class, 'form'])->name('akses.form');
@@ -170,6 +172,16 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-laporan-pjlp-januari-2025/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.laporan.pjlp.januari.2025');
     Route::get('/data-laporan-ikd/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.laporan.ikd');
     Route::get('/data-perjanjian-kinerja-2026/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.perjanjian.kinerja.2026');
+
+    Route::get('/data/evkin/2026/tw1/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.2026.tw1');
+    Route::get('/data/evkin/2026/tw2/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.2026.tw2');
+    Route::get('/data/evkin/2026/tw3/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.2026.tw3');
+    Route::get('/data/evkin/2026/tw4/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.2026.tw4');
+    Route::get('/data/evkin/2026/tahunan/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.2026.tahunan');
+    Route::get('/data/umpan-balik/2026/tw1/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.umpan.2026.tw1');
+    Route::get('/data/umpan-balik/2026/tw2/{id}', [KepegawaianController::class, 'dataUmpanBalik2026TW2'])->name('kepegawaian.umpan.2026.tw2');
+    Route::get('/data/umpan-balik/2026/tw3/{id}', [KepegawaianController::class, 'dataUmpanBalik2026TW3'])->name('kepegawaian.umpan.2026.tw3');
+    Route::get('/data/umpan-balik/2026/tw4/{id}', [KepegawaianController::class, 'dataUmpanBalik2026TW4'])->name('kepegawaian.umpan.2026.tw4');
 
     Route::get('/data-kepegawaian', [KepegawaianController::class, 'dataKepegawaian'])->name('kepegawaian.datakepegawaian');
     Route::get('/import-paktaintegritas', [KepegawaianController::class, 'syncPaktaIntegritas'])->name('kepegawaian.import.paktaintegritas');

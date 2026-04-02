@@ -87,6 +87,19 @@
             </div>
         </li>
 
+        <li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#evkin2026Dropdown" role="button" aria-expanded="false" aria-controls="evkin2026Dropdown">
+                <i class="bi bi-clipboard-data me-2"></i> Data Evaluasi Kinerja 2026
+            </a>
+            <div class="collapse ps-4" id="evkin2026Dropdown">
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.2026.tw1', ['id' => 'Evaluasi Kinerja Tahun 2026 Triwulan I']) }}">Triwulan I</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.2026.tw2', ['id' => 'Evaluasi Kinerja Tahun 2026 Triwulan II']) }}">Triwulan II</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.2026.tw3', ['id' => 'Evaluasi Kinerja Tahun 2026 Triwulan III']) }}">Triwulan III</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.2026.tw4', ['id' => 'Evaluasi Kinerja Tahun 2026 Triwulan IV']) }}">Triwulan IV</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.evkin.2026.tahunan', ['id' => 'Evaluasi Kinerja Tahunan 2026']) }}">Tahunan</a>
+            </div>
+        </li>
+
         {{-- Dropdown Umpan Balik --}}
         <li class="nav-item mb-1">
             <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#umpanDropdown" role="button" aria-expanded="false" aria-controls="umpanDropdown">
@@ -99,6 +112,18 @@
                 <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.umpan.tw4', ['id' => 'Umpan Balik Triwulan IV']) }}">Triwulan IV</a>
             </div>
         </li>
+
+        <div li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white" data-bs-toggle="collapse" href="#umpan2026Dropdown" role="button" aria-expanded="false" aria-controls="umpan2026Dropdown">
+                <i class="bi bi-chat-dots me-2"></i> Data Umpan Balik 2026
+            </a>
+            <div class="collapse ps-4" id="umpan2026Dropdown">
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.umpan.2026.tw1', ['id' => 'Rekaman Umpan Balik Tahun 2026 Triwulan I']) }}">Triwulan I</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.umpan.2026.tw2', ['id' => 'Rekaman Umpan Balik Tahun 2026 Triwulan II']) }}">Triwulan II</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.umpan.2026.tw3', ['id' => 'Rekaman Umpan Balik Tahun 2026 Triwulan III']) }}">Triwulan III</a>
+                <a class="nav-link text-white small py-1" href="{{ route('kepegawaian.umpan.2026.tw4', ['id' => 'Rekaman Umpan Balik Tahun 2026 Triwulan IV']) }}">Triwulan IV</a>
+            </div>
+        </divli>
 
         {{-- Dropdown MODEL C --}}
         <li class="nav-item mb-1">
