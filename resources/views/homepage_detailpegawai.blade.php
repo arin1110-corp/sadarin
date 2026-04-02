@@ -388,19 +388,19 @@
                         {{-- Evaluasi Kinerja --}}
 
                         @foreach ($tombolsGroup as $title => $items)
-    <div class="row mb-2">
-        <div class="col-sm-6 fw-bold">{{ $title }}</div>
-        <div class="col-sm-6">
-            @foreach ($items as $tombol)
-                <button
-                    class="btn btn-{{ cekBerkas($berkas, $tombol->tombol_nama) }} showFiles"
-                    data-jenis="{{ $tombol->tombol_nama }}">
-                    {{ $tombol->tombol_isi }}
-                </button>
-            @endforeach
-        </div>
-    </div>
-@endforeach
+                            <div class="row mb-2">
+                                <div class="col-sm-6 fw-bold">{{ $title }}</div>
+                                <div class="col-sm-6">
+                                    @foreach ($items as $tombol)
+                                        <button
+                                            class="btn btn-{{ cekBerkas($berkas, $tombol->tombol_nama) }} showFiles"
+                                            data-jenis="{{ $tombol->tombol_nama }}">
+                                            {{ $tombol->tombol_isi }}
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
