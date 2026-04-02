@@ -360,7 +360,7 @@
         $(document).ready(function() {
             $('#tableAll').DataTable();
             $('#tablePns').DataTable();
-            $('#tablePppk').DataTable();
+            $('#tablePensiun').DataTable();
         });
     </script>
 </body>
