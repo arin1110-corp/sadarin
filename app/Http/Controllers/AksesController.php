@@ -1175,7 +1175,29 @@ class AksesController extends Controller
 
             ->select('sadarin_timkerja.timkerja_id', 'sadarin_timkerja.timkerja_uraian', 'sadarin_timkerja.timkerja_nama', 'sadarin_bidang.bidang_nama', 'kepala_bidang.user_nama as kepala_bidang', 'sadarin_user.user_nama as ketua_tim', 'sadarin_user.user_foto as foto_ketua')
             ->first();
-        $anggota = DB::table('sadarin_timkerja_detail')->leftJoin('sadarin_user', 'sadarin_timkerja_detail.timkerja_detail_anggota', '=', 'sadarin_user.user_id')->leftJoin('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')->leftJoin('sadarin_bidang', 'sadarin_timkerja.timkerja_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->select('sadarin_user.user_id', 'sadarin_user.user_lokasikerja', 'sadarin_timkerja_detail.*', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_eselon.eselon_nama', 'sadarin_eselon.eselon_nama')->where('timkerja_id', $id)->get();
+        $anggota = DB::table('sadarin_timkerja_detail')->leftJoin(
+            'sadarin_user',
+            'sadarin_timkerja_detail.timkerja_detail_anggota',
+            '=',
+            'sadarin_user.user_id'
+        )
+            ->leftJoin('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')
+            ->leftJoin('sadarin_bidang', 'sadarin_timkerja.timkerja_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
+            ->select(
+                'sadarin_user.user_id',
+                'sadarin_user.user_lokasikerja',
+                'sadarin_timkerja_detail.*',
+                'sadarin_user.user_nama',
+                'sadarin_user.user_foto',
+                'sadarin_jabatan.jabatan_nama',
+                'sadarin_bidang.bidang_nama',
+                'sadarin_golongan.golongan_pangkat',
+                'sadarin_eselon.eselon_nama',
+                'sadarin_eselon.eselon_nama'
+            )->where('timkerja_id', $id)->get();
 
         $timkerja = ModelTimKerja::where('timkerja_id', $id)->first();
 
@@ -1223,13 +1245,17 @@ class AksesController extends Controller
     public function getUsersAjax(Request $request, $id)
     {
         // 🔥 mapping tim
-        $anggotaData = DB::table('sadarin_timkerja_detail')->join('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')->select('timkerja_detail_anggota', 'timkerja_detail_timkerja', 'sadarin_timkerja.timkerja_nama')->get();
+        $anggotaData = DB::table('sadarin_timkerja_detail')
+            ->join('sadarin_timkerja', 'sadarin_timkerja_detail.timkerja_detail_timkerja', '=', 'sadarin_timkerja.timkerja_id')
+            ->select('timkerja_detail_anggota', 'timkerja_detail_timkerja', 'sadarin_timkerja.timkerja_nama')->get();
         $ketuaData = DB::table('sadarin_timkerja')->select('timkerja_id', 'timkerja_ketuatim', 'timkerja_nama')->get()->groupBy('timkerja_ketuatim'); // user_id jadi key
 
         $anggotaMapping = $anggotaData->groupBy('timkerja_detail_anggota');
 
         // 🔥 QUERY USERS (INI YANG KAMU KURANGIN)
-        $query = DB::table('sadarin_user')->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->select('sadarin_user.user_id', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama')->where('sadarin_user.user_status', 1);
+        $query = DB::table('sadarin_user')
+            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->select('sadarin_user.user_id', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama')->where('sadarin_user.user_status', 1);
 
         // 🔍 SEARCH
         if ($request->search['value']) {

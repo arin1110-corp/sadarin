@@ -29,11 +29,6 @@ class SyncBerkasViaDB extends Command
             return Command::FAILURE;
         }
 
-        // 🔥 CEK EXPIRED
-        if ($tombol->tombol_expired && Carbon::today()->gt($tombol->tombol_expired)) {
-            $this->warn("Tombol '{$jenis}' sudah expired. Sinkronisasi dihentikan.");
-            return Command::FAILURE;
-        }
 
         // 🔥 Ambil JSON config
         $json = DB::table('sadarin_json')->where('json_id', $tombol->tombol_json)->first();
