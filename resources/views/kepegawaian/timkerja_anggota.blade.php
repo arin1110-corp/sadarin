@@ -150,7 +150,7 @@
 
                                                     <!-- Nama -->
                                                     <td>
-                                                        <strong>{{ $a->user_nama ?? 'Tidak ada nama' }}</strong>
+                                                        <strong>{{ $a->user_gelardepan.'.'.$a->user_nama.'.'.$a->user_gelarbelakang ?? 'Tidak ada nama' }}</strong>
                                                     </td>
 
                                                     <!-- NIP -->
