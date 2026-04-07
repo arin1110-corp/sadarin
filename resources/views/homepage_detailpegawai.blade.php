@@ -187,6 +187,19 @@
                             &nbsp;
                         </div>
 
+                        <div class="d-flex align-item-center justify-content-end mb-2">
+                            <div class="d-flex gap-2">
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPegawaiModal">
+                                <i class="bi bi-pencil-square"></i> Edit Data Pegawai
+                            </button>
+                            </div>
+                            <div class="divider-vert"></div>
+                            <div class="d-flex gap-2">
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editPasFoto">
+                                <i class="bi bi-pencil-square"></i> Edit Foto</button>
+                            </div>
+                        </div>
+
                         @foreach ($tombolsFlat as $tombol)
                             @php
                                 $today = \Carbon\Carbon::today();
