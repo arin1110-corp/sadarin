@@ -123,31 +123,76 @@
                             <h6 class="mb-4">Anggota Tim:</h6>
 
                             @if ($anggota->isNotEmpty())
-                                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-                                    @foreach ($anggota as $a)
-                                        <div class="col">
-                                            <div class="card text-center h-100 border-0">
-                                                @if (!empty($a->user_foto))
-                                                    <center>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Foto</th>
+                                                <th>Nama</th>
+                                                <th>NIP</th>
+                                                <th>NIK</th>
+                                                <th>Jabatan</th>
+                                                <th>Lokasi Kerja</th>
+                                                <th>Bidang</th>
+                                                <th>Jenis Kerja</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($anggota as $a)
+                                                <tr>
+                                                    <!-- Foto -->
+                                                    <td style="width: 80px;">
                                                         <img src="{{ $a->user_foto && $a->user_foto != '-' ? asset($a->user_foto) : asset('assets/image/pemprov.png') }}"
-                                                            class="card-img-top"
-                                                            style="width: 100px; height: 200px; object-fit: cover;"
+                                                            class="rounded"
+                                                            style="width: 60px; height: 70px; object-fit: cover;"
                                                             alt="Foto {{ $a->user_nama }}">
-                                                    </center>
-                                                @else
-                                                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                                                        style="height: 200px;">
-                                                        No Image
-                                                    </div>
-                                                @endif
-                                                <div class="card-body p-2">
-                                                    <h6 class="card-title mb-0">{{ $a->user_nama ?? 'Tidak ada nama' }}
-                                                    </h6>
-                                                    <small class="text-muted">{{ $a->jabatan_nama ?? '-' }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                                    </td>
+
+                                                    <!-- Nama -->
+                                                    <td>
+                                                        <strong>{{ $a->user_nama ?? 'Tidak ada nama' }}</strong>
+                                                    </td>
+
+                                                    <!-- NIP -->
+                                                    <td>
+                                                        {{ $a->user_nip ?? '-' }}
+                                                    </td>
+
+                                                    <!-- NIK -->
+                                                    <td>
+                                                        {{ $a->user_nik ?? '-' }}
+                                                    </td>
+
+                                                    <!-- Jabatan -->
+                                                    <td>
+                                                        <span class="text-muted">{{ $a->jabatan_nama ?? '-' }}</span>
+                                                    </td>
+
+                                                    <!-- Lokasi Kerja -->
+                                                    <td>
+                                                        <span class="text-muted">{{ $a->user_lokasikerja ?? '-' }}</span>
+                                                    </td>
+
+                                                    <!-- Bidang -->
+                                                    <td>
+                                                        <span class="text-muted">{{ $a->bidang_nama ?? '-' }}</span>
+                                                    </td>
+
+                                                    <!-- Jenis Kerja -->
+                                                    <td>
+                                                        <span class="text-muted">
+                                                            @if ($a->user_jeniskerja == 1) PNS
+                                                            @elseif ($a->user_jeniskerja == 2) PPPK 
+                                                            @elseif ($a->user_jeniskerja == 3) PPPK Paruh Waktu 
+                                                            @elseif ($a->user_jeniskerja == 4) PJLP 
+                                                            @else - 
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             @else
                                 <p class="text-muted">Belum ada anggota tim.</p>
