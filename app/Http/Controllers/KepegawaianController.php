@@ -201,16 +201,19 @@ class KepegawaianController extends Controller
                 'sadarin_timkerja_detail.*',
                 'sadarin_user.user_nama',
                 'sadarin_user.user_foto',
+            'sadarin_user.user_lokasikerja',
                 'sadarin_jabatan.jabatan_nama',
                 'sadarin_bidang.bidang_nama',
                 'sadarin_golongan.golongan_pangkat',
-                'sadarin_eselon.eselon_nama',
-                'sadarin_eselon.eselon_nama',
+            'sadarin_eselon.eselon_nama',
                 'sadarin_user.*'
             ) // 🔥 INI
             ->where('timkerja_id', $id)
+            ->where('user_status', 1)
+            ->orderby('user_lokasikerja', 'asc')
             ->orderby('user_jeniskerja', 'asc')
-            ->orderby('user_tgllahir', 'asc')->get();
+            ->orderby('user_tgllahir', 'asc')
+            ->get();
         $timkerja = ModelTimKerja::where('timkerja_id', $id)->first();
 
         $users = DB::table('sadarin_user')->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')->select('sadarin_user.*', 'sadarin_bidang.bidang_nama', 'sadarin_jabatan.jabatan_nama', 'sadarin_eselon.eselon_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_golongan.golongan_nama')->where('user_status', 1)->get();
