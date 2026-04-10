@@ -702,7 +702,7 @@ class AksesController extends Controller
         $user = session('user_info');
 
         $request->validate([
-            'file' => 'required|mimes:pdf,jpeg,jpg,png,gif,bmp,webp',
+            'file' => 'required|mimes:pdf,jpeg,jpg,png,gif,bmp,webp,xls,xlsx,doc,docx', // PDF + gambar + Excel
         ]);
 
         $tombolMapping = DB::table('sadarin_mappingtombol')->join('sadarin_tombolberkas', 'mapping_tombol', '=', 'tombol_id')->where('mapping_tombol', $tombol_id)->where('mapping_jeniskerja', $user->user_jeniskerja)->select('sadarin_mappingtombol.*', 'sadarin_tombolberkas.tombol_nama')->first();
