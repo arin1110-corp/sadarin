@@ -107,6 +107,21 @@
             </div>
         </li>
 
+        {{-- Dropdown Rencana Aksi --}}
+        <li class="nav-item mb-1">
+            <a class="nav-link d-flex align-items-center px-2 py-2 rounded dropdown-toggle text-white"
+                data-bs-toggle="collapse" href="#rencanaAksiDropdown" role="button" aria-expanded="false"
+                aria-controls="rencanaAksiDropdown">
+                <i class="bi bi-file-earmark-text me-2"></i> Data Rencana Aksi
+            </a>
+            <div class="collapse ps-4" id="rencanaAksiDropdown">
+                <a class="nav-link text-white small py-1"
+                    href="{{ route('kepegawaian.data.renaksi.2025', ['id' => 'Rencana Aksi Tahun 2025']) }}">2025</a>
+                <a class="nav-link text-white small py-1"
+                    href="{{ route('kepegawaian.data.renaksi.2026', ['id' => 'Rencana Aksi Tahun 2026']) }}">2026</a>
+            </div>
+        </li>
+
 
         {{-- Dropdown Evaluasi Kinerja --}}
         <li class="nav-item mb-1">
