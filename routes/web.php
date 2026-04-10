@@ -139,6 +139,8 @@ Route::middleware('admin.auth')->group(function () {
     Route::put('/admin/json-update/{id}', [AdminController::class, 'jsonUpdate'])->name('json.update');
     Route::delete('/admin/json-hapus/{id}', [AdminController::class, 'jsonHapus'])->name('json.destroy');
 
+    Route::get('admin/tombol-berkas/prefill/{id}', [AdminController::class, 'prefillData'])->name('admin.prefill.data');
+
     // ... Tambahkan route admin lain di sini ...
 
     // ... Tambahkan route admin lain di sini ...
@@ -225,6 +227,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/kepegawaian/timkerja/anggota/{id}', [KepegawaianController::class, 'timkerjaAnggota'])->name('kepegawaian.anggota.timkerja');
 
     // ... Tambahkan route kepegawaian lain di sini ...
+
 });
 
 // Halaman daftar bagian – hanya bisa diakses setelah sukses input kode akses

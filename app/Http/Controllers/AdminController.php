@@ -506,4 +506,33 @@ class AdminController extends Controller
 
         return redirect()->route('admin.json')->with('success', 'JSON berhasil diperbarui.');
     }
+    public function prefillData($id)
+    {
+        $kumpulanJenisBaru = $id;
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+                'kumpulan_sync' => 0,
+                'kumpulan_keterangan' => 'Prefill ' . $id,
+            ]);
+        }
+
+        return back()->with('success', 'Prefill ' . $id . ' berhasil ditambahkan.');
+    }
 }

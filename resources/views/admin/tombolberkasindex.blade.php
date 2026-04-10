@@ -74,7 +74,7 @@
                                     <td>{{ $b->tombol_route }}</td>
                                     <td>{{ $b->tombol_jenisfile }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->tombol_id }}"
+                                        <button class="btn btn-sm btn-warning btnEdit mb-4" data-id="{{ $b->tombol_id }}"
                                             data-json="{{ $b->tombol_json }}" data-nama="{{ $b->tombol_nama }}"
                                             data-prefix="{{ $b->tombol_prefix }}"
                                             data-expired="{{ $b->tombol_expired }}" data-route="{{ $b->tombol_route }}" 
@@ -83,10 +83,13 @@
                                             data-title="{{ $b->tombol_title }}">
                                             Edit
                                         </button>
-                                        <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->tombol_id }}"
+                                        <button class="btn btn-sm btn-danger btnHapus mb-4" data-id="{{ $b->tombol_id }}"
                                             data-nama="{{ $b->tombol_nama }}">
                                             Hapus
                                         </button>
+                                        <a href="/admin/tombol-berkas/prefill/{{ $b->tombol_nama }}" class="btn btn-sm btn-info mb-4">
+                                            Prefill
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
