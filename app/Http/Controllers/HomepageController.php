@@ -161,6 +161,7 @@ class HomepageController extends Controller
                 'kode_akses_valid' => true,
                 'akses_full' => false,
                 'user_info' => $user,
+                'user_id' => $user->user_id,
             ]);
 
             $bidang = ModelBidang::where('bidang_status', 1)->get();

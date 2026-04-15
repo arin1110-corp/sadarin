@@ -978,14 +978,14 @@ class AksesController extends Controller
     // ==============================
     public function sendResetLink(Request $request)
     {
-        $user = session('user_info');
+        $user = session('user_id');
 
         if (!$user) {
             return redirect()->route('homepage.menuawal')->with('error', 'User tidak ditemukan.');
         }
 
         // ambil data terbaru dari database
-        $dbUser = ModelUser::where('user_nip', $user->user_nip)->first();
+        $dbUser = ModelUser::find($user);
 
         if (!$dbUser) {
             return redirect()->route('homepage.menuawal')->with('error', 'Data user tidak ditemukan.');
