@@ -676,7 +676,7 @@ class AksesController extends Controller
             return redirect()->route('akses.depan')->with('error', 'Session habis, silakan login ulang');
         }
 
-        $user = ModelUser::where('user_nip', $userSession->user_nip)->orWhere('user_nik', $userSession->user_nik)->first();
+        $user = ModelUser::where('user_id', $userSession->user_id)->first();
 
         if (!$user) {
             return redirect()->route('akses.depan')->with('error', 'User tidak ditemukan');
