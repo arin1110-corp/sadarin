@@ -29,6 +29,7 @@ use App\Models\ModelAdmin;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Exports\PegawaiPerBidangExport;
+use App\Exports\PegawaiRincianExport;
 use PDF;
 use Illuminate\Support\Facades\Artisan;
 
@@ -197,17 +198,7 @@ class KepegawaianController extends Controller
             ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
             ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
-            ->select(
-                'sadarin_timkerja_detail.*',
-                'sadarin_user.user_nama',
-                'sadarin_user.user_foto',
-            'sadarin_user.user_lokasikerja',
-                'sadarin_jabatan.jabatan_nama',
-                'sadarin_bidang.bidang_nama',
-                'sadarin_golongan.golongan_pangkat',
-            'sadarin_eselon.eselon_nama',
-                'sadarin_user.*'
-            ) // 🔥 INI
+            ->select('sadarin_timkerja_detail.*', 'sadarin_user.user_nama', 'sadarin_user.user_foto', 'sadarin_user.user_lokasikerja', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_eselon.eselon_nama', 'sadarin_user.*') // 🔥 INI
             ->where('timkerja_id', $id)
             ->where('user_status', 1)
             ->orderby('user_lokasikerja', 'asc')
@@ -1348,5 +1339,43 @@ class KepegawaianController extends Controller
             'export_rekap_data' => view('kepegawaian.partials.modal_export_data_rekap', compact('bidang')),
             default => abort(404),
         };
+    }
+    public function exportDataRekap(Request $request)
+    {
+        $fields = $request->fields ?? [];
+        $groupBy = $request->group_by;
+
+        if (empty($fields)) {
+            return back()->with('error', 'Pilih minimal 1 kolom');
+        }
+
+        // ========================
+        // WHITELIST FIELD
+        // ========================
+        $allowed = ['user_nip', 'user_nik', 'user_nama', 'user_jk', 'user_tgllahir', 'user_tempatlahir', 'user_alamat', 'user_foto', 'user_pendidikan', 'user_gelar_depan', 'user_gelar_belakang', 'user_email', 'user_notelp', 'user_jeniskerja', 'jabatan_nama', 'user_eselon', 'user_kelasjabatan', 'user_golongan', 'bidang_nama', 'user_lokasikerja', 'user_tmt', 'user_spmt', 'user_status', 'user_jmltanggungan', 'user_norek', 'user_npwp', 'user_bpjs'];
+
+        $fields = array_values(array_intersect($fields, $allowed));
+
+        // ========================
+        // FILTER
+        // ========================
+        $bidang = $request->bidang ?? [];
+        $jenis = $request->jenis_kerja ?? [];
+        $status = $request->status ?? [];
+
+        // handle "all"
+        if (in_array('all', $bidang)) {
+            $bidang = [];
+        }
+        if (in_array('all', $jenis)) {
+            $jenis = [];
+        }
+        if (in_array('all', $status)) {
+            $status = [];
+        }
+        $tglExport = Carbon::now()->format('Ymd_His');
+
+
+        return Excel::download(new PegawaiRincianExport($fields, $bidang, $jenis, $status, $groupBy), 'pegawai_export_' . $tglExport . '.xlsx');
     }
 }

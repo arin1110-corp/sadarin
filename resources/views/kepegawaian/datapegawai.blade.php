@@ -144,8 +144,8 @@
                     </button>
                 </form>
                 <br />
-                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalExport">
-                    <i class="bi bi-file-earmark-excel"></i> Export Data
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalExport">
+                    <i class="bi bi-file-earmark-excel"></i> Export Data Pegawai
                 </button>
 
                 <!-- <button type="button" class="btn btn-success me-2" data-bs-toggle="modal"
@@ -491,48 +491,140 @@
                                 <h5 class="modal-title">
                                     <i class="bi bi-file-earmark-excel"></i> Export Data Pegawai
                                 </h5>
-                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
 
                             <div class="modal-body">
-
-                                {{-- JENIS EXPORT --}}
                                 <div class="mb-3">
-                                    <label class="fw-bold">Jenis Export</label>
-                                    <select name="export_mode" class="form-select" required>
-                                        <option value="summary">Summary / Rekap</option>
-                                        <option value="detail">Detail Pegawai</option>
+                                    <label class="fw-bold">Urutkan / Grouping</label>
+                                    <select name="group_by" class="form-select">
+                                        <option value="bidang">Per Bidang</option>
+                                        <option value="jenis">Per Jenis Kerja</option>
                                     </select>
                                 </div>
 
                                 {{-- FILTER --}}
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="fw-bold">Bidang</label>
                                         <select name="bidang[]" class="form-select" multiple>
+                                            <option value="all">-- Semua Bidang --</option>
+
                                             @foreach ($listBidang as $b)
                                                 <option value="{{ $b->bidang_id }}">{{ $b->bidang_nama }}</option>
                                             @endforeach
                                         </select>
-                                        <small class="text-muted">Kosongkan = semua bidang</small>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="fw-bold">Jenis Kerja</label>
                                         <select name="jenis_kerja[]" class="form-select" multiple>
+                                            <option value="all">-- Semua Jenis Kerja --</option>
                                             <option value="1">PNS</option>
                                             <option value="2">PPPK</option>
                                             <option value="3">PPPK Paruh Waktu</option>
                                             <option value="4">PJLP</option>
                                         </select>
-                                        <small class="text-muted">Kosongkan = semua jenis</small>
                                     </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="fw-bold">Status</label>
+                                        <select name="status[]" class="form-select" multiple>
+                                            <option value="all">-- Semua Status --</option>
+                                            <option value="1">Aktif</option>
+                                            <option value="0">Tidak Aktif</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {{-- PILIH FIELD --}}
+                                <div>
+                                    <label class="fw-bold">Pilih Kolom</label>
+
+                                    <div class="mb-2">
+                                        <label>
+                                            <input type="checkbox" id="checkAll"> Pilih Semua
+                                        </label>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label><input type="checkbox" name="fields[]" value="user_nip">
+                                                NIP</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_nik">
+                                                NIK</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_nama">
+                                                Nama</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_jk">
+                                                Jenis Kelamin</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_tgllahir">
+                                                Tanggal Lahir</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_tempatlahir">
+                                                Tempat Lahir</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_alamat">
+                                                Alamat</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_foto">
+                                                Foto</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_pendidikan">
+                                                Pendidikan</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_gelar_depan">
+                                                Gelar Depan</label><br>
+                                            <label><input type="checkbox" name="fields[]"
+                                                    value="user_gelar_belakang">
+                                                Gelar Belakang</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_email">
+                                                Email</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_notelp">
+                                                No Telp</label><br>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><input type="checkbox" name="fields[]" value="user_jeniskerja">
+                                                Jenis Kerja</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="jabatan_nama">
+                                                Jabatan</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_eselon">
+                                                Eselon</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_kelasjabatan">
+                                                Kelas Jabatan</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_golongan">
+                                                Golongan</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="bidang_nama">
+                                                Bidang</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_lokasikerja">
+                                                Lokasi Kerja</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_tmt">
+                                                TMT</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_spmt">
+                                                SPMT</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_status">
+                                                Status</label><br>
+                                        </div>
+
+                                        <div class="col-md-4">
+
+                                            <label><input type="checkbox" name="fields[]" value="user_jmltanggungan">
+                                                Jumlah Tanggungan</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_norek">
+                                                No. Rekening</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_npwp">
+                                                NPWP</label><br>
+                                            <label><input type="checkbox" name="fields[]" value="user_bpjs">
+                                                BPJS</label><br>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Batal
+                                </button>
                                 <button class="btn btn-success">
                                     <i class="bi bi-download"></i> Export
                                 </button>
