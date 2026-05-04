@@ -7,6 +7,8 @@ use Google\Service\Drive;
 
 class GoogleDriveServiceDB
 {
+    protected $service;
+
     public function findFileByNip($nip, $folderId, $jsonFile)
     {
         $driveService = $this->getClient($jsonFile);
