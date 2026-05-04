@@ -7,17 +7,11 @@ use Google\Service\Drive;
 
 class GoogleDriveServiceDB
 {
-    protected $service;
-
     public function findFileByNip($nip, $folderId, $jsonFile)
     {
         $driveService = $this->getClient($jsonFile);
 
-        $query = sprintf(
-            "'%s' in parents and name contains '%s' and trashed = false",
-            $folderId,
-            $nip
-        );
+        $query = sprintf("'%s' in parents and name contains '%s' and trashed = false", $folderId, $nip);
 
         $files = $driveService->files->listFiles([
             'q' => $query,
@@ -52,9 +46,15 @@ class GoogleDriveServiceDB
     }
     public function listFiles($folderId)
     {
-        $files = $this->service->files->listFiles([
+        $service = $this->getClient(); // ⬅️ ambil langsung
+
+        if (!$service) {
+            throw new \Exception('Google Drive service gagal dibuat');
+        }
+
+        $files = $service->files->listFiles([
             'q' => "'{$folderId}' in parents and trashed = false",
-            'fields' => 'files(id, name, webViewLink)'
+            'fields' => 'files(id, name, webViewLink)',
         ]);
 
         return $files->getFiles();
