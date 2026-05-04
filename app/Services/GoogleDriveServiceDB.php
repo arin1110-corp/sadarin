@@ -44,13 +44,9 @@ class GoogleDriveServiceDB
 
         return new Drive($client);
     }
-    public function listFiles($folderId)
+    public function listFiles($folderId, $jsonFile)
     {
-        $service = $this->getClient(); // ⬅️ ambil langsung
-
-        if (!$service) {
-            throw new \Exception('Google Drive service gagal dibuat');
-        }
+        $service = $this->getClient($jsonFile);
 
         $files = $service->files->listFiles([
             'q' => "'{$folderId}' in parents and trashed = false",
