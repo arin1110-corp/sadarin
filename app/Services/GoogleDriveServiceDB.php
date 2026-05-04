@@ -48,4 +48,13 @@ class GoogleDriveServiceDB
 
         return new Drive($client);
     }
+    public function listFiles($folderId)
+    {
+        $files = $this->service->files->listFiles([
+            'q' => "'{$folderId}' in parents and trashed = false",
+            'fields' => 'files(id, name, webViewLink)'
+        ]);
+
+        return $files->getFiles();
+    }
 }
