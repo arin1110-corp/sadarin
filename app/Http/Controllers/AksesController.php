@@ -99,6 +99,7 @@ class AksesController extends Controller
             'sadarin_tomboltitle.title_nama'
         )
             ->whereNotNull('sadarin_mappingtombol.mapping_id')
+            ->where('sadarin_tomboltitle.title_status', 1)
             ->get();
 
         // 🔥 versi 1: flat (untuk atas)

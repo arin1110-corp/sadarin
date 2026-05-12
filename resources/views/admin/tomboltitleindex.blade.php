@@ -51,6 +51,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nama Tombol Title</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -59,6 +60,13 @@
                                 <tr>
                                     <td>{{ $no+1 }}</td>
                                     <td>{{ $b->title_nama }}</td>
+                                    <td>
+                                        @if ($b->title_status == 1)
+                                        <span class="badge bg-success">Aktif</span>
+                                        @else
+                                        <span class="badge bg-secondary">Tidak Aktif</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->title_id }}"
                                             data-nama="{{ $b->title_nama }}">
@@ -98,6 +106,15 @@
                             <input type="text" class="form-control" name="title_nama" required>
                         </div>
                     </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Status</label>
+                            <select class="form-select" name="title_status" required>
+                                <option value="1">Aktif</option>
+                                <option value="0">Tidak Aktif</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -122,6 +139,15 @@
                         <div class="mb-3">
                             <label>Nama Tombol Title</label>
                             <input type="text" class="form-control" name="title_nama" id="edit_nama" required>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Status</label>
+                            <select class="form-select" name="title_status" id="edit_status" required>
+                                <option value="1">Aktif</option>
+                                <option value="0">Tidak Aktif</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -178,8 +204,10 @@
         $('.btnEdit').click(function() {
             let id = $(this).data('id');
             let nama = $(this).data('nama');
+            let status = $(this).data('status');
 
             $('#edit_nama').val(nama);
+            $('#edit_status').val(status);
             $('#formEdit').attr('action', '/admin/tombol-title/update/' + id);
 
             $('#modalEdit').modal('show');

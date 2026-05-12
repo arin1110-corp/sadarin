@@ -12,5 +12,6 @@ class ModelTombolTitle extends Model
     protected $primaryKey = 'title_id';
     protected $fillable = [
         'title_nama',
+        'title_status'
     ];
 }
