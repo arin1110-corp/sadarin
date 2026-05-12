@@ -69,7 +69,7 @@
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-warning btnEdit" data-id="{{ $b->title_id }}"
-                                            data-nama="{{ $b->title_nama }}">
+                                            data-nama="{{ $b->title_nama }}" data-status="{{ $b->title_status }}">
                                             Edit
                                         </button>
                                         <button class="btn btn-sm btn-danger btnHapus" data-id="{{ $b->title_id }}"
