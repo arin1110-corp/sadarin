@@ -67,4 +67,23 @@ class AuthController extends Controller
             ],
         ]);
     }
+    public function allPegawai()
+    {
+        $pegawai = DB::table('sadarin_user')
+            ->leftJoin('sadarin_jabatan', 'sadarin_user.user_jabatan', '=', 'sadarin_jabatan.jabatan_id')
+            ->leftJoin('sadarin_bidang', 'sadarin_user.user_bidang', '=', 'sadarin_bidang.bidang_id')
+            ->leftJoin('sadarin_eselon', 'sadarin_user.user_eselon', '=', 'sadarin_eselon.eselon_id')
+            ->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
+            ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
+            ->leftJoin('sadarin_jeniskerja', 'sadarin_user.user_jeniskerja', '=', 'sadarin_jeniskerja.jeniskerja_id')
+            ->select('sadarin_user.user_id as id', 'sadarin_user.user_nama as nama', 'sadarin_user.user_nip as nip', 'sadarin_user.user_nik as nik', 'sadarin_jabatan.jabatan_nama as jabatan', 'sadarin_bidang.bidang_nama as bidang', 'sadarin_eselon.eselon_nama as eselon', 'sadarin_pendidikan.pendidikan_jenjang', 'sadarin_pendidikan.pendidikan_jurusan', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_jeniskerja.jeniskerja_nama as jeniskerja')
+            ->orderBy('sadarin_user.user_nama', 'asc')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'total' => $pegawai->count(),
+            'data' => $pegawai,
+        ]);
+    }
 }

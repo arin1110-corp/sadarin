@@ -19,3 +19,4 @@ use App\Http\Controllers\Api\AuthController;
 //     return $request->user();
 // });
 Route::post('login', [AuthController::class, 'login']);
+Route::get('pegawai', [AuthController::class, 'allPegawai']);
