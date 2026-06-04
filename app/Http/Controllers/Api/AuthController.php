@@ -59,6 +59,8 @@ class AuthController extends Controller
                 'jabatan' => $user->jabatan_nama,
                 'bidang' => $user->bidang_nama,
                 'eselon' => $user->eselon_nama,
+                'email' => $user->user_email,
+                'hp' => $user->user_notelp,
                 'pendidikan_jenjang' => $user->pendidikan_jenjang,
                 'pendidikan_jurusan' => $user->pendidikan_jurusan,
                 'golongan_nama' => $user->golongan_nama,
@@ -76,8 +78,27 @@ class AuthController extends Controller
             ->leftJoin('sadarin_pendidikan', 'sadarin_user.user_pendidikan', '=', 'sadarin_pendidikan.pendidikan_id')
             ->leftJoin('sadarin_golongan', 'sadarin_user.user_golongan', '=', 'sadarin_golongan.golongan_id')
             ->leftJoin('sadarin_jeniskerja', 'sadarin_user.user_jeniskerja', '=', 'sadarin_jeniskerja.jeniskerja_id')
-            ->select('sadarin_user.user_id as id', 'sadarin_user.user_nama as nama', 'sadarin_user.user_nip as nip', 'sadarin_user.user_nik as nik', 'sadarin_jabatan.jabatan_nama as jabatan', 'sadarin_bidang.bidang_nama as bidang', 'sadarin_eselon.eselon_nama as eselon', 'sadarin_pendidikan.pendidikan_jenjang', 'sadarin_pendidikan.pendidikan_jurusan', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_jeniskerja.jeniskerja_nama as jeniskerja')
-            ->orderBy('sadarin_user.user_nama', 'asc')
+            ->select(
+                'sadarin_user.user_id as id',
+                'sadarin_user.user_nama as nama',
+                'sadarin_user.user_nip as nip',
+                'sadarin_user.user_nik as nik',
+
+                'sadarin_user.user_email as email',
+                'sadarin_user.user_notelp as hp',
+
+                'sadarin_jabatan.jabatan_nama as jabatan',
+                'sadarin_bidang.bidang_nama as bidang',
+                'sadarin_eselon.eselon_nama as eselon',
+
+                'sadarin_pendidikan.pendidikan_jenjang',
+                'sadarin_pendidikan.pendidikan_jurusan',
+
+                'sadarin_golongan.golongan_nama',
+                'sadarin_golongan.golongan_pangkat',
+
+                'sadarin_jeniskerja.jeniskerja_nama as jeniskerja'
+            )->orderBy('sadarin_user.user_nama', 'asc')
             ->get();
 
         return response()->json([
