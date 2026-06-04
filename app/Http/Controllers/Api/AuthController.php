@@ -37,7 +37,7 @@ class AuthController extends Controller
                     $q2->where('user_nip', '!=', '-')->where('user_nip', $request->nip);
                 })->orWhere('user_nik', $request->nip);
             })
-            ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.eselon_nama', 'sadarin_pendidikan.pendidikan_jenjang', 'sadarin_pendidikan.pendidikan_jurusan', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_jeniskerja.jeniskerja_nama')
+            ->select('sadarin_user.*', 'sadarin_jabatan.jabatan_nama', 'sadarin_jabatan.jabatan_id', 'sadarin_bidang.bidang_id', 'sadarin_bidang.bidang_nama', 'sadarin_eselon.eselon_nama', 'sadarin_pendidikan.pendidikan_jenjang', 'sadarin_pendidikan.pendidikan_jurusan', 'sadarin_golongan.golongan_nama', 'sadarin_golongan.golongan_pangkat', 'sadarin_jeniskerja.jeniskerja_nama')
             ->first();
 
         if (!$user || !Hash::check($request->password, $user->user_password)) {
@@ -57,6 +57,8 @@ class AuthController extends Controller
                 'nama' => $user->user_nama,
                 'nip' => $user->user_nip,
                 'jabatan' => $user->jabatan_nama,
+                'jabatan_id' => $user->jabatan_id,
+                'bidang_id' => $user->bidang_id,
                 'bidang' => $user->bidang_nama,
                 'eselon' => $user->eselon_nama,
                 'email' => $user->user_email,
@@ -87,6 +89,8 @@ class AuthController extends Controller
                 'sadarin_user.user_email as email',
                 'sadarin_user.user_notelp as hp',
 
+            'sadarin_user.user_jabatan as jabatan_id',
+            'sadarin_user.user_bidang as bidang_id',
                 'sadarin_jabatan.jabatan_nama as jabatan',
                 'sadarin_bidang.bidang_nama as bidang',
                 'sadarin_eselon.eselon_nama as eselon',
