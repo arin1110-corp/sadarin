@@ -111,4 +111,17 @@ class AuthController extends Controller
             'data' => $pegawai,
         ]);
     }
+    public function allBidang()
+    {
+        $bidang = DB::table('sadarin_bidang')
+            ->select('bidang_id as id', 'bidang_nama as nama')
+            ->orderBy('bidang_nama', 'asc')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'total' => $bidang->count(),
+            'data' => $bidang,
+        ]);
+    }
 }
