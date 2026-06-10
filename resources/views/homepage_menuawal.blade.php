@@ -161,21 +161,23 @@
                     </a>
 @endif -->
             @endif
-            @if(!empty($tim))
-            <a href="{{ route('timkerja.modal', ['id' => $tim->timkerja_id]) }}"
-                class="menu-box bg-primary text-white d-flex align-items-center gap-2">
-                <i class="bi bi-file-earmark-text fs-1"></i>
-                <span>TIMKERJA</span>
-            </a>
+            @if (!empty($tim))
+                <a href="{{ route('timkerja.modal', ['id' => $tim->timkerja_id]) }}"
+                    class="menu-box bg-primary text-white d-flex align-items-center gap-2">
+                    <i class="bi bi-file-earmark-text fs-1"></i>
+                    <span>TIMKERJA</span>
+                </a>
             @endif
             <a href="{{ route('arsip.disbud') }}"
                 class="menu-box bg-success text-white d-flex align-items-center gap-2">
                 <h1><span class="fw-bold">SADAR<span class="text-warning">IN</span></span></h1>
             </a>
-            <a href="https://www.simontorin.site" class="menu-box text-white d-flex align-items-center gap-2" style="background-color: #04265a;">
+            <a href="https://www.simontorin.site" class="menu-box text-white d-flex align-items-center gap-2"
+                style="background-color: #04265a;">
                 <h1><span class="fw-bold">SIMONTOR<span class="text-success">IN</span></span></h1>
             </a>
-            <a href="https://www.saplarin.site" class="menu-box text-white d-flex align-items-center gap-2" style="background-color: #6f42c1;">
+            <a href="https://www.saplarin.site" class="menu-box text-white d-flex align-items-center gap-2"
+                style="background-color: #6f42c1;">
                 <h1><span class="fw-bold">SAPLAR<span class="text-warning">IN</span></span></h1>
             </a>
             <a href="{{ route('logout') }}" class="menu-box bg-danger text-white d-flex align-items-center gap-2">
@@ -217,8 +219,8 @@
                                     <p>
                                         Link reset password akan dikirim ke:
 
-                                    <strong>{{ $user->user_email }}</strong>
-                                    
+                                        <strong>{{ $user->user_email }}</strong>
+
                                     </p>
 
                                     <form method="POST" action="{{ route('password.send.link') }}">
@@ -249,7 +251,16 @@
                                         <label class="form-label">
                                             Masukkan Password
                                         </label>
-                                        <input type="password" name="password" class="form-control" required>
+
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="password"
+                                                class="form-control" required>
+
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                onclick="togglePassword()">
+                                                <i id="eyeIcon" class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary w-100">
@@ -332,6 +343,22 @@
             });
         </script>
     @endif
+    <script>
+        function togglePassword() {
+            let password = document.getElementById('password');
+            let eyeIcon = document.getElementById('eyeIcon');
+
+            if (password.type === 'password') {
+                password.type = 'text';
+                eyeIcon.classList.remove('bi-eye');
+                eyeIcon.classList.add('bi-eye-slash');
+            } else {
+                password.type = 'password';
+                eyeIcon.classList.remove('bi-eye-slash');
+                eyeIcon.classList.add('bi-eye');
+            }
+        }
+    </script>
 </body>
 <!-- Bootstrap Select CSS -->
 <link rel="stylesheet"
