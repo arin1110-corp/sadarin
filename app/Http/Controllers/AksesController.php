@@ -11,6 +11,7 @@ use App\Models\ModelSubNavigasiSekretariat;
 use App\Models\ModelPakta;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use App\Exports\PegawaiExport;
@@ -702,38 +703,77 @@ class AksesController extends Controller
     {
         $user = session('user_info');
 
+        if (!$user) {
+            return back()->with('error', 'Session user tidak ditemukan. Silakan login ulang.');
+        }
+
         $request->validate([
-            'file' => 'required|mimes:pdf,jpeg,jpg,png,gif,bmp,webp,xls,xlsx,doc,docx', // PDF + gambar + Excel
+            'file' => 'required|file|mimes:pdf,jpeg,jpg,png,gif,bmp,webp,xls,xlsx,doc,docx|max:10240',
         ]);
 
-        $tombolMapping = DB::table('sadarin_mappingtombol')->join('sadarin_tombolberkas', 'mapping_tombol', '=', 'tombol_id')->where('mapping_tombol', $tombol_id)->where('mapping_jeniskerja', $user->user_jeniskerja)->select('sadarin_mappingtombol.*', 'sadarin_tombolberkas.tombol_nama')->first();
+        $tombolMapping = DB::table('sadarin_mappingtombol')
+            ->join('sadarin_tombolberkas', 'mapping_tombol', '=', 'tombol_id')
+            ->where('mapping_tombol', $tombol_id)
+            ->where('mapping_jeniskerja', $user->user_jeniskerja)
+            ->select(
+                'sadarin_mappingtombol.*',
+                'sadarin_tombolberkas.tombol_nama'
+            )
+            ->first();
 
         if (!$tombolMapping) {
-            return back()->with('error', 'Mapping tombol belum tersedia.');
+            return back()
+                ->with('error', 'Mapping tombol belum tersedia.')
+                ->with('open_modal', $tombol_id);
+        }
+
+        if (empty($tombolMapping->mapping_folderid)) {
+            return back()
+                ->with('error', 'Folder ID Google Drive belum diatur pada mapping tombol.')
+                ->with('open_modal', $tombol_id);
         }
 
         $finalId = $user->user_nip ?: $user->user_nik;
+
+        if (!$finalId) {
+            return back()
+                ->with('error', 'NIP/NIK user tidak ditemukan.')
+                ->with('open_modal', $tombol_id);
+        }
+
         $file = $request->file('file');
-        $ext = $file->getClientOriginalExtension();
-        $filename = $finalId . '_' . str_replace(' ', '_', $tombolMapping->tombol_nama) . '.' . $ext;
+        $ext = strtolower($file->getClientOriginalExtension());
 
-        $folderServer = $tombolMapping->mapping_folder; // path server
-        if (!file_exists(public_path($folderServer))) {
-            mkdir(public_path($folderServer), 0755, true);
+        $namaBerkas = preg_replace('/[^A-Za-z0-9_\-]/', '_', $tombolMapping->tombol_nama);
+
+        $filename = $finalId . '_' . $namaBerkas . '.' . $ext;
+
+        try {
+            $response = Http::withToken(env('ARINDRIVE_TOKEN'))
+                ->timeout(120)
+                ->attach(
+                    'file',
+                    fopen($file->getRealPath(), 'r'),
+                    $filename
+                )
+                ->post(rtrim(env('ARINDRIVE_URL'), '/') . '/api/upload-drive', [
+                    'folder_id' => $tombolMapping->mapping_folderid,
+                    'filename' => $filename,
+                ]);
+
+            if (!$response->successful()) {
+                return back()
+                    ->with('error', 'Gagal upload ke ArinDrive: ' . $response->body())
+                    ->with('open_modal', $tombol_id);
         }
 
-        // Hapus file lama
-        $baseName = $finalId . '_' . str_replace(' ', '_', $tombolMapping->tombol_nama);
-        foreach (glob(public_path($folderServer . '/' . $baseName . '.*')) as $old) {
-            if (file_exists($old)) {
-                unlink($old);
+            $result = $response->json();
+
+            if (!($result['success'] ?? false)) {
+                return back()
+                    ->with('error', $result['message'] ?? 'Upload gagal.')
+                    ->with('open_modal', $tombol_id);
             }
-        }
-
-        // Upload file
-        $file->move(public_path($folderServer), $filename);
-
-        $url = asset($folderServer . '/' . $filename);
 
         ModelPengumpulanBerkas::updateOrCreate(
             [
@@ -741,16 +781,21 @@ class AksesController extends Controller
                 'kumpulan_jenis' => $tombolMapping->tombol_nama,
             ],
             [
-                'kumpulan_file' => $url,
+                    'kumpulan_file' => $result['data']['url'],
                 'kumpulan_status' => 1,
-                'kumpulan_sync' => 0,
-                'kumpulan_keterangan' => 'Upload melalui sistem',
-            ],
+                    'kumpulan_sync' => 1,
+                    'kumpulan_keterangan' => 'Upload ke Google Drive melalui ArinDrive API',
+                ]
         );
 
         return back()
-            ->with('success', 'File ' . $tombolMapping->tombol_nama . ' berhasil diupload.')
-            ->with('open_modal', $tombol_id); // modal tetap buka sesuai tombol
+                ->with('success', 'File ' . $tombolMapping->tombol_nama . ' berhasil diupload ke Google Drive.')
+                ->with('open_modal', $tombol_id);
+        } catch (\Throwable $e) {
+            return back()
+                ->with('error', 'Gagal upload: ' . $e->getMessage())
+                ->with('open_modal', $tombol_id);
+        }
     }
     public function uploadBerkas(Request $request)
     {

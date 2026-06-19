@@ -57,7 +57,8 @@ Route::post('/cek-kode', [HomepageController::class, 'cek'])->name('akses.cek');
 Route::get('/akses-kode', [HomepageController::class, 'akses_kode'])->name('akses.kode');
 Route::get('/login', [HomepageController::class, 'login'])->name('login'); // Form login admin/kepegawaian
 Route::post('/login-submit', [HomepageController::class, 'loginSubmit'])->name('login.submit');
-Route::get('/logout', [HomepageController::class, 'logout'])->name('logout'); // Logout admin/kepegawaian
+Route::get('/logout', [HomepageController::class, 'logout'])->name('logout');
+Route::post('/logout', [HomepageController::class, 'logout'])->name('logout'); // Logout admin/kepegawaian
 Route::get('/cek-kode', function () {
     return view('homepage_awal');
 })->name('akses.depan');
