@@ -759,6 +759,10 @@ class AksesController extends Controller
                 ->post(rtrim(env('ARINDRIVE_URL'), '/') . '/api/upload-drive', [
                     'folder_id' => $tombolMapping->mapping_folderid,
                     'filename' => $filename,
+
+                'source_app' => 'sadarin',
+                'folder' => $tombolMapping->mapping_folder ?? 'pengumpulan-berkas',
+                'reference_id' => $finalId . '-' . $tombolMapping->tombol_nama,
                 ]);
 
             if (!$response->successful()) {
