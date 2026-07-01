@@ -124,4 +124,29 @@ class AuthController extends Controller
             'data' => $bidang,
         ]);
     }
+    public function pegawaiByID($id)
+    {
+        $pegawai = DB::table('sadarin_user')->select(
+            'user_id',
+            'user_nama',
+            'user_nip',
+            'user_email',
+            'user_jabatan',
+            'user_bidang'
+        )
+            ->where('user_id', $id)
+            ->first();
+
+        if (!$pegawai) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pegawai tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $pegawai
+        ]);
+    }
 }

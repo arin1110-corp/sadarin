@@ -21,3 +21,4 @@ use App\Http\Controllers\Api\AuthController;
 Route::post('login', [AuthController::class, 'login']);
 Route::get('pegawai', [AuthController::class, 'allPegawai']);
 Route::get('bidang', [AuthController::class, 'allBidang']);
+Route::get('pegawaicek/{id}', [AuthController::class, 'pegawaiByID']);
