@@ -733,9 +733,19 @@ class AksesController extends Controller
                 ->with('open_modal', $tombol_id);
         }
 
-        $finalId = $user->user_nip ?: $user->user_nik;
+        // ==========================================
+        // GUNAKAN NIP, JIKA NIP "-" / KOSONG → NIK
+        // ==========================================
+        $nip = trim((string) $user->user_nip);
+        $nik = trim((string) $user->user_nik);
 
-        if (!$finalId) {
+        if ($nip === '' || $nip === '-') {
+            $finalId = $nik;
+        } else {
+            $finalId = $nip;
+        }
+
+        if ($finalId === '') {
             return back()
                 ->with('error', 'NIP/NIK user tidak ditemukan.')
                 ->with('open_modal', $tombol_id);
@@ -744,7 +754,11 @@ class AksesController extends Controller
         $file = $request->file('file');
         $ext = strtolower($file->getClientOriginalExtension());
 
-        $namaBerkas = preg_replace('/[^A-Za-z0-9_\-]/', '_', $tombolMapping->tombol_nama);
+        $namaBerkas = preg_replace(
+            '/[^A-Za-z0-9_\-]/',
+            '_',
+            $tombolMapping->tombol_nama
+        );
 
         $filename = $finalId . '_' . $namaBerkas . '.' . $ext;
 
@@ -756,14 +770,16 @@ class AksesController extends Controller
                     fopen($file->getRealPath(), 'r'),
                     $filename
                 )
-                ->post(rtrim(env('ARINDRIVE_URL'), '/') . '/api/upload-drive', [
+                ->post(
+                    rtrim(env('ARINDRIVE_URL'), '/') . '/api/upload-drive',
+                    [
                     'folder_id' => $tombolMapping->mapping_folderid,
                     'filename' => $filename,
-
-                'source_app' => 'sadarin',
-                'folder' => $tombolMapping->mapping_folder ?? 'pengumpulan-berkas',
-                'reference_id' => $finalId . '-' . $tombolMapping->tombol_nama,
-                ]);
+                    'source_app' => 'sadarin',
+                    'folder' => $tombolMapping->mapping_folder ?? 'pengumpulan-berkas',
+                    'reference_id' => $finalId . '-' . $tombolMapping->tombol_nama,
+                    ]
+                );
 
             if (!$response->successful()) {
                 return back()
@@ -793,7 +809,10 @@ class AksesController extends Controller
         );
 
         return back()
-                ->with('success', 'File ' . $tombolMapping->tombol_nama . ' berhasil diupload ke Google Drive.')
+                ->with(
+                    'success',
+                    'File ' . $tombolMapping->tombol_nama . ' berhasil diupload ke Google Drive.'
+                )
                 ->with('open_modal', $tombol_id);
         } catch (\Throwable $e) {
             return back()
