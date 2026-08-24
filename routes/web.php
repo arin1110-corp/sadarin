@@ -49,6 +49,7 @@ Route::get('/data-laporan-ikd', [PreFillController::class, 'prefillLaporanIKD'])
 Route::get('/data-perjanjian-kinerja-2026', [PreFillController::class, 'prefillPerjanjianKinerja2026']);
 Route::get('/isi/data/evkin/2026/tw1', [PreFillController::class, 'prefillEvkin2026TW1']);
 Route::get('/isi/data/umbal/2026/tw1', [PreFillController::class, 'prefillUmbal2026TW1']);
+Route::get('/isi/data/pakta/2026', [PreFillController::class, 'prefillPakta2026']);
 
 // -------------------- Homepage --------------------
 Route::get('/', [HomepageController::class, 'form'])->name('akses.form');

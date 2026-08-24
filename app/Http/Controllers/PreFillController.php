@@ -731,4 +731,33 @@ class PreFillController extends Controller
 
         return back()->with('success', 'Prefill Rekaman Umpan Balik 2026 Triwulan I berhasil ditambahkan.');
     }
+    public function prefillPakta2026()
+    {
+        $kumpulanJenisBaru = 'Pakta Integritas 2026';
+        $pegawai = ModelUser::where('user_status', 1)->get();
+
+        foreach ($pegawai as $user) {
+            // Tentukan identitas sesuai kondisi
+            $identitas = $user->user_nip != '-' && $user->user_nip != null ? $user->user_nip : $user->user_nik; // gunakan NIK jika NIP '-'
+
+            // Cek apakah sudah ada record
+            $cek = ModelPengumpulanBerkas::where('kumpulan_user', $identitas)->where('kumpulan_jenis', $kumpulanJenisBaru)->first();
+
+            if ($cek) {
+                continue;
+            }
+
+            // Buat prefill
+            ModelPengumpulanBerkas::create([
+                'kumpulan_user' => $identitas,
+                'kumpulan_jenis' => $kumpulanJenisBaru,
+                'kumpulan_status' => 0,
+                'kumpulan_file' => 'null',
+                'kumpulan_sync' => 0,
+                'kumpulan_keterangan' => 'Prefill Pakta Integritas 2026',
+            ]);
+        }
+
+        return back()->with('success', 'Prefill Pakta Integritas 2026 berhasil ditambahkan.');
+    }
 }
