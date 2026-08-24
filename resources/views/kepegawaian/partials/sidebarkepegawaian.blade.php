@@ -91,7 +91,7 @@
                     href="{{ route('kepegawaian.pakta.1desember', ['id' => 'Pakta Integritas 1 Desember 2025']) }}">Pakta
                     Integritas 1 Desember 2025</a>
                 <a class="nav-link text-white small py-1"
-                    href="{{ route('kepegawaian.pakta.1januari', ['id' => 'Pakta Integritas 2026']) }}">Pakta Integritas
+                    href="{{ route('kepegawaian.pakta.2026', ['id' => 'Pakta Integritas 2026']) }}">Pakta Integritas
                     2026</a>
             </div>
         </li>
