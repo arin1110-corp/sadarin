@@ -177,6 +177,7 @@ Route::middleware('kepegawaian.auth')->group(function () {
     Route::get('/data-perjanjian-kinerja-2026/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.perjanjian.kinerja.2026');
     Route::get('/data/renaksi/2025/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.renaksi.2025');
     Route::get('data/renaksi/2026/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.renaksi.2026');
+    Route::get('/data/pakta/2026/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.data.pakta.2026');
 
     Route::get('/data/evkin/2026/tw1/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.2026.tw1');
     Route::get('/data/evkin/2026/tw2/{id}', [KepegawaianController::class, 'dataPaktaIntegritas'])->name('kepegawaian.evkin.2026.tw2');
