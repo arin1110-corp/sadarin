@@ -134,9 +134,7 @@
 
         <div class="grid-menu-center mt-3">
             @if (!empty($user))
-                <a href="#"
-                    class="menu-box d-flex flex-column align-items-center justify-content-center text-center"
-                    data-bs-toggle="modal" data-bs-target="#passwordConfirmModal">
+                <a href="https://samperin.arinl.site" class="menu-box bg-info text-white d-flex flex-column align-items-center justify-content-center text-center">
 
                     <i class="bi bi-person-circle fs-1"></i>
 

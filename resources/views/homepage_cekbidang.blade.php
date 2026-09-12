@@ -85,7 +85,7 @@
 
         <div class="grid-menu-center mt-3">
             @if (!empty($user))
-                <a href="https://samperin.arinl.site" class="menu-box-nama nama-menucek">
+                <a href="/detail-pegawai" class="menu-box-nama nama-menucek">
                     {{ $user->user_nip }}<br>{{ $user->user_nik }}<br>{{ $user->user_nama }}<br>{{ $user->jabatan_nama }}
                 </a>
             @endif
