@@ -141,7 +141,7 @@ Support by <span>ARIN</span>
 
 <script>
 
-const finishTime = new Date().getTime() + (3 *60* 60 * 1000); // 3 jam
+const finishTime = new Date().getTime() + (1 *60* 60 * 1000); // 3 jam
 
 const interval = setInterval(function(){
 
