@@ -166,7 +166,7 @@
                     <span>TIMKERJA</span>
                 </a>
             @endif
-            <a href="{{ route('arsip.disbud') }}"
+            <a href="https://www.sadarin.online"
                 class="menu-box bg-success text-white d-flex align-items-center gap-2">
                 <h1><span class="fw-bold">SADAR<span class="text-warning">IN</span></span></h1>
             </a>
