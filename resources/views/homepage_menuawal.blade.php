@@ -134,7 +134,7 @@
 
         <div class="grid-menu-center mt-3">
             @if (!empty($user))
-                <a href="https://samperin.arinl.site" class="menu-box bg-info text-white d-flex flex-column align-items-center justify-content-center text-center">
+                <a href="https://www.samperin.site" class="menu-box bg-info text-white d-flex flex-column align-items-center justify-content-center text-center">
 
                     <i class="bi bi-person-circle fs-1"></i>
 
